@@ -89,6 +89,9 @@ module Jekyll
         asset   = site.assets[@logical_path]
 
         return asset_not_found unless asset
+
+        return asset.to_s if 'asset' == @tag_name
+
         return asset_not_bundled unless site.has_bundled_asset? asset
 
         url = "/#{site.assets_config.dirname}/#{asset.digest_path}".squeeze "/"

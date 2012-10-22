@@ -14,3 +14,4 @@ Jekyll::Site.send :include, Jekyll::AssetsPlugin::SitePatch
 Liquid::Template.register_tag('javascript', Jekyll::AssetsPlugin::Tag)
 Liquid::Template.register_tag('stylesheet', Jekyll::AssetsPlugin::Tag)
 Liquid::Template.register_tag('asset_path', Jekyll::AssetsPlugin::Tag)
+Liquid::Template.register_tag('asset',      Jekyll::AssetsPlugin::Tag)
