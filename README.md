@@ -1,6 +1,7 @@
 # Jekyll::AssetsPlugin
 
 [![Build Status](https://secure.travis-ci.org/ixti/jekyll-assets.png)](http://travis-ci.org/ixti/jekyll-assets)
+[![Dependency Status](https://gemnasium.com/ixti/jekyll-assets.png)](https://gemnasium.com/ixti/jekyll-assets)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ixti/jekyll-assets)
 
 Jekyll plugin, that adds Rails-alike assets pipelines.
