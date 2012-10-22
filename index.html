@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jekyll-assets by ixti</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/ixti/jekyll-assets">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/ixti/jekyll-assets/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/ixti/jekyll-assets/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>jekyll-assets</h1>
+          <p>Unleash Mr Hyde!</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/ixti">ixti</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Jekyll::AssetsPlugin</h1>
+
+<p>Jekyll plugin, that adds Rails-alike assets pipelines.</p>
+
+<h2>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'jekyll-assets'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install jekyll-assets
+</code></pre>
+
+<h2>Usage</h2>
+
+<p>Add this line to your sites <code>_plugins/ext.rb</code>:</p>
+
+<pre><code>require 'jekyll-assets'
+</code></pre>
+
+<p>Put your assets under following paths:</p>
+
+<ul>
+<li><code>_assets/javascripts</code></li>
+<li><code>_assets/stylesheets</code></li>
+<li><code>_assets/images</code></li>
+</ul><p>Name your "main" asset files <code>app.js</code> and <code>app.css</code> and use liquid tags:</p>
+
+<ul>
+<li>
+<code>{% javascript app %}</code> to output <code>&lt;script&gt;</code> tag for <code>app.js</code>
+</li>
+<li>
+<code>{% stylesheet app %}</code> to output <code>&lt;link&gt;</code> tag for <code>app.css</code>
+</li>
+<li>
+<code>{% asset_path logo.jpg %}</code> to output URL for <code>logo.jpg</code>
+</li>
+</ul><p>In order to use these tags, assets must be "bundled". By default only <code>app.js</code>,
+<code>app.css</code>, and all files with extensions <code>.jpg</code>, <code>.png</code> or <code>.gif</code> are bundled.
+You can change this by tuning up you <code>_config.yml</code> (see below).</p>
+
+<h2>Configuration</h2>
+
+<p>You can fine-tune configuration by editing your <code>_config.yml</code>:</p>
+
+<pre><code>assets:
+  #
+  # Pathname of the destination of generated (bundled) assets relative
+  # to the destination of the root.
+  #
+  dirname: assets
+  #
+  # Pathnames where to find assets relative to the root of the site.
+  #
+  sources:
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _assets/images
+  #
+  # Array of filenames or filename patterns that needs to be generated for
+  # the generated site. You can use `*` and `**` wildcards in patterns:
+  #
+  #     'foobar.jpg'  will match 'foobar.jpg' only
+  #     '*.jpg'       will match 'foo.jpg', but not 'foo/bar.jpg'
+  #     '**.jpg'      will match 'foo.jpg', 'foo/bar.jpg', etc.
+  #
+  bundles:
+    - 'app.css'
+    - 'app.js'
+    - '**.jpg'
+    - '**.png'
+    - '**.gif'
+  #
+  # Sets compressors for the specific types of file: `js`, or `css`.
+  # No compression by default.
+  #
+  # Possible variants:
+  #
+  #     css  =&gt; 'yui', 'sass', nil
+  #     js   =&gt; 'yui', 'unglifier', nil
+  #
+  compress:
+    js:   ~
+    css:  ~
+</code></pre>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol><h2>License</h2>
+
+<p>Copyright (C) 2012 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
+
+<p>The MIT License</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the “Software”), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
