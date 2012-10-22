@@ -77,5 +77,17 @@ module Jekyll::AssetsPlugin
         it { should be_empty }
       end
     end
+
+    context '{% asset <file.ext> %}' do
+      context 'when <file> exists' do
+        subject { render('{% asset app.css %}') }
+        it { should match(/body \{ background-image: url\(.+?\) \}/) }
+      end
+
+      context 'when <file> is not found' do
+        subject { render('{% asset_path not-found.js %}') }
+        it { should be_empty }
+      end
+    end
   end
 end
