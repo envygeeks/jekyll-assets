@@ -22,13 +22,8 @@ module Jekyll
 
           assets_config.sources.each(&@assets.method(:append_path))
 
-          if js_compressor = assets_config.js_compressor
-            @assets.js_compressor = js_compressor
-          end
-
-          if css_compressor = assets_config.css_compressor
-            @assets.css_compressor = css_compressor
-          end
+          @assets.js_compressor   = assets_config.js_compressor
+          @assets.css_compressor  = assets_config.css_compressor
 
           @assets.context_class.class_eval <<-RUBY, __FILE__, __LINE__
             def asset_path(path, options = {})
