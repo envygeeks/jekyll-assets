@@ -68,6 +68,12 @@ module Jekyll
         @logical_path << default_extension if File.extname(@logical_path).empty?
       end
 
+      def render context
+        send :"render_#{@tag_name}", context
+      end
+
+      protected
+
       def default_extension
         EXTENSIONS[@tag_name].to_s
       end
@@ -84,22 +90,37 @@ module Jekyll
         end
       end
 
-      def render context
+      def with_asset context, &block
         site    = context.registers[:site]
         asset   = site.assets[@logical_path]
 
         return asset_not_found unless asset
 
-        return asset.to_s if 'asset' == @tag_name
+        yield asset, site
+      end
 
-        return asset_not_bundled unless site.has_bundled_asset? asset
+      def render_asset context
+        with_asset context do |asset|
+          return asset.to_s
+        end
+      end
 
-        url = "/#{site.assets_config.dirname}/#{asset.digest_path}".squeeze "/"
+      def render_asset_path context
+        with_asset context do |asset, site|
+          return asset_not_bundled unless site.has_bundled_asset? asset
+          return "/#{site.assets_config.dirname}/#{asset.digest_path}"
+        end
+      end
 
-        case @tag_name
-        when 'stylesheet' then STYLESHEET % [url]
-        when 'javascript' then JAVASCRIPT % [url]
-        else url
+      def render_javascript context
+        if url = render_asset_path(context)
+          return JAVASCRIPT % [url]
+        end
+      end
+
+      def render_stylesheet context
+        if url = render_asset_path(context)
+          return STYLESHEET % [url]
         end
       end
     end

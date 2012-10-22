@@ -58,8 +58,8 @@ module Jekyll
 
         self.sources  = [ self.sources ] if self.sources.is_a? String
         self.bundles  = [ self.bundles ] if self.bundles.is_a? String
-
         self.compress = OpenStruct.new(self.compress)
+        self.dirname  = self.dirname.gsub(/^\/+|\/+$/, '')
       end
 
       # Returns bundles array with pattern strings converted to RegExps
