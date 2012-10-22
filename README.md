@@ -1,5 +1,7 @@
 # Jekyll::AssetsPlugin
 
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ixti/jekyll-assets)
+
 Jekyll plugin, that adds Rails-alike assets pipelines.
 
 
