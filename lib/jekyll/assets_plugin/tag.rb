@@ -108,7 +108,7 @@ module Jekyll
       def render_asset_path context
         with_asset context do |asset, site|
           return asset_not_bundled unless site.has_bundled_asset? asset
-          return "#{site.url}/#{site.assets_config.dirname}/#{asset.digest_path}"
+          return "#{site.config['url']}/#{site.assets_config.dirname}/#{asset.digest_path}"
         end
       end
 
