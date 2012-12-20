@@ -60,6 +60,9 @@ module Jekyll
         self.bundles  = [ self.bundles ] if self.bundles.is_a? String
         self.compress = OpenStruct.new(self.compress)
         self.dirname  = self.dirname.gsub(/^\/+|\/+$/, '')
+
+        # if baseurl not given - autoguess base on dirname
+        self.baseurl ||= "/#{self.dirname}/".squeeze '/'
       end
 
       # Returns bundles array with pattern strings converted to RegExps

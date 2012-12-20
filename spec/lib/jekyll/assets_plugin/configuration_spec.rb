@@ -6,6 +6,7 @@ module Jekyll::AssetsPlugin
     let(:defaults) do
       {
         :dirname  => 'assets',
+        :baseurl  => '/assets/',
         :sources  => %w{_assets/javascripts _assets/stylesheets _assets/images},
         :bundles  => %w{app.css app.js **.jpg **.png **.gif}
       }
@@ -17,6 +18,11 @@ module Jekyll::AssetsPlugin
       context 'output assets dirname' do
         subject { config.dirname }
         it { should == defaults[:dirname] }
+      end
+
+      context 'assets baseurl' do
+        subject { config.baseurl }
+        it { should == defaults[:baseurl] }
       end
 
       context 'sources list' do
@@ -51,6 +57,25 @@ module Jekyll::AssetsPlugin
       config.bundles.should =~ defaults[:bundles]
       config.compress.js.should be_nil
       config.compress.css.should == 'sass'
+    end
+
+    context '#baseurl' do
+      it 'should respect explicit overrides' do
+        config = Configuration.new({
+          :dirname => 'foo',
+          :baseurl => '/bar/'
+        })
+
+        config.baseurl.should == '/bar/'
+      end
+
+      it 'should be auto-guessed from dirname' do
+        config = Configuration.new({
+          :dirname => 'foo'
+        })
+
+        config.baseurl.should == '/foo/'
+      end
     end
 
     context '#js_compressor' do
