@@ -76,6 +76,12 @@ module Jekyll::AssetsPlugin
         subject { render('{% asset_path vapor.js %}') }
         it { should be_empty }
       end
+
+      context 'with baseurl given as /foobar/' do
+        before { context[:registers][:site].assets_config.baseurl = '/foobar/' }
+        subject { render('{% asset_path app.css %}') }
+        it { should match(%r{^/foobar/app-[a-f0-9]{32}\.css$}) }
+      end
     end
 
     context '{% asset <file.ext> %}' do
