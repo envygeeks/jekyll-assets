@@ -45,6 +45,14 @@ module Jekyll
     #
     # Default: 'assets'
     #
+    #
+    # ##### baseurl
+    #
+    # Base URL for assets paths. By default equals dirname surrunded with
+    # slashes. You ight want to change it if your blog has baseurl configuration
+    # and served not from the root of the server, or if you want to keep your
+    # assets on CDN.
+    #
     class Configuration < OpenStruct
       @@defaults = {
         :dirname  => 'assets',

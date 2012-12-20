@@ -56,6 +56,10 @@ You can fine-tune configuration by editing your `_config.yml`:
       #
       dirname: assets
       #
+      # Base URL of assets paths.
+      #
+      baseurl: /assets/
+      #
       # Pathnames where to find assets relative to the root of the site.
       #
       sources:
