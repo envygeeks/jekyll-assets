@@ -84,12 +84,6 @@ module Jekyll
         end
       end
 
-      def asset_not_bundled
-        if @@errors.add? @logical_path
-          log :warn, "File was not bundled: #{@logical_path}"
-        end
-      end
-
       def with_asset context, &block
         site    = context.registers[:site]
         asset   = site.assets[@logical_path]
@@ -107,7 +101,10 @@ module Jekyll
 
       def render_asset_path context
         with_asset context do |asset, site|
-          return asset_not_bundled unless site.has_bundled_asset? asset
+          unless site.static_files.include? asset
+            site.static_files << AssetFile.new(site, asset)
+          end
+
           return "#{site.assets_config.baseurl.chomp '/'}/#{asset.digest_path}"
         end
       end

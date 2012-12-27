@@ -38,10 +38,5 @@ module Jekyll::AssetsPlugin
     it 'should be included into Jekyll::Site' do
       Jekyll::Site.included_modules.should include SitePatch
     end
-
-    it 'should respond to #has_bundled_asset?' do
-      @site.has_bundled_asset?(@site.assets['app.css']).should be_true
-      @site.has_bundled_asset?(@site.assets['normalize.css']).should be_false
-    end
   end
 end

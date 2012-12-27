@@ -40,6 +40,18 @@ module Jekyll
         @asset.write_to dest_path
         true
       end
+
+      def == other
+        case other
+        when AssetFile        then other.asset.logical_path == asset.logical_path
+        when Sprockets::Asset then other.logical_path == asset.logical_path
+        else false
+        end
+      end
+
+      def to_s
+        "#<Jekyll::AssetsPlugin::AssetFile:#{asset.logical_path}>"
+      end
     end
   end
 end

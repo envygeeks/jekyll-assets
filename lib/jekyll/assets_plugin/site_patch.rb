@@ -25,26 +25,18 @@ module Jekyll
           @assets.js_compressor   = assets_config.js_compressor
           @assets.css_compressor  = assets_config.css_compressor
 
+          # TODO: automagically bundle files
+
           @assets.context_class.class_eval <<-RUBY, __FILE__, __LINE__
             def asset_path(path, options = {})
               asset = environment.find_asset path, options
               raise FileNotFound, "couldn't find file '\#{path}'" unless asset
-              "/#{assets_config.dirname}/\#{asset.digest_path}".squeeze "/"
+              "/#{assets_config.baseurl.chomp '/'}/\#{asset.digest_path}".squeeze "/"
             end
           RUBY
         end
 
         @assets
-      end
-
-      def has_bundled_asset? asset
-        if asset.is_a? String
-          asset = assets[asset]
-        end
-
-        !self.static_files.index do |file|
-          file.is_a? AssetFile and file.asset == asset
-        end.nil?
       end
     end
   end
