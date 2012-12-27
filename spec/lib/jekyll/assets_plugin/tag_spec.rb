@@ -69,11 +69,17 @@ module Jekyll::AssetsPlugin
         it { should match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
       end
 
-      context 'when <file> is not explicitly bundled' do
+      context 'when <file> is not explicitly bundled, but required' do
         subject { render('{% asset_path vapor.js %}') }
         it { should match(%r{^/assets/vapor-[a-f0-9]{32}\.js$}) }
 
-        it "should bundle file automagically" do
+        it "should be appended to the static files list" do
+          asset = context[:registers][:site].assets["vapor.js"]
+
+          context[:registers][:site].static_files.include?(asset).should be_true
+        end
+
+        it "should be bundled file automagically upon site#write" do
           context[:registers][:site].cleanup
           context[:registers][:site].write
 

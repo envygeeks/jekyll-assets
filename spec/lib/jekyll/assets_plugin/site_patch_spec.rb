@@ -4,18 +4,25 @@ require 'spec_helper'
 module Jekyll::AssetsPlugin
   describe SitePatch do
     let(:site) do
-      Class.new do
+      Class.new(Jekyll::Site) do
         include SitePatch
+
+        def initialize
+          self.reset
+        end
 
         def config
           @config ||= {
             'bundles' => 'foobar',
-            'assets'  => { 'sources' => 'foobar' }
+            'assets'  => {
+              'bundles' => [],
+              'sources' => [ 'foobar', '_assets' ]
+            }
           }
         end
 
         def source
-          @soure ||= '.'
+          @source ||= RSpecHelpers.fixtures_path.to_s
         end
       end.new
     end
@@ -23,6 +30,30 @@ module Jekyll::AssetsPlugin
     context '#assets' do
       subject { site.assets }
       it { should be_an_instance_of Sprockets::Environment }
+
+      context 'calling #asset_path within assets' do
+        context 'when requested file not found' do
+          it 'should raise a NotFound error' do
+            Proc.new do
+              site.assets["should_fail.css"]
+            end.should raise_error(AssetFile::NotFound)
+          end
+        end
+
+        context 'when requested file found' do
+          it 'should have proper asset path' do
+            noise_img_re = %r{url\(/assets/noise-[a-f0-9]{32}\.png\)}
+            site.assets["app.css"].to_s.should match(noise_img_re)
+          end
+
+          it 'should be appended to the static files list' do
+            asset = site.assets["app.css"] # make sure main asset was compiled
+            asset = site.assets["noise.png"]
+
+            site.static_files.include?(asset).should be_true
+          end
+        end
+      end
     end
 
     context '#assets_config' do
@@ -31,7 +62,7 @@ module Jekyll::AssetsPlugin
 
       it 'should been populated with `assets` section of config' do
         site.assets_config.bundles.should_not =~ %w{foobar}
-        site.assets_config.sources.should =~ %w{foobar}
+        site.assets_config.sources.should include 'foobar'
       end
     end
 
