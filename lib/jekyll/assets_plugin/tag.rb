@@ -6,10 +6,6 @@ require 'liquid'
 require 'set'
 
 
-# internal
-require 'jekyll/assets_plugin/logging'
-
-
 module Jekyll
   module AssetsPlugin
     # Class that implements some useful liquid tags:
@@ -78,17 +74,12 @@ module Jekyll
         EXTENSIONS[@tag_name].to_s
       end
 
-      def asset_not_found
-        if @@errors.add? @logical_path
-          log :error, "File not found: #{@logical_path}"
-        end
-      end
-
       def with_asset context, &block
-        site    = context.registers[:site]
-        asset   = site.assets[@logical_path]
+        site  = context.registers[:site]
+        path  = @logical_path
+        asset = site.assets[path]
 
-        return asset_not_found unless asset
+        raise AssetFile::NotFound, "couldn't find file '#{path}'" unless asset
 
         yield asset, site
       end

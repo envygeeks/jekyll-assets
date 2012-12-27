@@ -7,6 +7,8 @@ module Jekyll
     # Represents single asset that can be used as StaticFile for Site
     #
     class AssetFile
+      class NotFound < StandardError; end
+
       @@mtimes = Hash.new
 
       attr_reader :asset
