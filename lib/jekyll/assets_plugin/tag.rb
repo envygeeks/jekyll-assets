@@ -47,8 +47,6 @@ module Jekyll
     #
     #
     class Tag < Liquid::Tag
-      include Logging
-
       STYLESHEET = '<link rel="stylesheet" type="text/css" href="%s">'
       JAVASCRIPT = '<script type="text/javascript" src="%s"></script>'
       EXTENSIONS = { 'stylesheet' => '.css', 'javascript' => '.js' }

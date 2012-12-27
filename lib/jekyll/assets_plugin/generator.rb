@@ -1,5 +1,4 @@
 # internal
-require 'jekyll/assets_plugin/logging'
 require 'jekyll/assets_plugin/asset_file'
 
 
@@ -8,8 +7,6 @@ module Jekyll
     # Jekyll hook that bundles all files specified in `bundles` config
     #
     class Generator < ::Jekyll::Generator
-      include Logging
-
       safe false
       priority :low
 
