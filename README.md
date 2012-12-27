@@ -4,7 +4,13 @@
 [![Dependency Status](https://gemnasium.com/ixti/jekyll-assets.png)](https://gemnasium.com/ixti/jekyll-assets)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ixti/jekyll-assets)
 
-Jekyll plugin, that adds Rails-alike assets pipelines.
+Jekyll plugin, that adds Rails-alike assets pipeline:
+
+- Concatenates and minify or compress JavaScript and CSS assets. You can choose
+  whenever or not you want to have compression as well.
+- Allows you to write these assets in other languages such as CoffeeScript, Sass
+  and ERB.
+- Automaticaly adds _cache bust_ suffix for the output assets.
 
 
 ## Installation
@@ -21,12 +27,12 @@ Or install it yourself as:
 
     $ gem install jekyll-assets
 
+Then just require `jekyll-assets` within your plugins, e.g.:
+
+    $ echo 'require "jekyll-assets"' > _plugins/ext.rb
+
 
 ## Usage
-
-Add this line to your sites `_plugins/ext.rb`:
-
-    require 'jekyll-assets'
 
 Put your assets under following paths:
 
