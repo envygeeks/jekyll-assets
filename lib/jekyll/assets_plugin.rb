@@ -2,7 +2,6 @@ require 'jekyll'
 require 'liquid'
 
 
-require 'jekyll/assets_plugin/generator'
 require 'jekyll/assets_plugin/site_patch'
 require 'jekyll/assets_plugin/tag'
 require 'jekyll/assets_plugin/version'

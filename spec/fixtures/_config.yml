@@ -1,3 +1,2 @@
 assets:
   sources: [ _assets ]
-  bundle: [ app.js, app.css ]

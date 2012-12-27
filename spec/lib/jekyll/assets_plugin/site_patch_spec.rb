@@ -13,9 +13,8 @@ module Jekyll::AssetsPlugin
 
         def config
           @config ||= {
-            'bundles' => 'foobar',
+            'dirname' => 'foobar',
             'assets'  => {
-              'bundles' => [],
               'sources' => [ 'foobar', '_assets' ]
             }
           }
@@ -61,7 +60,7 @@ module Jekyll::AssetsPlugin
       it { should be_an_instance_of Configuration }
 
       it 'should been populated with `assets` section of config' do
-        site.assets_config.bundles.should_not =~ %w{foobar}
+        site.assets_config.dirname.should_not == 'foobar'
         site.assets_config.sources.should include 'foobar'
       end
     end

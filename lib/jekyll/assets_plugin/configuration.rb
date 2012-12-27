@@ -14,18 +14,6 @@ module Jekyll
     # Default: ['_assets/javascripts', '_assets/stylesheets', '_assets/images']
     #
     #
-    # ##### bundles
-    #
-    # Array of filenames or filename patterns that needs to be generated for the
-    # generated site. You can use `*` and `**` wildcards in filename patterns:
-    #
-    #     'foobar.jpg'  will match 'foobar.jpg' only
-    #     '*.jpg'       will match 'foo.jpg', but not 'foo/bar.jpg'
-    #     '**.jpg'      will match 'foo.jpg', 'foo/bar.jpg', etc.
-    #
-    # Default: ['app.css', 'app.js', '**.jpg', '**.png', '**.gif']
-    #
-    #
     # ##### compress
     #
     # Sets compressors for the specific types of file: `js`, or `css`.
@@ -33,7 +21,7 @@ module Jekyll
     # Possible variants:
     #
     #     css  => 'yui', 'sass', nil
-    #     js   => 'yui', 'unglifier', nil
+    #     js   => 'yui', 'uglifier', nil
     #
     # Default: { 'css' => nil, 'js' => nil } (no compression at all)
     #
@@ -57,7 +45,6 @@ module Jekyll
       @@defaults = {
         :dirname  => 'assets',
         :sources  => %w{_assets/javascripts _assets/stylesheets _assets/images},
-        :bundles  => %w{app.css app.js **.jpg **.png **.gif},
         :compress => { :css => nil, :js => nil }
       }
 
@@ -65,34 +52,11 @@ module Jekyll
         super @@defaults.merge(config)
 
         self.sources  = [ self.sources ] if self.sources.is_a? String
-        self.bundles  = [ self.bundles ] if self.bundles.is_a? String
         self.compress = OpenStruct.new(self.compress)
         self.dirname  = self.dirname.gsub(/^\/+|\/+$/, '')
 
         # if baseurl not given - autoguess base on dirname
         self.baseurl ||= "/#{self.dirname}/".squeeze '/'
-      end
-
-      # Returns bundles array with pattern strings converted to RegExps
-      #
-      #   'foobar.jpg'    => 'foobar.jpg'
-      #   '*.png'         => /[^\]+\.png/
-      #   '**.gif'        => /.+?\.gif/
-      #
-      def bundle_filenames
-        bundles.map do |pattern|
-          if pattern =~ /^\*/
-            pattern = pattern.dup
-
-            pattern.gsub!(/\./, '\\.')
-            pattern.sub!(/\*{2}/, '.+?')
-            pattern.sub!(/\*{1}/, '[^/]+')
-
-            pattern = /^#{pattern}$/
-          end
-
-          pattern
-        end
       end
 
       def js_compressor

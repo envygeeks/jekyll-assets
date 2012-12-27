@@ -7,8 +7,7 @@ module Jekyll::AssetsPlugin
       {
         :dirname  => 'assets',
         :baseurl  => '/assets/',
-        :sources  => %w{_assets/javascripts _assets/stylesheets _assets/images},
-        :bundles  => %w{app.css app.js **.jpg **.png **.gif}
+        :sources  => %w{_assets/javascripts _assets/stylesheets _assets/images}
       }
     end
 
@@ -30,11 +29,6 @@ module Jekyll::AssetsPlugin
         it { should =~ defaults[:sources] }
       end
 
-      context 'bundles list' do
-        subject { config.bundles }
-        it { should =~ defaults[:bundles] }
-      end
-
       context 'js compressor' do
         subject { config.compress.js }
         it { should be_nil }
@@ -54,7 +48,6 @@ module Jekyll::AssetsPlugin
 
       config.dirname.should == 'assets'
       config.sources.should =~ %w{abc}
-      config.bundles.should =~ defaults[:bundles]
       config.compress.js.should be_nil
       config.compress.css.should == 'sass'
     end

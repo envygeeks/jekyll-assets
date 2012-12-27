@@ -42,19 +42,18 @@ Put your assets under following paths:
 
 Name your "main" asset files `app.js` and `app.css` and use liquid tags:
 
-- `{% javascript app %}` to output `<script>` tag for `app.js`
-- `{% stylesheet app %}` to output `<link>` tag for `app.css`
-- `{% asset_path logo.jpg %}` to output URL for `logo.jpg`
-
-In order to use these tags, assets must be "bundled". By default only `app.js`,
-`app.css`, and all files with extensions `.jpg`, `.png` or `.gif` are bundled.
-You can change this by tuning up you `_config.yml` (see below).
+- `{% javascript app %}` to process and output `<script>` tag for `app.js`
+- `{% stylesheet app %}` to process and output `<link>` tag for `app.css`
+- `{% asset_path logo.jpg %}` to process and output URL for `logo.jpg`
 
 
 ## Configuration
 
 You can fine-tune configuration by editing your `_config.yml`:
 
+    #
+    # Plugin: jekyll-assets
+    #
     assets:
       #
       # Pathname of the destination of generated (bundled) assets relative
@@ -73,27 +72,13 @@ You can fine-tune configuration by editing your `_config.yml`:
         - _assets/stylesheets
         - _assets/images
       #
-      # Array of filenames or filename patterns that needs to be generated for
-      # the generated site. You can use `*` and `**` wildcards in patterns:
-      #
-      #     'foobar.jpg'  will match 'foobar.jpg' only
-      #     '*.jpg'       will match 'foo.jpg', but not 'foo/bar.jpg'
-      #     '**.jpg'      will match 'foo.jpg', 'foo/bar.jpg', etc.
-      #
-      bundles:
-        - 'app.css'
-        - 'app.js'
-        - '**.jpg'
-        - '**.png'
-        - '**.gif'
-      #
       # Sets compressors for the specific types of file: `js`, or `css`.
       # No compression by default.
       #
       # Possible variants:
       #
       #     css  => 'yui', 'sass', nil
-      #     js   => 'yui', 'unglifier', nil
+      #     js   => 'yui', 'uglifier', nil
       #
       compress:
         js:   ~
