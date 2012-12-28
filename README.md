@@ -131,7 +131,7 @@ white all the time, but red in December. Just add `.erb` suffix extension and
 you can use ruby to "pre-process" asset, something like this:
 
 ```
-# file: _assets/stylesheets/app.css.sass.erb
+// file: _assets/stylesheets/app.css.sass.erb
 
 body
   background-color: <%= (12 == Date.today.month) ? "red" : "white" %>
@@ -157,6 +157,25 @@ $ ->
     name: "ixti"
     info: "I love BIG BOOKS! And small ones too!"
 ```
+
+Finally, you might want to store your assets on [Amazon S3][amazon-s3] or any
+CDN service you like. As said previously, all compiled/processed assets got
+special MD5 checksum appended to their original filenames. So, for example,
+your `app.js.coffee` will become something like:
+
+    app-4f41243847da693a4f356c0486114bc6.js
+
+By default, generated URLs will have `/assets/` prefixes, but you will want to
+change this if you are going to host assets somewhere else. This can be easily
+changed via configuration:
+
+``` yaml
+assets:
+  baseurl: //my.super-cool-cdn.com/
+```
+
+[amazon-s3]: http://aws.amazon.com/s3
+
 
 That's all. Feel free to ask questions if any on [twitter][twitter],
 [jabber][jabber] or [e-mail][e-mail].
