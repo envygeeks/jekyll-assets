@@ -22,8 +22,8 @@ Jekyll-Assets uses fabulous [Sprockets][sprockets] under the hood, so you may
 refer to Rails guide about [Asset Pipeline][rails-guide] for detailed
 information about amazing features it gives you.
 
-*Notice:* You must have an [ExecJS][extjs] supported runtime in order to use
-CoffeeScript.
+*Note:* You must have an [ExecJS][extjs] supported runtime in order to use
+  CoffeeScript.
 
 
 [rails-guide]:  http://guides.rubyonrails.org/asset_pipeline.html
@@ -57,10 +57,10 @@ require "jekyll-assets"
 
 Once plugin installed, you'll have following liquid tags available:
 
-- `javascript app`: Generates `<script>` tag for `app.js`
-- `stylesheet app`: Generates `<link>` tag for `app.css`
-- `asset_path logo.png`: Returns _resulting_ URL for `logo.png`
-- `asset app.css`: Returns _compiled_ body of `app.css`
+- `{% javascript app %}`: Generates `<script>` tag for `app.js`
+- `{% stylesheet app %}`: Generates `<link>` tag for `app.css`
+- `{% asset_path logo.png %}`: Returns _resulting_ URL for `logo.png`
+- `{% asset app.css %}`: Returns _compiled_ body of `app.css`
 
 All compiled assets will be stored under `assets/` dir of generated site.
 
@@ -96,8 +96,8 @@ $(function () {
 });
 ```
 
-Now, if you want to use CoffeScript, just add `.coffee` suffix to the file you
-want and you good to go. For example, here's how your `app.js.coffe` might look
+If you want to use CoffeScript, just add `.coffee` suffix to the file you want
+and you're good to go. For example, here's how your `app.js.coffe` might look
 like:
 
 ``` coffeescript
@@ -107,7 +107,13 @@ $ ->
   alert 'I love BIG BOOKS! And small ones too!'
 ```
 
-Now, you might want your stylesheets and javascripts to be minified. In this
+Notice, that `vendor/jquery` is not required to be coffee script. You can easily
+mix CoffeeScript and vanilla JavaScript, CSS and SCSS and SASS and LESS. The
+difference is only in comments styles used with _directives_.
+
+See detailes information about these _directives_ below.
+
+You might also want your stylesheets and javascripts to be minified. In this
 case just install `uglifier` gem and add following lines into your `config.yml`:
 
 ``` yaml
@@ -117,9 +123,8 @@ assets:
     css:  sass
 ```
 
-You might want to use YUI compressor for minification. In this case install
-`yui-compressor` gem and put `yui` in place of `uglifier` and/or `sass` in the
-config file.
+If you want to use YUI compressor for minification, install `yui-compressor`
+gem and put `yui` in place of `uglifier` and/or `sass` in the config file.
 
 Let's go crazy now! Assume you want your blog's `body` background color to be
 white all the time, but red in December. Just add `.erb` suffix extension and
@@ -159,6 +164,97 @@ That's all. Feel free to ask questions if any on [twitter][twitter],
 [twitter]:  https://twitter.com/zapparov
 [jabber]:   xmpp://zapparov@jabber.ru
 [e-mail]:   mailto://ixti@member.fsf.org
+
+
+## The Directive Processor
+
+*Note:* This section extracted from [Sprockets][sprockets] README.
+
+Sprockets runs the *directive processor* on each CSS and JavaScript
+source file. The directive processor scans for comment lines beginning
+with `=` in comment blocks at the top of the file.
+
+    //= require jquery
+    //= require jquery-ui
+    //= require backbone
+    //= require_tree .
+
+The first word immediately following `=` specifies the directive
+name. Any words following the directive name are treated as
+arguments. Arguments may be placed in single or double quotes if they
+contain spaces, similar to commands in the Unix shell.
+
+**Note**: Non-directive comment lines will be preserved in the final
+  asset, but directive comments are stripped after
+  processing. Sprockets will not look for directives in comment blocks
+  that occur after the first line of code.
+
+
+### Supported Comment Types
+
+The directive processor understands comment blocks in three formats:
+
+    /* Multi-line comment blocks (CSS, SCSS, JavaScript)
+     *= require foo
+     */
+
+    // Single-line comment blocks (SCSS, JavaScript)
+    //= require foo
+
+    # Single-line comment blocks (CoffeeScript)
+    #= require foo
+
+
+### Sprockets Directives
+
+You can use the following directives to declare dependencies in asset
+source files.
+
+For directives that take a *path* argument, you may specify either a
+logical path or a relative path. Relative paths begin with `./` and
+reference files relative to the location of the current file.
+
+#### The `require` Directive
+
+`require` *path* inserts the contents of the asset source file
+specified by *path*. If the file is required multiple times, it will
+appear in the bundle only once.
+
+#### The `include` Directive
+
+`include` *path* works like `require`, but inserts the contents of the
+specified source file even if it has already been included or
+required.
+
+#### The `require_directory` Directive
+
+`require_directory` *path* requires all source files of the same
+format in the directory specified by *path*. Files are required in
+alphabetical order.
+
+#### The `require_tree` Directive
+
+`require_tree` *path* works like `require_directory`, but operates
+recursively to require all files in all subdirectories of the
+directory specified by *path*.
+
+#### The `require_self` Directive
+
+`require_self` tells Sprockets to insert the body of the current
+source file before any subsequent `require` or `include` directives.
+
+#### The `depend_on` Directive
+
+`depend_on` *path* declares a dependency on the given *path* without
+including it in the bundle. This is useful when you need to expire an
+asset's cache in response to a change in another file.
+
+#### The `stub` Directive
+
+`stub` *path* allows dependency to be excluded from the asset bundle.
+The *path* must be a valid asset and may or may not already be part
+of the bundle. Once stubbed, it is blacklisted and can't be brought
+back by any other `require`.
 
 
 ## Configuration
