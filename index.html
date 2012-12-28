@@ -40,7 +40,26 @@
 
         <h1>Jekyll::AssetsPlugin</h1>
 
-<p>Jekyll plugin, that adds Rails-alike assets pipelines.</p>
+<p>Jekyll plugin, that adds Rails-alike assets pipeline, that means that:</p>
+
+<ul>
+<li>It allows you to write these assets in other languages such as CoffeeScript,
+Sass, Less and ERB.</li>
+<li>It allows you to specify dependencies between your assets and automatically
+concatenates them.</li>
+<li>It allows you to minify/compress your JavaScript and CSS assets using
+compressor you like: YUI, SASS, Uglifier or no compression at all.</li>
+<li>It supports JavaScript templates for client-side rendering of strings or
+markup. JavaScript templates have the special format extension <code>.jst</code> and are
+compiled to JavaScript functions.</li>
+<li>Automaticaly adds MD5 fingerprint suffix for <em>cache busting</em>. That means
+that your <code>app.css</code> will become <code>app-908e25f4bf641868d8683022a5b62f54.css</code>.</li>
+</ul><p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
+refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
+information about amazing features it gives you.</p>
+
+<p><em>Notice:</em> You must have an <a href="https://github.com/sstephenson/execjs#readme">ExecJS</a> supported runtime in order to use
+CoffeeScript.</p>
 
 <h2>Installation</h2>
 
@@ -59,40 +78,123 @@
 <pre><code>$ gem install jekyll-assets
 </code></pre>
 
-<h2>Usage</h2>
+<h2>How to Use Jekyll-Assets</h2>
 
-<p>Add this line to your sites <code>_plugins/ext.rb</code>:</p>
+<p>First of all make sure to require it. Common practice is to add following line
+into <code>_plugins/ext.rb</code> file:</p>
 
-<pre><code>require 'jekyll-assets'
+<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+</pre></div>
+
+<p>Once plugin installed, you'll have following liquid tags available:</p>
+
+<ul>
+<li>
+<code>javascript app</code>: Generates <code>&lt;script&gt;</code> tag for <code>app.js</code>
+</li>
+<li>
+<code>stylesheet app</code>: Generates <code>&lt;link&gt;</code> tag for <code>app.css</code>
+</li>
+<li>
+<code>asset_path logo.png</code>: Returns <em>resulting</em> URL for <code>logo.png</code>
+</li>
+<li>
+<code>asset app.css</code>: Returns <em>compiled</em> body of <code>app.css</code>
+</li>
+</ul><p>All compiled assets will be stored under <code>assets/</code> dir of generated site.</p>
+
+<p>Pipeline assets should be under your sources directory of Jekyll site. When a
+file is referenced with liquid tag or with helper from another asset, Sprockets
+searches the three default asset locations for it: <code>_assets/images</code>,
+<code>_assets/javascripts</code> and <code>_assets/stylesheets</code>.</p>
+
+<p>For example these files:</p>
+
+<pre><code>_assets/stylesheets/app.css
+_assets/javascripts/app.js
+_assets/javascripts/vendor/jquery.js
 </code></pre>
 
-<p>Put your assets under following paths:</p>
+<p>would be referenced like this:</p>
 
-<ul>
-<li><code>_assets/javascripts</code></li>
-<li><code>_assets/stylesheets</code></li>
-<li><code>_assets/images</code></li>
-</ul><p>Name your "main" asset files <code>app.js</code> and <code>app.css</code> and use liquid tags:</p>
+<div class="highlight"><pre>{% stylesheet app %}
+{% javascript app %}
+{% javascript vendor/jquery %}
+</pre></div>
 
-<ul>
-<li>
-<code>{% javascript app %}</code> to output <code>&lt;script&gt;</code> tag for <code>app.js</code>
-</li>
-<li>
-<code>{% stylesheet app %}</code> to output <code>&lt;link&gt;</code> tag for <code>app.css</code>
-</li>
-<li>
-<code>{% asset_path logo.jpg %}</code> to output URL for <code>logo.jpg</code>
-</li>
-</ul><p>In order to use these tags, assets must be "bundled". By default only <code>app.js</code>,
-<code>app.css</code>, and all files with extensions <code>.jpg</code>, <code>.png</code> or <code>.gif</code> are bundled.
-You can change this by tuning up you <code>_config.yml</code> (see below).</p>
+<p>You might want to require <code>vendor/jquery.js</code> into your <code>app.js</code>. To do so, just
+put following line in the beginning of your <code>app.js</code> to get it concatenated:</p>
+
+<div class="highlight"><pre><span class="c1">//= require vendor/jquery</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s1">'I love BIG BOOKS!'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Now, if you want to use CoffeScript, just add <code>.coffee</code> suffix to the file you
+want and you good to go. For example, here's how your <code>app.js.coffe</code> might look
+like:</p>
+
+<div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
+
+<span class="nx">$</span> <span class="o">-&gt;</span>
+  <span class="nx">alert</span> <span class="s">'I love BIG BOOKS! And small ones too!'</span>
+</pre></div>
+
+<p>Now, you might want your stylesheets and javascripts to be minified. In this
+case just install <code>uglifier</code> gem and add following lines into your <code>config.yml</code>:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">compress</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">js</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">uglifier</span>
+    <span class="l-Scalar-Plain">css</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">sass</span>
+</pre></div>
+
+<p>You might want to use YUI compressor for minification. In this case install
+<code>yui-compressor</code> gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the
+config file.</p>
+
+<p>Let's go crazy now! Assume you want your blog's <code>body</code> background color to be
+white all the time, but red in December. Just add <code>.erb</code> suffix extension and
+you can use ruby to "pre-process" asset, something like this:</p>
+
+<pre><code># file: _assets/stylesheets/app.css.sass.erb
+
+body
+  background-color: &lt;%= (12 == Date.today.month) ? "red" : "white" %&gt;
+</code></pre>
+
+<p>Want more? Sure, here you are. You can use JavaScript templating with EJS or ECO
+for example. Create a file <code>_assets/javascripts/hello.jst.ejs</code> with following
+contents:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>Hello, <span class="nt">&lt;span&gt;</span><span class="err">&lt;</span>%= name %&gt;<span class="nt">&lt;/span&gt;</span>!<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span><span class="err">&lt;</span>%= info %&gt;<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+<p>Then use it in your <code>app.js</code> file like this:</p>
+
+<div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
+<span class="c1">#= require hello</span>
+
+<span class="nx">$</span> <span class="o">-&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s">"body"</span><span class="p">).</span><span class="nx">html</span> <span class="nx">JST</span><span class="p">[</span><span class="s">"hello"</span><span class="p">]</span>
+    <span class="nv">name: </span><span class="s">"ixti"</span>
+    <span class="nv">info: </span><span class="s">"I love BIG BOOKS! And small ones too!"</span>
+</pre></div>
+
+<p>That's all. Feel free to ask questions if any on <a href="https://twitter.com/zapparov">twitter</a>,
+<a>jabber</a> or <a href="mailto://ixti@member.fsf.org">e-mail</a>.</p>
 
 <h2>Configuration</h2>
 
 <p>You can fine-tune configuration by editing your <code>_config.yml</code>:</p>
 
-<pre><code>assets:
+<pre><code>#
+# Plugin: jekyll-assets
+#
+assets:
   #
   # Pathname of the destination of generated (bundled) assets relative
   # to the destination of the root.
@@ -110,32 +212,24 @@ You can change this by tuning up you <code>_config.yml</code> (see below).</p>
     - _assets/stylesheets
     - _assets/images
   #
-  # Array of filenames or filename patterns that needs to be generated for
-  # the generated site. You can use `*` and `**` wildcards in patterns:
-  #
-  #     'foobar.jpg'  will match 'foobar.jpg' only
-  #     '*.jpg'       will match 'foo.jpg', but not 'foo/bar.jpg'
-  #     '**.jpg'      will match 'foo.jpg', 'foo/bar.jpg', etc.
-  #
-  bundles:
-    - 'app.css'
-    - 'app.js'
-    - '**.jpg'
-    - '**.png'
-    - '**.gif'
-  #
   # Sets compressors for the specific types of file: `js`, or `css`.
   # No compression by default.
   #
   # Possible variants:
   #
   #     css  =&gt; 'yui', 'sass', nil
-  #     js   =&gt; 'yui', 'unglifier', nil
+  #     js   =&gt; 'yui', 'uglifier', nil
   #
   compress:
     js:   ~
     css:  ~
 </code></pre>
+
+<h2>"Ben, I need help!" (c) Brother 2</h2>
+
+<p>Feel free to send me any comments, recommendations, suggestions. Improve this
+README, as I really suck in documenting things (thanks <a href="https://github.com/imathis" class="user-mention">@imathis</a> for pointing
+this out).</p>
 
 <h2>Contributing</h2>
 
