@@ -58,8 +58,8 @@ that your <code>app.css</code> will become <code>app-908e25f4bf641868d8683022a5b
 refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
 information about amazing features it gives you.</p>
 
-<p><em>Notice:</em> You must have an <a href="https://github.com/sstephenson/execjs#readme">ExecJS</a> supported runtime in order to use
-CoffeeScript.</p>
+<p><em>Note:</em> You must have an <a href="https://github.com/sstephenson/execjs#readme">ExecJS</a> supported runtime in order to use
+  CoffeeScript.</p>
 
 <h2>Installation</h2>
 
@@ -90,16 +90,16 @@ into <code>_plugins/ext.rb</code> file:</p>
 
 <ul>
 <li>
-<code>javascript app</code>: Generates <code>&lt;script&gt;</code> tag for <code>app.js</code>
+<code>{% javascript app %}</code>: Generates <code>&lt;script&gt;</code> tag for <code>app.js</code>
 </li>
 <li>
-<code>stylesheet app</code>: Generates <code>&lt;link&gt;</code> tag for <code>app.css</code>
+<code>{% stylesheet app %}</code>: Generates <code>&lt;link&gt;</code> tag for <code>app.css</code>
 </li>
 <li>
-<code>asset_path logo.png</code>: Returns <em>resulting</em> URL for <code>logo.png</code>
+<code>{% asset_path logo.png %}</code>: Returns <em>resulting</em> URL for <code>logo.png</code>
 </li>
 <li>
-<code>asset app.css</code>: Returns <em>compiled</em> body of <code>app.css</code>
+<code>{% asset app.css %}</code>: Returns <em>compiled</em> body of <code>app.css</code>
 </li>
 </ul><p>All compiled assets will be stored under <code>assets/</code> dir of generated site.</p>
 
@@ -132,8 +132,8 @@ put following line in the beginning of your <code>app.js</code> to get it concat
 <span class="p">});</span>
 </pre></div>
 
-<p>Now, if you want to use CoffeScript, just add <code>.coffee</code> suffix to the file you
-want and you good to go. For example, here's how your <code>app.js.coffe</code> might look
+<p>If you want to use CoffeScript, just add <code>.coffee</code> suffix to the file you want
+and you're good to go. For example, here's how your <code>app.js.coffe</code> might look
 like:</p>
 
 <div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
@@ -142,7 +142,13 @@ like:</p>
   <span class="nx">alert</span> <span class="s">'I love BIG BOOKS! And small ones too!'</span>
 </pre></div>
 
-<p>Now, you might want your stylesheets and javascripts to be minified. In this
+<p>Notice, that <code>vendor/jquery</code> is not required to be coffee script. You can easily
+mix CoffeeScript and vanilla JavaScript, CSS and SCSS and SASS and LESS. The
+difference is only in comments styles used with <em>directives</em>.</p>
+
+<p>See detailes information about these <em>directives</em> below.</p>
+
+<p>You might also want your stylesheets and javascripts to be minified. In this
 case just install <code>uglifier</code> gem and add following lines into your <code>config.yml</code>:</p>
 
 <div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
@@ -151,9 +157,8 @@ case just install <code>uglifier</code> gem and add following lines into your <c
     <span class="l-Scalar-Plain">css</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">sass</span>
 </pre></div>
 
-<p>You might want to use YUI compressor for minification. In this case install
-<code>yui-compressor</code> gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the
-config file.</p>
+<p>If you want to use YUI compressor for minification, install <code>yui-compressor</code>
+gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the config file.</p>
 
 <p>Let's go crazy now! Assume you want your blog's <code>body</code> background color to be
 white all the time, but red in December. Just add <code>.erb</code> suffix extension and
@@ -186,6 +191,96 @@ contents:</p>
 
 <p>That's all. Feel free to ask questions if any on <a href="https://twitter.com/zapparov">twitter</a>,
 <a>jabber</a> or <a href="mailto://ixti@member.fsf.org">e-mail</a>.</p>
+
+<h2>The Directive Processor</h2>
+
+<p><em>Note:</em> This section extracted from <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> README.</p>
+
+<p>Sprockets runs the <em>directive processor</em> on each CSS and JavaScript
+source file. The directive processor scans for comment lines beginning
+with <code>=</code> in comment blocks at the top of the file.</p>
+
+<pre><code>//= require jquery
+//= require jquery-ui
+//= require backbone
+//= require_tree .
+</code></pre>
+
+<p>The first word immediately following <code>=</code> specifies the directive
+name. Any words following the directive name are treated as
+arguments. Arguments may be placed in single or double quotes if they
+contain spaces, similar to commands in the Unix shell.</p>
+
+<p><strong>Note</strong>: Non-directive comment lines will be preserved in the final
+  asset, but directive comments are stripped after
+  processing. Sprockets will not look for directives in comment blocks
+  that occur after the first line of code.</p>
+
+<h3>Supported Comment Types</h3>
+
+<p>The directive processor understands comment blocks in three formats:</p>
+
+<pre><code>/* Multi-line comment blocks (CSS, SCSS, JavaScript)
+ *= require foo
+ */
+
+// Single-line comment blocks (SCSS, JavaScript)
+//= require foo
+
+# Single-line comment blocks (CoffeeScript)
+#= require foo
+</code></pre>
+
+<h3>Sprockets Directives</h3>
+
+<p>You can use the following directives to declare dependencies in asset
+source files.</p>
+
+<p>For directives that take a <em>path</em> argument, you may specify either a
+logical path or a relative path. Relative paths begin with <code>./</code> and
+reference files relative to the location of the current file.</p>
+
+<h4>The <code>require</code> Directive</h4>
+
+<p><code>require</code> <em>path</em> inserts the contents of the asset source file
+specified by <em>path</em>. If the file is required multiple times, it will
+appear in the bundle only once.</p>
+
+<h4>The <code>include</code> Directive</h4>
+
+<p><code>include</code> <em>path</em> works like <code>require</code>, but inserts the contents of the
+specified source file even if it has already been included or
+required.</p>
+
+<h4>The <code>require_directory</code> Directive</h4>
+
+<p><code>require_directory</code> <em>path</em> requires all source files of the same
+format in the directory specified by <em>path</em>. Files are required in
+alphabetical order.</p>
+
+<h4>The <code>require_tree</code> Directive</h4>
+
+<p><code>require_tree</code> <em>path</em> works like <code>require_directory</code>, but operates
+recursively to require all files in all subdirectories of the
+directory specified by <em>path</em>.</p>
+
+<h4>The <code>require_self</code> Directive</h4>
+
+<p><code>require_self</code> tells Sprockets to insert the body of the current
+source file before any subsequent <code>require</code> or <code>include</code> directives.</p>
+
+<h4>The <code>depend_on</code> Directive</h4>
+
+<p><code>depend_on</code> <em>path</em> declares a dependency on the given <em>path</em> without
+including it in the bundle. This is useful when you need to expire an
+asset's cache in response to a change in another file.</p>
+
+<h4>The <code>stub</code> Directive</h4>
+
+<p><code>stub</code> <em>path</em> allows dependency to be excluded from the asset bundle.
+The <em>path</em> must be a valid asset and may or may not already be part
+of the bundle. Once stubbed, it is blacklisted and can't be brought
+back by any other <code>require</code>.</p>
 
 <h2>Configuration</h2>
 
