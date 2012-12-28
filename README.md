@@ -6,8 +6,8 @@
 
 Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
 
-- It allows you to write these assets in other languages such as CoffeeScript,
-  Sass, Less and ERB.
+- It allows you to write javascript/css assets in other languages such as
+  CoffeeScript, Sass, Less and ERB.
 - It allows you to specify dependencies between your assets and automatically
   concatenates them.
 - It allows you to minify/compress your JavaScript and CSS assets using
