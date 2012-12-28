@@ -164,7 +164,7 @@ gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass
 white all the time, but red in December. Just add <code>.erb</code> suffix extension and
 you can use ruby to "pre-process" asset, something like this:</p>
 
-<pre><code># file: _assets/stylesheets/app.css.sass.erb
+<pre><code>// file: _assets/stylesheets/app.css.sass.erb
 
 body
   background-color: &lt;%= (12 == Date.today.month) ? "red" : "white" %&gt;
@@ -187,6 +187,22 @@ contents:</p>
   <span class="nx">$</span><span class="p">(</span><span class="s">"body"</span><span class="p">).</span><span class="nx">html</span> <span class="nx">JST</span><span class="p">[</span><span class="s">"hello"</span><span class="p">]</span>
     <span class="nv">name: </span><span class="s">"ixti"</span>
     <span class="nv">info: </span><span class="s">"I love BIG BOOKS! And small ones too!"</span>
+</pre></div>
+
+<p>Finally, you might want to store your assets on <a href="http://aws.amazon.com/s3">Amazon S3</a> or any
+CDN service you like. As said previously, all compiled/processed assets got
+special MD5 checksum appended to their original filenames. So, for example,
+your <code>app.js.coffee</code> will become something like:</p>
+
+<pre><code>app-4f41243847da693a4f356c0486114bc6.js
+</code></pre>
+
+<p>By default, generated URLs will have <code>/assets/</code> prefixes, but you will want to
+change this if you are going to host assets somewhere else. This can be easily
+changed via configuration:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">//my.super-cool-cdn.com/</span>
 </pre></div>
 
 <p>That's all. Feel free to ask questions if any on <a href="https://twitter.com/zapparov">twitter</a>,
