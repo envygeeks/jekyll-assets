@@ -6,10 +6,14 @@ Gem::Specification.new do |gem|
   gem.name          = "jekyll-assets"
   gem.version       = Jekyll::AssetsPlugin::VERSION
   gem.homepage      = "http://ixti.github.com/jekyll-assets"
-  gem.authors       = %w{Aleksey V Zapparov}
+  gem.authors       = "Aleksey V Zapparov"
   gem.email         = %w{ixti@member.fsf.org}
   gem.summary       = "jekyll-assets-#{Jekyll::AssetsPlugin::VERSION}"
-  gem.description   = %q{Adds assets pipelines for Jekyll}
+  gem.description   = <<-DESC
+  Jekyll plugin, that allows you to write javascript/css assets in
+  other languages such as CoffeeScript, Sass, Less and ERB, concatenate
+  them, respecting dependencies, minify and many more.
+  DESC
 
   gem.add_dependency "jekyll"
   gem.add_dependency "sprockets", "~> 2.8"
