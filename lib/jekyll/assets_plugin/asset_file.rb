@@ -45,14 +45,20 @@ module Jekyll
 
       def == other
         case other
-        when AssetFile        then other.asset.logical_path == asset.logical_path
-        when Sprockets::Asset then other.logical_path == asset.logical_path
+        when AssetFile        then same_asset? other.asset
+        when Sprockets::Asset then same_asset? other
         else false
         end
       end
 
       def to_s
         "#<Jekyll::AssetsPlugin::AssetFile:#{asset.logical_path}>"
+      end
+
+      protected
+
+      def same_asset? other
+        other.pathname.cleanpath == asset.pathname.cleanpath
       end
     end
   end
