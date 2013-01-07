@@ -1,3 +1,8 @@
+### 0.2.3 (2013-01-07)
+
+* Add built-in bourbon support as: `require "jekyll-assets/bourbon"`.
+
+
 ### 0.2.2 (2013-01-07)
 
 * Add built-in compass support as: `require "jekyll-assets/compass"`.
