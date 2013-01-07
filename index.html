@@ -54,6 +54,8 @@ markup. JavaScript templates have the special format extension <code>.jst</code>
 compiled to JavaScript functions.</li>
 <li>Automaticaly adds MD5 fingerprint suffix for <em>cache busting</em>. That means
 that your <code>app.css</code> will become <code>app-908e25f4bf641868d8683022a5b62f54.css</code>.</li>
+<li>
+<a href="http://compass-style.org/">Compass</a> support out of the box (See "Custom Vendors" below).</li>
 </ul><p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
 refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
 information about amazing features it gives you.</p>
@@ -207,6 +209,44 @@ changed via configuration:</p>
 
 <p>That's all. Feel free to ask questions if any on <a href="https://twitter.com/zapparov">twitter</a>,
 <a>jabber</a> or <a href="mailto://ixti@member.fsf.org">e-mail</a>.</p>
+
+<h2>Custom Vendors</h2>
+
+<p>Sometimes you would like to have some 3rd-party vendors. For this purposes,
+normally all you have to do is to override default assets sources in config:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">sources</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/images</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/javascripts</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/stylesheets</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_vendors/bootstrap/stylesheets</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_vendors/bootstrap/javascripts</span>
+</pre></div>
+
+<p>But sometimes this is not enough. For example, with compass. As jekyll-assets
+uses Sprockets internally, you can simply append "global" paths into it. Just
+add following line into your <code>_plugins/ext.rb</code> file:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"sprockets"</span>
+
+<span class="no">Sprockets</span><span class="o">.</span><span class="n">append_path</span> <span class="s2">"/my/vendor"</span>
+</pre></div>
+
+<p>That's it, now jekyll-assets will try to look for assets inside <code>/my/vendor</code>
+path first. For your comfort Compass support is built-in, that means that all
+Compass frameworks are auto-appended when <code>jekyll-assets/compass</code> is required.</p>
+
+<p>Assume you have following lines in your <code>_plugins/ext.rb</code> file:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/compass"</span>
+</pre></div>
+
+<p>Now you can add <code>@import "compass"</code> in your SASS assets to get Compass goodies.</p>
+
+<p><em>Notice</em> that if you want to use other than default Compass plugins/frameworks,
+you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
 
 <h2>The Directive Processor</h2>
 
