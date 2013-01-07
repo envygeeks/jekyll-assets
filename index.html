@@ -55,7 +55,8 @@ compiled to JavaScript functions.</li>
 <li>Automaticaly adds MD5 fingerprint suffix for <em>cache busting</em>. That means
 that your <code>app.css</code> will become <code>app-908e25f4bf641868d8683022a5b62f54.css</code>.</li>
 <li>
-<a href="http://compass-style.org/">Compass</a> support out of the box (See "Custom Vendors" below).</li>
+<a href="http://compass-style.org/">Compass</a> and <a href="http://bourbon.io/">Bourbon</a> built-in support.
+See "Custom Vendors" below.</li>
 </ul><p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
 refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
 information about amazing features it gives you.</p>
@@ -234,10 +235,15 @@ add following line into your <code>_plugins/ext.rb</code> file:</p>
 </pre></div>
 
 <p>That's it, now jekyll-assets will try to look for assets inside <code>/my/vendor</code>
-path first. For your comfort Compass support is built-in, that means that all
-Compass frameworks are auto-appended when <code>jekyll-assets/compass</code> is required.</p>
+path first.</p>
 
-<p>Assume you have following lines in your <code>_plugins/ext.rb</code> file:</p>
+<h3>Built-in Vendors Support</h3>
+
+<p>For your comfort jekyll-assets has built-in support for some popular libraries.</p>
+
+<h4>Compass Support</h4>
+
+<p>Require <code>jekyll-assets/compass</code> to enable, e.g.:</p>
 
 <div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 <span class="nb">require</span> <span class="s2">"jekyll-assets/compass"</span>
@@ -247,6 +253,16 @@ Compass frameworks are auto-appended when <code>jekyll-assets/compass</code> is 
 
 <p><em>Notice</em> that if you want to use other than default Compass plugins/frameworks,
 you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
+
+<h4>Bourbon Support</h4>
+
+<p>Require <code>jekyll-assets/bourbon</code> to enable, e.g.:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/bourbon"</span>
+</pre></div>
+
+<p>Now you can add <code>@import "bourbon"</code> in your SASS assets to get Bourbon goodies.</p>
 
 <h2>The Directive Processor</h2>
 
