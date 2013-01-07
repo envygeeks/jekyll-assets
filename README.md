@@ -17,9 +17,11 @@ Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
   compiled to JavaScript functions.
 - Automaticaly adds MD5 fingerprint suffix for _cache busting_. That means
   that your `app.css` will become `app-908e25f4bf641868d8683022a5b62f54.css`.
-- [Compass][compass] support out of the box (See "Custom Vendors" below).
+- [Compass][compass] and [Bourbon][bourbon] built-in support.
+  See "Custom Vendors" below.
 
 [compass]: http://compass-style.org/
+[bourbon]: http://bourbon.io/
 
 Jekyll-Assets uses fabulous [Sprockets][sprockets] under the hood, so you may
 refer to Rails guide about [Asset Pipeline][rails-guide] for detailed
@@ -214,10 +216,17 @@ Sprockets.append_path "/my/vendor"
 ```
 
 That's it, now jekyll-assets will try to look for assets inside `/my/vendor`
-path first. For your comfort Compass support is built-in, that means that all
-Compass frameworks are auto-appended when `jekyll-assets/compass` is required.
+path first.
 
-Assume you have following lines in your `_plugins/ext.rb` file:
+
+### Built-in Vendors Support
+
+For your comfort jekyll-assets has built-in support for some popular libraries.
+
+
+#### Compass Support
+
+Require `jekyll-assets/compass` to enable, e.g.:
 
 ``` ruby
 require "jekyll-assets"
@@ -228,6 +237,18 @@ Now you can add `@import "compass"` in your SASS assets to get Compass goodies.
 
 *Notice* that if you want to use other than default Compass plugins/frameworks,
 you must require them BEFORE `jekyll-assets/compass`.
+
+
+#### Bourbon Support
+
+Require `jekyll-assets/bourbon` to enable, e.g.:
+
+``` ruby
+require "jekyll-assets"
+require "jekyll-assets/bourbon"
+```
+
+Now you can add `@import "bourbon"` in your SASS assets to get Bourbon goodies.
 
 
 ## The Directive Processor
