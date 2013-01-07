@@ -17,6 +17,9 @@ Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
   compiled to JavaScript functions.
 - Automaticaly adds MD5 fingerprint suffix for _cache busting_. That means
   that your `app.css` will become `app-908e25f4bf641868d8683022a5b62f54.css`.
+- [Compass][compass] support out of the box (See "Custom Vendors" below).
+
+[compass]: http://compass-style.org/
 
 Jekyll-Assets uses fabulous [Sprockets][sprockets] under the hood, so you may
 refer to Rails guide about [Asset Pipeline][rails-guide] for detailed
@@ -183,6 +186,48 @@ That's all. Feel free to ask questions if any on [twitter][twitter],
 [twitter]:  https://twitter.com/zapparov
 [jabber]:   xmpp://zapparov@jabber.ru
 [e-mail]:   mailto://ixti@member.fsf.org
+
+
+## Custom Vendors
+
+Sometimes you would like to have some 3rd-party vendors. For this purposes,
+normally all you have to do is to override default assets sources in config:
+
+``` yaml
+assets:
+  sources:
+    - _assets/images
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _vendors/bootstrap/stylesheets
+    - _vendors/bootstrap/javascripts
+```
+
+But sometimes this is not enough. For example, with compass. As jekyll-assets
+uses Sprockets internally, you can simply append "global" paths into it. Just
+add following line into your `_plugins/ext.rb` file:
+
+``` ruby
+require "sprockets"
+
+Sprockets.append_path "/my/vendor"
+```
+
+That's it, now jekyll-assets will try to look for assets inside `/my/vendor`
+path first. For your comfort Compass support is built-in, that means that all
+Compass frameworks are auto-appended when `jekyll-assets/compass` is required.
+
+Assume you have following lines in your `_plugins/ext.rb` file:
+
+``` ruby
+require "jekyll-assets"
+require "jekyll-assets/compass"
+```
+
+Now you can add `@import "compass"` in your SASS assets to get Compass goodies.
+
+*Notice* that if you want to use other than default Compass plugins/frameworks,
+you must require them BEFORE `jekyll-assets/compass`.
 
 
 ## The Directive Processor
