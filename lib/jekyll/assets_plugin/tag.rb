@@ -2,6 +2,10 @@
 require 'liquid'
 
 
+# internal
+require 'jekyll/assets_plugin/renderer'
+
+
 module Jekyll
   module AssetsPlugin
     # Class that implements some useful liquid tags:
@@ -43,61 +47,8 @@ module Jekyll
     #
     #
     class Tag < Liquid::Tag
-      STYLESHEET = '<link rel="stylesheet" type="text/css" href="%s">'
-      JAVASCRIPT = '<script type="text/javascript" src="%s"></script>'
-      EXTENSIONS = { 'stylesheet' => '.css', 'javascript' => '.js' }
-
-      def initialize tag_name, logical_path, tokens
-        super
-
-        @logical_path = logical_path.strip
-
-        # append auto-guessed extension if needed
-        @logical_path << default_extension if File.extname(@logical_path).empty?
-      end
-
       def render context
-        send :"render_#{@tag_name}", context
-      end
-
-      protected
-
-      def default_extension
-        EXTENSIONS[@tag_name].to_s
-      end
-
-      def with_asset context, &block
-        site  = context.registers[:site]
-        path  = @logical_path
-        asset = site.assets[path]
-
-        raise AssetFile::NotFound, "couldn't find file '#{path}'" unless asset
-
-        yield asset, site
-      end
-
-      def render_asset context
-        with_asset context do |asset|
-          return asset.to_s
-        end
-      end
-
-      def render_asset_path context
-        with_asset context do |asset, site|
-          unless site.static_files.include? asset
-            site.static_files << AssetFile.new(site, asset)
-          end
-
-          return "#{site.assets_config.baseurl.chomp '/'}/#{asset.digest_path}"
-        end
-      end
-
-      def render_javascript context
-        JAVASCRIPT % render_asset_path(context)
-      end
-
-      def render_stylesheet context
-        STYLESHEET % render_asset_path(context)
+        Renderer.new(context, @markup).send :"render_#{@tag_name}"
       end
     end
   end

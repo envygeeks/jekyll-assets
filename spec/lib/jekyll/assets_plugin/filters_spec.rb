@@ -12,7 +12,7 @@ module Jekyll::AssetsPlugin
     context "{{ '<file>' | stylesheet }}" do
       def tag_re name
         file = "/assets/#{name}-[a-f0-9]{32}\.css"
-        Regexp.new "^#{Tag::STYLESHEET % file}$"
+        Regexp.new "^#{Renderer::STYLESHEET % file}$"
       end
 
       context "when <file> exists" do
@@ -34,7 +34,7 @@ module Jekyll::AssetsPlugin
     context "{{ '<file>' | javascript }}" do
       def tag_re name
         file = "/assets/#{name}-[a-f0-9]{32}\.js"
-        Regexp.new "^#{Tag::JAVASCRIPT % file}$"
+        Regexp.new "^#{Renderer::JAVASCRIPT % file}$"
       end
 
       context "when <file> exists" do
