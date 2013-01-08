@@ -1,4 +1,4 @@
-### 0.3.0 (WIP)
+### 0.3.0 (2013-01-08)
 
 * Add complimentary filters (same names as tags).
 
