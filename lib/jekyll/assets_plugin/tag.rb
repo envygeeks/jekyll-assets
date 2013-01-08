@@ -93,15 +93,11 @@ module Jekyll
       end
 
       def render_javascript context
-        if url = render_asset_path(context)
-          return JAVASCRIPT % [url]
-        end
+        JAVASCRIPT % render_asset_path(context)
       end
 
       def render_stylesheet context
-        if url = render_asset_path(context)
-          return STYLESHEET % [url]
-        end
+        STYLESHEET % render_asset_path(context)
       end
     end
   end
