@@ -28,8 +28,8 @@ module Jekyll
     #
     # ##### dirname
     #
-    # Pathname of the destination of generated (bundled) assets relative to the
-    # destination of the root.
+    # Destination pathname of processed assets relative to the compiled site
+    # root (which is `_site` by default).
     #
     # Default: 'assets'
     #
