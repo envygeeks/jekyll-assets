@@ -60,12 +60,27 @@ into `_plugins/ext.rb` file:
 require "jekyll-assets"
 ```
 
-Once plugin installed, you'll have following liquid tags available:
+Once plugin installed, you'll have following Liquid tags available:
 
 - `{% javascript app %}`: Generates `<script>` tag for `app.js`
 - `{% stylesheet app %}`: Generates `<link>` tag for `app.css`
 - `{% asset_path logo.png %}`: Returns _resulting_ URL for `logo.png`
 - `{% asset app.css %}`: Returns _compiled_ body of `app.css`
+
+Also you'll have complimentary Liquid filters as well:
+
+- `{{ 'app' | javascript }}`: Generates `<script>` tag for `app.js`
+- `{{ 'app' | stylesheet }}`: Generates `<link>` tag for `app.css`
+- `{{ 'logo.png' | asset_path }}`: Returns _resulting_ URL for `logo.png`
+- `{{ 'app.css' | asset }}`: Returns _compiled_ body of `app.css`
+
+Filters are used mostly to render tag (or asset source) using variable that
+holds value of asset logical path rather than specifiyng it directly. Here's
+an example that speaks for itself:
+
+```
+{% if page.custom_css %}{{ page.custom_css | stylesheet }}{% endif %}
+```
 
 All compiled assets will be stored under `assets/` dir of generated site.
 
