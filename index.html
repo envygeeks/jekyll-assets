@@ -89,7 +89,7 @@ into <code>_plugins/ext.rb</code> file:</p>
 <div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 </pre></div>
 
-<p>Once plugin installed, you'll have following liquid tags available:</p>
+<p>Once plugin installed, you'll have following Liquid tags available:</p>
 
 <ul>
 <li>
@@ -104,7 +104,29 @@ into <code>_plugins/ext.rb</code> file:</p>
 <li>
 <code>{% asset app.css %}</code>: Returns <em>compiled</em> body of <code>app.css</code>
 </li>
-</ul><p>All compiled assets will be stored under <code>assets/</code> dir of generated site.</p>
+</ul><p>Also you'll have complimentary Liquid filters as well:</p>
+
+<ul>
+<li>
+<code>{{ 'app' | javascript }}</code>: Generates <code>&lt;script&gt;</code> tag for <code>app.js</code>
+</li>
+<li>
+<code>{{ 'app' | stylesheet }}</code>: Generates <code>&lt;link&gt;</code> tag for <code>app.css</code>
+</li>
+<li>
+<code>{{ 'logo.png' | asset_path }}</code>: Returns <em>resulting</em> URL for <code>logo.png</code>
+</li>
+<li>
+<code>{{ 'app.css' | asset }}</code>: Returns <em>compiled</em> body of <code>app.css</code>
+</li>
+</ul><p>Filters are used mostly to render tag (or asset source) using variable that
+holds value of asset logical path rather than specifiyng it directly. Here's
+an example that speaks for itself:</p>
+
+<pre><code>{% if page.custom_css %}{{ page.custom_css | stylesheet }}{% endif %}
+</code></pre>
+
+<p>All compiled assets will be stored under <code>assets/</code> dir of generated site.</p>
 
 <p>Pipeline assets should be under your sources directory of Jekyll site. When a
 file is referenced with liquid tag or with helper from another asset, Sprockets
