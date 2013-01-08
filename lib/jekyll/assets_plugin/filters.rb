@@ -1,7 +1,3 @@
-# 3rd-party
-require 'liquid'
-
-
 module Jekyll
   module AssetsPlugin
     module Filters
