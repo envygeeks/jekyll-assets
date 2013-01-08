@@ -1,3 +1,8 @@
+### 0.3.0 (WIP)
+
+* Add complimentary filters (same names as tags).
+
+
 ### 0.2.3 (2013-01-07)
 
 * Add built-in bourbon support as: `require "jekyll-assets/bourbon"`.
