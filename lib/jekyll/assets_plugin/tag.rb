@@ -2,10 +2,6 @@
 require 'liquid'
 
 
-# stdlib
-require 'set'
-
-
 module Jekyll
   module AssetsPlugin
     # Class that implements some useful liquid tags:
@@ -50,8 +46,6 @@ module Jekyll
       STYLESHEET = '<link rel="stylesheet" type="text/css" href="%s">'
       JAVASCRIPT = '<script type="text/javascript" src="%s"></script>'
       EXTENSIONS = { 'stylesheet' => '.css', 'javascript' => '.js' }
-
-      @@errors = Set.new
 
       def initialize tag_name, logical_path, tokens
         super
