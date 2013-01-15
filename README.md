@@ -35,6 +35,13 @@ information about amazing features it gives you.
 [sprockets]:    https://github.com/sstephenson/sprockets#readme
 [extjs]:        https://github.com/sstephenson/execjs#readme
 
+For a quick start check out [jekyll-assets introduction][jekyll-assets-intro]
+that shows how to use it step by step. Also you might want to take a look on 
+[my blog sources][ixti-blog-src] as a real-world example as well.
+
+[jekyll-assets-intro]:  http://ixti.net/software/2012/12/30/unleash-mr-hyde-introduction-of-jekyll-assets.html
+[ixti-blog-src]:        https://github.com/ixti/ixti.github.com
+
 
 ## Installation
 
