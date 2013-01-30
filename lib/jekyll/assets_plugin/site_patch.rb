@@ -56,3 +56,6 @@ module Jekyll
     end
   end
 end
+
+
+Jekyll::Site.send :include, Jekyll::AssetsPlugin::SitePatch

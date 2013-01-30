@@ -53,3 +53,8 @@ module Jekyll
     end
   end
 end
+
+
+%w{ javascript stylesheet asset asset_path }.each do |tag|
+  Liquid::Template.register_tag tag, Jekyll::AssetsPlugin::Tag
+end
