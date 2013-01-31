@@ -5,6 +5,7 @@ require 'sprockets'
 # internal
 require 'jekyll/assets_plugin/asset_file'
 require 'jekyll/assets_plugin/configuration'
+require 'jekyll/assets_plugin/liquid_processor'
 
 
 module Jekyll
@@ -48,6 +49,10 @@ module Jekyll
 
               "#{asset_baseurl}/#{asset.digest_path}".squeeze "/"
             end
+          end
+
+          %w{ text/css application/javascript}.each do |mime|
+            @assets.register_preprocessor mime, LiquidProcessor
           end
         end
 
