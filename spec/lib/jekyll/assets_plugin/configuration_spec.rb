@@ -3,30 +3,22 @@ require 'spec_helper'
 
 module Jekyll::AssetsPlugin
   describe Configuration do
-    let(:defaults) do
-      {
-        :dirname  => 'assets',
-        :baseurl  => '/assets/',
-        :sources  => %w{_assets/javascripts _assets/stylesheets _assets/images}
-      }
-    end
-
     context 'with defaults' do
       let(:config){ Configuration.new }
 
       context 'output assets dirname' do
         subject { config.dirname }
-        it { should == defaults[:dirname] }
+        it { should == Configuration::DEFAULTS[:dirname] }
       end
 
       context 'assets baseurl' do
         subject { config.baseurl }
-        it { should == defaults[:baseurl] }
+        it { should == "/" + Configuration::DEFAULTS[:dirname] }
       end
 
       context 'sources list' do
         subject { config.sources }
-        it { should =~ defaults[:sources] }
+        it { should =~ Configuration::DEFAULTS[:sources] }
       end
 
       context 'js compressor' do
@@ -46,28 +38,24 @@ module Jekyll::AssetsPlugin
         :compress => { :css => 'sass' }
       })
 
-      config.dirname.should == 'assets'
-      config.sources.should =~ %w{abc}
-      config.compress.js.should be_nil
-      config.compress.css.should == 'sass'
+      config.dirname.should       ==  'assets'
+      config.sources.should       =~  %w{abc}
+      config.compress.js.should       be_nil
+      config.compress.css.should  ==  'sass'
     end
 
     context '#baseurl' do
       it 'should respect explicit overrides' do
-        config = Configuration.new({
+        Configuration.new({
           :dirname => 'foo',
           :baseurl => '/bar/'
-        })
-
-        config.baseurl.should == '/bar/'
+        }).baseurl.should == '/bar'
       end
 
       it 'should be auto-guessed from dirname' do
-        config = Configuration.new({
+        Configuration.new({
           :dirname => 'foo'
-        })
-
-        config.baseurl.should == '/foo/'
+        }).baseurl.should == '/foo'
       end
     end
 

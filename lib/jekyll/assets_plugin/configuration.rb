@@ -41,32 +41,39 @@ module Jekyll
     # and served not from the root of the server, or if you want to keep your
     # assets on CDN.
     #
-    class Configuration < OpenStruct
-      @@defaults = {
+    class Configuration
+      DEFAULTS = {
         :dirname  => 'assets',
         :sources  => %w{_assets/javascripts _assets/stylesheets _assets/images},
         :compress => { :css => nil, :js => nil }
-      }
+      }.freeze
 
       def initialize config = {}
-        super @@defaults.merge(config)
+        @data = OpenStruct.new DEFAULTS.merge(config)
 
-        self.sources  = [ self.sources ] if self.sources.is_a? String
-        self.compress = OpenStruct.new(self.compress)
-        self.dirname  = self.dirname.gsub(/^\/+|\/+$/, '')
+        @data.sources  = [ @data.sources ] if @data.sources.is_a? String
+        @data.compress = OpenStruct.new @data.compress
+        @data.dirname  = @data.dirname.gsub(/^\/+|\/+$/, '')
 
         # if baseurl not given - autoguess base on dirname
-        self.baseurl ||= "/#{self.dirname}/".squeeze '/'
+        @data.baseurl ||= "/#{@data.dirname}/".squeeze '/'
+      end
+
+      def baseurl
+        @data.baseurl.chomp "/"
       end
 
       def js_compressor
-        return compress.js.to_sym if compress.js
-        false
+        @data.compress.js ? @data.compress.js.to_sym : false
       end
 
       def css_compressor
-        return compress.css.to_sym if compress.css
-        false
+        @data.compress.css ? @data.compress.css.to_sym : false
+      end
+
+
+      def method_missing name, *args, &block
+        @data.send name, *args, &block
       end
     end
   end
