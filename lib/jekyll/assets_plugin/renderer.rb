@@ -13,13 +13,12 @@ module Jekyll
 
 
       def render_asset
-        @site.find_asset(@path).to_s
+        @site.assets[@path].to_s
       end
 
 
       def render_asset_path
-        asset = @site.find_asset @path, :require => true
-        "#{@site.assets_config.baseurl}/#{asset.digest_path}"
+        "#{@site.assets_config.baseurl}/#{@site.assets[@path].digest_path}"
       end
 
 

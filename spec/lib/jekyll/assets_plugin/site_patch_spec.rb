@@ -28,7 +28,7 @@ module Jekyll::AssetsPlugin
 
     context '#assets' do
       subject { site.assets }
-      it { should be_an_instance_of Sprockets::Environment }
+      it { should be_a_kind_of Sprockets::Environment }
 
       context 'calling #asset_path within assets' do
         context 'when requested file not found' do
