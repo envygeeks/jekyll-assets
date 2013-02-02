@@ -402,13 +402,6 @@ You can fine-tune configuration by editing your `_config.yml`:
         css:  ~
 
 
-## "Ben, I need help!" (c) Brother 2
-
-Feel free to send me any comments, recommendations, suggestions. Improve this
-README, as I really suck in documenting things (thanks @imathis for pointing
-this out).
-
-
 ## Contributing
 
 1. Fork it
