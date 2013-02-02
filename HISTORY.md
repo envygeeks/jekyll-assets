@@ -1,3 +1,8 @@
+### 0.3.1 (2013-02-02)
+
+* Preprocess CSS/JS assets with Liquid processor.
+
+
 ### 0.3.0 (2013-01-08)
 
 * Add complimentary filters (same names as tags).
