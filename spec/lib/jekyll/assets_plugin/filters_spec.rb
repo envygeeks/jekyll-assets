@@ -27,7 +27,7 @@ module Jekyll::AssetsPlugin
 
       context "when <file> does not exists" do
         subject { render("{{ 'not-found.css' | stylesheet }}") }
-        it { should match "Liquid error: couldn't find file 'not-found.css'" }
+        it { should match "Liquid error: Couldn't find file 'not-found.css'" }
       end
     end
 
@@ -49,7 +49,7 @@ module Jekyll::AssetsPlugin
 
       context "when <file> does not exists" do
         subject { render("{{ 'not-found.js' | javascript }}") }
-        it { should match "Liquid error: couldn't find file 'not-found.js'" }
+        it { should match "Liquid error: Couldn't find file 'not-found.js'" }
       end
     end
 
@@ -61,7 +61,7 @@ module Jekyll::AssetsPlugin
 
       context "when <file> does not exists" do
         subject { render("{{ 'not-found.css' | asset_path }}") }
-        it { should match "Liquid error: couldn't find file 'not-found.css'" }
+        it { should match "Liquid error: Couldn't find file 'not-found.css'" }
       end
 
       context "with baseurl given as /foobar/" do
@@ -79,7 +79,7 @@ module Jekyll::AssetsPlugin
 
       context "when <file> does not exists" do
         subject { render("{{ 'not-found.js' | asset }}") }
-        it { should match "Liquid error: couldn't find file 'not-found.js'" }
+        it { should match "Liquid error: Couldn't find file 'not-found.js'" }
       end
     end
   end

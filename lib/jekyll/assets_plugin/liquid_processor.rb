@@ -1,15 +1,10 @@
 # 3rd-party
-require 'liquid'
 require 'tilt'
 
 
 module Jekyll
   module AssetsPlugin
-    class LiquidProcessor < Tilt::Template
-      def prepare
-        @engine = Liquid::Template.parse data
-      end
-
+    class LiquidProcessor < Tilt::LiquidTemplate
       def evaluate context, locals, &block
         @engine.render locals, {
           :filters   => [Jekyll::Filters],

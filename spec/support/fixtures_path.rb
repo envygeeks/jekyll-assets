@@ -1,4 +1,4 @@
-require 'pathname'
+require "pathname"
 
 
 module Jekyll::AssetsPlugin
@@ -6,7 +6,7 @@ module Jekyll::AssetsPlugin
     extend self
 
     def fixtures_path
-      @fixtures_path ||= Pathname.new(__FILE__).parent.parent.join('fixtures')
+      @fixtures_path ||= Pathname.new(__FILE__).parent.parent.join("fixtures")
     end
   end
 end

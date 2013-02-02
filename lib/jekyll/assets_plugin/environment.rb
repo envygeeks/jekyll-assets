@@ -1,15 +1,23 @@
 # 3rd-party
-require 'sprockets'
+require "sprockets"
 
 
 # internal
-require 'jekyll/assets_plugin/asset_file'
-require 'jekyll/assets_plugin/liquid_processor'
+require "jekyll/assets_plugin/asset_file"
+require "jekyll/assets_plugin/liquid_processor"
 
 
 module Jekyll
   module AssetsPlugin
     class Environment < Sprockets::Environment
+
+      class AssetNotFound < StandardError
+        def initialize path
+          super "Couldn't find file '#{path}'"
+        end
+      end
+
+
       autoload :ContextPatch, "jekyll/assets_plugin/environment/context_patch"
 
 
@@ -38,7 +46,7 @@ module Jekyll
 
 
       def find_asset path, *args
-        super or raise AssetFile::NotFound, "couldn't find file '#{path}'"
+        super or raise AssetNotFound, path
       end
 
 

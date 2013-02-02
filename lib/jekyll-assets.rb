@@ -1,1 +1,1 @@
-require 'jekyll/assets_plugin'
+require "jekyll/assets_plugin"

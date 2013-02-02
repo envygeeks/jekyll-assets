@@ -23,14 +23,14 @@ module Jekyll
 
 
       def render_javascript
-        @path << '.js' if File.extname(@path).empty?
+        @path << ".js" if File.extname(@path).empty?
 
         JAVASCRIPT % render_asset_path
       end
 
 
       def render_stylesheet
-        @path << '.css' if File.extname(@path).empty?
+        @path << ".css" if File.extname(@path).empty?
 
         STYLESHEET % render_asset_path
       end
