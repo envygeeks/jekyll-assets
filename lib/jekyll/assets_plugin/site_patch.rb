@@ -20,6 +20,11 @@ module Jekyll
         @assets ||= Environment.new self
       end
 
+
+      def asset_path *args
+        "#{assets_config.baseurl}/#{assets[*args].digest_path}"
+      end
+
     end
   end
 end

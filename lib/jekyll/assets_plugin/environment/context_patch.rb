@@ -9,7 +9,7 @@ module Jekyll
 
 
         def asset_path *args
-          "#{site.assets_config.baseurl}/#{site.assets[*args].digest_path}"
+          site.asset_path(*args)
         end
 
       end

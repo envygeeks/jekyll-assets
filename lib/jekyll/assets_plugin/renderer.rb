@@ -18,7 +18,7 @@ module Jekyll
 
 
       def render_asset_path
-        "#{@site.assets_config.baseurl}/#{@site.assets[@path].digest_path}"
+        @site.asset_path @path
       end
 
 
