@@ -61,6 +61,34 @@ module Jekyll::AssetsPlugin
       end
     end
 
+
+    context "#asset_path" do
+      context "with none cachebust" do
+        before { site.assets_config.cachebust = :none }
+        subject { site.asset_path "app.css" }
+        it { should match(%r{^/assets/app\.css$}) }
+      end
+
+      context "with soft cachebust" do
+        before { site.assets_config.cachebust = :soft }
+        subject { site.asset_path "app.css" }
+        it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}$}) }
+      end
+
+      context "with hard cachebust" do
+        before { site.assets_config.cachebust = :hard }
+        subject { site.asset_path "app.css" }
+        it { should match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
+      end
+
+      context "with unknown cachebust" do
+        before { site.assets_config.cachebust = :wtf }
+        it "should raise error" do
+          expect { site.asset_path "app.css" }.to raise_error
+        end
+      end
+    end
+
     context "#assets_config" do
       subject { site.assets_config }
       it { should be_an_instance_of Configuration }

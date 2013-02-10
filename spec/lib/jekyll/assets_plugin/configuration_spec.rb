@@ -21,6 +21,11 @@ module Jekyll::AssetsPlugin
         it { should =~ Configuration::DEFAULTS[:sources] }
       end
 
+      context "cachebust" do
+        subject { config.cachebust }
+        it { should == :hard }
+      end
+
       context "js compressor" do
         subject { config.compress.js }
         it { should be_nil }

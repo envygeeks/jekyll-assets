@@ -22,7 +22,15 @@ module Jekyll
 
 
       def asset_path *args
-        "#{assets_config.baseurl}/#{assets[*args].digest_path}"
+        asset   = assets[*args]
+        baseurl = "#{assets_config.baseurl}/"
+
+        case assets_config.cachebust
+        when :none then baseurl << asset.logical_path
+        when :soft then baseurl << asset.logical_path << "?cb=#{asset.digest}"
+        when :hard then baseurl << asset.digest_path
+        else raise "Unknown cachebast strategy: #{assets_config.cachebust}"
+        end
       end
 
     end
