@@ -204,14 +204,6 @@ assets:
 [amazon-s3]: http://aws.amazon.com/s3
 
 
-That's all. Feel free to ask questions if any on [twitter][twitter],
-[jabber][jabber] or [e-mail][e-mail].
-
-[twitter]:  https://twitter.com/zapparov
-[jabber]:   xmpp://zapparov@jabber.ru
-[e-mail]:   mailto://ixti@member.fsf.org
-
-
 ## Custom Vendors
 
 Sometimes you would like to have some 3rd-party vendors. For this purposes,
@@ -409,6 +401,16 @@ You can fine-tune configuration by editing your `_config.yml`:
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+## "Th-th-th-that's all folks!"
+
+Feel free to follow me on [twitter][twitter], chat via [jabber][jabber] or
+write an [e-mail][e-mail]. :D
+
+[twitter]:  https://twitter.com/zapparov
+[jabber]:   xmpp://zapparov@jabber.ru
+[e-mail]:   mailto://ixti@member.fsf.org
 
 
 ## License
