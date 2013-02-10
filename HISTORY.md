@@ -1,3 +1,8 @@
+### 0.3.2 (2013-02-10)
+
+* Allow choose cachebusting strategy (hard/soft/none). See #11.
+
+
 ### 0.3.1 (2013-02-02)
 
 * Preprocess CSS/JS assets with Liquid processor.
