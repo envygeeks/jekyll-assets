@@ -19,6 +19,7 @@ module Jekyll
 
 
       autoload :ContextPatch, "jekyll/assets_plugin/environment/context_patch"
+      autoload :IndexPatch,   "jekyll/assets_plugin/environment/index_patch"
 
 
       attr_reader :site
@@ -51,21 +52,7 @@ module Jekyll
 
 
       def index
-        super.tap do |index|
-          index.instance_eval do
-            def find_asset path, options = {}
-              site    = @environment.site
-              asset   = super
-              bundle  = options[:bundle]
-
-              if asset and bundle and not site.static_files.include? asset
-                site.static_files << AssetFile.new(site, asset)
-              end
-
-              asset
-            end
-          end
-        end
+        super.tap { |index| index.singleton_class.send :include, IndexPatch }
       end
 
     end
