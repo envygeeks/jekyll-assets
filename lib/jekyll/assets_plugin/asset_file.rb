@@ -14,7 +14,12 @@ module Jekyll
 
 
       def destination dest
-        File.join(dest, @site.assets_config.dirname, @asset.digest_path)
+        case @site.assets_config.cachebust
+        when :none then File.join(dest, @site.assets_config.dirname, @asset.logical_path)
+        when :soft then File.join(dest, @site.assets_config.dirname, @asset.logical_path)
+        when :hard then File.join(dest, @site.assets_config.dirname, @asset.digest_path)
+        else raise "Unknown cachebast strategy: #{@site.assets_config.cachebust}"
+        end
       end
 
 
