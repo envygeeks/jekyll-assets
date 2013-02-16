@@ -1,3 +1,8 @@
+### 0.3.3 (WIP)
+
+* Respect cachebust setting on assets output filenames. (Thanks @softcrumbs)
+
+
 ### 0.3.2 (2013-02-10)
 
 * Allow choose cachebusting strategy (hard/soft/none). See #11.
