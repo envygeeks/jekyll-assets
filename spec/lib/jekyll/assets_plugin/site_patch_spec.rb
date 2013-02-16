@@ -63,21 +63,20 @@ module Jekyll::AssetsPlugin
 
 
     context "#asset_path" do
+      subject { site.asset_path "app.css" }
+
       context "with none cachebust" do
         before { site.assets_config.cachebust = :none }
-        subject { site.asset_path "app.css" }
         it { should match(%r{^/assets/app\.css$}) }
       end
 
       context "with soft cachebust" do
         before { site.assets_config.cachebust = :soft }
-        subject { site.asset_path "app.css" }
         it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}$}) }
       end
 
       context "with hard cachebust" do
         before { site.assets_config.cachebust = :hard }
-        subject { site.asset_path "app.css" }
         it { should match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
       end
 
