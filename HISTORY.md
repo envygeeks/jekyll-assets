@@ -1,4 +1,4 @@
-### 0.3.3 (WIP)
+### 0.3.3 (2013-02-16)
 
 * Respect cachebust setting on assets output filenames. (Thanks @softcrumbs)
 
