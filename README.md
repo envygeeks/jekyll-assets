@@ -154,8 +154,8 @@ If you want to use YUI compressor for minification, install `yui-compressor`
 gem and put `yui` in place of `uglifier` and/or `sass` in the config file.
 
 Let's go crazy now! Assume you want your blog's `body` background color to be
-white all the time, but red in December. Just add `.erb` suffix extension and
-you can use ruby to "pre-process" asset, something like this:
+white all the time, but red if you compiled your web-site in December. Just add
+`.erb` suffix extension and you can use ruby in your asset like this:
 
 ```
 // file: _assets/stylesheets/app.css.sass.erb
@@ -163,6 +163,11 @@ you can use ruby to "pre-process" asset, something like this:
 body
   background-color: <%= (12 == Date.today.month) ? "red" : "white" %>
 ```
+
+*Note* that all assets are pre-processed with Liquid. So if you just need to
+  output asset URL within your javascript/coffeescript or pure css, you don't
+  need to use ERB, just use `asset_path` Liquid tag same as you do it in your
+  layouts/pages. See "Liquid Assets Pre-processing" for more details.
 
 Want more? Sure, here you are. You can use JavaScript templating with EJS or ECO
 for example. Create a file `_assets/javascripts/hello.jst.ejs` with following
@@ -202,6 +207,18 @@ assets:
 ```
 
 [amazon-s3]: http://aws.amazon.com/s3
+
+
+## Liquid Assets Pre-processing
+
+All javascript and stylesheet assets are preprocessed with Liquid automagically.
+That means that you can use all liquid tags available to you in Jekyll, but most
+like;y you would want it for `asset_path` tag only:
+
+``` coffeescript
+# file: _assets/javascripts/app.js.coffee
+yepnope.load "{% asset_path app.css %}"
+```
 
 
 ## Custom Vendors
@@ -249,8 +266,8 @@ require "jekyll-assets/compass"
 
 Now you can add `@import "compass"` in your SASS assets to get Compass goodies.
 
-*Notice* that if you want to use other than default Compass plugins/frameworks,
-you must require them BEFORE `jekyll-assets/compass`.
+*Note* that if you want to use other than default Compass plugins/frameworks,
+  you must require them BEFORE `jekyll-assets/compass`.
 
 
 #### Bourbon Support
@@ -360,38 +377,65 @@ back by any other `require`.
 
 You can fine-tune configuration by editing your `_config.yml`:
 
-    #
-    # Plugin: jekyll-assets
-    #
-    assets:
-      #
-      # Pathname of the destination of generated (bundled) assets relative
-      # to the destination of the root.
-      #
-      dirname: assets
-      #
-      # Base URL of assets paths.
-      #
-      baseurl: /assets/
-      #
-      # Pathnames where to find assets relative to the root of the site.
-      #
-      sources:
-        - _assets/javascripts
-        - _assets/stylesheets
-        - _assets/images
-      #
-      # Sets compressors for the specific types of file: `js`, or `css`.
-      # No compression by default.
-      #
-      # Possible variants:
-      #
-      #     css  => 'yui', 'sass', nil
-      #     js   => 'yui', 'uglifier', nil
-      #
-      compress:
-        js:   ~
-        css:  ~
+``` yaml
+#
+# Plugin: jekyll-assets
+#
+assets:
+  #
+  # Pathname of the destination of generated (bundled) assets relative
+  # to the destination of the root.
+  #
+  dirname: assets
+  #
+  # Base URL of assets paths.
+  #
+  baseurl: /assets/
+  #
+  # Pathnames where to find assets relative to the root of the site.
+  #
+  sources:
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _assets/images
+  #
+  # Sets compressors for the specific types of file: `js`, or `css`.
+  # No compression by default.
+  #
+  # Possible variants:
+  #
+  #     css  => 'yui', 'sass', nil
+  #     js   => 'yui', 'uglifier', nil
+  #
+  compress:
+    js:   ~
+    css:  ~
+  #
+  # Sets cachebusting policy for generated assets.
+  #
+  # Possible variants:
+  #
+  #   none - disables cachebusting
+  #
+  #     source file:  _assets/javascripts/app.css
+  #     output file:  _site/assets/javascriptis/app.css
+  #     output URL:   /assets/javascripts/app.css
+  #
+  #   soft - leave filenames as-is, but `?cb=<md5>` suffix for URLs generated
+  #          with `asset_path`, `javascript` and `stylesheet`:
+  #
+  #     source file:  _assets/javascripts/app.css
+  #     output file:  _site/assets/javascriptis/app.css
+  #     output URL:   /assets/javascripts/app.css?cb=4f41243847da693a4f356c0486114bc6
+  #
+  #   hard - (default) injects cachebusting checksum into processed filename:
+  #
+  #     source file:  _assets/javascripts/app.css
+  #     output file:  _site/assets/javascriptis/app-4f41243847da693a4f356c0486114bc6.css
+  #     output URL:   /assets/javascripts/app-4f41243847da693a4f356c0486114bc6.css
+  #
+  cachebust: hard
+```
 
 
 ## Contributing
