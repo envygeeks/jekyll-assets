@@ -4,14 +4,8 @@ module Jekyll
       module IndexPatch
 
         def find_asset path, options = {}
-          site    = @environment.site
-          asset   = super
-          bundle  = options[:bundle]
-
-          if asset and bundle and not site.static_files.include? asset
-            site.static_files << AssetFile.new(site, asset)
-          end
-
+          asset = super
+          @environment.site.bundle_asset! asset if asset and options[:bundle]
           asset
         end
 

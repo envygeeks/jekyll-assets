@@ -34,6 +34,13 @@ module Jekyll
         end
       end
 
+
+      def bundle_asset! asset
+        if not static_files.include? asset
+          static_files << AssetFile.new(self, asset)
+        end
+      end
+
     end
   end
 end
