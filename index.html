@@ -190,14 +190,19 @@ case just install <code>uglifier</code> gem and add following lines into your <c
 gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the config file.</p>
 
 <p>Let's go crazy now! Assume you want your blog's <code>body</code> background color to be
-white all the time, but red in December. Just add <code>.erb</code> suffix extension and
-you can use ruby to "pre-process" asset, something like this:</p>
+white all the time, but red if you compiled your web-site in December. Just add
+<code>.erb</code> suffix extension and you can use ruby in your asset like this:</p>
 
 <pre><code>// file: _assets/stylesheets/app.css.sass.erb
 
 body
   background-color: &lt;%= (12 == Date.today.month) ? "red" : "white" %&gt;
 </code></pre>
+
+<p><em>Note</em> that all assets are pre-processed with Liquid. So if you just need to
+  output asset URL within your javascript/coffeescript or pure css, you don't
+  need to use ERB, just use <code>asset_path</code> Liquid tag same as you do it in your
+  layouts/pages. See "Liquid Assets Pre-processing" for more details.</p>
 
 <p>Want more? Sure, here you are. You can use JavaScript templating with EJS or ECO
 for example. Create a file <code>_assets/javascripts/hello.jst.ejs</code> with following
@@ -234,8 +239,15 @@ changed via configuration:</p>
   <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">//my.super-cool-cdn.com/</span>
 </pre></div>
 
-<p>That's all. Feel free to ask questions if any on <a href="https://twitter.com/zapparov">twitter</a>,
-<a>jabber</a> or <a href="mailto://ixti@member.fsf.org">e-mail</a>.</p>
+<h2>Liquid Assets Pre-processing</h2>
+
+<p>All javascript and stylesheet assets are preprocessed with Liquid automagically.
+That means that you can use all liquid tags available to you in Jekyll, but most
+like;y you would want it for <code>asset_path</code> tag only:</p>
+
+<div class="highlight"><pre><span class="c1"># file: _assets/javascripts/app.js.coffee</span>
+<span class="nx">yepnope</span><span class="p">.</span><span class="nx">load</span> <span class="s">"{% asset_path app.css %}"</span>
+</pre></div>
 
 <h2>Custom Vendors</h2>
 
@@ -277,8 +289,8 @@ path first.</p>
 
 <p>Now you can add <code>@import "compass"</code> in your SASS assets to get Compass goodies.</p>
 
-<p><em>Notice</em> that if you want to use other than default Compass plugins/frameworks,
-you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
+<p><em>Note</em> that if you want to use other than default Compass plugins/frameworks,
+  you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
 
 <h4>Bourbon Support</h4>
 
@@ -384,39 +396,64 @@ back by any other <code>require</code>.</p>
 
 <p>You can fine-tune configuration by editing your <code>_config.yml</code>:</p>
 
-<pre><code>#
-# Plugin: jekyll-assets
-#
-assets:
-  #
-  # Pathname of the destination of generated (bundled) assets relative
-  # to the destination of the root.
-  #
-  dirname: assets
-  #
-  # Base URL of assets paths.
-  #
-  baseurl: /assets/
-  #
-  # Pathnames where to find assets relative to the root of the site.
-  #
-  sources:
-    - _assets/javascripts
-    - _assets/stylesheets
-    - _assets/images
-  #
-  # Sets compressors for the specific types of file: `js`, or `css`.
-  # No compression by default.
-  #
-  # Possible variants:
-  #
-  #     css  =&gt; 'yui', 'sass', nil
-  #     js   =&gt; 'yui', 'uglifier', nil
-  #
-  compress:
-    js:   ~
-    css:  ~
-</code></pre>
+<div class="highlight"><pre><span class="c1">#</span>
+<span class="c1"># Plugin: jekyll-assets</span>
+<span class="c1">#</span>
+<span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="c1">#</span>
+  <span class="c1"># Pathname of the destination of generated (bundled) assets relative</span>
+  <span class="c1"># to the destination of the root.</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">dirname</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">assets</span>
+  <span class="c1">#</span>
+  <span class="c1"># Base URL of assets paths.</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/assets/</span>
+  <span class="c1">#</span>
+  <span class="c1"># Pathnames where to find assets relative to the root of the site.</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">sources</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/javascripts</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/stylesheets</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/images</span>
+  <span class="c1">#</span>
+  <span class="c1"># Sets compressors for the specific types of file: `js`, or `css`.</span>
+  <span class="c1"># No compression by default.</span>
+  <span class="c1">#</span>
+  <span class="c1"># Possible variants:</span>
+  <span class="c1">#</span>
+  <span class="c1">#     css  =&gt; 'yui', 'sass', nil</span>
+  <span class="c1">#     js   =&gt; 'yui', 'uglifier', nil</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">compress</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">js</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">~</span>
+    <span class="l-Scalar-Plain">css</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">~</span>
+  <span class="c1">#</span>
+  <span class="c1"># Sets cachebusting policy for generated assets.</span>
+  <span class="c1">#</span>
+  <span class="c1"># Possible variants:</span>
+  <span class="c1">#</span>
+  <span class="c1">#   none - disables cachebusting</span>
+  <span class="c1">#</span>
+  <span class="c1">#     source file:  _assets/javascripts/app.css</span>
+  <span class="c1">#     output file:  _site/assets/javascriptis/app.css</span>
+  <span class="c1">#     output URL:   /assets/javascripts/app.css</span>
+  <span class="c1">#</span>
+  <span class="c1">#   soft - leave filenames as-is, but `?cb=&lt;md5&gt;` suffix for URLs generated</span>
+  <span class="c1">#          with `asset_path`, `javascript` and `stylesheet`:</span>
+  <span class="c1">#</span>
+  <span class="c1">#     source file:  _assets/javascripts/app.css</span>
+  <span class="c1">#     output file:  _site/assets/javascriptis/app.css</span>
+  <span class="c1">#     output URL:   /assets/javascripts/app.css?cb=4f41243847da693a4f356c0486114bc6</span>
+  <span class="c1">#</span>
+  <span class="c1">#   hard - (default) injects cachebusting checksum into processed filename:</span>
+  <span class="c1">#</span>
+  <span class="c1">#     source file:  _assets/javascripts/app.css</span>
+  <span class="c1">#     output file:  _site/assets/javascriptis/app-4f41243847da693a4f356c0486114bc6.css</span>
+  <span class="c1">#     output URL:   /assets/javascripts/app-4f41243847da693a4f356c0486114bc6.css</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">cachebust</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hard</span>
+</pre></div>
 
 <h2>Contributing</h2>
 
@@ -426,7 +463,12 @@ assets:
 <li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
-</ol><h2>License</h2>
+</ol><h2>"Th-th-th-that's all folks!"</h2>
+
+<p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via <a>jabber</a> or
+write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
+
+<h2>License</h2>
 
 <p>Copyright (C) 2012 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
 
