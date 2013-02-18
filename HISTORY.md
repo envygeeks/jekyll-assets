@@ -1,3 +1,8 @@
+### 0.3.4 (2013-02-18)
+
+* Fix assets regeneration (with --auto) issue. See #13.
+
+
 ### 0.3.3 (2013-02-16)
 
 * Respect cachebust setting on assets output filenames. (Thanks @softcrumbs)
