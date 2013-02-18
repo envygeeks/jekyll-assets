@@ -11,6 +11,14 @@ module Jekyll
   module AssetsPlugin
     module SitePatch
 
+      def self.included base
+        base.class_eval do
+          alias_method :write_without_assets, :write
+          alias_method :write, :write_with_assets
+        end
+      end
+
+
       def assets_config
         @assets_config ||= Configuration.new(self.config["assets"] || {})
       end
@@ -18,6 +26,11 @@ module Jekyll
 
       def assets
         @assets ||= Environment.new self
+      end
+
+
+      def asset_files
+        @asset_files ||= []
       end
 
 
@@ -36,9 +49,18 @@ module Jekyll
 
 
       def bundle_asset! asset
-        if not static_files.include? asset
-          static_files << AssetFile.new(self, asset)
+        if not asset_files.include? asset
+          file = AssetFile.new self, asset
+
+          asset_files   << file
+          static_files  << file
         end
+      end
+
+
+      def write_with_assets
+        static_files.push(*asset_files).uniq!
+        write_without_assets
       end
 
     end

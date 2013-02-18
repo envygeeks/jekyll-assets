@@ -45,7 +45,7 @@ module Jekyll::AssetsPlugin
             site.assets["app.css"].to_s.should match(noise_img_re)
           end
 
-          it "should be appended to the static files list" do
+          it "should be appended to the static_files list" do
             asset = site.assets["app.css"] # make sure main asset was compiled
             asset = site.assets["noise.png"]
 
@@ -88,6 +88,7 @@ module Jekyll::AssetsPlugin
       end
     end
 
+
     context "#assets_config" do
       subject { site.assets_config }
       it { should be_an_instance_of Configuration }
@@ -97,6 +98,15 @@ module Jekyll::AssetsPlugin
         site.assets_config.sources.should include "foobar"
       end
     end
+
+
+    it "should regenerate assets upon multiple #process" do
+      @site.assets_config.cachebust = :none
+      2.times { @site.process }
+
+      @dest.join("assets", "app.css").exist?.should be_true
+    end
+
 
     it "should be included into Jekyll::Site" do
       Jekyll::Site.included_modules.should include SitePatch
