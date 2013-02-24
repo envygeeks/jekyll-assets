@@ -435,6 +435,7 @@ assets:
   #     output URL:   /assets/javascripts/app-4f41243847da693a4f356c0486114bc6.css
   #
   cachebust: hard
+  gzip: true
 ```
 
 
