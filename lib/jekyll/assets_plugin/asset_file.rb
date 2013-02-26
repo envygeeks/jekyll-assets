@@ -51,6 +51,7 @@ module Jekyll
         @@mtimes[path] = mtime
 
         @asset.write_to dest_path
+        @asset.write_to dest_path + '.gz' if @site.assets_config.gzip
         true
       end
 

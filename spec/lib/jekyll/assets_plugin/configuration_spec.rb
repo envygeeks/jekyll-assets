@@ -35,6 +35,12 @@ module Jekyll::AssetsPlugin
         subject { config.compress.css }
         it { should be_nil }
       end
+
+      context "gzip" do
+        subject { config.gzip }
+        it { should == true }
+      end
+
     end
 
     it "should override specified options and leave defaults for missing" do
@@ -89,6 +95,14 @@ module Jekyll::AssetsPlugin
         let(:config){ Configuration.new }
         subject { config.css_compressor }
         it { should be_false }
+      end
+    end
+
+    context "#gzip" do
+      context "when gzip is disabled" do
+        let(:config){ Configuration.new(:gzip => false) }
+        subject { config.gzip }
+        it { should be false }
       end
     end
   end
