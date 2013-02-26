@@ -107,6 +107,22 @@ module Jekyll::AssetsPlugin
       @dest.join("assets", "app.css").exist?.should be_true
     end
 
+    context "#gzip" do
+      subject { site.assets_config }
+
+      it "should generate a static assets if gzip is enabled" do
+        @site.assets_config.gzip = true
+        @site.process
+        @dest.join("assets", "app.css.gz").exist?.should be_true
+      end
+
+      it "should not generate a static assets if gzip is enabled" do
+        @site.assets_config.gzip = false
+        @site.process
+        @dest.join("assets", "app.css.gz").exist?.should be_false
+      end
+
+    end
 
     it "should be included into Jekyll::Site" do
       Jekyll::Site.included_modules.should include SitePatch
