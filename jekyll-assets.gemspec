@@ -8,6 +8,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://ixti.github.com/jekyll-assets"
   gem.authors       = "Aleksey V Zapparov"
   gem.email         = %w{ixti@member.fsf.org}
+  gem.license       = "MIT"
   gem.summary       = "jekyll-assets-#{Jekyll::AssetsPlugin::VERSION}"
   gem.description   = <<-DESC
   Jekyll plugin, that allows you to write javascript/css assets in
@@ -16,7 +17,7 @@ Gem::Specification.new do |gem|
   DESC
 
   gem.add_dependency "jekyll"
-  gem.add_dependency "sprockets", "~> 2.8"
+  gem.add_dependency "sprockets", "~> 2.9"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec"
