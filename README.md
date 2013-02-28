@@ -15,13 +15,17 @@ Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
 - It supports JavaScript templates for client-side rendering of strings or
   markup. JavaScript templates have the special format extension `.jst` and are
   compiled to JavaScript functions.
-- Automaticaly adds MD5 fingerprint suffix for _cache busting_. That means
-  that your `app.css` will become `app-908e25f4bf641868d8683022a5b62f54.css`.
-- [Compass][compass] and [Bourbon][bourbon] built-in support.
+- Adds MD5 fingerprint suffix for _cache busting_. That means your `app.css`
+  will become `app-908e25f4bf641868d8683022a5b62f54.css`. See `cachebust`
+  configuration option for other variants.
+- Produce gzipped versions of assets. See `gzip` configuration option for
+  details.
+- [Compass][compass], [Bourbon][bourbon] and [Neat][neat] built-in support.
   See "Custom Vendors" below.
 
 [compass]: http://compass-style.org/
 [bourbon]: http://bourbon.io/
+[neat]:    http://neat.bourbon.io/
 
 Jekyll-Assets uses fabulous [Sprockets][sprockets] under the hood, so you may
 refer to Rails guide about [Asset Pipeline][rails-guide] for detailed
@@ -282,6 +286,18 @@ require "jekyll-assets/bourbon"
 Now you can add `@import "bourbon"` in your SASS assets to get Bourbon goodies.
 
 
+#### Neat Support
+
+Require `jekyll-assets/neat` to enable, e.g.:
+
+``` ruby
+require "jekyll-assets"
+require "jekyll-assets/neat"
+```
+
+Now you can add `@import "neat"` in your SASS assets to get Neat goodies.
+
+
 ## The Directive Processor
 
 *Note:* This section extracted from [Sprockets][sprockets] README.
@@ -436,7 +452,7 @@ assets:
   #
   cachebust: hard
   #
-  # saves gzipped versions of the assets next to the un-compressed files
+  # Saves gzipped versions of the assets next to the un-compressed files.
   #
   gzip: true
 ```
