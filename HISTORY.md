@@ -1,3 +1,10 @@
+### 0.3.5 WIP
+
+* Add buil-tim neat support as `require "jekyll-assets/neat"`. See #18.
+  (Thanks @awmichel)
+* Automagically produce GZipped assets. See #17. (Thanks @beanieboi)
+
+
 ### 0.3.4 (2013-02-18)
 
 * Fix assets regeneration (with --auto) issue. See #13.
