@@ -1,4 +1,4 @@
-### 0.3.5 WIP
+### 0.3.5 (2013-03-03)
 
 * Add buil-tim neat support as `require "jekyll-assets/neat"`. See #18.
   (Thanks @awmichel)
