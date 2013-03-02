@@ -452,19 +452,12 @@ assets:
   #
   cachebust: hard
   #
-  # Saves gzipped versions of the assets next to the un-compressed files.
+  # Specifies list of MIME types that needs to have gzipped versions.
+  # You can set it to `false` to disable gzipping. Only javascripts and
+  # stylesheets are gzipped by default.
   #
-  gzip: true
+  gzip: [ text/css, application/javascript ]
 ```
-
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
 
 
 ## "Th-th-th-that's all folks!"
@@ -475,6 +468,15 @@ write an [e-mail][e-mail]. :D
 [twitter]:  https://twitter.com/zapparov
 [jabber]:   xmpp://zapparov@jabber.ru
 [e-mail]:   mailto://ixti@member.fsf.org
+
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 
 ## License

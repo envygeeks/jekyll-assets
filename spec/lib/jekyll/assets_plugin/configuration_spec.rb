@@ -38,7 +38,7 @@ module Jekyll::AssetsPlugin
 
       context "gzip" do
         subject { config.gzip }
-        it { should == true }
+        it { should =~ %w{ text/css application/javascript } }
       end
 
     end

@@ -10,7 +10,7 @@ module Jekyll
         :sources    => %w{_assets/javascripts _assets/stylesheets _assets/images},
         :compress   => { :css => nil, :js => nil },
         :cachebust  => :hard,
-        :gzip       => true
+        :gzip       => %w{ text/css application/javascript }
       }.freeze
 
 
@@ -43,6 +43,11 @@ module Jekyll
 
       def cachebust
         none?(@data.cachebust) ? :none : @data.cachebust.to_sym
+      end
+
+      def gzip
+        return @data.gzip if @data.gzip.is_a? Array
+        @data.gzip ? DEFAULTS[:gzip] : false
       end
 
 

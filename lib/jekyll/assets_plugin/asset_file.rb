@@ -1,11 +1,22 @@
+# stdlib
+require "forwardable"
+
+
 module Jekyll
   module AssetsPlugin
     class AssetFile
+
+      extend Forwardable
+
 
       @@mtimes = Hash.new
 
 
       attr_reader :asset
+
+
+      def_delegator :@site, :assets_config, :config
+      def_delegator :@asset, :content_type
 
 
       def initialize site, asset
@@ -14,17 +25,15 @@ module Jekyll
 
 
       def destination dest
-        File.join dest, @site.assets_config.dirname, filename
+        File.join dest, config.dirname, filename
       end
 
 
       def filename
-        cachebust = @site.assets_config.cachebust
-
-        case cachebust
+        case config.cachebust
         when :none, :soft then asset.logical_path
         when :hard        then asset.digest_path
-        else raise "Unknown cachebust strategy: #{cachebust.inspect}"
+        else raise "Unknown cachebust strategy: #{config.cachebust.inspect}"
         end
       end
 
@@ -51,7 +60,8 @@ module Jekyll
         @@mtimes[path] = mtime
 
         @asset.write_to dest_path
-        @asset.write_to dest_path + '.gz' if @site.assets_config.gzip
+        @asset.write_to "#{dest_path}.gz" if gzip?
+
         true
       end
 
@@ -62,6 +72,11 @@ module Jekyll
         when Sprockets::Asset then @asset == other
         else false
         end
+      end
+
+
+      def gzip?
+        config.gzip && config.gzip.include?(content_type)
       end
 
 
