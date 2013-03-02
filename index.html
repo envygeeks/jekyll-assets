@@ -52,10 +52,13 @@ compressor you like: YUI, SASS, Uglifier or no compression at all.</li>
 <li>It supports JavaScript templates for client-side rendering of strings or
 markup. JavaScript templates have the special format extension <code>.jst</code> and are
 compiled to JavaScript functions.</li>
-<li>Automaticaly adds MD5 fingerprint suffix for <em>cache busting</em>. That means
-that your <code>app.css</code> will become <code>app-908e25f4bf641868d8683022a5b62f54.css</code>.</li>
+<li>Adds MD5 fingerprint suffix for <em>cache busting</em>. That means your <code>app.css</code>
+will become <code>app-908e25f4bf641868d8683022a5b62f54.css</code>. See <code>cachebust</code>
+configuration option for other variants.</li>
+<li>Produce gzipped versions of assets. See <code>gzip</code> configuration option for
+details.</li>
 <li>
-<a href="http://compass-style.org/">Compass</a> and <a href="http://bourbon.io/">Bourbon</a> built-in support.
+<a href="http://compass-style.org/">Compass</a>, <a href="http://bourbon.io/">Bourbon</a> and <a href="http://neat.bourbon.io/">Neat</a> built-in support.
 See "Custom Vendors" below.</li>
 </ul><p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
 refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
@@ -302,6 +305,16 @@ path first.</p>
 
 <p>Now you can add <code>@import "bourbon"</code> in your SASS assets to get Bourbon goodies.</p>
 
+<h4>Neat Support</h4>
+
+<p>Require <code>jekyll-assets/neat</code> to enable, e.g.:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/neat"</span>
+</pre></div>
+
+<p>Now you can add <code>@import "neat"</code> in your SASS assets to get Neat goodies.</p>
+
 <h2>The Directive Processor</h2>
 
 <p><em>Note:</em> This section extracted from <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> README.</p>
@@ -453,7 +466,18 @@ back by any other <code>require</code>.</p>
   <span class="c1">#     output URL:   /assets/javascripts/app-4f41243847da693a4f356c0486114bc6.css</span>
   <span class="c1">#</span>
   <span class="l-Scalar-Plain">cachebust</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hard</span>
+  <span class="c1">#</span>
+  <span class="c1"># Specifies list of MIME types that needs to have gzipped versions.</span>
+  <span class="c1"># You can set it to `false` to disable gzipping. Only javascripts and</span>
+  <span class="c1"># stylesheets are gzipped by default.</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">gzip</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span> <span class="nv">text/css</span><span class="p-Indicator">,</span> <span class="nv">application/javascript</span> <span class="p-Indicator">]</span>
 </pre></div>
+
+<h2>"Th-th-th-that's all folks!"</h2>
+
+<p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via <a>jabber</a> or
+write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 
 <h2>Contributing</h2>
 
@@ -463,12 +487,7 @@ back by any other <code>require</code>.</p>
 <li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
-</ol><h2>"Th-th-th-that's all folks!"</h2>
-
-<p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via <a>jabber</a> or
-write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
-
-<h2>License</h2>
+</ol><h2>License</h2>
 
 <p>Copyright (C) 2012 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
 
