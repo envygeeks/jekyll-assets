@@ -1,5 +1,6 @@
 # Jekyll::AssetsPlugin
 
+[![Gem Version](https://badge.fury.io/rb/jekyll-assets.png)](http://badge.fury.io/rb/jekyll-assets)
 [![Build Status](https://secure.travis-ci.org/ixti/jekyll-assets.png)](http://travis-ci.org/ixti/jekyll-assets)
 [![Dependency Status](https://gemnasium.com/ixti/jekyll-assets.png)](https://gemnasium.com/ixti/jekyll-assets)
 [![Code Climate](https://codeclimate.com/github/ixti/jekyll-assets.png)](https://codeclimate.com/github/ixti/jekyll-assets)
