@@ -5,16 +5,11 @@ module Jekyll
       @@mtimes = Hash.new
 
 
-      attr_reader :asset
+      attr_reader :logical_path
 
 
       def initialize site, asset
-        @site, @asset = site, asset
-      end
-
-
-      def content_type
-        asset.content_type
+        @site, @logical_path = site, asset.logical_path
       end
 
 
@@ -29,6 +24,16 @@ module Jekyll
         when :hard        then asset.digest_path
         else raise "Unknown cachebust strategy: #{cachebust.inspect}"
         end
+      end
+
+
+      def asset
+        @site.assets[logical_path]
+      end
+
+
+      def content_type
+        asset.content_type
       end
 
 
@@ -61,11 +66,8 @@ module Jekyll
 
 
       def == other
-        case other
-        when AssetFile        then asset == other.asset
-        when Sprockets::Asset then asset == other
-        else false
-        end
+        return false unless other.respond_to? :logical_path
+        other.logical_path == logical_path
       end
 
 
@@ -75,7 +77,7 @@ module Jekyll
 
 
       def to_s
-        "#<Jekyll::AssetsPlugin::AssetFile:#{asset.logical_path}>"
+        "#<Jekyll::AssetsPlugin::AssetFile:#{logical_path}>"
       end
 
     end
