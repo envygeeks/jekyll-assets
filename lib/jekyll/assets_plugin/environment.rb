@@ -18,9 +18,6 @@ module Jekyll
       end
 
 
-      autoload :ContextPatch, "jekyll/assets_plugin/environment/context_patch"
-
-
       attr_reader :site
 
 
@@ -41,7 +38,7 @@ module Jekyll
         # bind jekyll and Sprockets context together
         context_class.instance_variable_set :@site, @site
 
-        context_class.send :include, ContextPatch
+        context_class.send :include, Patches::ContextPatch
       end
 
 

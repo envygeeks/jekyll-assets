@@ -1,6 +1,6 @@
 module Jekyll
   module AssetsPlugin
-    class Environment
+    module Patches
       module ContextPatch
 
         def site
