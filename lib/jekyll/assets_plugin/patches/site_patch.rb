@@ -5,6 +5,7 @@ require "jekyll"
 # internal
 require "jekyll/assets_plugin/configuration"
 require "jekyll/assets_plugin/environment"
+require "jekyll/assets_plugin/asset_file"
 
 
 module Jekyll

@@ -3,7 +3,6 @@ require "sprockets"
 
 
 # internal
-require "jekyll/assets_plugin/asset_file"
 require "jekyll/assets_plugin/liquid_processor"
 
 
