@@ -47,7 +47,7 @@ module Jekyll
 
       def gzip
         return @data.gzip if @data.gzip.is_a? Array
-        @data.gzip ? DEFAULTS[:gzip] : false
+        @data.gzip ? DEFAULTS[:gzip] : []
       end
 
 

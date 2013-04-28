@@ -102,7 +102,7 @@ module Jekyll::AssetsPlugin
       context "when gzip is disabled" do
         let(:config){ Configuration.new(:gzip => false) }
         subject { config.gzip }
-        it { should be false }
+        it { should == [] }
       end
     end
   end

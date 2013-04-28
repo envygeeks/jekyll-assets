@@ -76,7 +76,7 @@ module Jekyll
 
 
       def gzip?
-        config.gzip && config.gzip.include?(content_type)
+        config.gzip.include? content_type
       end
 
 
