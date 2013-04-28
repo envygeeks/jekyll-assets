@@ -1,13 +1,6 @@
-# stdlib
-require "forwardable"
-
-
 module Jekyll
   module AssetsPlugin
     class AssetFile
-
-      extend Forwardable
-
 
       @@mtimes = Hash.new
 
@@ -15,36 +8,37 @@ module Jekyll
       attr_reader :asset
 
 
-      def_delegator :@site, :assets_config, :config
-      def_delegator :@asset, :content_type
-
-
       def initialize site, asset
         @site, @asset = site, asset
       end
 
 
+      def content_type
+        asset.content_type
+      end
+
+
       def destination dest
-        File.join dest, config.dirname, filename
+        File.join dest, @site.assets_config.dirname, filename
       end
 
 
       def filename
-        case config.cachebust
+        case cachebust = @site.assets_config.cachebust
         when :none, :soft then asset.logical_path
         when :hard        then asset.digest_path
-        else raise "Unknown cachebust strategy: #{config.cachebust.inspect}"
+        else raise "Unknown cachebust strategy: #{cachebust.inspect}"
         end
       end
 
 
       def path
-        @asset.pathname.to_s
+        asset.pathname.to_s
       end
 
 
       def mtime
-        @asset.mtime.to_i
+        asset.mtime.to_i
       end
 
 
@@ -59,8 +53,8 @@ module Jekyll
         return false if File.exist?(dest_path) and !modified?
         @@mtimes[path] = mtime
 
-        @asset.write_to dest_path
-        @asset.write_to "#{dest_path}.gz" if gzip?
+        asset.write_to dest_path
+        asset.write_to "#{dest_path}.gz" if gzip?
 
         true
       end
@@ -68,15 +62,15 @@ module Jekyll
 
       def == other
         case other
-        when AssetFile        then @asset == other.asset
-        when Sprockets::Asset then @asset == other
+        when AssetFile        then asset == other.asset
+        when Sprockets::Asset then asset == other
         else false
         end
       end
 
 
       def gzip?
-        config.gzip.include? content_type
+        @site.assets_config.gzip.include? content_type
       end
 
 
