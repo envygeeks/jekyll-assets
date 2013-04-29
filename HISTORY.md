@@ -1,3 +1,8 @@
+### 0.3.7 (2013-04-29)
+
+* Refactor AssetFile to avoid stale assets caching. See #23.
+
+
 ### 0.3.6 (2013-04-28)
 
 * Ruby 2.0.0 support. See #16.
