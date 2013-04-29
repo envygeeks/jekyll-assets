@@ -1,3 +1,9 @@
+### 0.3.8 (2013-04-29)
+
+* Play nice with query strings and anchors in pathnames of requested assets.
+  See #20.
+
+
 ### 0.3.7 (2013-04-29)
 
 * Refactor AssetFile to avoid stale assets caching. See #23.
