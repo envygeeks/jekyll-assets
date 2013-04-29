@@ -87,6 +87,46 @@ module Jekyll::AssetsPlugin
             expect { site.asset_path "app.css" }.to raise_error
           end
         end
+
+
+        context "with query part in requested filename" do
+          subject { site.asset_path "app.css?foo=bar" }
+
+          context "and none cachebust" do
+            before { site.assets_config.cachebust = :none }
+            it { should match(%r{^/assets/app\.css\?foo=bar$}) }
+          end
+
+          context "and soft cachebust" do
+            before { site.assets_config.cachebust = :soft }
+            it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}&foo=bar$}) }
+          end
+
+          context "and hard cachebust" do
+            before { site.assets_config.cachebust = :hard }
+            it { should match(%r{^/assets/app-[a-f0-9]{32}\.css\?foo=bar$}) }
+          end
+        end
+
+
+        context "with anchor part in requested filename" do
+          subject { site.asset_path "app.css#foobar" }
+
+          context "and none cachebust" do
+            before { site.assets_config.cachebust = :none }
+            it { should match(%r{^/assets/app\.css#foobar$}) }
+          end
+
+          context "and soft cachebust" do
+            before { site.assets_config.cachebust = :soft }
+            it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}#foobar$}) }
+          end
+
+          context "and hard cachebust" do
+            before { site.assets_config.cachebust = :hard }
+            it { should match(%r{^/assets/app-[a-f0-9]{32}\.css#foobar$}) }
+          end
+        end
       end
 
 

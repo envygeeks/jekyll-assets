@@ -36,17 +36,24 @@ module Jekyll
         end
 
 
-        def asset_path *args
-          asset     = assets[*args]
-          baseurl   = "#{assets_config.baseurl}/"
-          cachebust = assets_config.cachebust
+        def asset_path pathname, *args
+          pathname, _, anchor = pathname.rpartition "#" if pathname["#"]
+          pathname, _, query  = pathname.rpartition "?" if pathname["?"]
 
-          case cachebust
+          asset     = assets[pathname, *args]
+          baseurl   = "#{assets_config.baseurl}/"
+
+          case cachebust = assets_config.cachebust
           when :none then baseurl << asset.logical_path
           when :soft then baseurl << asset.logical_path << "?cb=#{asset.digest}"
           when :hard then baseurl << asset.digest_path
           else raise "Unknown cachebust strategy: #{cachebust.inspect}"
           end
+
+          baseurl << (:soft == cachebust ? "&" : "?") << query if query
+          baseurl << "#" << anchor if anchor
+
+          baseurl
         end
 
 
