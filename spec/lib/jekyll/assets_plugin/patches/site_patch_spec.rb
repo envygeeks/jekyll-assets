@@ -54,12 +54,6 @@ module Jekyll::AssetsPlugin
             end
           end
         end
-
-        context "with Liquid markup within assets" do
-          it "should be rendered" do
-            site.assets["app.js"].to_s.should match(/noise-[a-f0-9]{32}\.png/)
-          end
-        end
       end
 
 

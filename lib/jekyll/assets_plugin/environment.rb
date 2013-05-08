@@ -31,9 +31,6 @@ module Jekyll
         self.js_compressor   = @site.assets_config.js_compressor
         self.css_compressor  = @site.assets_config.css_compressor
 
-        register_preprocessor "text/css",               LiquidProcessor
-        register_preprocessor "application/javascript", LiquidProcessor
-
         # bind jekyll and Sprockets context together
         context_class.instance_variable_set :@site, @site
 
