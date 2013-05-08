@@ -1,3 +1,8 @@
+### 0.4.1 (2013-05-08)
+
+* Drop forgotten liquid processor require.
+
+
 ### 0.4.0 (2013-05-08)
 
 * Drop Liquid pre-processing. See #25.

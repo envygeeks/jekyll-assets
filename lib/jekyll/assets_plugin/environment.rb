@@ -2,10 +2,6 @@
 require "sprockets"
 
 
-# internal
-require "jekyll/assets_plugin/liquid_processor"
-
-
 module Jekyll
   module AssetsPlugin
     class Environment < Sprockets::Environment
