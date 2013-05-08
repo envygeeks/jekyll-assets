@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   them, respecting dependencies, minify and many more.
   DESC
 
-  gem.add_dependency "jekyll"
+  gem.add_dependency "jekyll",    "< 1.0.0"
   gem.add_dependency "sprockets", "~> 2.9"
 
   gem.add_development_dependency "rake"

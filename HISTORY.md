@@ -1,3 +1,9 @@
+### 0.4.2 (2013-05-08)
+
+* Require jekyll < 1.0.0. This is a the last release with support of 0.x branch
+  of jekyll.
+
+
 ### 0.4.1 (2013-05-08)
 
 * Drop forgotten liquid processor require.
