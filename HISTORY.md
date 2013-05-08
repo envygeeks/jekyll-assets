@@ -1,3 +1,8 @@
+### 0.4.0 (2013-05-08)
+
+* Drop Liquid pre-processing. See #25.
+
+
 ### 0.3.8 (2013-04-29)
 
 * Play nice with query strings and anchors in pathnames of requested assets.
