@@ -5,26 +5,13 @@ module Jekyll::AssetsPlugin
   module Patches
     describe SitePatch do
       let(:site) do
-        Class.new(Jekyll::Site) do
-          include SitePatch
-
-          def initialize
-            self.reset
-          end
-
-          def config
-            @config ||= {
-              "dirname" => "foobar",
-              "assets"  => {
-                "sources" => [ "foobar", "_assets" ]
-              }
-            }
-          end
-
-          def source
-            @source ||= RSpecHelpers.fixtures_path.to_s
-          end
-        end.new
+        Jekyll::Site.new Jekyll.configuration({
+          "source"  => RSpecHelpers.fixtures_path.to_s,
+          "dirname" => "foobar",
+          "assets"  => {
+            "sources" => [ "foobar", "_assets" ]
+          }
+        })
       end
 
       context "#assets" do
