@@ -1,3 +1,9 @@
+### 0.5.0 (2013-05-10)
+
+* Fix mocks to pass tests on jekyll 1.x
+* Update jekyll dependency `~> 1.0`
+
+
 ### 0.4.2 (2013-05-08)
 
 * Require jekyll < 1.0.0. This is a the last release with support of 0.x branch
@@ -32,7 +38,7 @@
 
 ### 0.3.5 (2013-03-03)
 
-* Add buil-tim neat support as `require "jekyll-assets/neat"`. See #18.
+* Add built-in neat support as `require "jekyll-assets/neat"`. See #18.
   (Thanks @awmichel)
 * Automagically produce GZipped assets. See #17. (Thanks @beanieboi)
 
