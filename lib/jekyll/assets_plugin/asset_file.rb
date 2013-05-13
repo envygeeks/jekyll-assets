@@ -9,7 +9,7 @@ module Jekyll
 
 
       def initialize site, asset
-        @site, @logical_path = site, asset.logical_path
+        @site, @asset, @logical_path = site, asset, asset.logical_path
       end
 
 
@@ -28,7 +28,8 @@ module Jekyll
 
 
       def asset
-        @site.assets[logical_path]
+        @asset = @site.assets[logical_path] if @asset.stale? @site.assets
+        @asset
       end
 
 
