@@ -1,3 +1,8 @@
+### 0.5.1 (2013-05-13)
+
+* Re-use underlying asset file to avoid "recompilation" of fresh assets.
+
+
 ### 0.5.0 (2013-05-10)
 
 * Fix mocks to pass tests on jekyll 1.x
