@@ -170,11 +170,6 @@ body
   background-color: <%= (12 == Date.today.month) ? "red" : "white" %>
 ```
 
-*Note* that all assets are pre-processed with Liquid. So if you just need to
-  output asset URL within your javascript/coffeescript or pure css, you don't
-  need to use ERB, just use `asset_path` Liquid tag same as you do it in your
-  layouts/pages. See "Liquid Assets Pre-processing" for more details.
-
 Want more? Sure, here you are. You can use JavaScript templating with EJS or ECO
 for example. Create a file `_assets/javascripts/hello.jst.ejs` with following
 contents:
@@ -213,18 +208,6 @@ assets:
 ```
 
 [amazon-s3]: http://aws.amazon.com/s3
-
-
-## Liquid Assets Pre-processing
-
-All javascript and stylesheet assets are preprocessed with Liquid automagically.
-That means that you can use all liquid tags available to you in Jekyll, but most
-like;y you would want it for `asset_path` tag only:
-
-``` coffeescript
-# file: _assets/javascripts/app.js.coffee
-yepnope.load "{% asset_path app.css %}"
-```
 
 
 ## Custom Vendors
