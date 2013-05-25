@@ -18,6 +18,13 @@ module Jekyll::AssetsPlugin
         subject { site.assets }
         it { should be_a_kind_of Sprockets::Environment }
 
+        context "#cache_path" do
+          let(:source_path) { Pathname.new site.source }
+          subject           { site.assets.cache_path }
+
+          it { should == source_path.join(".jekyll-assets-cache") }
+        end
+
         context "calling #asset_path within assets" do
           context "when requested file not found" do
             it "should raise a NotFound error" do

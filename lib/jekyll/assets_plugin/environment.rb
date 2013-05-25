@@ -1,3 +1,7 @@
+# stdlib
+require "pathname"
+
+
 # 3rd-party
 require "sprockets"
 
@@ -28,7 +32,6 @@ module Jekyll
         self.css_compressor  = @site.assets_config.css_compressor
 
         if @site.assets_config.cache_assets?
-          cache_path = File.join @site.config['source'], ".jekyll-assets-cache"
           self.cache = Sprockets::Cache::FileStore.new cache_path
         end
 
@@ -36,6 +39,11 @@ module Jekyll
         context_class.instance_variable_set :@site, @site
 
         context_class.send :include, Patches::ContextPatch
+      end
+
+
+      def cache_path
+        Pathname.new(@site.source).join ".jekyll-assets-cache"
       end
 
 
