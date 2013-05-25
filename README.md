@@ -210,6 +210,19 @@ assets:
 [amazon-s3]: http://aws.amazon.com/s3
 
 
+### Compilation Cache
+
+To improve build time, we have Sprockets caching enabled. You might want to
+clean this cache time after time with `assets:cleanup` jekyll command:
+
+    $ jekyll assets:cleanup
+
+You can turn caching off with `cache_assests` configuration option.
+
+At the moment we use *FileStore* cache which keeps compiled data on file system.
+If you need MemCache or Redis based store, please raise a ticket.
+
+
 ## Custom Vendors
 
 Sometimes you would like to have some 3rd-party vendors. For this purposes,
@@ -436,6 +449,12 @@ assets:
   #     output URL:   /assets/javascripts/app-4f41243847da693a4f356c0486114bc6.css
   #
   cachebust: hard
+  #
+  # Whenever or not cache compiled assets (enabled by default).
+  # Caching significantly improves compilation performance, but you might need
+  # clean it up time after time with `jekyll assets:cleanup` command.
+  #
+  cache_assets: true
   #
   # Specifies list of MIME types that needs to have gzipped versions.
   # You can set it to `false` to disable gzipping. Only javascripts and
