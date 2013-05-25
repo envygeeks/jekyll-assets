@@ -1,3 +1,10 @@
+### 0.5.2 (2013-05-25)
+
+* Use Sprocket assets cache for compilation speed improvement. See #32.
+  (Thanks @beanieboi).
+* Minor fix in gemspec.
+
+
 ### 0.5.1 (2013-05-13)
 
 * Re-use underlying asset file to avoid "recompilation" of fresh assets.
