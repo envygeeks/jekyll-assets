@@ -492,7 +492,7 @@ write an [e-mail][e-mail]. :D
 
 ## License
 
-Copyright (C) 2012 Aleksey V Zapparov (http://ixti.net/)
+Copyright (C) 2012-2013 Aleksey V Zapparov (http://ixti.net/)
 
 The MIT License
 
