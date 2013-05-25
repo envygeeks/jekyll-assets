@@ -6,11 +6,12 @@ module Jekyll
   module AssetsPlugin
     class Configuration
       DEFAULTS = {
-        :dirname    => "assets",
-        :sources    => %w{_assets/javascripts _assets/stylesheets _assets/images},
-        :compress   => { :css => nil, :js => nil },
-        :cachebust  => :hard,
-        :gzip       => %w{ text/css application/javascript }
+        :dirname      => "assets",
+        :sources      => %w{_assets/javascripts _assets/stylesheets _assets/images},
+        :compress     => { :css => nil, :js => nil },
+        :cachebust    => :hard,
+        :cache_assets => true,
+        :gzip         => %w{ text/css application/javascript }
       }.freeze
 
 
@@ -44,6 +45,12 @@ module Jekyll
       def cachebust
         none?(@data.cachebust) ? :none : @data.cachebust.to_sym
       end
+
+
+      def cache_assets?
+        !!@data.cache_assets
+      end
+
 
       def gzip
         return @data.gzip if @data.gzip.is_a? Array

@@ -41,6 +41,11 @@ module Jekyll::AssetsPlugin
         it { should =~ %w{ text/css application/javascript } }
       end
 
+      context "cache_assets?" do
+        subject { config.cache_assets? }
+        it { should be_true }
+      end
+
     end
 
     it "should override specified options and leave defaults for missing" do

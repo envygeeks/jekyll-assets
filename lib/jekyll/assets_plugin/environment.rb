@@ -27,8 +27,10 @@ module Jekyll
         self.js_compressor   = @site.assets_config.js_compressor
         self.css_compressor  = @site.assets_config.css_compressor
 
-        @sprockets_cache_path = File.join(@site.config['source'], 'tmp', 'cache')
-        self.cache           = Sprockets::Cache::FileStore.new(@sprockets_cache_path)
+        if @site.assets_config.cache_assets?
+          cache_path = File.join @site.config['source'], ".jekyll-assets-cache"
+          self.cache = Sprockets::Cache::FileStore.new cache_path
+        end
 
         # bind jekyll and Sprockets context together
         context_class.instance_variable_set :@site, @site
