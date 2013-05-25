@@ -212,12 +212,20 @@ assets:
 
 ### Compilation Cache
 
-To improve build time, we have Sprockets caching enabled. You might want to
-clean this cache time after time with `assets:cleanup` jekyll command:
+To improve build time, you can enabled compiled assets cache:
+
+``` yaml
+assets:
+  cache_assets: true
+```
+
+In this case you might want to clean cache time after time:
 
     $ jekyll assets:cleanup
 
-You can turn caching off with `cache_assests` configuration option.
+Also you will need to add `.jekyll-assets-cache` path under source of your
+jekyll site into exclusion list of your source control system (`.gitignore`
+for git).
 
 At the moment we use *FileStore* cache which keeps compiled data on file system.
 If you need MemCache or Redis based store, please raise a ticket.
@@ -450,11 +458,10 @@ assets:
   #
   cachebust: hard
   #
-  # Whenever or not cache compiled assets (enabled by default).
-  # Caching significantly improves compilation performance, but you might need
-  # clean it up time after time with `jekyll assets:cleanup` command.
+  # Whenever or not cache compiled assets (disabled by default).
+  # See `Compilation Cache` section of README for details.
   #
-  cache_assets: true
+  cache_assets: false
   #
   # Specifies list of MIME types that needs to have gzipped versions.
   # You can set it to `false` to disable gzipping. Only javascripts and

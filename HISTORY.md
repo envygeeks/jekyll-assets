@@ -1,3 +1,8 @@
+### 0.5.3 (2013-05-25)
+
+* Assets cache disable by default, in order to avoid "unpredictable" behavior.
+
+
 ### 0.5.2 (2013-05-25)
 
 * Use Sprocket assets cache for compilation speed improvement. See #32.

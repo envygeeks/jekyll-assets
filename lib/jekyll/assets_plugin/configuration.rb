@@ -10,7 +10,7 @@ module Jekyll
         :sources      => %w{_assets/javascripts _assets/stylesheets _assets/images},
         :compress     => { :css => nil, :js => nil },
         :cachebust    => :hard,
-        :cache_assets => true,
+        :cache_assets => false,
         :gzip         => %w{ text/css application/javascript }
       }.freeze
 

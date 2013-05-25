@@ -43,7 +43,7 @@ module Jekyll::AssetsPlugin
 
       context "cache_assets?" do
         subject { config.cache_assets? }
-        it { should be_true }
+        it { should be_false }
       end
 
     end
