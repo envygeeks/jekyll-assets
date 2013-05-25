@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.name          = "jekyll-assets"
   gem.version       = Jekyll::AssetsPlugin::VERSION
   gem.homepage      = "http://ixti.github.com/jekyll-assets"
-  gem.authors       = "Aleksey V Zapparov"
+  gem.authors       = ["Aleksey V Zapparov"]
   gem.email         = %w{ixti@member.fsf.org}
   gem.license       = "MIT"
   gem.summary       = "jekyll-assets-#{Jekyll::AssetsPlugin::VERSION}"
