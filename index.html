@@ -170,7 +170,7 @@ like:</p>
 
 <div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
 
-<span class="nx">$</span> <span class="o">-&gt;</span>
+<span class="nx">$</span> <span class="nf">-&gt;</span>
   <span class="nx">alert</span> <span class="s">'I love BIG BOOKS! And small ones too!'</span>
 </pre></div>
 
@@ -202,11 +202,6 @@ body
   background-color: &lt;%= (12 == Date.today.month) ? "red" : "white" %&gt;
 </code></pre>
 
-<p><em>Note</em> that all assets are pre-processed with Liquid. So if you just need to
-  output asset URL within your javascript/coffeescript or pure css, you don't
-  need to use ERB, just use <code>asset_path</code> Liquid tag same as you do it in your
-  layouts/pages. See "Liquid Assets Pre-processing" for more details.</p>
-
 <p>Want more? Sure, here you are. You can use JavaScript templating with EJS or ECO
 for example. Create a file <code>_assets/javascripts/hello.jst.ejs</code> with following
 contents:</p>
@@ -220,7 +215,7 @@ contents:</p>
 <div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
 <span class="c1">#= require hello</span>
 
-<span class="nx">$</span> <span class="o">-&gt;</span>
+<span class="nx">$</span> <span class="nf">-&gt;</span>
   <span class="nx">$</span><span class="p">(</span><span class="s">"body"</span><span class="p">).</span><span class="nx">html</span> <span class="nx">JST</span><span class="p">[</span><span class="s">"hello"</span><span class="p">]</span>
     <span class="nv">name: </span><span class="s">"ixti"</span>
     <span class="nv">info: </span><span class="s">"I love BIG BOOKS! And small ones too!"</span>
@@ -242,15 +237,25 @@ changed via configuration:</p>
   <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">//my.super-cool-cdn.com/</span>
 </pre></div>
 
-<h2>Liquid Assets Pre-processing</h2>
+<h3>Compilation Cache</h3>
 
-<p>All javascript and stylesheet assets are preprocessed with Liquid automagically.
-That means that you can use all liquid tags available to you in Jekyll, but most
-like;y you would want it for <code>asset_path</code> tag only:</p>
+<p>To improve build time, you can enabled compiled assets cache:</p>
 
-<div class="highlight"><pre><span class="c1"># file: _assets/javascripts/app.js.coffee</span>
-<span class="nx">yepnope</span><span class="p">.</span><span class="nx">load</span> <span class="s">"{% asset_path app.css %}"</span>
+<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">cache_assets</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
 </pre></div>
+
+<p>In this case you might want to clean cache time after time:</p>
+
+<pre><code>$ jekyll assets:cleanup
+</code></pre>
+
+<p>Also you will need to add <code>.jekyll-assets-cache</code> path under source of your
+jekyll site into exclusion list of your source control system (<code>.gitignore</code>
+for git).</p>
+
+<p>At the moment we use <em>FileStore</em> cache which keeps compiled data on file system.
+If you need MemCache or Redis based store, please raise a ticket.</p>
 
 <h2>Custom Vendors</h2>
 
@@ -467,6 +472,11 @@ back by any other <code>require</code>.</p>
   <span class="c1">#</span>
   <span class="l-Scalar-Plain">cachebust</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hard</span>
   <span class="c1">#</span>
+  <span class="c1"># Whenever or not cache compiled assets (disabled by default).</span>
+  <span class="c1"># See `Compilation Cache` section of README for details.</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">cache_assets</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="c1">#</span>
   <span class="c1"># Specifies list of MIME types that needs to have gzipped versions.</span>
   <span class="c1"># You can set it to `false` to disable gzipping. Only javascripts and</span>
   <span class="c1"># stylesheets are gzipped by default.</span>
@@ -489,7 +499,7 @@ write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 <li>Create new Pull Request</li>
 </ol><h2>License</h2>
 
-<p>Copyright (C) 2012 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
+<p>Copyright (C) 2012-2013 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
 
 <p>The MIT License</p>
 
