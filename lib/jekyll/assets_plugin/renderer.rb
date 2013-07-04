@@ -2,8 +2,8 @@ module Jekyll
   module AssetsPlugin
     class Renderer
 
-      STYLESHEET = '<link rel="stylesheet" type="text/css" href="%s">'
-      JAVASCRIPT = '<script type="text/javascript" src="%s"></script>'
+      STYLESHEET = '<link rel="stylesheet" type="text/css" href="%s" data-turbolinks-track>'
+      JAVASCRIPT = '<script type="text/javascript" src="%s" data-turbolinks-track></script>'
 
 
       def initialize context, logical_path
@@ -25,14 +25,22 @@ module Jekyll
       def render_javascript
         @path << ".js" if File.extname(@path).empty?
 
-        JAVASCRIPT % render_asset_path
+        ret = JAVASCRIPT % render_asset_path
+        if !@site.assets_config.turbolinks?
+          ret = ret.gsub(/data-turbolinks-track/, '')
+        end
+        ret
       end
 
 
       def render_stylesheet
         @path << ".css" if File.extname(@path).empty?
 
-        STYLESHEET % render_asset_path
+        ret = STYLESHEET % render_asset_path
+        if !@site.assets_config.turbolinks?
+          ret = ret.gsub(/data-turbolinks-track/, '')
+        end
+        ret
       end
 
     end

@@ -11,7 +11,8 @@ module Jekyll
         :compress     => { :css => nil, :js => nil },
         :cachebust    => :hard,
         :cache_assets => false,
-        :gzip         => %w{ text/css application/javascript }
+        :gzip         => %w{ text/css application/javascript },
+        :turbolinks   => false
       }.freeze
 
 
@@ -49,6 +50,10 @@ module Jekyll
 
       def cache_assets?
         !!@data.cache_assets
+      end
+
+      def turbolinks?
+        !!@data.turbolinks
       end
 
 
