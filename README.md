@@ -216,19 +216,13 @@ To improve build time, you can enabled compiled assets cache:
 
 ``` yaml
 assets:
-  cache_assets: true
+  cache: true
 ```
 
-In this case you might want to clean cache time after time:
-
-    $ jekyll assets:cleanup
-
-Also you will need to add `.jekyll-assets-cache` path under source of your
-jekyll site into exclusion list of your source control system (`.gitignore`
-for git).
-
-At the moment we use *FileStore* cache which keeps compiled data on file system.
-If you need MemCache or Redis based store, please raise a ticket.
+This will keep cache of compiled assets in `.jekyll-assets-cache` under source
+of your jekyl site. If you want to use different location specify it instead of
+`true`, in this case it should be an absolute path or path relative to source
+path of your jekyl site.
 
 
 ## Custom Vendors
@@ -421,17 +415,15 @@ assets:
     - _assets/stylesheets
     - _assets/images
   #
-  # Sets compressors for the specific types of file: `js`, or `css`.
-  # No compression by default.
+  # Sets JS compressor. No compression by default.
+  # Possible variants: 'yui', 'uglifier', nil
   #
-  # Possible variants:
+  js_compressor: ~
   #
-  #     css  => 'yui', 'sass', nil
-  #     js   => 'yui', 'uglifier', nil
+  # Sets CSS compressor. No compression by default.
+  # Possible variants: 'yui', 'sass', nil
   #
-  compress:
-    js:   ~
-    css:  ~
+  css_compressor: ~
   #
   # Sets cachebusting policy for generated assets.
   #
@@ -461,7 +453,7 @@ assets:
   # Whenever or not cache compiled assets (disabled by default).
   # See `Compilation Cache` section of README for details.
   #
-  cache_assets: false
+  cache: false
   #
   # Specifies list of MIME types that needs to have gzipped versions.
   # You can set it to `false` to disable gzipping. Only javascripts and

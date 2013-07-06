@@ -27,12 +27,12 @@ module Jekyll::AssetsPlugin
       end
 
       context "js compressor" do
-        subject { config.compress.js }
+        subject { config.js_compressor }
         it { should be_nil }
       end
 
       context "css compressor" do
-        subject { config.compress.css }
+        subject { config.css_compressor }
         it { should be_nil }
       end
 
@@ -46,18 +46,32 @@ module Jekyll::AssetsPlugin
         it { should be_false }
       end
 
+      context "cache_path" do
+        subject { config.cache_path }
+        it { should == ".jekyll-assets-cache" }
+      end
+
     end
 
     it "should override specified options and leave defaults for missing" do
       config = Configuration.new({
-        :sources  => %w{abc},
-        :compress => { :css => "sass" }
+        :sources        => %w{abc},
+        :css_compressor => "sass"
       })
 
-      config.dirname.should       ==  "assets"
-      config.sources.should       =~  %w{abc}
-      config.compress.js.should       be_nil
-      config.compress.css.should  ==  "sass"
+      config.dirname.should         ==  "assets"
+      config.sources.should         =~  %w{abc}
+      config.js_compressor.should       be_nil
+      config.css_compressor.should  ==  :sass
+    end
+
+    context "#cache" do
+      context "when specified as String" do
+        it "should override default cache path" do
+          config = Configuration.new :cache => "/tmp/jekyll-assets"
+          config.cache_path.should == "/tmp/jekyll-assets"
+        end
+      end
     end
 
     context "#baseurl" do
@@ -77,7 +91,7 @@ module Jekyll::AssetsPlugin
 
     context "#js_compressor" do
       context "when js compressor is given as `uglify`" do
-        let(:config){ Configuration.new(:compress => {:js => "uglify"}) }
+        let(:config){ Configuration.new(:js_compressor => "uglify") }
         subject { config.js_compressor }
         it { should be :uglify }
       end
@@ -91,7 +105,7 @@ module Jekyll::AssetsPlugin
 
     context "#css_compressor" do
       context "when css compressor is given as `sass`" do
-        let(:config){ Configuration.new(:compress => {:css => "sass"}) }
+        let(:config){ Configuration.new(:css_compressor => "sass") }
         subject { config.css_compressor }
         it { should be :sass }
       end
@@ -108,6 +122,28 @@ module Jekyll::AssetsPlugin
         let(:config){ Configuration.new(:gzip => false) }
         subject { config.gzip }
         it { should == [] }
+      end
+    end
+
+
+    context "Deprecated options" do
+      context "compress" do
+        let(:options){ { :compress => {:js => "uglify", :css => "sass"} } }
+
+        it "should set corresponding *_compressor value" do
+          config = Configuration.new options
+          config.js_compressor.should   == :uglify
+          config.css_compressor.should  == :sass
+        end
+      end
+
+      context "cache_assets" do
+        let(:options){ { :cache_assets => true } }
+
+        it "should set `cache` value" do
+          config = Configuration.new options
+          config.cache_assets?.should be_true
+        end
       end
     end
   end

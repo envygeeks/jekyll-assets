@@ -42,7 +42,7 @@ module Jekyll
 
 
       def cache_path
-        Pathname.new(@site.source).join ".jekyll-assets-cache"
+        Pathname.new(@site.source).join @site.assets_config.cache_path
       end
 
 

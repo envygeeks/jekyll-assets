@@ -6,12 +6,13 @@ module Jekyll
   module AssetsPlugin
     class Configuration
       DEFAULTS = {
-        :dirname      => "assets",
-        :sources      => %w{_assets/javascripts _assets/stylesheets _assets/images},
-        :compress     => { :css => nil, :js => nil },
-        :cachebust    => :hard,
-        :cache_assets => false,
-        :gzip         => %w{ text/css application/javascript }
+        :dirname        => "assets",
+        :sources        => %w{_assets/javascripts _assets/stylesheets _assets/images},
+        :js_compressor  => nil,
+        :css_compressor => nil,
+        :cachebust      => :hard,
+        :cache          => false,
+        :gzip           => %w{ text/css application/javascript }
       }.freeze
 
 
@@ -19,8 +20,13 @@ module Jekyll
         @data = OpenStruct.new DEFAULTS.merge(config)
 
         @data.sources  = [ @data.sources ] if @data.sources.is_a? String
-        @data.compress = OpenStruct.new @data.compress
         @data.dirname  = @data.dirname.gsub(/^\/+|\/+$/, "")
+
+        compress = OpenStruct.new @data.compress
+
+        @data.js_compressor   ||= compress.js
+        @data.css_compressor  ||= compress.css
+        @data.cache           ||= @data.cache_assets
 
         # if baseurl not given - autoguess base on dirname
         @data.baseurl ||= "/#{@data.dirname}/".squeeze '/'
@@ -33,12 +39,12 @@ module Jekyll
 
 
       def js_compressor
-        compressor @data.compress.js
+        compressor @data.js_compressor
       end
 
 
       def css_compressor
-        compressor @data.compress.css
+        compressor @data.css_compressor
       end
 
 
@@ -48,7 +54,12 @@ module Jekyll
 
 
       def cache_assets?
-        !!@data.cache_assets
+        !!@data.cache
+      end
+
+
+      def cache_path
+        @data.cache.is_a?(String) ? @data.cache : ".jekyll-assets-cache"
       end
 
 
