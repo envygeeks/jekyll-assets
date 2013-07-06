@@ -35,6 +35,9 @@ module Jekyll
           self.cache = Sprockets::Cache::FileStore.new cache_path
         end
 
+        # reset cache if config changed
+        self.version = site.assets_config.marshal_dump
+
         # bind jekyll and Sprockets context together
         context_class.instance_variable_set :@site, site
         context_class.send :include, Patches::ContextPatch
