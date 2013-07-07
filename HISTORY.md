@@ -1,4 +1,4 @@
-### 0.5.4 (WIP)
+### 0.5.4 (2103-07-07)
 
 * Rename configuration options `compress.js` and `compress.css` into
   `js_compressor` and `css_compressor` respectively.
