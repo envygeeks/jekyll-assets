@@ -1,3 +1,12 @@
+### 0.5.4 (WIP)
+
+* Rename configuration options `compress.js` and `compress.css` into
+  `js_compressor` and `css_compressor` respectively.
+* Rename configureation option `cache_assets` into `cache`.
+* Allow specify custom compilation cache path.
+* Invalidate cache upon config changes.
+
+
 ### 0.5.3 (2013-05-25)
 
 * Assets cache disable by default, in order to avoid "unpredictable" behavior.
