@@ -151,9 +151,8 @@ case just install `uglifier` gem and add following lines into your `config.yml`:
 
 ``` yaml
 assets:
-  compress:
-    js:   uglifier
-    css:  sass
+  js_compressor:  uglifier
+  css_compressor: sass
 ```
 
 If you want to use YUI compressor for minification, install `yui-compressor`
@@ -231,8 +230,7 @@ Once it's done, just tell assets to use `my_uglifier` as js compressor:
 
 ``` yaml
 assets:
-  compress:
-    js: my_uglifier
+  js_compressor: my_uglifier
 ```
 
 
