@@ -1,3 +1,8 @@
+### 0.5.5 (WIP)
+
+* Remove `type` attributes from tags genereated by `javascript` and
+  `stylesheet` helpers. See #37.
+
 ### 0.5.4 (2103-07-07)
 
 * Rename configuration options `compress.js` and `compress.css` into
