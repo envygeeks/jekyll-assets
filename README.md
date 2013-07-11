@@ -158,6 +158,7 @@ assets:
 
 If you want to use YUI compressor for minification, install `yui-compressor`
 gem and put `yui` in place of `uglifier` and/or `sass` in the config file.
+You can also define and use your own compressor, see "Custom Compressors".
 
 Let's go crazy now! Assume you want your blog's `body` background color to be
 white all the time, but red if you compiled your web-site in December. Just add
@@ -208,6 +209,31 @@ assets:
 ```
 
 [amazon-s3]: http://aws.amazon.com/s3
+
+
+### Custom COmpressors
+
+Sprockets comes with good set of preconfigured compressors, but imagine you are
+not satisfied with default settings. For example you want to strip all comments
+but copyrights info. In this csae you can define and use your own compressor.
+
+To do so, first let's define new compressor in `_plugins/ext.rb`:
+
+``` ruby
+require "jekyll-assets"
+require "sprockets"
+
+Sprockets.register_compressor 'application/javascript',
+  :my_uglifier, Uglifier.new(:comments => :copyright)
+```
+
+Once it's done, just tell assets to use `my_uglifier` as js compressor:
+
+``` yaml
+assets:
+  compress:
+    js: my_uglifier
+```
 
 
 ### Compilation Cache
