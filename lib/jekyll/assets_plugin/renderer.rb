@@ -2,8 +2,8 @@ module Jekyll
   module AssetsPlugin
     class Renderer
 
-      STYLESHEET = '<link rel="stylesheet" type="text/css" href="%s">'
-      JAVASCRIPT = '<script type="text/javascript" src="%s"></script>'
+      STYLESHEET = '<link rel="stylesheet" href="%s">'
+      JAVASCRIPT = '<script src="%s"></script>'
 
 
       def initialize context, logical_path
