@@ -211,7 +211,7 @@ assets:
 [amazon-s3]: http://aws.amazon.com/s3
 
 
-### Custom COmpressors
+### Custom Compressors
 
 Sprockets comes with good set of preconfigured compressors, but imagine you are
 not satisfied with default settings. For example you want to strip all comments
