@@ -187,13 +187,13 @@ difference is only in comments styles used with <em>directives</em>.</p>
 case just install <code>uglifier</code> gem and add following lines into your <code>config.yml</code>:</p>
 
 <div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">compress</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">js</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">uglifier</span>
-    <span class="l-Scalar-Plain">css</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">sass</span>
+  <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">uglifier</span>
+  <span class="l-Scalar-Plain">css_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sass</span>
 </pre></div>
 
 <p>If you want to use YUI compressor for minification, install <code>yui-compressor</code>
-gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the config file.</p>
+gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the config file.
+You can also define and use your own compressor, see "Custom Compressors".</p>
 
 <p>Let's go crazy now! Assume you want your blog's <code>body</code> background color to be
 white all the time, but red if you compiled your web-site in December. Just add
@@ -238,6 +238,28 @@ changed via configuration:</p>
 
 <div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">//my.super-cool-cdn.com/</span>
+</pre></div>
+
+<h3>
+<a name="custom-compressors" class="anchor" href="#custom-compressors"><span class="octicon octicon-link"></span></a>Custom Compressors</h3>
+
+<p>Sprockets comes with good set of preconfigured compressors, but imagine you are
+not satisfied with default settings. For example you want to strip all comments
+but copyrights info. In this csae you can define and use your own compressor.</p>
+
+<p>To do so, first let's define new compressor in <code>_plugins/ext.rb</code>:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<span class="nb">require</span> <span class="s2">"sprockets"</span>
+
+<span class="no">Sprockets</span><span class="o">.</span><span class="n">register_compressor</span> <span class="s1">'application/javascript'</span><span class="p">,</span>
+  <span class="ss">:my_uglifier</span><span class="p">,</span> <span class="no">Uglifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:comments</span> <span class="o">=&gt;</span> <span class="ss">:copyright</span><span class="p">)</span>
+</pre></div>
+
+<p>Once it's done, just tell assets to use <code>my_uglifier</code> as js compressor:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">my_uglifier</span>
 </pre></div>
 
 <h3>
