@@ -35,10 +35,11 @@
           <p>Unleash Mr Hyde!</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/ixti">ixti</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>Jekyll::AssetsPlugin</h1>
+        <h1>
+<a name="jekyllassetsplugin" class="anchor" href="#jekyllassetsplugin"><span class="octicon octicon-link"></span></a>Jekyll::AssetsPlugin</h1>
 
 <p>Jekyll plugin, that adds Rails-alike assets pipeline, that means that:</p>
 
@@ -71,7 +72,8 @@ information about amazing features it gives you.</p>
 that shows how to use it step by step. Also you might want to take a look on 
 <a href="https://github.com/ixti/ixti.github.com">my blog sources</a> as a real-world example as well.</p>
 
-<h2>Installation</h2>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Add this line to your application's Gemfile:</p>
 
@@ -88,7 +90,8 @@ that shows how to use it step by step. Also you might want to take a look on
 <pre><code>$ gem install jekyll-assets
 </code></pre>
 
-<h2>How to Use Jekyll-Assets</h2>
+<h2>
+<a name="how-to-use-jekyll-assets" class="anchor" href="#how-to-use-jekyll-assets"><span class="octicon octicon-link"></span></a>How to Use Jekyll-Assets</h2>
 
 <p>First of all make sure to require it. Common practice is to add following line
 into <code>_plugins/ext.rb</code> file:</p>
@@ -237,27 +240,22 @@ changed via configuration:</p>
   <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">//my.super-cool-cdn.com/</span>
 </pre></div>
 
-<h3>Compilation Cache</h3>
+<h3>
+<a name="compilation-cache" class="anchor" href="#compilation-cache"><span class="octicon octicon-link"></span></a>Compilation Cache</h3>
 
 <p>To improve build time, you can enabled compiled assets cache:</p>
 
 <div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">cache_assets</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+  <span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
 </pre></div>
 
-<p>In this case you might want to clean cache time after time:</p>
+<p>This will keep cache of compiled assets in <code>.jekyll-assets-cache</code> under source
+of your jekyl site. If you want to use different location specify it instead of
+<code>true</code>, in this case it should be an absolute path or path relative to source
+path of your jekyl site.</p>
 
-<pre><code>$ jekyll assets:cleanup
-</code></pre>
-
-<p>Also you will need to add <code>.jekyll-assets-cache</code> path under source of your
-jekyll site into exclusion list of your source control system (<code>.gitignore</code>
-for git).</p>
-
-<p>At the moment we use <em>FileStore</em> cache which keeps compiled data on file system.
-If you need MemCache or Redis based store, please raise a ticket.</p>
-
-<h2>Custom Vendors</h2>
+<h2>
+<a name="custom-vendors" class="anchor" href="#custom-vendors"><span class="octicon octicon-link"></span></a>Custom Vendors</h2>
 
 <p>Sometimes you would like to have some 3rd-party vendors. For this purposes,
 normally all you have to do is to override default assets sources in config:</p>
@@ -283,11 +281,13 @@ add following line into your <code>_plugins/ext.rb</code> file:</p>
 <p>That's it, now jekyll-assets will try to look for assets inside <code>/my/vendor</code>
 path first.</p>
 
-<h3>Built-in Vendors Support</h3>
+<h3>
+<a name="built-in-vendors-support" class="anchor" href="#built-in-vendors-support"><span class="octicon octicon-link"></span></a>Built-in Vendors Support</h3>
 
 <p>For your comfort jekyll-assets has built-in support for some popular libraries.</p>
 
-<h4>Compass Support</h4>
+<h4>
+<a name="compass-support" class="anchor" href="#compass-support"><span class="octicon octicon-link"></span></a>Compass Support</h4>
 
 <p>Require <code>jekyll-assets/compass</code> to enable, e.g.:</p>
 
@@ -300,7 +300,8 @@ path first.</p>
 <p><em>Note</em> that if you want to use other than default Compass plugins/frameworks,
   you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
 
-<h4>Bourbon Support</h4>
+<h4>
+<a name="bourbon-support" class="anchor" href="#bourbon-support"><span class="octicon octicon-link"></span></a>Bourbon Support</h4>
 
 <p>Require <code>jekyll-assets/bourbon</code> to enable, e.g.:</p>
 
@@ -310,7 +311,8 @@ path first.</p>
 
 <p>Now you can add <code>@import "bourbon"</code> in your SASS assets to get Bourbon goodies.</p>
 
-<h4>Neat Support</h4>
+<h4>
+<a name="neat-support" class="anchor" href="#neat-support"><span class="octicon octicon-link"></span></a>Neat Support</h4>
 
 <p>Require <code>jekyll-assets/neat</code> to enable, e.g.:</p>
 
@@ -320,7 +322,8 @@ path first.</p>
 
 <p>Now you can add <code>@import "neat"</code> in your SASS assets to get Neat goodies.</p>
 
-<h2>The Directive Processor</h2>
+<h2>
+<a name="the-directive-processor" class="anchor" href="#the-directive-processor"><span class="octicon octicon-link"></span></a>The Directive Processor</h2>
 
 <p><em>Note:</em> This section extracted from <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> README.</p>
 
@@ -344,7 +347,8 @@ contain spaces, similar to commands in the Unix shell.</p>
   processing. Sprockets will not look for directives in comment blocks
   that occur after the first line of code.</p>
 
-<h3>Supported Comment Types</h3>
+<h3>
+<a name="supported-comment-types" class="anchor" href="#supported-comment-types"><span class="octicon octicon-link"></span></a>Supported Comment Types</h3>
 
 <p>The directive processor understands comment blocks in three formats:</p>
 
@@ -359,7 +363,8 @@ contain spaces, similar to commands in the Unix shell.</p>
 #= require foo
 </code></pre>
 
-<h3>Sprockets Directives</h3>
+<h3>
+<a name="sprockets-directives" class="anchor" href="#sprockets-directives"><span class="octicon octicon-link"></span></a>Sprockets Directives</h3>
 
 <p>You can use the following directives to declare dependencies in asset
 source files.</p>
@@ -368,49 +373,57 @@ source files.</p>
 logical path or a relative path. Relative paths begin with <code>./</code> and
 reference files relative to the location of the current file.</p>
 
-<h4>The <code>require</code> Directive</h4>
+<h4>
+<a name="the-require-directive" class="anchor" href="#the-require-directive"><span class="octicon octicon-link"></span></a>The <code>require</code> Directive</h4>
 
 <p><code>require</code> <em>path</em> inserts the contents of the asset source file
 specified by <em>path</em>. If the file is required multiple times, it will
 appear in the bundle only once.</p>
 
-<h4>The <code>include</code> Directive</h4>
+<h4>
+<a name="the-include-directive" class="anchor" href="#the-include-directive"><span class="octicon octicon-link"></span></a>The <code>include</code> Directive</h4>
 
 <p><code>include</code> <em>path</em> works like <code>require</code>, but inserts the contents of the
 specified source file even if it has already been included or
 required.</p>
 
-<h4>The <code>require_directory</code> Directive</h4>
+<h4>
+<a name="the-require_directory-directive" class="anchor" href="#the-require_directory-directive"><span class="octicon octicon-link"></span></a>The <code>require_directory</code> Directive</h4>
 
 <p><code>require_directory</code> <em>path</em> requires all source files of the same
 format in the directory specified by <em>path</em>. Files are required in
 alphabetical order.</p>
 
-<h4>The <code>require_tree</code> Directive</h4>
+<h4>
+<a name="the-require_tree-directive" class="anchor" href="#the-require_tree-directive"><span class="octicon octicon-link"></span></a>The <code>require_tree</code> Directive</h4>
 
 <p><code>require_tree</code> <em>path</em> works like <code>require_directory</code>, but operates
 recursively to require all files in all subdirectories of the
 directory specified by <em>path</em>.</p>
 
-<h4>The <code>require_self</code> Directive</h4>
+<h4>
+<a name="the-require_self-directive" class="anchor" href="#the-require_self-directive"><span class="octicon octicon-link"></span></a>The <code>require_self</code> Directive</h4>
 
 <p><code>require_self</code> tells Sprockets to insert the body of the current
 source file before any subsequent <code>require</code> or <code>include</code> directives.</p>
 
-<h4>The <code>depend_on</code> Directive</h4>
+<h4>
+<a name="the-depend_on-directive" class="anchor" href="#the-depend_on-directive"><span class="octicon octicon-link"></span></a>The <code>depend_on</code> Directive</h4>
 
 <p><code>depend_on</code> <em>path</em> declares a dependency on the given <em>path</em> without
 including it in the bundle. This is useful when you need to expire an
 asset's cache in response to a change in another file.</p>
 
-<h4>The <code>stub</code> Directive</h4>
+<h4>
+<a name="the-stub-directive" class="anchor" href="#the-stub-directive"><span class="octicon octicon-link"></span></a>The <code>stub</code> Directive</h4>
 
 <p><code>stub</code> <em>path</em> allows dependency to be excluded from the asset bundle.
 The <em>path</em> must be a valid asset and may or may not already be part
 of the bundle. Once stubbed, it is blacklisted and can't be brought
 back by any other <code>require</code>.</p>
 
-<h2>Configuration</h2>
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>You can fine-tune configuration by editing your <code>_config.yml</code>:</p>
 
@@ -435,17 +448,15 @@ back by any other <code>require</code>.</p>
     <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/stylesheets</span>
     <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/images</span>
   <span class="c1">#</span>
-  <span class="c1"># Sets compressors for the specific types of file: `js`, or `css`.</span>
-  <span class="c1"># No compression by default.</span>
+  <span class="c1"># Sets JS compressor. No compression by default.</span>
+  <span class="c1"># Possible variants: 'yui', 'uglifier', nil</span>
   <span class="c1">#</span>
-  <span class="c1"># Possible variants:</span>
+  <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
   <span class="c1">#</span>
-  <span class="c1">#     css  =&gt; 'yui', 'sass', nil</span>
-  <span class="c1">#     js   =&gt; 'yui', 'uglifier', nil</span>
+  <span class="c1"># Sets CSS compressor. No compression by default.</span>
+  <span class="c1"># Possible variants: 'yui', 'sass', nil</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">compress</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">js</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">~</span>
-    <span class="l-Scalar-Plain">css</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">~</span>
+  <span class="l-Scalar-Plain">css_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
   <span class="c1">#</span>
   <span class="c1"># Sets cachebusting policy for generated assets.</span>
   <span class="c1">#</span>
@@ -475,7 +486,7 @@ back by any other <code>require</code>.</p>
   <span class="c1"># Whenever or not cache compiled assets (disabled by default).</span>
   <span class="c1"># See `Compilation Cache` section of README for details.</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">cache_assets</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
   <span class="c1">#</span>
   <span class="c1"># Specifies list of MIME types that needs to have gzipped versions.</span>
   <span class="c1"># You can set it to `false` to disable gzipping. Only javascripts and</span>
@@ -484,12 +495,14 @@ back by any other <code>require</code>.</p>
   <span class="l-Scalar-Plain">gzip</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span> <span class="nv">text/css</span><span class="p-Indicator">,</span> <span class="nv">application/javascript</span> <span class="p-Indicator">]</span>
 </pre></div>
 
-<h2>"Th-th-th-that's all folks!"</h2>
+<h2>
+<a name="th-th-th-thats-all-folks" class="anchor" href="#th-th-th-thats-all-folks"><span class="octicon octicon-link"></span></a>"Th-th-th-that's all folks!"</h2>
 
 <p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via <a>jabber</a> or
 write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 
-<h2>Contributing</h2>
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <ol>
 <li>Fork it</li>
@@ -497,7 +510,8 @@ write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 <li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
-</ol><h2>License</h2>
+</ol><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>Copyright (C) 2012-2013 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
 
