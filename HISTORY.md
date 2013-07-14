@@ -1,7 +1,10 @@
-### 0.5.5 (WIP)
+### 0.6.0 (2013-07-14)
 
 * Remove `type` attributes from tags genereated by `javascript` and
   `stylesheet` helpers. See #37.
+* Fix issue with nested assets not being regenerated when cache enabled.
+  See #35.
+
 
 ### 0.5.4 (2103-07-07)
 
