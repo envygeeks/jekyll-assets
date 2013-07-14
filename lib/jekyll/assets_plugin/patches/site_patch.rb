@@ -15,8 +15,8 @@ module Jekyll
 
         def self.included base
           base.class_eval do
-            alias_method :write_without_assets, :write
-            alias_method :write, :write_with_assets
+            alias_method :__orig_write, :write
+            alias_method :write, :__wrap_write
           end
         end
 
@@ -69,9 +69,9 @@ module Jekyll
         end
 
 
-        def write_with_assets
+        def __wrap_write
           static_files.push(*asset_files).uniq!
-          write_without_assets
+          __orig_write
         end
 
       end

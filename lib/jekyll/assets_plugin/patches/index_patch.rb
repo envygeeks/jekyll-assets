@@ -9,16 +9,16 @@ module Jekyll
 
         def self.included base
           base.class_eval do
-            alias_method :find_asset_without_jekyll, :find_asset
-            alias_method :find_asset, :find_asset_with_jekyll
+            alias_method :__orig_find_asset, :find_asset
+            alias_method :find_asset, :__wrap_find_asset
           end
         end
 
 
-        def find_asset_with_jekyll path, options = {}
-          asset = find_asset_without_jekyll path, options
-          @environment.site.bundle_asset! asset if asset and options[:bundle]
-          asset
+        def __wrap_find_asset path, options = {}
+          __orig_find_asset(path, options).tap do |asset|
+            @environment.site.bundle_asset! asset if asset and options[:bundle]
+          end
         end
 
       end
