@@ -26,6 +26,8 @@ RSpec.configure do |config|
   config.include Jekyll::AssetsPlugin::RSpecHelpers
 
   config.before(:all) do
+    Jekyll.logger.log_level = Jekyll::Stevenson::WARN
+
     @dest = fixtures_path.join("_site")
     @site = Jekyll::Site.new(Jekyll.configuration({
       "source"      => fixtures_path.to_s,
