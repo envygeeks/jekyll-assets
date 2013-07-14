@@ -1,3 +1,7 @@
+# stdlib
+require "set"
+
+
 module Jekyll
   module AssetsPlugin
     module Patches
@@ -8,8 +12,16 @@ module Jekyll
         end
 
 
-        def asset_path *args
-          site.asset_path(*args)
+        def _jekyll_assets
+          @_jekyll_assets ||= Set.new
+        end
+
+
+        def asset_path path, *args
+          _jekyll_assets << resolve(path).to_s
+          site.asset_path path, *args
+        rescue Sprockets::FileNotFound
+          raise Environment::AssetNotFound, path
         end
 
       end

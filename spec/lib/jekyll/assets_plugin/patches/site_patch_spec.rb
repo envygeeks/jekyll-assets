@@ -131,10 +131,30 @@ module Jekyll::AssetsPlugin
 
       it "should regenerate assets upon multiple #process" do
         @site.assets_config.cachebust = :none
-        2.times { @site.process }
-
+        2.times{ @site.process }
         @dest.join("assets", "app.css").exist?.should be_true
       end
+
+
+      context "with cache" do
+        def site
+          Jekyll::Site.new(Jekyll.configuration({
+            "source"      => fixtures_path.to_s,
+            "assets"      => { "cache" => true, "cachebust" => :none },
+            "destination" => @dest.to_s
+          }))
+        end
+
+        after do
+          site.assets.cache_path.rmtree if site.assets.cache_path.exist?
+        end
+
+        it "should regenerate static assets upon multiple #process" do
+          2.times{ site.process }
+          @dest.join("assets", "noise.png").exist?.should be_true
+        end
+      end
+
 
       context "#gzip" do
         subject { site.assets_config }

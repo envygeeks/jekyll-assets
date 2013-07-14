@@ -61,6 +61,8 @@ module Jekyll
           if not asset_files.include? asset
             file = AssetFile.new self, asset
 
+            asset.jekyll_assets.each{ |path| bundle_asset! assets[path] }
+
             asset_files   << file
             static_files  << file
           end
