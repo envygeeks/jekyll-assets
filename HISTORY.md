@@ -1,3 +1,8 @@
+### 0.6.1 (2013-07-22)
+
+* Fix regression with `asset_path`. See #38.
+
+
 ### 0.6.0 (2013-07-14)
 
 * Remove `type` attributes from tags genereated by `javascript` and
