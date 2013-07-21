@@ -30,7 +30,7 @@ module Jekyll
         def __wrap_build_dependency_paths environment, context
           @jekyll_assets = Set.new
 
-          context._jekyll_assets.each do |path|
+          context.jekyll_assets.each do |path|
             @jekyll_assets << path
             environment.find_asset(path).jekyll_assets.each{ |p| @jekyll_assets << p }
           end

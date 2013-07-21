@@ -12,13 +12,13 @@ module Jekyll
         end
 
 
-        def _jekyll_assets
-          @_jekyll_assets ||= Set.new
+        def jekyll_assets
+          @jekyll_assets ||= Set.new
         end
 
 
         def asset_path path, *args
-          _jekyll_assets << resolve(path).to_s
+          jekyll_assets << resolve(path.to_s[/^[^#?]+/]).to_s
           site.asset_path path, *args
         rescue Sprockets::FileNotFound
           raise Environment::AssetNotFound, path
