@@ -51,6 +51,11 @@ module Jekyll::AssetsPlugin
         it { should == ".jekyll-assets-cache" }
       end
 
+      context "debug" do
+        subject { config.debug }
+        it { should be_false }
+      end
+
     end
 
     it "should override specified options and leave defaults for missing" do

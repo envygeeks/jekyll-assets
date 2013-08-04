@@ -12,7 +12,8 @@ module Jekyll
         :css_compressor => nil,
         :cachebust      => :hard,
         :cache          => false,
-        :gzip           => %w{ text/css application/javascript }
+        :gzip           => %w{ text/css application/javascript },
+        :debug          => false
       }.freeze
 
 

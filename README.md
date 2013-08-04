@@ -484,6 +484,12 @@ assets:
   # stylesheets are gzipped by default.
   #
   gzip: [ text/css, application/javascript ]
+  #
+  # Does not concatenates files requested by `javascript` and `stylesheet`
+  # helpers. Instead outputs multiple files in order they are required.
+  # Default: false
+  #
+  debug: false
 ```
 
 
