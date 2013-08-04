@@ -43,6 +43,8 @@ module Jekyll
           asset     = assets[pathname, *args]
           baseurl   = "#{assets_config.baseurl}/"
 
+          bundle_asset! asset
+
           case cachebust = assets_config.cachebust
           when :none then baseurl << asset.logical_path
           when :soft then baseurl << asset.logical_path << "?cb=#{asset.digest}"

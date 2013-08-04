@@ -17,11 +17,11 @@ module Jekyll
         end
 
 
-        def asset_path path, *args
-          jekyll_assets << resolve(path.to_s[/^[^#?]+/]).to_s
-          site.asset_path path, *args
+        def asset_path pathname, *args
+          jekyll_assets << resolve(pathname.to_s[/^[^#?]+/]).to_s
+          site.asset_path pathname, *args
         rescue Sprockets::FileNotFound
-          raise Environment::AssetNotFound, path
+          raise Environment::AssetNotFound, pathname
         end
 
       end
