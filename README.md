@@ -42,7 +42,7 @@ information about amazing features it gives you.
 [extjs]:        https://github.com/sstephenson/execjs#readme
 
 For a quick start check out [jekyll-assets introduction][jekyll-assets-intro]
-that shows how to use it step by step. Also you might want to take a look on 
+that shows how to use it step by step. Also you might want to take a look on
 [my blog sources][ixti-blog-src] as a real-world example as well.
 
 [jekyll-assets-intro]:  http://ixti.net/software/2012/12/30/unleash-mr-hyde-introduction-of-jekyll-assets.html
@@ -147,7 +147,8 @@ difference is only in comments styles used with _directives_.
 See detailes information about these _directives_ below.
 
 You might also want your stylesheets and javascripts to be minified. In this
-case just install `uglifier` gem and add following lines into your `config.yml`:
+case just install the `uglifier` gem and any other gems you will be using, e.g.
+`sass`, `coffee-script`. Then add following lines into your `config.yml`:
 
 ``` yaml
 assets:
