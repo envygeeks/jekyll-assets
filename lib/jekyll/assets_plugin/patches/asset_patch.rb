@@ -24,7 +24,7 @@ module Jekyll
 
         module InstanceMethods
 
-          attr_accessor :environment
+          attr_reader :site
 
 
           def jekyll_assets
@@ -33,12 +33,12 @@ module Jekyll
 
 
           def destination dest
-            File.join dest, environment.site.assets_config.dirname, filename
+            File.join dest, site.assets_config.dirname, filename
           end
 
 
           def filename
-            case cachebust = environment.site.assets_config.cachebust
+            case cachebust = site.assets_config.cachebust
             when :none, :soft then logical_path
             when :hard        then digest_path
             else raise "Unknown cachebust strategy: #{cachebust.inspect}"
@@ -65,7 +65,7 @@ module Jekyll
 
 
           def gzip?
-            environment.site.assets_config.gzip.include? content_type
+            site.assets_config.gzip.include? content_type
           end
 
         end

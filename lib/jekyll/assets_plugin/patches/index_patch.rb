@@ -17,7 +17,7 @@ module Jekyll
 
         def __wrap_find_asset path, options = {}
           __orig_find_asset(path, options).tap do |asset|
-            asset.environment = @environment if asset
+            asset.instance_variable_set :@site, @environment.site if asset
           end
         end
 
