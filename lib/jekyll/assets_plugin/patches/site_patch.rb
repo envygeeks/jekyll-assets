@@ -5,7 +5,6 @@ require "jekyll"
 # internal
 require "jekyll/assets_plugin/configuration"
 require "jekyll/assets_plugin/environment"
-require "jekyll/assets_plugin/asset_file"
 
 
 module Jekyll
@@ -61,12 +60,8 @@ module Jekyll
 
         def bundle_asset! asset
           if not asset_files.include? asset
-            file = AssetFile.new self, asset
-
+            asset_files << asset
             asset.jekyll_assets.each{ |path| bundle_asset! assets[path] }
-
-            asset_files   << file
-            static_files  << file
           end
         end
 

@@ -39,13 +39,6 @@ module Jekyll::AssetsPlugin
               noise_img_re = %r{url\(/assets/noise-[a-f0-9]{32}\.png\)}
               site.assets["app.css"].to_s.should match(noise_img_re)
             end
-
-            it "should be appended to the static_files list" do
-              asset = site.assets["app.css"] # make sure main asset was compiled
-              asset = site.assets["noise.png"]
-
-              site.static_files.include?(asset).should be_true
-            end
           end
         end
       end
