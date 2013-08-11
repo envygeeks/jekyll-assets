@@ -69,7 +69,7 @@ information about amazing features it gives you.</p>
   CoffeeScript.</p>
 
 <p>For a quick start check out <a href="http://ixti.net/software/2012/12/30/unleash-mr-hyde-introduction-of-jekyll-assets.html">jekyll-assets introduction</a>
-that shows how to use it step by step. Also you might want to take a look on 
+that shows how to use it step by step. Also you might want to take a look on
 <a href="https://github.com/ixti/ixti.github.com">my blog sources</a> as a real-world example as well.</p>
 
 <h2>
@@ -184,7 +184,8 @@ difference is only in comments styles used with <em>directives</em>.</p>
 <p>See detailes information about these <em>directives</em> below.</p>
 
 <p>You might also want your stylesheets and javascripts to be minified. In this
-case just install <code>uglifier</code> gem and add following lines into your <code>config.yml</code>:</p>
+case just install the <code>uglifier</code> gem and any other gems you will be using, e.g.
+<code>sass</code>, <code>coffee-script</code>. Then add following lines into your <code>config.yml</code>:</p>
 
 <div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">uglifier</span>
@@ -515,6 +516,12 @@ back by any other <code>require</code>.</p>
   <span class="c1"># stylesheets are gzipped by default.</span>
   <span class="c1">#</span>
   <span class="l-Scalar-Plain">gzip</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span> <span class="nv">text/css</span><span class="p-Indicator">,</span> <span class="nv">application/javascript</span> <span class="p-Indicator">]</span>
+  <span class="c1">#</span>
+  <span class="c1"># Does not concatenates files requested by `javascript` and `stylesheet`</span>
+  <span class="c1"># helpers. Instead outputs multiple files in order they are required.</span>
+  <span class="c1"># Default: false</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">debug</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
 </pre></div>
 
 <h2>
