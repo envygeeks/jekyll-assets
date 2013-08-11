@@ -1,3 +1,9 @@
+### 0.7.0 (2013-08-11)
+
+* Adds `debug` mode that outputs multiple scripts/styles instead of bundling
+  them. See #40.
+
+
 ### 0.6.1 (2013-07-22)
 
 * Fix regression with `asset_path`. See #38.
