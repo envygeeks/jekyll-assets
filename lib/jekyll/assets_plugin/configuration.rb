@@ -50,7 +50,9 @@ module Jekyll
 
 
       def cachebust
-        none?(@data.cachebust) ? :none : @data.cachebust.to_sym
+        return :none if none?(@data.cachebust)
+        return @data.cachebust.to_sym if @data.cachebust.to_s =~ /^(soft|hard)$/
+        raise "Unknown cachebust strategy: #{@data.cachebust}"
       end
 
 

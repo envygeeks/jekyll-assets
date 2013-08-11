@@ -5,6 +5,7 @@ require "jekyll"
 # internal
 require "jekyll/assets_plugin/configuration"
 require "jekyll/assets_plugin/environment"
+require "jekyll/assets_plugin/asset_path"
 
 
 module Jekyll
@@ -35,26 +36,8 @@ module Jekyll
         end
 
 
-        def asset_path pathname, *args
-          pathname, _, anchor = pathname.rpartition "#" if pathname["#"]
-          pathname, _, query  = pathname.rpartition "?" if pathname["?"]
-
-          asset     = assets[pathname, *args]
-          baseurl   = "#{assets_config.baseurl}/"
-
-          bundle_asset! asset
-
-          case cachebust = assets_config.cachebust
-          when :none then baseurl << asset.logical_path
-          when :soft then baseurl << asset.logical_path << "?cb=#{asset.digest}"
-          when :hard then baseurl << asset.digest_path
-          else raise "Unknown cachebust strategy: #{cachebust.inspect}"
-          end
-
-          baseurl << (:soft == cachebust ? "&" : "?") << query if query
-          baseurl << "#" << anchor if anchor
-
-          baseurl
+        def asset_path *args
+          AssetPath.new(self, *args).to_s
         end
 
 
