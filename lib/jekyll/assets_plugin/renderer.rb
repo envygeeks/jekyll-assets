@@ -24,27 +24,24 @@ module Jekyll
 
       def render_javascript
         @path << ".js" if File.extname(@path).empty?
-
-        if @site.assets_config.debug
-          return @site.assets[@path].to_a.map{ |a|
-            JAVASCRIPT % @site.asset_path(a.logical_path, :bundle => false)
-          }.join("\n")
-        end
-
-        JAVASCRIPT % render_asset_path
+        render_tag JAVASCRIPT
       end
 
 
       def render_stylesheet
         @path << ".css" if File.extname(@path).empty?
+        render_tag STYLESHEET
+      end
 
-        if @site.assets_config.debug
-          return @site.assets[@path].to_a.map{ |a|
-            STYLESHEET % @site.asset_path(a.logical_path, :bundle => false)
-          }.join("\n")
-        end
 
-        STYLESHEET % render_asset_path
+      protected
+
+
+      def render_tag template
+        asset = @site.assets[@path]
+        (@site.assets_config.debug ? asset.to_a : [asset]).map{ |a|
+          template % AssetPath.new(a).to_s
+        }.join("\n")
       end
 
     end

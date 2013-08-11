@@ -2,34 +2,28 @@ module Jekyll
   module AssetsPlugin
     class AssetPath
 
-      attr_reader :asset
+      attr_writer :anchor, :query
 
 
-      def initialize site, pathname, *args
-        pathname, _, @anchor = pathname.rpartition "#" if pathname["#"]
-        pathname, _, @query  = pathname.rpartition "?" if pathname["?"]
-
-        @asset  = site.assets[pathname, *args]
-        @site   = site
-
-        site.bundle_asset! asset
+      def initialize asset
+        @asset = asset.bundle!
       end
 
 
       def cachebust
-        @cachebust ||= @site.assets_config.cachebust
+        @cachebust ||= @asset.site.assets_config.cachebust
       end
 
 
       def path
-        :hard == cachebust && asset.digest_path || asset.logical_path
+        :hard == cachebust && @asset.digest_path || @asset.logical_path
       end
 
 
       def query
         query = []
 
-        query << "cb=#{asset.digest}" if :soft == cachebust
+        query << "cb=#{@asset.digest}" if :soft == cachebust
         query << @query               if @query
 
         "?#{query.join '&'}" unless query.empty?
@@ -42,7 +36,7 @@ module Jekyll
 
 
       def to_s
-        "#{@site.assets_config.baseurl}/#{path}#{query}#{anchor}"
+        "#{@asset.site.assets_config.baseurl}/#{path}#{query}#{anchor}"
       end
 
     end

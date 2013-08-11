@@ -32,6 +32,12 @@ module Jekyll
           end
 
 
+          def bundle!
+            site.bundle_asset! self if site
+            self
+          end
+
+
           def destination dest
             File.join dest, site.assets_config.dirname, filename
           end

@@ -36,8 +36,14 @@ module Jekyll
         end
 
 
-        def asset_path *args
-          AssetPath.new(self, *args).to_s
+        def asset_path pathname, *args
+          pathname, _, anchor = pathname.rpartition "#" if pathname["#"]
+          pathname, _, query  = pathname.rpartition "?" if pathname["?"]
+
+          AssetPath.new(assets[pathname, *args]).tap{ |ap|
+            ap.anchor = anchor
+            ap.query  = query
+          }.to_s
         end
 
 
