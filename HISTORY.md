@@ -1,3 +1,8 @@
+### 0.7.1 (2013-08-17)
+
+* Minor bugfix of AssetPath and small code refactoring.
+
+
 ### 0.7.0 (2013-08-11)
 
 * Adds `debug` mode that outputs multiple scripts/styles instead of bundling
