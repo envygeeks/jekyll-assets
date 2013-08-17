@@ -6,7 +6,8 @@ module Jekyll
 
 
       def initialize asset
-        @asset = asset.bundle!
+        asset.bundle!
+        @asset = asset
       end
 
 
