@@ -6,6 +6,11 @@ module Jekyll::AssetsPlugin
     context "with defaults" do
       let(:config){ Configuration.new }
 
+      context "asset hosts" do
+        subject { config.host }
+        it { should == nil }
+      end
+
       context "output assets dirname" do
         subject { config.dirname }
         it { should == Configuration::DEFAULTS[:dirname] }
@@ -61,13 +66,15 @@ module Jekyll::AssetsPlugin
     it "should override specified options and leave defaults for missing" do
       config = Configuration.new({
         :sources        => %w{abc},
-        :css_compressor => "sass"
+        :css_compressor => "sass",
+        :host           => "http://google.com"
       })
 
       config.dirname.should         ==  "assets"
       config.sources.should         =~  %w{abc}
       config.js_compressor.should       be_nil
       config.css_compressor.should  ==  :sass
+      config.host.should            == "http://google.com"
     end
 
     context "#cache" do
