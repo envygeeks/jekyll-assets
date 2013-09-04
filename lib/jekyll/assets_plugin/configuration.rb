@@ -13,7 +13,8 @@ module Jekyll
         :cachebust      => :hard,
         :cache          => false,
         :gzip           => %w{ text/css application/javascript },
-        :debug          => false
+        :debug          => false,
+        :host           => nil
       }.freeze
 
 
