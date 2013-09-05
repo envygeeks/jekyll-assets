@@ -29,6 +29,24 @@ module Jekyll::AssetsPlugin
         subject { render("{% stylesheet not-found.css %}") }
         it { should match "Liquid error: Couldn't find file 'not-found.css'" }
       end
+
+      context "with a host specified" do
+        before { context[:registers][:site].assets_config.host = "http://www.google.com" }
+
+        # NOTE: We need to explicitly unset this since we can't guarantee the
+        # order in which tests execute.
+        before { ENV.delete('SKIP_ASSET_HOST') }
+
+        subject { render("{% stylesheet app.css %}") }
+        it { should include "http://www.google.com" }
+      end
+
+      context "with the host killswitch set" do
+        before { context[:registers][:site].assets_config.host = "http://www.google.com" }
+        before { ENV['SKIP_ASSET_HOST'] = '1' }
+        subject { render("{% stylesheet app.css %}") }
+        it { should_not include "http://www.google.com" }
+      end
     end
 
     context "{% javascript <file> %}" do
@@ -45,6 +63,23 @@ module Jekyll::AssetsPlugin
       context "when <file> extension omited" do
         subject { render("{% javascript app %}") }
         it { should match tag_re("app") }
+      end
+
+      context "with a host specified" do
+        before { context[:registers][:site].assets_config.host = "http://www.google.com" }
+
+        # See note above.
+        before { ENV.delete('SKIP_ASSET_HOST') }
+
+        subject { render("{% javascript app.css %}") }
+        it { should include "http://www.google.com" }
+      end
+
+      context "with the host killswitch set" do
+        before { context[:registers][:site].assets_config.host = "http://www.google.com" }
+        before { ENV['SKIP_ASSET_HOST'] = '1' }
+        subject { render("{% javascript app.css %}") }
+        it { should_not include "http://www.google.com" }
       end
 
       context "when <file> does not exists" do
@@ -68,6 +103,23 @@ module Jekyll::AssetsPlugin
         before { context[:registers][:site].assets_config.baseurl = "/foobar/" }
         subject { render("{% asset_path app.css %}") }
         it { should match(%r{^/foobar/app-[a-f0-9]{32}\.css$}) }
+      end
+
+      context "with a host specified" do
+        before { context[:registers][:site].assets_config.host = "http://www.google.com" }
+
+        # See note above.
+        before { ENV.delete('SKIP_ASSET_HOST') }
+
+        subject { render("{% asset_path app.css %}") }
+        it { should start_with "http://www.google.com" }
+      end
+
+      context "with the host killswitch set" do
+        before { context[:registers][:site].assets_config.host = "http://www.google.com" }
+        before { ENV['SKIP_ASSET_HOST'] = '1' }
+        subject { render("{% javascript app.css %}") }
+        it { should_not start_with "http://www.google.com" }
       end
     end
 

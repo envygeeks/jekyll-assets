@@ -37,7 +37,11 @@ module Jekyll
 
 
       def to_s
-        "#{@asset.site.assets_config.baseurl}/#{path}#{query}#{anchor}"
+        if ENV['SKIP_ASSET_HOST'].nil? && host = @asset.site.assets_config.host
+          "#{host}#{@asset.site.assets_config.baseurl}/#{path}#{query}#{anchor}"
+        else
+          "#{@asset.site.assets_config.baseurl}/#{path}#{query}#{anchor}"
+        end
       end
 
     end
