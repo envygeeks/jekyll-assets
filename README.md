@@ -77,6 +77,7 @@ Once plugin installed, you'll have following Liquid tags available:
 
 - `{% javascript app %}`: Generates `<script>` tag for `app.js`
 - `{% stylesheet app %}`: Generates `<link>` tag for `app.css`
+- `{% image logo.png %}`: Generates `<img>` tag for `logo.png`
 - `{% asset_path logo.png %}`: Returns _resulting_ URL for `logo.png`
 - `{% asset app.css %}`: Returns _compiled_ body of `app.css`
 
@@ -84,6 +85,7 @@ Also you'll have complimentary Liquid filters as well:
 
 - `{{ 'app' | javascript }}`: Generates `<script>` tag for `app.js`
 - `{{ 'app' | stylesheet }}`: Generates `<link>` tag for `app.css`
+- `{{ 'logo.png' | image }}`: Generates `<img>` tag for `logo.png`
 - `{{ 'logo.png' | asset_path }}`: Returns _resulting_ URL for `logo.png`
 - `{{ 'app.css' | asset }}`: Returns _compiled_ body of `app.css`
 

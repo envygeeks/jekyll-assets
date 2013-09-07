@@ -1,3 +1,8 @@
+### 0.7.2 (2013-09-07)
+
+* Add `image` Liquid tag and filter.
+
+
 ### 0.7.1 (2013-08-17)
 
 * Minor bugfix of AssetPath and small code refactoring.
