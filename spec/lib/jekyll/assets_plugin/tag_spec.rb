@@ -9,6 +9,23 @@ module Jekyll::AssetsPlugin
       Liquid::Template.parse(content).render({}, context)
     end
 
+    context "{% image <file> %}" do
+      def tag_re name
+        file = "/assets/#{name}-[a-f0-9]{32}\.png"
+        Regexp.new "^#{Renderer::IMAGE % file}$"
+      end
+
+      context "when <file> exists" do
+        subject { render("{% image noise.png %}") }
+        it { should match tag_re("noise") }
+      end
+
+      context "when <file> does not exists" do
+        subject { render("{% image not-found.png %}") }
+        it { should match "Liquid error: Couldn't find file 'not-found.png'" }
+      end
+    end
+
     context "{% stylesheet <file> %}" do
       def tag_re name
         file = "/assets/#{name}-[a-f0-9]{32}\.css"

@@ -4,6 +4,7 @@ module Jekyll
 
       STYLESHEET = '<link rel="stylesheet" href="%s">'
       JAVASCRIPT = '<script src="%s"></script>'
+      IMAGE      = '<img src="%s">'
 
 
       def initialize context, logical_path
@@ -31,6 +32,11 @@ module Jekyll
       def render_stylesheet
         @path << ".css" if File.extname(@path).empty?
         render_tag STYLESHEET
+      end
+
+
+      def render_image
+        render_tag IMAGE
       end
 
 

@@ -6,7 +6,7 @@ module Jekyll
   module AssetsPlugin
     module Filters
 
-      %w{ asset asset_path javascript stylesheet }.each do |name|
+      %w{ asset asset_path image javascript stylesheet }.each do |name|
         module_eval <<-RUBY, __FILE__, __LINE__
         def #{name} path                    # def stylesheet logical_path
           r = Renderer.new @context, path   #   r = Renderer.new @context, path
