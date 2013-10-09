@@ -146,7 +146,7 @@ Notice, that `vendor/jquery` is not required to be coffee script. You can easily
 mix CoffeeScript and vanilla JavaScript, CSS and SCSS and SASS and LESS. The
 difference is only in comments styles used with _directives_.
 
-See detailes information about these _directives_ below.
+See detailed information about these _directives_ below.
 
 You might also want your stylesheets and javascripts to be minified. In this
 case just install the `uglifier` gem and any other gems you will be using, e.g.
@@ -217,7 +217,7 @@ assets:
 
 Sprockets comes with good set of preconfigured compressors, but imagine you are
 not satisfied with default settings. For example you want to strip all comments
-but copyrights info. In this csae you can define and use your own compressor.
+but copyrights info. In this case you can define and use your own compressor.
 
 To do so, first let's define new compressor in `_plugins/ext.rb`:
 
