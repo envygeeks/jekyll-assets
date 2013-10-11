@@ -81,7 +81,7 @@ module Jekyll
 
 
       def none? val
-        val.nil? || val.empty? || "none" == val.to_s.downcase
+        val.to_s.empty? || "none" == val.to_s.downcase
       end
 
 
