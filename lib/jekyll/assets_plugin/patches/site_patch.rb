@@ -1,3 +1,7 @@
+# stdlib
+require "digest/md5"
+
+
 # 3rd-party
 require "jekyll"
 
@@ -56,7 +60,13 @@ module Jekyll
 
 
         def __wrap_write
-          static_files.push(*asset_files).uniq!
+          static_files.push(*asset_files).uniq! do |asset|
+            case hash = asset.hash
+            when Fixnum then hash
+            else Digest::MD5.new.update(hash.to_s).hash
+            end
+          end
+
           __orig_write
         end
 
