@@ -1,3 +1,8 @@
+### 0.7.3 (2013-10-12)
+
+* Play nice with other plugins using `static_files`. See #45.
+
+
 ### 0.7.2 (2013-09-07)
 
 * Add `image` Liquid tag and filter.
