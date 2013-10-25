@@ -1,0 +1,12 @@
+/* copy of vapor css framework to test relative asset inclusion*/
+
+@font-face {
+  font-family: 'Vapor';
+  src: url(font_path('../fonts/vapor.eot'));
+  src: url(font_path('../fonts/vapor.eot?#iefix')) format("embedded-opentype"),
+       url(font_path('../fonts/vapor.woff')) format("woff"),
+       url(font_path('../fonts/vapor.ttf')) format("truetype"),
+       url(font_path('../fonts/vapor.svg#iefix')) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
