@@ -1,3 +1,8 @@
+### 0.7.4 (2013-10-25)
+
+* Fix relative paths requires. See #59. (Thanks @wadetandy)
+
+
 ### 0.7.3 (2013-10-12)
 
 * Play nice with other plugins using `static_files`. See #45.
