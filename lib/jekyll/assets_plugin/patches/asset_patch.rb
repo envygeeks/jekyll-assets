@@ -66,12 +66,20 @@ module Jekyll
             write_to dest_path
             write_to "#{dest_path}.gz" if gzip?
 
+            write_to destination(site.source) if precompile?
+            write_to "#{destination(site.source)}.gz" if gzip? && precompile?
+
             true
           end
 
 
           def gzip?
             site.assets_config.gzip.include? content_type
+          end
+
+
+          def precompile?
+            site.assets_config.precompile
           end
 
         end
