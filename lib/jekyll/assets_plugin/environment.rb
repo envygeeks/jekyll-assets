@@ -30,6 +30,13 @@ module Jekyll
           self.cache = Sprockets::Cache::FileStore.new cache_path
         end
 
+        # load css autoprefix post-processor
+        begin
+          require 'autoprefixer-rails'
+          AutoprefixerRails.install(self)
+        rescue LoadError
+        end
+
         # reset cache if config changed
         self.version = site.assets_config.marshal_dump
 
