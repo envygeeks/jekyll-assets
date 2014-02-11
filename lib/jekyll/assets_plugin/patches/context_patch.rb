@@ -18,6 +18,7 @@ module Jekyll
 
 
         def asset_path pathname, *args
+          return "" if pathname.to_s.strip.empty?
           asset = resolve(pathname.to_s[/^[^#?]+/]).to_s
           jekyll_assets << asset
           (site.asset_path asset, *args) + (pathname.to_s[/[#?].+/] || '')
