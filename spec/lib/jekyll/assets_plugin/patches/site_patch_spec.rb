@@ -40,6 +40,13 @@ module Jekyll::AssetsPlugin
               site.assets["app.css"].to_s.should match(noise_img_re)
             end
           end
+
+          context "when passed a blank path" do
+            it "should be blank" do
+              css = site.assets["should_be_blank.css"].to_s
+              css.should =~ /url\(\)/
+            end
+          end
         end
       end
 
