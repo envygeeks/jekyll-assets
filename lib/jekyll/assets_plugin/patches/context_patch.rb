@@ -18,7 +18,7 @@ module Jekyll
 
 
         def asset_path pathname, *args
-          asset = resolve(pathname.to_s[/^[^#?]+/]).to_s
+          asset = resolve(pathname.to_s[/^[^#?]+/] || '').to_s
           jekyll_assets << asset
           (site.asset_path asset, *args) + (pathname.to_s[/[#?].+/] || '')
         rescue Sprockets::FileNotFound

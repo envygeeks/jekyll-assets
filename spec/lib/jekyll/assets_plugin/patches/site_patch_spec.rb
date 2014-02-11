@@ -34,6 +34,14 @@ module Jekyll::AssetsPlugin
             end
           end
 
+          context "when passed a blank path" do
+            it "should raise a NotFound error" do
+              Proc.new do
+                site.assets["should_fail_blank.css"]
+              end.should raise_error(Environment::AssetNotFound)
+            end
+          end
+
           context "when requested file found" do
             it "should have proper asset path" do
               noise_img_re = %r{url\(/assets/noise-[a-f0-9]{32}\.png\)}
