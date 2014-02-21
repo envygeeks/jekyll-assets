@@ -301,6 +301,18 @@ Now you can add `@import "compass"` in your SASS assets to get Compass goodies.
   you must require them BEFORE `jekyll-assets/compass`.
 
 
+#### Bootstrap Support
+
+Require `jekyll-assets/bootstrap` to enable, e.g.:
+
+``` ruby
+require "jekyll-assets"
+require "jekyll-assets/bootstrap"
+```
+
+Now you can add `@import "bootstrap"` in your SASS assets to get Bootstrap goodies.
+
+
 #### Bourbon Support
 
 Require `jekyll-assets/bourbon` to enable, e.g.:
