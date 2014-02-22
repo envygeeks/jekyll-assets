@@ -313,6 +313,18 @@ require "jekyll-assets/bourbon"
 Now you can add `@import "bourbon"` in your SASS assets to get Bourbon goodies.
 
 
+#### Font Awesome
+
+Require `jekyll-assets/font-awesome` to enable, e.g.:
+
+``` ruby
+require "jekyll-assets"
+require "jekyll-assets/font-awesome"
+```
+
+Now you can add `@import "font-awesome"` in your SASS assets to get Font Awesome goodies.
+
+
 #### Neat Support
 
 Require `jekyll-assets/neat` to enable, e.g.:
