@@ -1,6 +1,5 @@
 require "spec_helper"
 
-
 module Jekyll::AssetsPlugin
   module Patches
     describe SitePatch do
@@ -9,7 +8,7 @@ module Jekyll::AssetsPlugin
           "source"  => RSpecHelpers.fixtures_path.to_s,
           "dirname" => "foobar",
           "assets"  => {
-            "sources" => [ "foobar", "_assets" ]
+            "sources" => %w{ foobar _assets }
           }
         })
       end
@@ -22,34 +21,32 @@ module Jekyll::AssetsPlugin
           let(:source_path) { Pathname.new site.source }
           subject           { site.assets.cache_path }
 
-          it { should == source_path.join(".jekyll-assets-cache") }
+          it { should eq source_path.join(".jekyll-assets-cache") }
         end
 
         context "calling #asset_path within assets" do
           context "when requested file not found" do
-            it "should raise a NotFound error" do
-              Proc.new do
-                site.assets["should_fail.css"]
-              end.should raise_error(Environment::AssetNotFound)
+            it "raises a NotFound error" do
+              expect { site.assets["should_fail.css"] }
+                .to raise_error Environment::AssetNotFound
             end
           end
 
           context "when requested file found" do
             it "should have proper asset path" do
-              noise_img_re = %r{url\(/assets/noise-[a-f0-9]{32}\.png\)}
-              site.assets["app.css"].to_s.should match(noise_img_re)
+              expect(site.assets["app.css"].to_s)
+                .to match(%r{url\(/assets/noise-[a-f0-9]{32}\.png\)})
             end
           end
 
           context "when passed a blank path" do
             it "should be blank" do
-              css = site.assets["should_be_blank.css"].to_s
-              css.should =~ /url\(\)/
+              expect(site.assets["should_be_blank.css"].to_s)
+                .to match(/url\(\)/)
             end
           end
         end
       end
-
 
       context "#asset_path" do
         subject { site.asset_path "app.css" }
@@ -76,7 +73,6 @@ module Jekyll::AssetsPlugin
           end
         end
 
-
         context "with query part in requested filename" do
           subject { site.asset_path "app.css?foo=bar" }
 
@@ -87,7 +83,7 @@ module Jekyll::AssetsPlugin
 
           context "and soft cachebust" do
             before { site.assets_config.cachebust = :soft }
-            it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}&foo=bar$}) }
+            it { should match %r{^/assets/app\.css\?cb=[a-f0-9]{32}&foo=bar$} }
           end
 
           context "and hard cachebust" do
@@ -95,7 +91,6 @@ module Jekyll::AssetsPlugin
             it { should match(%r{^/assets/app-[a-f0-9]{32}\.css\?foo=bar$}) }
           end
         end
-
 
         context "with anchor part in requested filename" do
           subject { site.asset_path "app.css#foobar" }
@@ -117,24 +112,21 @@ module Jekyll::AssetsPlugin
         end
       end
 
-
       context "#assets_config" do
         subject { site.assets_config }
         it { should be_an_instance_of Configuration }
 
         it "should been populated with `assets` section of config" do
-          site.assets_config.dirname.should_not == "foobar"
+          site.assets_config.dirname.should_not eq "foobar"
           site.assets_config.sources.should include "foobar"
         end
       end
 
-
       it "should regenerate assets upon multiple #process" do
         @site.assets_config.cachebust = :none
-        2.times{ @site.process }
+        2.times { @site.process }
         @dest.join("assets", "app.css").exist?.should be_true
       end
-
 
       context "with cache" do
         def site
@@ -150,11 +142,10 @@ module Jekyll::AssetsPlugin
         end
 
         it "should regenerate static assets upon multiple #process" do
-          2.times{ site.process }
+          2.times { site.process }
           @dest.join("assets", "noise.png").exist?.should be_true
         end
       end
-
 
       context "#gzip" do
         subject { site.assets_config }

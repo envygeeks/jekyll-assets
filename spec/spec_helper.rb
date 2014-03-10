@@ -1,9 +1,7 @@
 require "rubygems"
 
-
-require 'simplecov'
+require "simplecov"
 require "coveralls"
-
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
@@ -11,16 +9,14 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 ]
 SimpleCov.start
 
-
 require "jekyll"
 require "liquid"
 require "sprockets"
 
-
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[File.expand_path("../support", __FILE__) + "/**/*.rb"].each {|f| require f}
-
+Dir[File.expand_path("../support", __FILE__) + "/**/*.rb"]
+  .each { |f| require f }
 
 RSpec.configure do |config|
   config.include Jekyll::AssetsPlugin::RSpecHelpers

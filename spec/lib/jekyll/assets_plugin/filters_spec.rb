@@ -1,16 +1,15 @@
 require "spec_helper"
 
-
 module Jekyll::AssetsPlugin
   describe Filters do
     let(:context) { { :registers => { :site => @site } } }
 
-    def render content
+    def render(content)
       Liquid::Template.parse(content).render({}, context)
     end
 
     context "{{ '<file>' | image }}" do
-      def tag_re name
+      def tag_re(name)
         file = "/assets/#{name}-[a-f0-9]{32}\.png"
         Regexp.new "^#{Renderer::IMAGE % file}$"
       end
@@ -27,7 +26,7 @@ module Jekyll::AssetsPlugin
     end
 
     context "{{ '<file>' | stylesheet }}" do
-      def tag_re name
+      def tag_re(name)
         file = "/assets/#{name}-[a-f0-9]{32}\.css"
         Regexp.new "^#{Renderer::STYLESHEET % file}$"
       end
@@ -49,7 +48,7 @@ module Jekyll::AssetsPlugin
     end
 
     context "{{ '<file>' | javascript }}" do
-      def tag_re name
+      def tag_re(name)
         file = "/assets/#{name}-[a-f0-9]{32}\.js"
         Regexp.new "^#{Renderer::JAVASCRIPT % file}$"
       end
@@ -82,7 +81,10 @@ module Jekyll::AssetsPlugin
       end
 
       context "with baseurl given as /foobar/" do
-        before { context[:registers][:site].assets_config.baseurl = "/foobar/" }
+        before do
+          context[:registers][:site].assets_config.baseurl = "/foobar/"
+        end
+
         subject { render("{{ 'app.css' | asset_path }}") }
         it { should match(%r{^/foobar/app-[a-f0-9]{32}\.css$}) }
       end

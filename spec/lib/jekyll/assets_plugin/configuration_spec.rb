@@ -1,10 +1,9 @@
 require "spec_helper"
 
-
 module Jekyll::AssetsPlugin
   describe Configuration do
     context "with defaults" do
-      let(:config){ Configuration.new }
+      let(:config) { Configuration.new }
 
       context "output assets dirname" do
         subject { config.dirname }
@@ -64,10 +63,10 @@ module Jekyll::AssetsPlugin
         :css_compressor => "sass"
       })
 
-      config.dirname.should         ==  "assets"
-      config.sources.should         =~  %w{abc}
-      config.js_compressor.should       be_nil
-      config.css_compressor.should  ==  :sass
+      expect(config.dirname).to eq "assets"
+      expect(config.sources).to eq %w{abc}
+      expect(config.js_compressor).to be_nil
+      expect(config.css_compressor).to be  :sass
     end
 
     context "#cache" do
@@ -96,13 +95,13 @@ module Jekyll::AssetsPlugin
 
     context "#js_compressor" do
       context "when js compressor is given as `uglify`" do
-        let(:config){ Configuration.new(:js_compressor => "uglify") }
+        let(:config) { Configuration.new(:js_compressor => "uglify") }
         subject { config.js_compressor }
         it { should be :uglify }
       end
 
       context "otherwise" do
-        let(:config){ Configuration.new }
+        let(:config) { Configuration.new }
         subject { config.js_compressor }
         it { should be_false }
       end
@@ -110,13 +109,13 @@ module Jekyll::AssetsPlugin
 
     context "#css_compressor" do
       context "when css compressor is given as `sass`" do
-        let(:config){ Configuration.new(:css_compressor => "sass") }
+        let(:config) { Configuration.new(:css_compressor => "sass") }
         subject { config.css_compressor }
         it { should be :sass }
       end
 
       context "otherwise" do
-        let(:config){ Configuration.new }
+        let(:config) { Configuration.new }
         subject { config.css_compressor }
         it { should be_false }
       end
@@ -124,26 +123,23 @@ module Jekyll::AssetsPlugin
 
     context "#gzip" do
       context "when gzip is disabled" do
-        let(:config){ Configuration.new(:gzip => false) }
+        let(:config) { Configuration.new(:gzip => false) }
         subject { config.gzip }
         it { should == [] }
       end
     end
 
-
     context "Deprecated options" do
       context "compress" do
-        let(:options){ { :compress => {:js => "uglify", :css => "sass"} } }
+        let(:options) { { :compress => { :js => "uglify", :css => "sass" } } }
+        subject { Configuration.new options }
 
-        it "should set corresponding *_compressor value" do
-          config = Configuration.new options
-          config.js_compressor.should   == :uglify
-          config.css_compressor.should  == :sass
-        end
+        its(:js_compressor)   { should be :uglify }
+        its(:css_compressor)  { should be :sass }
       end
 
       context "cache_assets" do
-        let(:options){ { :cache_assets => true } }
+        let(:options) { { :cache_assets => true } }
 
         it "should set `cache` value" do
           config = Configuration.new options

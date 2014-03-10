@@ -1,7 +1,6 @@
 require "spec_helper"
 require "jekyll-assets/neat"
 
-
 module Jekyll::AssetsPlugin
   describe "Neat integration" do
     it "should globally append neat paths into Sprockets environment" do

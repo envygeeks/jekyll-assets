@@ -1,0 +1,48 @@
+# Avoid long parameter lists
+ParameterLists:
+  Max: 3
+  CountKeywordArgs: true
+
+MethodLength:
+  CountComments: false
+  Max: 15
+
+ClassLength:
+  CountComments: false
+  Max: 100
+
+CyclomaticComplexity:
+  Max: 6
+
+EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+BlockNesting:
+  Max: 3
+
+HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Encoding:
+  Enabled: false
+
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+BracesAroundHashParameters:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+# Not all trivial readers/writers can be defined with attr_* methods
+TrivialAccessors:
+  Enabled: false
+
+# New lambda syntax is UGLY, don't enforce it
+Lambda:
+  Enabled: false
+
+AllCops:
+  Includes:
+    - Gemfile

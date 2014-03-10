@@ -1,7 +1,6 @@
 require "spec_helper"
 require "jekyll-assets/bourbon"
 
-
 module Jekyll::AssetsPlugin
   describe "Bourbon integration" do
     it "should globally append bourbon paths into Sprockets environment" do
