@@ -34,4 +34,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bourbon"
   spec.add_development_dependency "neat"
   spec.add_development_dependency "bootstrap-sass"
+
+  # compass fails with SASS than 3.3+
+  # https://github.com/chriseppstein/compass/issues/1513
+  spec.add_development_dependency "sass", "~> 3.2.13"
 end
