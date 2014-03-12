@@ -129,6 +129,22 @@ module Jekyll::AssetsPlugin
       end
     end
 
+    context "#version" do
+      subject { Configuration.new(:version => version).version }
+
+      context "when given as 123" do
+        let(:version) { 123 }
+        it { should eq 123 }
+        it { should be_a Integer }
+      end
+
+      context "when given as 'abc'" do
+        let(:version) { "abc" }
+        it { should eq "abc" }
+        it { should be_a String }
+      end
+    end
+
     context "Deprecated options" do
       context "compress" do
         let(:options) { { :compress => { :js => "uglify", :css => "sass" } } }

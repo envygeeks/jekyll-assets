@@ -14,7 +14,8 @@ module Jekyll
         :cachebust      => :hard,
         :cache          => false,
         :gzip           => %w{ text/css application/javascript },
-        :debug          => false
+        :debug          => false,
+        :version        => 1
       }.freeze
 
       def initialize(config = {})
@@ -62,6 +63,10 @@ module Jekyll
       def gzip
         return @data.gzip if @data.gzip.is_a? Array
         @data.gzip ? DEFAULTS[:gzip] : []
+      end
+
+      def version
+        @data.version
       end
 
       def method_missing(name, *args, &block)
