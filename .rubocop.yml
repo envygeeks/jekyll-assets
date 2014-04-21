@@ -23,11 +23,29 @@ BlockNesting:
 HashSyntax:
   EnforcedStyle: hash_rockets
 
-Encoding:
-  Enabled: false
-
 StringLiterals:
   EnforcedStyle: double_quotes
+
+AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+IndentHash:
+  EnforcedStyle: consistent
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  ()
+    '%i': ()
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': '[]'
+    '%W': '[]'
+    '%x': ()
+
+Encoding:
+  Enabled: false
 
 BracesAroundHashParameters:
   Enabled: false
@@ -43,6 +61,14 @@ TrivialAccessors:
 Lambda:
   Enabled: false
 
+# Ridiculous (and IMHO useless) restriction, that makes impossible aligning
+# code like this:
+#
+#   redis.hset    :k1, now
+#   redis.hincrby :k2, 123
+SingleSpaceBeforeFirstArg:
+  Enabled: false
+
 AllCops:
-  Includes:
+  Include:
     - Gemfile
