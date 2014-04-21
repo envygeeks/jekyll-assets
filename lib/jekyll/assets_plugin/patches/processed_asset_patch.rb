@@ -13,10 +13,10 @@ module Jekyll
             attr_reader :jekyll_assets
 
             alias_method :__orig_build_dependency_paths,
-                         :build_dependency_paths
+              :build_dependency_paths
 
             alias_method :build_dependency_paths,
-                         :__wrap_build_dependency_paths
+              :__wrap_build_dependency_paths
 
             alias_method :__orig_init_with, :init_with
             alias_method :init_with, :__wrap_init_with

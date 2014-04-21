@@ -14,6 +14,6 @@ module Jekyll
   end
 end
 
-%w{ asset asset_path image javascript stylesheet }.each do |tag|
+%w[asset asset_path image javascript stylesheet].each do |tag|
   Liquid::Template.register_tag tag, Jekyll::AssetsPlugin::Tag
 end

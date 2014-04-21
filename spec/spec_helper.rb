@@ -4,9 +4,9 @@ require "simplecov"
 require "coveralls"
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
+  SimpleCov::Formatter::HTMLFormatter, Coveralls::SimpleCov::Formatter
 ]
+
 SimpleCov.start
 
 require "jekyll"
@@ -19,7 +19,8 @@ Dir[File.expand_path("../support", __FILE__) + "/**/*.rb"]
   .each { |f| require f }
 
 RSpec.configure do |config|
-  config.include Jekyll::AssetsPlugin::RSpecHelpers
+  config.include FixturesHelpers
+  config.extend  FixturesHelpers
 
   config.before(:all) do
     Jekyll.logger.log_level = Jekyll::Stevenson::WARN

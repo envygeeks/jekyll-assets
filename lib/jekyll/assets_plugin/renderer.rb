@@ -37,7 +37,7 @@ module Jekyll
       def render_tag(template)
         asset = @site.assets[@path]
         tags  = (@site.assets_config.debug ? asset.to_a : [asset]).map do |a|
-          sprintf template, AssetPath.new(a).to_s
+          format template, AssetPath.new(a).to_s
         end
 
         tags.join "\n"
