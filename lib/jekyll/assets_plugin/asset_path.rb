@@ -20,9 +20,11 @@ module Jekyll
         query = []
 
         query << "cb=#{@asset.digest}" if :soft == cachebust
-        query << @query               if @query
+        query << @query                if @query
 
-        "?#{query.join '&'}" unless query.empty?
+        return if query.empty?
+
+        "?" << query.join("&")
       end
 
       def anchor
