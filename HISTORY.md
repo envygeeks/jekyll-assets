@@ -1,3 +1,23 @@
+### 0.7.8 (2014-05-08)
+
+* Support jekyll `~> 2.0`.
+
+
+### 0.7.7 (2014-03-12)
+
+* Allow purge cache by bumping assest config version.
+
+
+### 0.7.6 (2014-02-22)
+
+* Add `bootstrap-sass` support. See #75. (Thanks @adilsoncarvalho)
+
+
+### 0.7.5 (2014-02-11)
+
+* Fix `asset_path` error against empty srting. See #72. (Thanks @yaegashi)
+
+
 ### 0.7.4 (2013-10-25)
 
 * Fix relative paths requires. See #59. (Thanks @wadetandy)
