@@ -23,7 +23,11 @@ RSpec.configure do |config|
   config.extend  FixturesHelpers
 
   config.before(:all) do
-    Jekyll.logger.log_level = Jekyll::Stevenson::WARN
+    if Gem::Version.new("2") <= Gem::Version.new(Jekyll::VERSION)
+      Jekyll.logger.log_level = :warn
+    else
+      Jekyll.logger.log_level = Jekyll::Stevenson::WARN
+    end
 
     @dest = fixtures_path.join("_site")
     @site = Jekyll::Site.new(Jekyll.configuration({
