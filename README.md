@@ -505,6 +505,11 @@ assets:
   # Default: false
   #
   debug: false
+  #
+  # Configuration version. Used to force cache invalidation.
+  # Default: 1
+  #
+  version: 1
 ```
 
 
