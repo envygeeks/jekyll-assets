@@ -1,3 +1,12 @@
+### master (unreleased)
+
+
+### 0.7.9 (2014-05-25)
+
+* Add `font-awesome` support. See #76. (Thanks @adilsoncarvalho)
+* Add `autoprefixer-rails` support. See #68. (Thanks @nz)
+
+
 ### 0.7.8 (2014-05-08)
 
 * Support jekyll `~> 2.0`.
