@@ -31,11 +31,7 @@ module Jekyll
         end
 
         # load css autoprefix post-processor
-        begin
-          require 'autoprefixer-rails'
-          AutoprefixerRails.install(self)
-        rescue LoadError
-        end
+        install_autoprefixer!
 
         # reset cache if config changed
         self.version = site.assets_config.marshal_dump
@@ -51,6 +47,15 @@ module Jekyll
 
       def find_asset(path, *args)
         super || fail(AssetNotFound, path)
+      end
+
+      private
+
+      def install_autoprefixer!
+        require "autoprefixer-rails"
+        AutoprefixerRails.install(self)
+      rescue LoadError
+        nil
       end
     end
   end
