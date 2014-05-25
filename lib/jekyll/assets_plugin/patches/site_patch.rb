@@ -44,10 +44,10 @@ module Jekyll
         end
 
         def bundle_asset!(asset)
-          unless asset_files.include? asset
-            asset_files << asset
-            asset.jekyll_assets.each { |path| bundle_asset! assets[path] }
-          end
+          return if asset_files.include? asset
+
+          asset_files << asset
+          asset.jekyll_assets.each { |path| bundle_asset! assets[path] }
         end
 
         def __wrap_write
