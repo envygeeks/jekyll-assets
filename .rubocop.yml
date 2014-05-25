@@ -72,3 +72,7 @@ SingleSpaceBeforeFirstArg:
 AllCops:
   Include:
     - Gemfile
+
+# TODO: Rename all files and modules :D
+FileName:
+  Enabled: false
