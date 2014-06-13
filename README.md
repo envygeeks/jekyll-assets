@@ -207,7 +207,7 @@ changed via configuration:
 
 ``` yaml
 assets:
-  baseurl: //my.super-cool-cdn.com/
+  baseurl: http://my.super-cool-cdn.com/assets
 ```
 
 [amazon-s3]: http://aws.amazon.com/s3
