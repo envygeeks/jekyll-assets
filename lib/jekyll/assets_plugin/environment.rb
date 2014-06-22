@@ -2,6 +2,7 @@
 require "pathname"
 
 # 3rd-party
+require "sass"
 require "sprockets"
 
 module Jekyll
