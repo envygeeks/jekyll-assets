@@ -72,23 +72,23 @@ describe Jekyll::AssetsPlugin::Configuration do
     context "when specified as String" do
       it "should override default cache path" do
         config = described_class.new :cache => "/tmp/jekyll-assets"
-        config.cache_path.should == "/tmp/jekyll-assets"
+        expect(config.cache_path).to eq("/tmp/jekyll-assets")
       end
     end
   end
 
   context "#baseurl" do
     it "should respect explicit overrides" do
-      described_class.new({
+      expect(described_class.new({
         :dirname => "foo",
         :baseurl => "/bar/"
-      }).baseurl.should == "/bar"
+      }).baseurl).to eq("/bar")
     end
 
     it "should be auto-guessed from dirname" do
-      described_class.new({
+      expect(described_class.new({
         :dirname => "foo"
-      }).baseurl.should == "/foo"
+      }).baseurl).to eq("/foo")
     end
   end
 
@@ -152,15 +152,22 @@ describe Jekyll::AssetsPlugin::Configuration do
         { :compress => { :js => "uglify", :css => "sass" } }
       end
 
-      its(:js_compressor)   { should be :uglify }
-      its(:css_compressor)  { should be :sass }
+      describe '#js_compressor' do
+        subject { super().js_compressor }
+        it { should be :uglify }
+      end
+
+      describe '#css_compressor' do
+        subject { super().css_compressor }
+        it { should be :sass }
+      end
     end
 
     context "cache_assets" do
       let(:options) { { :cache_assets => true } }
 
       it "should set `cache` value" do
-        config.cache_assets?.should be_true
+        expect(config.cache_assets?).to be_true
       end
     end
   end

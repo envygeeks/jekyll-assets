@@ -115,15 +115,15 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
     it { should be_an_instance_of Jekyll::AssetsPlugin::Configuration }
 
     it "should been populated with `assets` section of config" do
-      site.assets_config.dirname.should_not eq "foobar"
-      site.assets_config.sources.should include "foobar"
+      expect(site.assets_config.dirname).not_to eq "foobar"
+      expect(site.assets_config.sources).to include "foobar"
     end
   end
 
   it "should regenerate assets upon multiple #process" do
     @site.assets_config.cachebust = :none
     2.times { @site.process }
-    @dest.join("assets", "app.css").exist?.should be_true
+    expect(@dest.join("assets", "app.css").exist?).to be_true
   end
 
   context "with cache" do
@@ -141,7 +141,7 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
     it "should regenerate static assets upon multiple #process" do
       2.times { site.process }
-      @dest.join("assets", "noise.png").exist?.should be_true
+      expect(@dest.join("assets", "noise.png").exist?).to be_true
     end
   end
 
@@ -151,18 +151,18 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
     it "should generate a static assets if gzip is enabled" do
       @site.assets_config.gzip = true
       @site.process
-      @dest.join("assets", "app.css.gz").exist?.should be_true
+      expect(@dest.join("assets", "app.css.gz").exist?).to be_true
     end
 
     it "should not generate a static assets if gzip is enabled" do
       @site.assets_config.gzip = false
       @site.process
-      @dest.join("assets", "app.css.gz").exist?.should be_false
+      expect(@dest.join("assets", "app.css.gz").exist?).to be_false
     end
 
   end
 
   it "should be included into Jekyll::Site" do
-    Jekyll::Site.included_modules.should include described_class
+    expect(Jekyll::Site.included_modules).to include described_class
   end
 end

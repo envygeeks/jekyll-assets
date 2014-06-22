@@ -3,6 +3,6 @@ require "jekyll-assets/neat"
 
 describe "Neat integration" do
   it "should globally append neat paths into Sprockets environment" do
-    @site.assets["vendor/neat.css"].to_s.should =~ /max-width/
+    expect(@site.assets["vendor/neat.css"].to_s).to match(/max-width/)
   end
 end

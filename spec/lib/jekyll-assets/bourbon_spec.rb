@@ -3,6 +3,6 @@ require "jekyll-assets/bourbon"
 
 describe "Bourbon integration" do
   it "should globally append bourbon paths into Sprockets environment" do
-    @site.assets["vendor/bourbon.css"].to_s.should =~ /linear-gradient/
+    expect(@site.assets["vendor/bourbon.css"].to_s).to match(/linear-gradient/)
   end
 end
