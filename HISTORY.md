@@ -1,5 +1,6 @@
 ### master (unreleased)
 
+* Explicitly require `sass`.
 
 ### 0.7.9 (2014-05-25)
 
