@@ -1,6 +1,9 @@
 ### master (unreleased)
 
 * Explicitly require `sass`.
+* Fix `asset_*` helpers in imported SASS files.
+  See #83, #63. (Thanks @sentience)
+
 
 ### 0.7.9 (2014-05-25)
 

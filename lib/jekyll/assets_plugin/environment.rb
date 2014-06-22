@@ -4,6 +4,8 @@ require "pathname"
 # 3rd-party
 require "sass"
 require "sprockets"
+require "sprockets-sass"
+require "sprockets-helpers"
 
 module Jekyll
   module AssetsPlugin
