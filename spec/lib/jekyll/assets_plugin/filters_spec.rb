@@ -1,10 +1,14 @@
 require "spec_helper"
 
-describe Jekyll::AssetsPlugin::Filters do
+RSpec.describe Jekyll::AssetsPlugin::Filters do
   let(:context) { { :registers => { :site => @site } } }
 
   def render(content)
     ::Liquid::Template.parse(content).render({}, context)
+  end
+
+  def not_found_error(file)
+    "Liquid error: Couldn't find file '#{file}"
   end
 
   context "{{ '<file>' | image }}" do
@@ -15,12 +19,12 @@ describe Jekyll::AssetsPlugin::Filters do
 
     context "when <file> exists" do
       subject { render("{{ 'noise.png' | image }}") }
-      it { should match tag_re("noise") }
+      it { is_expected.to match tag_re("noise") }
     end
 
     context "when <file> does not exists" do
       subject { render("{{ 'not-found.png' | image }}") }
-      it { should match "Liquid error: Couldn't find file 'not-found.png'" }
+      it { is_expected.to match not_found_error "not-found.png" }
     end
   end
 
@@ -32,17 +36,17 @@ describe Jekyll::AssetsPlugin::Filters do
 
     context "when <file> exists" do
       subject { render("{{ 'app.css' | stylesheet }}") }
-      it { should match tag_re("app") }
+      it { is_expected.to match tag_re("app") }
     end
 
     context "when <file> extension is omited" do
       subject { render("{{ 'app' | stylesheet }}") }
-      it { should match tag_re("app") }
+      it { is_expected.to match tag_re("app") }
     end
 
     context "when <file> does not exists" do
       subject { render("{{ 'not-found.css' | stylesheet }}") }
-      it { should match "Liquid error: Couldn't find file 'not-found.css'" }
+      it { is_expected.to match not_found_error "not-found.css" }
     end
   end
 
@@ -54,29 +58,29 @@ describe Jekyll::AssetsPlugin::Filters do
 
     context "when <file> exists" do
       subject { render("{{ 'app.js' | javascript }}") }
-      it { should match tag_re("app") }
+      it { is_expected.to match tag_re("app") }
     end
 
     context "when <file> extension omited" do
       subject { render("{{ 'app' | javascript }}") }
-      it { should match tag_re("app") }
+      it { is_expected.to match tag_re("app") }
     end
 
     context "when <file> does not exists" do
       subject { render("{{ 'not-found.js' | javascript }}") }
-      it { should match "Liquid error: Couldn't find file 'not-found.js'" }
+      it { is_expected.to match not_found_error "not-found.js" }
     end
   end
 
   context "{{ '<file.ext>' | asset_path }}" do
     context "when <file> exists" do
       subject { render("{{ 'app.css' | asset_path }}") }
-      it { should match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
+      it { is_expected.to match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
     end
 
     context "when <file> does not exists" do
       subject { render("{{ 'not-found.css' | asset_path }}") }
-      it { should match "Liquid error: Couldn't find file 'not-found.css'" }
+      it { is_expected.to match not_found_error "not-found.css" }
     end
 
     context "with baseurl given as /foobar/" do
@@ -85,19 +89,19 @@ describe Jekyll::AssetsPlugin::Filters do
       end
 
       subject { render("{{ 'app.css' | asset_path }}") }
-      it { should match(%r{^/foobar/app-[a-f0-9]{32}\.css$}) }
+      it { is_expected.to match(%r{^/foobar/app-[a-f0-9]{32}\.css$}) }
     end
   end
 
   context "{{ '<file.ext>' | asset }}" do
     context "when <file> exists" do
       subject { render("{{ 'app.css' | asset }}") }
-      it { should match(/body \{ background-image: url\(.+?\) \}/) }
+      it { is_expected.to match(/body \{ background-image: url\(.+?\) \}/) }
     end
 
     context "when <file> does not exists" do
       subject { render("{{ 'not-found.js' | asset }}") }
-      it { should match "Liquid error: Couldn't find file 'not-found.js'" }
+      it { is_expected.to match not_found_error "not-found.js" }
     end
   end
 end

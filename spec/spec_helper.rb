@@ -22,6 +22,8 @@ RSpec.configure do |config|
   config.include FixturesHelpers
   config.extend  FixturesHelpers
 
+  config.disable_monkey_patching!
+
   config.before(:all) do
     if Gem::Version.new("2") <= Gem::Version.new(Jekyll::VERSION)
       Jekyll.logger.log_level = :warn

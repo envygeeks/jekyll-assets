@@ -3,7 +3,7 @@ require "ostruct"
 
 require "spec_helper"
 
-describe Jekyll::AssetsPlugin::Renderer do
+RSpec.describe Jekyll::AssetsPlugin::Renderer do
   let(:site) do
     Jekyll::Site.new Jekyll.configuration({
       "source"      => fixtures_path.to_s,
@@ -22,12 +22,12 @@ describe Jekyll::AssetsPlugin::Renderer do
 
     context "when debug mode enabled" do
       let(:assets_config) { Hash[:debug, true] }
-      it { should match(/^(\s*<script src="[^"]+"><\/script>\s*){3}$/) }
+      it { is_expected.to match(/^(\s*<script src="[^"]+"><\/script>\s*){3}$/) }
     end
 
     context "when debug mode disabled" do
       let(:assets_config) { Hash[:debug, false] }
-      it { should match(/^(\s*<script src="[^"]+"><\/script>\s*){1}$/) }
+      it { is_expected.to match(/^(\s*<script src="[^"]+"><\/script>\s*){1}$/) }
     end
   end
 
@@ -36,12 +36,12 @@ describe Jekyll::AssetsPlugin::Renderer do
 
     context "when debug mode enabled" do
       let(:assets_config) { Hash[:debug, true] }
-      it { should match(/^(\s*<link rel="stylesheet" [^>]+>\s*){3}$/) }
+      it { is_expected.to match(/^(\s*<link rel="stylesheet" [^>]+>\s*){3}$/) }
     end
 
     context "when debug mode disabled" do
       let(:assets_config) { Hash[:debug, false] }
-      it { should match(/^(\s*<link rel="stylesheet" [^>]+>\s*){1}$/) }
+      it { is_expected.to match(/^(\s*<link rel="stylesheet" [^>]+>\s*){1}$/) }
     end
   end
 

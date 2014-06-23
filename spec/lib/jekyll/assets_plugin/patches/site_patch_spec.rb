@@ -1,6 +1,8 @@
 require "spec_helper"
 
-describe Jekyll::AssetsPlugin::Patches::SitePatch do
+# rubocop:disable LineLength
+
+RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
   let(:site) do
     Jekyll::Site.new Jekyll.configuration({
       "source"  => fixtures_path.to_s,
@@ -13,13 +15,13 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
   context "#assets" do
     subject { site.assets }
-    it { should be_a_kind_of ::Sprockets::Environment }
+    it { is_expected.to be_a_kind_of ::Sprockets::Environment }
 
     context "#cache_path" do
       let(:source_path) { Pathname.new site.source }
       subject           { site.assets.cache_path }
 
-      it { should eq source_path.join(".jekyll-assets-cache") }
+      it { is_expected.to eq source_path.join(".jekyll-assets-cache") }
     end
 
     context "calling #asset_path within assets" do
@@ -31,14 +33,14 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
       end
 
       context "when requested file found" do
-        it "should have proper asset path" do
+        it "has proper asset path" do
           expect(site.assets["app.css"].to_s)
             .to match(%r{url\(/assets/noise-[a-f0-9]{32}\.png\)})
         end
       end
 
       context "when passed a blank path" do
-        it "should be blank" do
+        it "is blank" do
           expect(site.assets["should_be_blank.css"].to_s)
             .to match(/url\(\)/)
         end
@@ -51,22 +53,22 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
     context "with none cachebust" do
       before { site.assets_config.cachebust = :none }
-      it { should match(%r{^/assets/app\.css$}) }
+      it { is_expected.to match(%r{^/assets/app\.css$}) }
     end
 
     context "with soft cachebust" do
       before { site.assets_config.cachebust = :soft }
-      it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}$}) }
+      it { is_expected.to match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}$}) }
     end
 
     context "with hard cachebust" do
       before { site.assets_config.cachebust = :hard }
-      it { should match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
+      it { is_expected.to match(%r{^/assets/app-[a-f0-9]{32}\.css$}) }
     end
 
     context "with unknown cachebust" do
       before { site.assets_config.cachebust = :wtf }
-      it "should raise error" do
+      it "raises error" do
         expect { site.asset_path "app.css" }.to raise_error
       end
     end
@@ -76,17 +78,17 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
       context "and none cachebust" do
         before { site.assets_config.cachebust = :none }
-        it { should match(%r{^/assets/app\.css\?foo=bar$}) }
+        it { is_expected.to match(%r{^/assets/app\.css\?foo=bar$}) }
       end
 
       context "and soft cachebust" do
         before { site.assets_config.cachebust = :soft }
-        it { should match %r{^/assets/app\.css\?cb=[a-f0-9]{32}&foo=bar$} }
+        it { is_expected.to match %r{^/assets/app\.css\?cb=[a-f0-9]{32}&foo=bar$} }
       end
 
       context "and hard cachebust" do
         before { site.assets_config.cachebust = :hard }
-        it { should match(%r{^/assets/app-[a-f0-9]{32}\.css\?foo=bar$}) }
+        it { is_expected.to match(%r{^/assets/app-[a-f0-9]{32}\.css\?foo=bar$}) }
       end
     end
 
@@ -95,35 +97,35 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
       context "and none cachebust" do
         before { site.assets_config.cachebust = :none }
-        it { should match(%r{^/assets/app\.css#foobar$}) }
+        it { is_expected.to match(%r{^/assets/app\.css#foobar$}) }
       end
 
       context "and soft cachebust" do
         before { site.assets_config.cachebust = :soft }
-        it { should match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}#foobar$}) }
+        it { is_expected.to match(%r{^/assets/app\.css\?cb=[a-f0-9]{32}#foobar$}) }
       end
 
       context "and hard cachebust" do
         before { site.assets_config.cachebust = :hard }
-        it { should match(%r{^/assets/app-[a-f0-9]{32}\.css#foobar$}) }
+        it { is_expected.to match(%r{^/assets/app-[a-f0-9]{32}\.css#foobar$}) }
       end
     end
   end
 
   context "#assets_config" do
     subject { site.assets_config }
-    it { should be_an_instance_of Jekyll::AssetsPlugin::Configuration }
+    it { is_expected.to be_an_instance_of Jekyll::AssetsPlugin::Configuration }
 
-    it "should been populated with `assets` section of config" do
+    it "populated with `assets` section of config" do
       expect(site.assets_config.dirname).not_to eq "foobar"
       expect(site.assets_config.sources).to include "foobar"
     end
   end
 
-  it "should regenerate assets upon multiple #process" do
+  it "regenerates assets upon multiple #process" do
     @site.assets_config.cachebust = :none
     2.times { @site.process }
-    expect(@dest.join("assets", "app.css").exist?).to be_true
+    expect(@dest.join "assets", "app.css").to exist
   end
 
   context "with cache" do
@@ -139,30 +141,32 @@ describe Jekyll::AssetsPlugin::Patches::SitePatch do
       site.assets.cache_path.rmtree if site.assets.cache_path.exist?
     end
 
-    it "should regenerate static assets upon multiple #process" do
+    it "regenerates static assets upon multiple #process" do
       2.times { site.process }
-      expect(@dest.join("assets", "noise.png").exist?).to be_true
+      expect(@dest.join "assets", "noise.png").to exist
     end
   end
 
   context "#gzip" do
     subject { site.assets_config }
 
-    it "should generate a static assets if gzip is enabled" do
+    it "generates a static assets if gzip is enabled" do
       @site.assets_config.gzip = true
       @site.process
-      expect(@dest.join("assets", "app.css.gz").exist?).to be_true
+
+      expect(@dest.join "assets", "app.css.gz").to exist
     end
 
-    it "should not generate a static assets if gzip is enabled" do
+    it "does not generate a static assets if gzip is enabled" do
       @site.assets_config.gzip = false
       @site.process
-      expect(@dest.join("assets", "app.css.gz").exist?).to be_false
+
+      expect(@dest.join "assets", "app.css.gz").to_not exist
     end
 
   end
 
-  it "should be included into Jekyll::Site" do
+  it "is included into Jekyll::Site" do
     expect(Jekyll::Site.included_modules).to include described_class
   end
 end

@@ -1,62 +1,62 @@
 require "spec_helper"
 
-describe Jekyll::AssetsPlugin::Configuration do
+RSpec.describe Jekyll::AssetsPlugin::Configuration do
   context "with defaults" do
     let(:config) { described_class.new }
 
     context "output assets dirname" do
       subject { config.dirname }
-      it { should == described_class::DEFAULTS[:dirname] }
+      it { is_expected.to eq described_class::DEFAULTS[:dirname] }
     end
 
     context "assets baseurl" do
       subject { config.baseurl }
-      it { should == "/" + described_class::DEFAULTS[:dirname] }
+      it { is_expected.to eq "/" + described_class::DEFAULTS[:dirname] }
     end
 
     context "sources list" do
       subject { config.sources }
-      it { should =~ described_class::DEFAULTS[:sources] }
+      it { is_expected.to match_array described_class::DEFAULTS[:sources] }
     end
 
     context "cachebust" do
       subject { config.cachebust }
-      it { should == :hard }
+      it { is_expected.to be :hard }
     end
 
     context "js compressor" do
       subject { config.js_compressor }
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
 
     context "css compressor" do
       subject { config.css_compressor }
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
 
     context "gzip" do
       subject { config.gzip }
-      it { should =~ %w[text/css application/javascript] }
+      it { is_expected.to match_array %w[text/css application/javascript] }
     end
 
     context "cache_assets?" do
       subject { config.cache_assets? }
-      it { should be_false }
+      it { is_expected.to eq false }
     end
 
     context "cache_path" do
       subject { config.cache_path }
-      it { should == ".jekyll-assets-cache" }
+      it { is_expected.to eq ".jekyll-assets-cache" }
     end
 
     context "debug" do
       subject { config.debug }
-      it { should be_false }
+      it { is_expected.to eq false }
     end
 
   end
 
-  it "should override specified options and leave defaults for missing" do
+  it "overrides specified options and leave defaults for missing" do
     config = described_class.new({
       :sources        => %w[abc],
       :css_compressor => "sass"
@@ -70,7 +70,7 @@ describe Jekyll::AssetsPlugin::Configuration do
 
   context "#cache" do
     context "when specified as String" do
-      it "should override default cache path" do
+      it "overrides default cache path" do
         config = described_class.new :cache => "/tmp/jekyll-assets"
         expect(config.cache_path).to eq("/tmp/jekyll-assets")
       end
@@ -78,14 +78,14 @@ describe Jekyll::AssetsPlugin::Configuration do
   end
 
   context "#baseurl" do
-    it "should respect explicit overrides" do
+    it "respects explicit overrides" do
       expect(described_class.new({
         :dirname => "foo",
         :baseurl => "/bar/"
       }).baseurl).to eq("/bar")
     end
 
-    it "should be auto-guessed from dirname" do
+    it "is auto-guessed from dirname" do
       expect(described_class.new({
         :dirname => "foo"
       }).baseurl).to eq("/foo")
@@ -96,13 +96,13 @@ describe Jekyll::AssetsPlugin::Configuration do
     context "when js compressor is given as `uglify`" do
       let(:config) { described_class.new(:js_compressor => "uglify") }
       subject { config.js_compressor }
-      it { should be :uglify }
+      it { is_expected.to be :uglify }
     end
 
     context "otherwise" do
       let(:config) { described_class.new }
       subject { config.js_compressor }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
   end
 
@@ -110,13 +110,13 @@ describe Jekyll::AssetsPlugin::Configuration do
     context "when css compressor is given as `sass`" do
       let(:config) { described_class.new(:css_compressor => "sass") }
       subject { config.css_compressor }
-      it { should be :sass }
+      it { is_expected.to be :sass }
     end
 
     context "otherwise" do
       let(:config) { described_class.new }
       subject { config.css_compressor }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
   end
 
@@ -124,7 +124,7 @@ describe Jekyll::AssetsPlugin::Configuration do
     context "when gzip is disabled" do
       let(:config) { described_class.new(:gzip => false) }
       subject { config.gzip }
-      it { should == [] }
+      it { is_expected.to eq [] }
     end
   end
 
@@ -133,14 +133,14 @@ describe Jekyll::AssetsPlugin::Configuration do
 
     context "when given as 123" do
       let(:version) { 123 }
-      it { should eq 123 }
-      it { should be_a Integer }
+      it { is_expected.to eq 123 }
+      it { is_expected.to be_a Integer }
     end
 
     context "when given as 'abc'" do
       let(:version) { "abc" }
-      it { should eq "abc" }
-      it { should be_a String }
+      it { is_expected.to eq "abc" }
+      it { is_expected.to be_a String }
     end
   end
 
@@ -152,22 +152,22 @@ describe Jekyll::AssetsPlugin::Configuration do
         { :compress => { :js => "uglify", :css => "sass" } }
       end
 
-      describe '#js_compressor' do
+      describe "#js_compressor" do
         subject { super().js_compressor }
-        it { should be :uglify }
+        it { is_expected.to be :uglify }
       end
 
-      describe '#css_compressor' do
+      describe "#css_compressor" do
         subject { super().css_compressor }
-        it { should be :sass }
+        it { is_expected.to be :sass }
       end
     end
 
     context "cache_assets" do
       let(:options) { { :cache_assets => true } }
 
-      it "should set `cache` value" do
-        expect(config.cache_assets?).to be_true
+      it "sets `cache` value" do
+        expect(config.cache_assets?).to eq true
       end
     end
   end
