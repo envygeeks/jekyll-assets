@@ -1,5 +1,13 @@
 ### master (unreleased)
 
+
+### 0.8.1 (2014-07-04)
+
+* Fix support of `bootstrap-sass v3.2+`. See #85.
+
+
+### 0.8.0 (2014-06-23)
+
 * Explicitly require `sass`.
 * Fix `asset_*` helpers in imported SASS files.
   See #83, #63. (Thanks @sentience)
