@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rubocop", "~> 0.22.0"
+gem "rubocop", "~> 0.24.0"
 
 group :test do
   gem "coveralls", :require => false
