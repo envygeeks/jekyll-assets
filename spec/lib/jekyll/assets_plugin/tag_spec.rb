@@ -11,10 +11,15 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
     "Liquid error: Couldn't find file '#{file}'"
   end
 
+  def render_tag(template, path, attrs = "")
+    template = Jekyll::AssetsPlugin::Renderer.const_get template
+    format template, :path => path, :attrs => attrs
+  end
+
   context "{% image <file> %}" do
     def tag_re(name)
       file = "/assets/#{name}-[a-f0-9]{32}\.png"
-      Regexp.new "^#{Jekyll::AssetsPlugin::Renderer::IMAGE % file}$"
+      Regexp.new "^#{render_tag :IMAGE, file}$"
     end
 
     context "when <file> exists" do
@@ -31,7 +36,7 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   context "{% stylesheet <file> %}" do
     def tag_re(name)
       file = "/assets/#{name}-[a-f0-9]{32}\.css"
-      Regexp.new "^#{Jekyll::AssetsPlugin::Renderer::STYLESHEET % file}$"
+      Regexp.new "^#{render_tag :STYLESHEET, file}$"
     end
 
     context "when <file> exists" do
@@ -53,7 +58,7 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   context "{% javascript <file> %}" do
     def tag_re(name)
       file = "/assets/#{name}-[a-f0-9]{32}\.js"
-      Regexp.new "^#{Jekyll::AssetsPlugin::Renderer::JAVASCRIPT % file}$"
+      Regexp.new "^#{render_tag :JAVASCRIPT, file}$"
     end
 
     context "when <file> exists" do

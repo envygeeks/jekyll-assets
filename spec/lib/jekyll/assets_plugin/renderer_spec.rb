@@ -30,6 +30,11 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
         let(:asset) { "http://example.com/app.js" }
         it { is_expected.to match(/^<script src="#{asset}"><\/script>$/) }
       end
+
+      context "and path contains attributes" do
+        let(:asset) { "app data-test=true" }
+        it { is_expected.to include "data-test=true" }
+      end
     end
 
     context "when debug mode disabled" do
@@ -39,6 +44,11 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
       context "and URI given" do
         let(:asset) { "http://example.com/app.js" }
         it { is_expected.to match(/^<script src="#{asset}"><\/script>$/) }
+      end
+
+      context "and path contains attributes" do
+        let(:asset) { "app data-test=true" }
+        it { is_expected.to include "data-test=true" }
       end
     end
   end
@@ -54,6 +64,11 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
         let(:asset) { "http://example.com/style.css" }
         it { is_expected.to match(/^<link rel="stylesheet" href="#{asset}">$/) }
       end
+
+      context "and path contains attributes" do
+        let(:asset) { "app data-test=true" }
+        it { is_expected.to include "data-test=true" }
+      end
     end
 
     context "when debug mode disabled" do
@@ -63,6 +78,11 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
       context "and URI given" do
         let(:asset) { "http://example.com/style.css" }
         it { is_expected.to match(/^<link rel="stylesheet" href="#{asset}">$/) }
+      end
+
+      context "and path contains attributes" do
+        let(:asset) { "app data-test=true" }
+        it { is_expected.to include "data-test=true" }
       end
     end
   end
@@ -80,6 +100,11 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
         let(:asset) { "http://example.com/style.css" }
         it { is_expected.to match(/^<img src="#{asset}">$/) }
       end
+
+      context "and path contains attributes" do
+        let(:asset) { "noise.png data-test=true" }
+        it { is_expected.to include "data-test=true" }
+      end
     end
 
     context "when debug mode disabled" do
@@ -89,6 +114,11 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
       context "and URI given" do
         let(:asset) { "http://example.com/style.css" }
         it { is_expected.to match(/^<img src="#{asset}">$/) }
+      end
+
+      context "and path contains attributes" do
+        let(:asset) { "noise.png data-test=true" }
+        it { is_expected.to include "data-test=true" }
       end
     end
   end

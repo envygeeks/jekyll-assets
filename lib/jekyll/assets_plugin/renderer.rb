@@ -1,15 +1,17 @@
 module Jekyll
   module AssetsPlugin
     class Renderer
-      STYLESHEET = '<link rel="stylesheet" href="%s">'
-      JAVASCRIPT = '<script src="%s"></script>'
-      IMAGE      = '<img src="%s">'
+      STYLESHEET = '<link rel="stylesheet" href="%{path}"%{attrs}>'
+      JAVASCRIPT = '<script src="%{path}"%{attrs}></script>'
+      IMAGE      = '<img src="%{path}"%{attrs}>'
 
       URI_RE     = %r{^(?:[^:]+:)?//(?:[^./]+\.)+[^./]+/}
 
       def initialize(context, logical_path)
-        @site = context.registers[:site]
-        @path = logical_path.strip
+        @site   = context.registers[:site]
+        @path   = logical_path.strip
+
+        @path, _, @attrs = @path.partition(" ") if @path[" "]
       end
 
       def render_asset
@@ -37,13 +39,13 @@ module Jekyll
       private
 
       def render_tag(template, extension = nil)
-        return format(template, @path) if remote?
+        return format(template, :path => @path, :attrs => @attrs) if remote?
 
         @path << extension if extension && File.extname(@path).empty?
 
         asset = @site.assets[@path]
         tags  = (@site.assets_config.debug ? asset.to_a : [asset]).map do |a|
-          format template, AssetPath.new(a).to_s
+          format template, :path => AssetPath.new(a).to_s, :attrs => @attrs
         end
 
         tags.join "\n"
