@@ -1,6 +1,14 @@
 ### master (unreleased)
 
 
+### 0.9.0 (2014-07-19)
+
+* Allow pass remote URIs to image/stylesheet/javascript tags/filters.
+  See #52.
+* Allow pass extra tag attributes to image/stylesheet/javascript tags/filters.
+  See #52.
+
+
 ### 0.8.1 (2014-07-04)
 
 * Fix support of `bootstrap-sass v3.2+`. See #85.
