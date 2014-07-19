@@ -1,11 +1,21 @@
 source "https://rubygems.org"
 
-gem "rubocop", "~> 0.24.0"
+gem "compass"
+gem "bourbon"
+gem "neat"
+gem "bootstrap-sass"
+gem "font-awesome-sass"
 
-group :test do
-  gem "coveralls", :require => false
-  gem "simplecov", :require => false
-end
+# compass fails with SASS than 3.3+
+# https://github.com/chriseppstein/compass/issues/1513
+gem "sass", "~> 3.2.13"
+
+gem "rubocop", "~> 0.24.0"
+gem "rake"
+gem "rspec"
+
+gem "coveralls", :require => false
+gem "simplecov", :require => false
 
 group :development do
   gem "guard-rspec"
