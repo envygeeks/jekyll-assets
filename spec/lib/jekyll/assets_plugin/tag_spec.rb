@@ -44,6 +44,11 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
       it { is_expected.to match tag_re("app") }
     end
 
+    context "when <file> name has multiple dots" do
+      subject { render("{% stylesheet app.min %}") }
+      it { is_expected.to match tag_re("app.min") }
+    end
+
     context "when <file> extension is omited" do
       subject { render("{% stylesheet app %}") }
       it { is_expected.to match tag_re("app") }
@@ -64,6 +69,11 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
     context "when <file> exists" do
       subject { render("{% javascript app.js %}") }
       it { is_expected.to match tag_re("app") }
+    end
+
+    context "when <file> name has multiple dots" do
+      subject { render("{% javascript app.min %}") }
+      it { is_expected.to match tag_re("app.min") }
     end
 
     context "when <file> extension omited" do
