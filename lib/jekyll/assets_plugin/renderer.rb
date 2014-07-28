@@ -38,10 +38,10 @@ module Jekyll
 
       private
 
-      def render_tag(template, extension = nil)
+      def render_tag(template, extension = "")
         return format(template, :path => @path, :attrs => @attrs) if remote?
 
-        @path << extension if extension && !render_extension(@path)
+        @path << extension if extension.to_s != File.extname(@path)
 
         asset = @site.assets[@path]
         tags  = (@site.assets_config.debug ? asset.to_a : [asset]).map do |a|
@@ -49,10 +49,6 @@ module Jekyll
         end
 
         tags.join "\n"
-      end
-
-      def render_extension(p)
-        return true if File.extname(p) == ".js" || File.extname(p) == ".css"
       end
 
       def remote?
