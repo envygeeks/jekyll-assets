@@ -1,6 +1,13 @@
 ### master (unreleased)
 
 
+
+### 0.9.1 (2014-07-28)
+
+* Fix path normalization when filename contains `dot`.
+  See #90. (Thanks @tomdiggle)
+
+
 ### 0.9.0 (2014-07-19)
 
 * Allow pass remote URIs to image/stylesheet/javascript tags/filters.
