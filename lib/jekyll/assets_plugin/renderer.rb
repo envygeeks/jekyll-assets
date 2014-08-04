@@ -12,6 +12,7 @@ module Jekyll
         @path   = logical_path.strip
 
         @path, _, @attrs = @path.partition(" ") if @path[" "]
+        @attrs.prepend(" ") if @attrs
       end
 
       def render_asset
