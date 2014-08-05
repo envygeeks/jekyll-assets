@@ -1,6 +1,10 @@
 ### master (unreleased)
 
 
+### 0.9.2 (2014-08-05)
+
+* Fix tags renderer with attributes. See #93. (Thanks @tomdiggle)
+
 
 ### 0.9.1 (2014-07-28)
 
