@@ -17,14 +17,20 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   end
 
   context "{% image <file> %}" do
-    def tag_re(name)
+    def tag_re(name, attrs = "")
       file = "/assets/#{name}-[a-f0-9]{32}\.png"
-      Regexp.new "^#{render_tag :IMAGE, file}$"
+      attrs.prepend(" ") unless attrs.empty?
+      Regexp.new "^#{render_tag :IMAGE, file, attrs}$"
     end
 
     context "when <file> exists" do
       subject { render("{% image noise.png %}") }
       it { is_expected.to match tag_re("noise") }
+    end
+
+    context "when <file> has an attribute" do
+      subject { render("{% image noise.png alt=\"Foobar\" %}") }
+      it { is_expected.to match tag_re("noise", "alt=\"Foobar\"") }
     end
 
     context "when <file> does not exists" do
@@ -34,14 +40,20 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   end
 
   context "{% stylesheet <file> %}" do
-    def tag_re(name)
+    def tag_re(name, attrs = "")
       file = "/assets/#{name}-[a-f0-9]{32}\.css"
-      Regexp.new "^#{render_tag :STYLESHEET, file}$"
+      attrs.prepend(" ") unless attrs.empty?
+      Regexp.new "^#{render_tag :STYLESHEET, file, attrs}$"
     end
 
     context "when <file> exists" do
       subject { render("{% stylesheet app.css %}") }
       it { is_expected.to match tag_re("app") }
+    end
+
+    context "when <file> has an attribute" do
+      subject { render("{% stylesheet app.css type=\"text/css\" %}") }
+      it { is_expected.to match tag_re("app", "type=\"text/css\"") }
     end
 
     context "when <file> name has multiple dots" do
@@ -61,14 +73,20 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   end
 
   context "{% javascript <file> %}" do
-    def tag_re(name)
+    def tag_re(name, attrs = "")
       file = "/assets/#{name}-[a-f0-9]{32}\.js"
-      Regexp.new "^#{render_tag :JAVASCRIPT, file}$"
+      attrs.prepend(" ") unless attrs.empty?
+      Regexp.new "^#{render_tag :JAVASCRIPT, file, attrs}$"
     end
 
     context "when <file> exists" do
       subject { render("{% javascript app.js %}") }
       it { is_expected.to match tag_re("app") }
+    end
+
+    context "when <file> has an attribute" do
+      subject { render("{% javascript app.js type=\"text/javascript\" %}") }
+      it { is_expected.to match tag_re("app", "type=\"text/javascript\"") }
     end
 
     context "when <file> name has multiple dots" do
