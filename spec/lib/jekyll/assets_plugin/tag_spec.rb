@@ -12,14 +12,15 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   end
 
   def render_tag(template, path, attrs = "")
-    template = Jekyll::AssetsPlugin::Renderer.const_get template
+    template  = Jekyll::AssetsPlugin::Renderer.const_get template
+    attrs     = " #{attrs}" unless attrs.empty?
+
     format template, :path => path, :attrs => attrs
   end
 
   context "{% image <file> %}" do
     def tag_re(name, attrs = "")
       file = "/assets/#{name}-[a-f0-9]{32}\.png"
-      attrs.prepend(" ") unless attrs.empty?
       Regexp.new "^#{render_tag :IMAGE, file, attrs}$"
     end
 
@@ -42,7 +43,6 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   context "{% stylesheet <file> %}" do
     def tag_re(name, attrs = "")
       file = "/assets/#{name}-[a-f0-9]{32}\.css"
-      attrs.prepend(" ") unless attrs.empty?
       Regexp.new "^#{render_tag :STYLESHEET, file, attrs}$"
     end
 
@@ -75,7 +75,6 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   context "{% javascript <file> %}" do
     def tag_re(name, attrs = "")
       file = "/assets/#{name}-[a-f0-9]{32}\.js"
-      attrs.prepend(" ") unless attrs.empty?
       Regexp.new "^#{render_tag :JAVASCRIPT, file, attrs}$"
     end
 
