@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(/^(test|spec|features)\//)
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "jekyll",    ">= 1.0.0", "< 3.0.0"
+  spec.add_dependency "jekyll",    "~> 2.0"
   spec.add_dependency "sprockets", "~> 2.10"
   spec.add_dependency "sprockets-sass"
   spec.add_dependency "sprockets-helpers"

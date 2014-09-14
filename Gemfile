@@ -3,8 +3,8 @@ source "https://rubygems.org"
 gem "compass"
 gem "bourbon"
 gem "neat"
-gem "bootstrap-sass"
-gem "font-awesome-sass"
+gem "bootstrap-sass", "~> 3.2"
+gem "font-awesome-sass", "~> 4.2"
 
 # compass fails with SASS than 3.3+
 # https://github.com/chriseppstein/compass/issues/1513
