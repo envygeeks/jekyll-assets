@@ -24,10 +24,12 @@ Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
   details.
 - [Compass][compass], [Bourbon][bourbon] and [Neat][neat] built-in support.
   See "Custom Vendors" below.
+- [Autoprefixer][autoprefixer] support
 
-[compass]: http://compass-style.org/
-[bourbon]: http://bourbon.io/
-[neat]:    http://neat.bourbon.io/
+[compass]:      http://compass-style.org/
+[bourbon]:      http://bourbon.io/
+[neat]:         http://neat.bourbon.io/
+[autoprefixer]: https://github.com/postcss/autoprefixer
 
 Jekyll-Assets uses fabulous [Sprockets][sprockets] under the hood, so you may
 refer to Rails guide about [Asset Pipeline][rails-guide] for detailed
@@ -347,6 +349,25 @@ require "jekyll-assets/neat"
 ```
 
 Now you can add `@import "neat"` in your SASS assets to get Neat goodies.
+
+
+## Autoprefixer
+
+To enable Autoprefixer, add `autoprefixer-rails` to your `Gemfile`:
+
+``` ruby
+gem "autoprefixer-rails"
+```
+
+You can configure it by creating an `autoprefixer.yml` file in your `source`
+directory (by default your project's root):
+
+``` yaml
+browsers:
+  - "last 1 version"
+  - "> 1%"
+  - "Explorer 10"
+```
 
 
 ## The Directive Processor

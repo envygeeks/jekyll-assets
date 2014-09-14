@@ -54,9 +54,21 @@ module Jekyll
 
       private
 
+      def browsers
+        file   = Pathname.new(@site.source).join "autoprefixer.yml"
+        opts   = {}
+        params = file.exist? ? YAML.load_file(file) : {}
+        params = params.inject({}) do |h, (key, value)|
+          h.update(key.to_sym => value)
+        end
+
+        opts[:safe] = true if params.delete(:safe)
+        [params, opts]
+      end
+
       def install_autoprefixer!
         require "autoprefixer-rails"
-        AutoprefixerRails.install(self)
+        AutoprefixerRails.install(self, *browsers)
       rescue LoadError
         nil
       end
