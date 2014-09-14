@@ -61,6 +61,8 @@ details.</li>
 <li>
 <a href="http://compass-style.org/">Compass</a>, <a href="http://bourbon.io/">Bourbon</a> and <a href="http://neat.bourbon.io/">Neat</a> built-in support.
 See "Custom Vendors" below.</li>
+<li>
+<a href="https://github.com/postcss/autoprefixer">Autoprefixer</a> support</li>
 </ul><p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
 refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
 information about amazing features it gives you.</p>
@@ -96,7 +98,7 @@ that shows how to use it step by step. Also you might want to take a look on
 <p>First of all make sure to require it. Common practice is to add following line
 into <code>_plugins/ext.rb</code> file:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 </pre></div>
 
 <p>Once plugin installed, you'll have following Liquid tags available:</p>
@@ -107,6 +109,9 @@ into <code>_plugins/ext.rb</code> file:</p>
 </li>
 <li>
 <code>{% stylesheet app %}</code>: Generates <code>&lt;link&gt;</code> tag for <code>app.css</code>
+</li>
+<li>
+<code>{% image logo.png %}</code>: Generates <code>&lt;img&gt;</code> tag for <code>logo.png</code>
 </li>
 <li>
 <code>{% asset_path logo.png %}</code>: Returns <em>resulting</em> URL for <code>logo.png</code>
@@ -122,6 +127,9 @@ into <code>_plugins/ext.rb</code> file:</p>
 </li>
 <li>
 <code>{{ 'app' | stylesheet }}</code>: Generates <code>&lt;link&gt;</code> tag for <code>app.css</code>
+</li>
+<li>
+<code>{{ 'logo.png' | image }}</code>: Generates <code>&lt;img&gt;</code> tag for <code>logo.png</code>
 </li>
 <li>
 <code>{{ 'logo.png' | asset_path }}</code>: Returns <em>resulting</em> URL for <code>logo.png</code>
@@ -152,7 +160,7 @@ _assets/javascripts/vendor/jquery.js
 
 <p>would be referenced like this:</p>
 
-<div class="highlight"><pre>{% stylesheet app %}
+<div class="highlight highlight-html"><pre>{% stylesheet app %}
 {% javascript app %}
 {% javascript vendor/jquery %}
 </pre></div>
@@ -160,7 +168,7 @@ _assets/javascripts/vendor/jquery.js
 <p>You might want to require <code>vendor/jquery.js</code> into your <code>app.js</code>. To do so, just
 put following line in the beginning of your <code>app.js</code> to get it concatenated:</p>
 
-<div class="highlight"><pre><span class="c1">//= require vendor/jquery</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">//= require vendor/jquery</span>
 
 <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nx">alert</span><span class="p">(</span><span class="s1">'I love BIG BOOKS!'</span><span class="p">);</span>
@@ -171,7 +179,7 @@ put following line in the beginning of your <code>app.js</code> to get it concat
 and you're good to go. For example, here's how your <code>app.js.coffe</code> might look
 like:</p>
 
-<div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
+<div class="highlight highlight-coffeescript"><pre><span class="c1">#= require vendor/jquery</span>
 
 <span class="nx">$</span> <span class="nf">-&gt;</span>
   <span class="nx">alert</span> <span class="s">'I love BIG BOOKS! And small ones too!'</span>
@@ -181,13 +189,13 @@ like:</p>
 mix CoffeeScript and vanilla JavaScript, CSS and SCSS and SASS and LESS. The
 difference is only in comments styles used with <em>directives</em>.</p>
 
-<p>See detailes information about these <em>directives</em> below.</p>
+<p>See detailed information about these <em>directives</em> below.</p>
 
 <p>You might also want your stylesheets and javascripts to be minified. In this
 case just install the <code>uglifier</code> gem and any other gems you will be using, e.g.
 <code>sass</code>, <code>coffee-script</code>. Then add following lines into your <code>config.yml</code>:</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">uglifier</span>
   <span class="l-Scalar-Plain">css_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sass</span>
 </pre></div>
@@ -210,13 +218,13 @@ body
 for example. Create a file <code>_assets/javascripts/hello.jst.ejs</code> with following
 contents:</p>
 
-<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>Hello, <span class="nt">&lt;span&gt;</span><span class="err">&lt;</span>%= name %&gt;<span class="nt">&lt;/span&gt;</span>!<span class="nt">&lt;/p&gt;</span>
+<div class="highlight highlight-html"><pre><span class="nt">&lt;p&gt;</span>Hello, <span class="nt">&lt;span&gt;</span><span class="err">&lt;</span>%= name %&gt;<span class="nt">&lt;/span&gt;</span>!<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;p&gt;</span><span class="err">&lt;</span>%= info %&gt;<span class="nt">&lt;/p&gt;</span>
 </pre></div>
 
 <p>Then use it in your <code>app.js</code> file like this:</p>
 
-<div class="highlight"><pre><span class="c1">#= require vendor/jquery</span>
+<div class="highlight highlight-coffeescript"><pre><span class="c1">#= require vendor/jquery</span>
 <span class="c1">#= require hello</span>
 
 <span class="nx">$</span> <span class="nf">-&gt;</span>
@@ -237,8 +245,8 @@ your <code>app.js.coffee</code> will become something like:</p>
 change this if you are going to host assets somewhere else. This can be easily
 changed via configuration:</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">//my.super-cool-cdn.com/</span>
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://my.super-cool-cdn.com/assets</span>
 </pre></div>
 
 <h3>
@@ -246,11 +254,11 @@ changed via configuration:</p>
 
 <p>Sprockets comes with good set of preconfigured compressors, but imagine you are
 not satisfied with default settings. For example you want to strip all comments
-but copyrights info. In this csae you can define and use your own compressor.</p>
+but copyrights info. In this case you can define and use your own compressor.</p>
 
 <p>To do so, first let's define new compressor in <code>_plugins/ext.rb</code>:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 <span class="nb">require</span> <span class="s2">"sprockets"</span>
 
 <span class="no">Sprockets</span><span class="o">.</span><span class="n">register_compressor</span> <span class="s1">'application/javascript'</span><span class="p">,</span>
@@ -259,7 +267,7 @@ but copyrights info. In this csae you can define and use your own compressor.</p
 
 <p>Once it's done, just tell assets to use <code>my_uglifier</code> as js compressor:</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">my_uglifier</span>
 </pre></div>
 
@@ -268,7 +276,7 @@ but copyrights info. In this csae you can define and use your own compressor.</p
 
 <p>To improve build time, you can enabled compiled assets cache:</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
 </pre></div>
 
@@ -283,7 +291,7 @@ path of your jekyl site.</p>
 <p>Sometimes you would like to have some 3rd-party vendors. For this purposes,
 normally all you have to do is to override default assets sources in config:</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">sources</span><span class="p-Indicator">:</span>
     <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/images</span>
     <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/javascripts</span>
@@ -296,7 +304,7 @@ normally all you have to do is to override default assets sources in config:</p>
 uses Sprockets internally, you can simply append "global" paths into it. Just
 add following line into your <code>_plugins/ext.rb</code> file:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"sprockets"</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"sprockets"</span>
 
 <span class="no">Sprockets</span><span class="o">.</span><span class="n">append_path</span> <span class="s2">"/my/vendor"</span>
 </pre></div>
@@ -314,7 +322,7 @@ path first.</p>
 
 <p>Require <code>jekyll-assets/compass</code> to enable, e.g.:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 <span class="nb">require</span> <span class="s2">"jekyll-assets/compass"</span>
 </pre></div>
 
@@ -324,26 +332,65 @@ path first.</p>
   you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
 
 <h4>
+<a name="bootstrap-support" class="anchor" href="#bootstrap-support"><span class="octicon octicon-link"></span></a>Bootstrap Support</h4>
+
+<p>Require <code>jekyll-assets/bootstrap</code> to enable, e.g.:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/bootstrap"</span>
+</pre></div>
+
+<p>Now you can add <code>@import "bootstrap"</code> in your SASS assets to get Bootstrap goodies.</p>
+
+<h4>
 <a name="bourbon-support" class="anchor" href="#bourbon-support"><span class="octicon octicon-link"></span></a>Bourbon Support</h4>
 
 <p>Require <code>jekyll-assets/bourbon</code> to enable, e.g.:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 <span class="nb">require</span> <span class="s2">"jekyll-assets/bourbon"</span>
 </pre></div>
 
 <p>Now you can add <code>@import "bourbon"</code> in your SASS assets to get Bourbon goodies.</p>
 
 <h4>
+<a name="font-awesome" class="anchor" href="#font-awesome"><span class="octicon octicon-link"></span></a>Font Awesome</h4>
+
+<p>Require <code>jekyll-assets/font-awesome</code> to enable, e.g.:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/font-awesome"</span>
+</pre></div>
+
+<p>Now you can add <code>@import "font-awesome"</code> in your SASS assets to get Font Awesome goodies.</p>
+
+<h4>
 <a name="neat-support" class="anchor" href="#neat-support"><span class="octicon octicon-link"></span></a>Neat Support</h4>
 
 <p>Require <code>jekyll-assets/neat</code> to enable, e.g.:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 <span class="nb">require</span> <span class="s2">"jekyll-assets/neat"</span>
 </pre></div>
 
 <p>Now you can add <code>@import "neat"</code> in your SASS assets to get Neat goodies.</p>
+
+<h2>
+<a name="autoprefixer" class="anchor" href="#autoprefixer"><span class="octicon octicon-link"></span></a>Autoprefixer</h2>
+
+<p>To enable Autoprefixer, add <code>autoprefixer-rails</code> to your <code>Gemfile</code>:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s2">"autoprefixer-rails"</span>
+</pre></div>
+
+<p>You can configure it by creating an <code>autoprefixer.yml</code> file in your <code>source</code>
+directory (by default your project's root):</p>
+
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">browsers</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="s">"last</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">version"</span>
+  <span class="p-Indicator">-</span> <span class="s">"&gt;</span><span class="nv"> </span><span class="s">1%"</span>
+  <span class="p-Indicator">-</span> <span class="s">"Explorer</span><span class="nv"> </span><span class="s">10"</span>
+</pre></div>
 
 <h2>
 <a name="the-directive-processor" class="anchor" href="#the-directive-processor"><span class="octicon octicon-link"></span></a>The Directive Processor</h2>
@@ -450,7 +497,7 @@ back by any other <code>require</code>.</p>
 
 <p>You can fine-tune configuration by editing your <code>_config.yml</code>:</p>
 
-<div class="highlight"><pre><span class="c1">#</span>
+<div class="highlight highlight-yaml"><pre><span class="c1">#</span>
 <span class="c1"># Plugin: jekyll-assets</span>
 <span class="c1">#</span>
 <span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
@@ -522,12 +569,17 @@ back by any other <code>require</code>.</p>
   <span class="c1"># Default: false</span>
   <span class="c1">#</span>
   <span class="l-Scalar-Plain">debug</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="c1">#</span>
+  <span class="c1"># Configuration version. Used to force cache invalidation.</span>
+  <span class="c1"># Default: 1</span>
+  <span class="c1">#</span>
+  <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1</span>
 </pre></div>
 
 <h2>
 <a name="th-th-th-thats-all-folks" class="anchor" href="#th-th-th-thats-all-folks"><span class="octicon octicon-link"></span></a>"Th-th-th-that's all folks!"</h2>
 
-<p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via <a>jabber</a> or
+<p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via jabber or
 write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 
 <h2>
