@@ -1,5 +1,10 @@
 ### master (unreleased)
 
+* Drop support of `bootstrap-sass < 3.2`, `font-awesome-sass < 4.2`
+  and `jekyll < 2.0`.
+* Allow configure autoprefixer. See #95. (Thanks @silvenon)
+* Fix support for FontAwesome `v4.2`. See #99. (Thanks @janlindblom)
+
 
 ### 0.9.2 (2014-08-05)
 
