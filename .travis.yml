@@ -3,7 +3,10 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.2
 
 gemfile:
   - Gemfile
-  - Gemfile.jekyll-1.0
+  - gemfiles/Gemfile.bootstrap-pre-3.2
+  - gemfiles/Gemfile.fontawesome-pre-4.2
+  - gemfiles/Gemfile.jekyll-1.0

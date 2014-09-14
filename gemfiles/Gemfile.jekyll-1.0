@@ -1,0 +1,2 @@
+eval_gemfile "../Gemfile"
+gem "jekyll", "~> 1.0"
