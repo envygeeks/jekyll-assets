@@ -4,7 +4,7 @@ gem "compass"
 gem "bourbon"
 gem "neat"
 gem "bootstrap-sass"
-gem "font-awesome-sass"
+gem "font-awesome-sass", "~> 4.2.0"
 
 # compass fails with SASS than 3.3+
 # https://github.com/chriseppstein/compass/issues/1513
