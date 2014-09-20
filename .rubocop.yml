@@ -1,78 +1,43 @@
-# Avoid long parameter lists
-ParameterLists:
-  Max: 3
-  CountKeywordArgs: true
+inherit_from: .rubocop_todo.yml
 
-MethodLength:
-  CountComments: false
-  Max: 15
+## Styles ######################################################################
 
-ClassLength:
-  CountComments: false
-  Max: 100
-
-CyclomaticComplexity:
-  Max: 6
-
-EmptyLineBetweenDefs:
-  AllowAdjacentOneLineDefs: true
-
-BlockNesting:
-  Max: 3
-
-HashSyntax:
-  EnforcedStyle: hash_rockets
-
-StringLiterals:
-  EnforcedStyle: double_quotes
-
-AlignParameters:
+Style/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
-IndentHash:
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Style/Encoding:
+  EnforcedStyle: when_needed
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/IndentHash:
   EnforcedStyle: consistent
 
-PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%':  ()
-    '%i': ()
-    '%q': ()
-    '%Q': ()
-    '%r': '{}'
-    '%s': ()
-    '%w': '[]'
-    '%W': '[]'
-    '%x': ()
-
-Encoding:
+# New lambda syntax is as ugly to me as new syntax of Hash.
+Style/Lambda:
   Enabled: false
 
-BracesAroundHashParameters:
-  Enabled: false
-
-Documentation:
-  Enabled: false
-
-# Not all trivial readers/writers can be defined with attr_* methods
-TrivialAccessors:
-  Enabled: false
-
-# New lambda syntax is UGLY, don't enforce it
-Lambda:
-  Enabled: false
-
-# Ridiculous (and IMHO useless) restriction, that makes impossible aligning
-# code like this:
+# A bit useless restriction, that makes impossible aligning code like this:
 #
-#   redis.hset    :k1, now
-#   redis.hincrby :k2, 123
+#   redis do |conn|
+#     conn.hset    :k1, now
+#     conn.hincrby :k2, 123
+#   end
 SingleSpaceBeforeFirstArg:
   Enabled: false
 
-AllCops:
-  Include:
-    - Gemfile
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
 
-# TODO: Rename all files and modules :D
-FileName:
-  Enabled: false
+## Metrics #####################################################################
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 15

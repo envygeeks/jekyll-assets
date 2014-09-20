@@ -6,14 +6,14 @@ module Jekyll
     class Configuration
       DEFAULTS = {
         :dirname        => "assets",
-        :sources        => %w[_assets/javascripts
+        :sources        => %w(_assets/javascripts
                               _assets/stylesheets
-                              _assets/images],
+                              _assets/images),
         :js_compressor  => nil,
         :css_compressor => nil,
         :cachebust      => :hard,
         :cache          => false,
-        :gzip           => %w[text/css application/javascript],
+        :gzip           => %w(text/css application/javascript),
         :debug          => false,
         :version        => 1
       }.freeze

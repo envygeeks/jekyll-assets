@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Jekyll::AssetsPlugin::VERSION
   spec.homepage      = "http://ixti.github.com/jekyll-assets"
   spec.authors       = ["Aleksey V Zapparov"]
-  spec.email         = %w[ixti@member.fsf.org]
+  spec.email         = %w(ixti@member.fsf.org)
   spec.license       = "MIT"
   spec.summary       = "jekyll-assets-#{Jekyll::AssetsPlugin::VERSION}"
   spec.description   = <<-DESC

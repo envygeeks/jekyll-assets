@@ -36,7 +36,7 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
 
     context "gzip" do
       subject { config.gzip }
-      it { is_expected.to match_array %w[text/css application/javascript] }
+      it { is_expected.to match_array %w(text/css application/javascript) }
     end
 
     context "cache_assets?" do
@@ -58,12 +58,12 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
 
   it "overrides specified options and leave defaults for missing" do
     config = described_class.new({
-      :sources        => %w[abc],
+      :sources        => %w(abc),
       :css_compressor => "sass"
     })
 
     expect(config.dirname).to eq "assets"
-    expect(config.sources).to eq %w[abc]
+    expect(config.sources).to eq %w(abc)
     expect(config.js_compressor).to be_nil
     expect(config.css_compressor).to be  :sass
   end

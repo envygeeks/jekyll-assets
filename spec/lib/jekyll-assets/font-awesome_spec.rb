@@ -1,3 +1,5 @@
+# rubocop: disable Style/FileName
+
 require "spec_helper"
 require "jekyll-assets/font-awesome"
 

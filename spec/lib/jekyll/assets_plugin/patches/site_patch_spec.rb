@@ -8,7 +8,7 @@ RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
       "source"  => fixtures_path.to_s,
       "dirname" => "foobar",
       "assets"  => {
-        "sources" => %w[foobar _assets]
+        "sources" => %w(foobar _assets)
       }
     })
   end
