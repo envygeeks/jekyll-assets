@@ -90,7 +90,7 @@ You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
 {% javascript app async %}
 {% stylesheet app actually="anything" you might='want' %}
 
-<!-- renders to something like this -->
+<!-- renders to something like this (linebreaks in tags for readability here) -->
 
 <img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo">
 <script src="/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js" async></script>
