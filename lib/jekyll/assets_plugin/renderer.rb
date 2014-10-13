@@ -6,23 +6,29 @@ module Jekyll
       IMAGE      = '<img src="%{path}"%{attrs}>'
 
       URI_RE     = %r{^(?:[^:]+:)?//(?:[^./]+\.)+[^./]+/}
+      PARAMS_RE  = / (?: "(?<path>[^"]+)" | '(?<path>[^']+)' | (?<path>[^ ]+) )
+                     (?<attrs>.*)
+                   /x
 
-      def initialize(context, logical_path)
-        @site   = context.registers[:site]
-        @path   = logical_path.strip
+      attr_reader :site, :path, :attrs
 
-        @path, _, @attrs = @path.partition(" ") if @path[" "]
-        @attrs.prepend(" ") if @attrs
+      def initialize(context, params)
+        @site = context.registers[:site]
+
+        match = params.strip.match PARAMS_RE
+
+        @path  = match["path"]
+        @attrs = match["attrs"]
       end
 
       def render_asset
-        fail "Can't render remote asset: #{@path}" if remote?
-        @site.assets[@path].to_s
+        fail "Can't render remote asset: #{path}" if remote?
+        site.assets[path].to_s
       end
 
       def render_asset_path
-        return @path if remote?
-        @site.asset_path @path
+        return path if remote?
+        site.asset_path path
       end
 
       def render_javascript
@@ -40,20 +46,20 @@ module Jekyll
       private
 
       def render_tag(template, extension = "")
-        return format(template, :path => @path, :attrs => @attrs) if remote?
+        return format(template, :path => path, :attrs => attrs) if remote?
 
-        @path << extension if extension.to_s != File.extname(@path)
+        path << extension if extension.to_s != File.extname(path)
 
-        asset = @site.assets[@path]
-        tags  = (@site.assets_config.debug ? asset.to_a : [asset]).map do |a|
-          format template, :path => AssetPath.new(a).to_s, :attrs => @attrs
+        asset = site.assets[path]
+        tags  = (site.assets_config.debug ? asset.to_a : [asset]).map do |a|
+          format template, :path => AssetPath.new(a).to_s, :attrs => attrs
         end
 
         tags.join "\n"
       end
 
       def remote?
-        @path =~ URI_RE
+        path =~ URI_RE
       end
     end
   end
