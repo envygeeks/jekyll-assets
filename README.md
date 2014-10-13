@@ -83,6 +83,25 @@ Once plugin installed, you'll have following Liquid tags available:
 - `{% asset_path logo.png %}`: Returns _resulting_ URL for `logo.png`
 - `{% asset app.css %}`: Returns _compiled_ body of `app.css`
 
+You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
+
+``` html
+{% image logo.png alt="Logo" %}
+{% javascript app async %}
+{% stylesheet app actually="anything" you might='want' %}
+
+<!-- renders to something like this -->
+
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo">
+<script src="/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js" async></script>
+<link rel="stylesheet" href="/assets/app-349212fba570137adfec745e37b6d7fb.css" actually="anything" you might='want'>
+
+<!-- NOTICE !!! if your asset file contains spaces, surround it's name with quotes -->
+
+{% asset_path "my logo.png" %}
+{% asset_path 'my logo.png' %}
+```
+
 Also you'll have complimentary Liquid filters as well:
 
 - `{{ 'app' | javascript }}`: Generates `<script>` tag for `app.js`
