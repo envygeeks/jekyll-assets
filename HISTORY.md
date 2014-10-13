@@ -1,6 +1,13 @@
 ### master (unreleased)
 
 
+### 0.10.1 (2014-10-13)
+
+* Fix regression in assets finder (#104), appeared after introducing tag
+  attributes (#52). To specify asset path containing spaces, wrap it into
+  single or doube qotes: `{% javascript_tag "my app.js" async %}`.
+
+
 ### 0.10.0 (2014-09-14)
 
 * Drop support of `bootstrap-sass < 3.2`, `font-awesome-sass < 4.2`
