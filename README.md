@@ -94,7 +94,8 @@ You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
 
 <img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo">
 <script src="/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js" async></script>
-<link rel="stylesheet" href="/assets/app-349212fba570137adfec745e37b6d7fb.css" actually="anything" you might='want'>
+<link rel="stylesheet" href="/assets/app-349212fba570137adfec745e37b6d7fb.css"
+      actually="anything" you might='want'>
 
 <!-- NOTICE !!! if your asset file contains spaces, surround it's name with quotes -->
 
