@@ -63,7 +63,9 @@ details.</li>
 See "Custom Vendors" below.</li>
 <li>
 <a href="https://github.com/postcss/autoprefixer">Autoprefixer</a> support</li>
-</ul><p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
+</ul>
+
+<p>Jekyll-Assets uses fabulous <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> under the hood, so you may
 refer to Rails guide about <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> for detailed
 information about amazing features it gives you.</p>
 
@@ -119,7 +121,28 @@ into <code>_plugins/ext.rb</code> file:</p>
 <li>
 <code>{% asset app.css %}</code>: Returns <em>compiled</em> body of <code>app.css</code>
 </li>
-</ul><p>Also you'll have complimentary Liquid filters as well:</p>
+</ul>
+
+<p>You can pass extra attributes to <code>javascript</code>, <code>stylesheet</code> and <code>image</code> tags:</p>
+
+<div class="highlight highlight-html"><pre>{% image logo.png alt="Logo" %}
+{% javascript app async %}
+{% stylesheet app actually="anything" you might='want' %}
+
+<span class="c">&lt;!-- renders to something like this (linebreaks in tags for readability here) --&gt;</span>
+
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png"</span> <span class="na">alt=</span><span class="s">"Logo"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js"</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/assets/app-349212fba570137adfec745e37b6d7fb.css"</span>
+      <span class="na">actually=</span><span class="s">"anything"</span> <span class="na">you</span> <span class="na">might=</span><span class="s">'want'</span><span class="nt">&gt;</span>
+
+<span class="c">&lt;!-- NOTICE !!! if your asset file contains spaces, surround it's name with quotes --&gt;</span>
+
+{% asset_path "my logo.png" %}
+{% asset_path 'my logo.png' %}
+</pre></div>
+
+<p>Also you'll have complimentary Liquid filters as well:</p>
 
 <ul>
 <li>
@@ -137,7 +160,9 @@ into <code>_plugins/ext.rb</code> file:</p>
 <li>
 <code>{{ 'app.css' | asset }}</code>: Returns <em>compiled</em> body of <code>app.css</code>
 </li>
-</ul><p>Filters are used mostly to render tag (or asset source) using variable that
+</ul>
+
+<p>Filters are used mostly to render tag (or asset source) using variable that
 holds value of asset logical path rather than specifiyng it directly. Here's
 an example that speaks for itself:</p>
 
@@ -337,6 +362,10 @@ path first.</p>
 <p>Require <code>jekyll-assets/bootstrap</code> to enable, e.g.:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
+
+<span class="c1"># bootstrap requires minimum precision of 10, see https://github.com/twbs/bootstrap-sass/issues/409</span>
+<span class="o">::</span><span class="no">Sass</span><span class="o">::</span><span class="no">Script</span><span class="o">::</span><span class="no">Number</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="o">[</span><span class="mi">10</span><span class="p">,</span> <span class="o">::</span><span class="no">Sass</span><span class="o">::</span><span class="no">Script</span><span class="o">::</span><span class="no">Number</span><span class="o">.</span><span class="n">precision</span><span class="o">].</span><span class="n">max</span>
+
 <span class="nb">require</span> <span class="s2">"jekyll-assets/bootstrap"</span>
 </pre></div>
 
@@ -591,7 +620,9 @@ write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 <li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
-</ol><h2>
+</ol>
+
+<h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>Copyright (C) 2012-2013 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
