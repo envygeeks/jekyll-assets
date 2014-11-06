@@ -39,7 +39,7 @@
         </div>
 
         <h1>
-<a name="jekyllassetsplugin" class="anchor" href="#jekyllassetsplugin"><span class="octicon octicon-link"></span></a>Jekyll::AssetsPlugin</h1>
+<a id="jekyllassetsplugin" class="anchor" href="#jekyllassetsplugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jekyll::AssetsPlugin</h1>
 
 <p>Jekyll plugin, that adds Rails-alike assets pipeline, that means that:</p>
 
@@ -77,7 +77,7 @@ that shows how to use it step by step. Also you might want to take a look on
 <a href="https://github.com/ixti/ixti.github.com">my blog sources</a> as a real-world example as well.</p>
 
 <h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Add this line to your application's Gemfile:</p>
 
@@ -95,13 +95,12 @@ that shows how to use it step by step. Also you might want to take a look on
 </code></pre>
 
 <h2>
-<a name="how-to-use-jekyll-assets" class="anchor" href="#how-to-use-jekyll-assets"><span class="octicon octicon-link"></span></a>How to Use Jekyll-Assets</h2>
+<a id="how-to-use-jekyll-assets" class="anchor" href="#how-to-use-jekyll-assets" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to Use Jekyll-Assets</h2>
 
 <p>First of all make sure to require it. Common practice is to add following line
 into <code>_plugins/ext.rb</code> file:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
-</pre></div>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span></pre></div>
 
 <p>Once plugin installed, you'll have following Liquid tags available:</p>
 
@@ -129,18 +128,17 @@ into <code>_plugins/ext.rb</code> file:</p>
 {% javascript app async %}
 {% stylesheet app actually="anything" you might='want' %}
 
-<span class="c">&lt;!-- renders to something like this (linebreaks in tags for readability here) --&gt;</span>
+<span class="cm">&lt;!-- renders to something like this (linebreaks in tags for readability here) --&gt;</span>
 
-<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png"</span> <span class="na">alt=</span><span class="s">"Logo"</span><span class="nt">&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js"</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/assets/app-349212fba570137adfec745e37b6d7fb.css"</span>
-      <span class="na">actually=</span><span class="s">"anything"</span> <span class="na">you</span> <span class="na">might=</span><span class="s">'want'</span><span class="nt">&gt;</span>
+&lt;<span class="nt">img</span> <span class="na">src</span>=<span class="s2">"/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png"</span> <span class="na">alt</span>=<span class="s2">"Logo"</span>&gt;
+&lt;<span class="nt">script</span> <span class="na">src</span>=<span class="s2">"/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js"</span> <span class="na">async</span>&gt;&lt;/<span class="nt">script</span>&gt;
+&lt;<span class="nt">link</span> <span class="na">rel</span>=<span class="s2">"stylesheet"</span> <span class="na">href</span>=<span class="s2">"/assets/app-349212fba570137adfec745e37b6d7fb.css"</span>
+      <span class="na">actually</span>=<span class="s2">"anything"</span> <span class="na">you</span> <span class="na">might</span>=<span class="s1">'want'</span>&gt;
 
-<span class="c">&lt;!-- NOTICE !!! if your asset file contains spaces, surround it's name with quotes --&gt;</span>
+<span class="cm">&lt;!-- NOTICE !!! if your asset file contains spaces, surround it's name with quotes --&gt;</span>
 
 {% asset_path "my logo.png" %}
-{% asset_path 'my logo.png' %}
-</pre></div>
+{% asset_path 'my logo.png' %}</pre></div>
 
 <p>Also you'll have complimentary Liquid filters as well:</p>
 
@@ -187,18 +185,16 @@ _assets/javascripts/vendor/jquery.js
 
 <div class="highlight highlight-html"><pre>{% stylesheet app %}
 {% javascript app %}
-{% javascript vendor/jquery %}
-</pre></div>
+{% javascript vendor/jquery %}</pre></div>
 
 <p>You might want to require <code>vendor/jquery.js</code> into your <code>app.js</code>. To do so, just
 put following line in the beginning of your <code>app.js</code> to get it concatenated:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="c1">//= require vendor/jquery</span>
 
-<span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="s1">'I love BIG BOOKS!'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
+$(<span class="kt">function</span> () {
+  <span class="nf">alert</span>(<span class="s1">'I love BIG BOOKS!'</span>);
+});</pre></div>
 
 <p>If you want to use CoffeScript, just add <code>.coffee</code> suffix to the file you want
 and you're good to go. For example, here's how your <code>app.js.coffe</code> might look
@@ -206,9 +202,8 @@ like:</p>
 
 <div class="highlight highlight-coffeescript"><pre><span class="c1">#= require vendor/jquery</span>
 
-<span class="nx">$</span> <span class="nf">-&gt;</span>
-  <span class="nx">alert</span> <span class="s">'I love BIG BOOKS! And small ones too!'</span>
-</pre></div>
+$ <span class="kt">-&gt;</span>
+  alert <span class="s1">'I love BIG BOOKS! And small ones too!'</span></pre></div>
 
 <p>Notice, that <code>vendor/jquery</code> is not required to be coffee script. You can easily
 mix CoffeeScript and vanilla JavaScript, CSS and SCSS and SASS and LESS. The
@@ -220,10 +215,9 @@ difference is only in comments styles used with <em>directives</em>.</p>
 case just install the <code>uglifier</code> gem and any other gems you will be using, e.g.
 <code>sass</code>, <code>coffee-script</code>. Then add following lines into your <code>config.yml</code>:</p>
 
-<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">uglifier</span>
-  <span class="l-Scalar-Plain">css_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sass</span>
-</pre></div>
+<div class="highlight highlight-yaml"><pre><span class="sh"><span class="nt">assets<span class="o">:</span></span><span class="sh"></span></span>
+  <span class="sh"><span class="nt">js_compressor<span class="o">:</span></span>  <span class="sh">uglifier</span></span>
+  <span class="sh"><span class="nt">css_compressor<span class="o">:</span></span> <span class="sh">sass</span></span></pre></div>
 
 <p>If you want to use YUI compressor for minification, install <code>yui-compressor</code>
 gem and put <code>yui</code> in place of <code>uglifier</code> and/or <code>sass</code> in the config file.
@@ -243,20 +237,18 @@ body
 for example. Create a file <code>_assets/javascripts/hello.jst.ejs</code> with following
 contents:</p>
 
-<div class="highlight highlight-html"><pre><span class="nt">&lt;p&gt;</span>Hello, <span class="nt">&lt;span&gt;</span><span class="err">&lt;</span>%= name %&gt;<span class="nt">&lt;/span&gt;</span>!<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span><span class="err">&lt;</span>%= info %&gt;<span class="nt">&lt;/p&gt;</span>
-</pre></div>
+<div class="highlight highlight-html"><pre>&lt;<span class="nt">p</span>&gt;Hello, &lt;<span class="nt">span</span>&gt;&lt;%= name %&gt;&lt;/<span class="nt">span</span>&gt;!&lt;/<span class="nt">p</span>&gt;
+&lt;<span class="nt">p</span>&gt;&lt;%= info %&gt;&lt;/<span class="nt">p</span>&gt;</pre></div>
 
 <p>Then use it in your <code>app.js</code> file like this:</p>
 
 <div class="highlight highlight-coffeescript"><pre><span class="c1">#= require vendor/jquery</span>
 <span class="c1">#= require hello</span>
 
-<span class="nx">$</span> <span class="nf">-&gt;</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s">"body"</span><span class="p">).</span><span class="nx">html</span> <span class="nx">JST</span><span class="p">[</span><span class="s">"hello"</span><span class="p">]</span>
-    <span class="nv">name: </span><span class="s">"ixti"</span>
-    <span class="nv">info: </span><span class="s">"I love BIG BOOKS! And small ones too!"</span>
-</pre></div>
+$ <span class="kt">-&gt;</span>
+  $(<span class="s2">"body"</span>).html JST[<span class="s2">"hello"</span>]
+    <span class="nv"><span class="nv">name<span class="o">:</span></span></span> <span class="s2">"ixti"</span>
+    <span class="nv"><span class="nv">info<span class="o">:</span></span></span> <span class="s2">"I love BIG BOOKS! And small ones too!"</span></pre></div>
 
 <p>Finally, you might want to store your assets on <a href="http://aws.amazon.com/s3">Amazon S3</a> or any
 CDN service you like. As said previously, all compiled/processed assets got
@@ -270,12 +262,11 @@ your <code>app.js.coffee</code> will become something like:</p>
 change this if you are going to host assets somewhere else. This can be easily
 changed via configuration:</p>
 
-<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://my.super-cool-cdn.com/assets</span>
-</pre></div>
+<div class="highlight highlight-yaml"><pre><span class="sh"><span class="nt">assets<span class="o">:</span></span><span class="sh"></span></span>
+  <span class="sh"><span class="nt">baseurl<span class="o">:</span></span> <span class="sh">http://my.super-cool-cdn.com/assets</span></span></pre></div>
 
 <h3>
-<a name="custom-compressors" class="anchor" href="#custom-compressors"><span class="octicon octicon-link"></span></a>Custom Compressors</h3>
+<a id="custom-compressors" class="anchor" href="#custom-compressors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Compressors</h3>
 
 <p>Sprockets comes with good set of preconfigured compressors, but imagine you are
 not satisfied with default settings. For example you want to strip all comments
@@ -286,24 +277,21 @@ but copyrights info. In this case you can define and use your own compressor.</p
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 <span class="nb">require</span> <span class="s2">"sprockets"</span>
 
-<span class="no">Sprockets</span><span class="o">.</span><span class="n">register_compressor</span> <span class="s1">'application/javascript'</span><span class="p">,</span>
-  <span class="ss">:my_uglifier</span><span class="p">,</span> <span class="no">Uglifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:comments</span> <span class="o">=&gt;</span> <span class="ss">:copyright</span><span class="p">)</span>
-</pre></div>
+<span class="no">Sprockets</span>.register_compressor <span class="s1">'application/javascript'</span>,
+  <span class="ss">:my_uglifier</span>, <span class="no">Uglifier</span>.<span class="nb">new</span>(<span class="ss">:comments</span> <span class="o">=&gt;</span> <span class="ss">:copyright</span>)</pre></div>
 
 <p>Once it's done, just tell assets to use <code>my_uglifier</code> as js compressor:</p>
 
-<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">my_uglifier</span>
-</pre></div>
+<div class="highlight highlight-yaml"><pre><span class="sh"><span class="nt">assets<span class="o">:</span></span><span class="sh"></span></span>
+  <span class="sh"><span class="nt">js_compressor<span class="o">:</span></span> <span class="sh">my_uglifier</span></span></pre></div>
 
 <h3>
-<a name="compilation-cache" class="anchor" href="#compilation-cache"><span class="octicon octicon-link"></span></a>Compilation Cache</h3>
+<a id="compilation-cache" class="anchor" href="#compilation-cache" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compilation Cache</h3>
 
 <p>To improve build time, you can enabled compiled assets cache:</p>
 
-<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-</pre></div>
+<div class="highlight highlight-yaml"><pre><span class="sh"><span class="nt">assets<span class="o">:</span></span><span class="sh"></span></span>
+  <span class="sh"><span class="nt">cache<span class="o">:</span></span> <span class="sh">true</span></span></pre></div>
 
 <p>This will keep cache of compiled assets in <code>.jekyll-assets-cache</code> under source
 of your jekyl site. If you want to use different location specify it instead of
@@ -311,19 +299,18 @@ of your jekyl site. If you want to use different location specify it instead of
 path of your jekyl site.</p>
 
 <h2>
-<a name="custom-vendors" class="anchor" href="#custom-vendors"><span class="octicon octicon-link"></span></a>Custom Vendors</h2>
+<a id="custom-vendors" class="anchor" href="#custom-vendors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Vendors</h2>
 
 <p>Sometimes you would like to have some 3rd-party vendors. For this purposes,
 normally all you have to do is to override default assets sources in config:</p>
 
-<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">sources</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/images</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/javascripts</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/stylesheets</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_vendors/bootstrap/stylesheets</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_vendors/bootstrap/javascripts</span>
-</pre></div>
+<div class="highlight highlight-yaml"><pre><span class="sh"><span class="nt">assets<span class="o">:</span></span><span class="sh"></span></span>
+  <span class="sh"><span class="nt">sources<span class="o">:</span></span><span class="sh"></span></span>
+    <span class="sh">- <span class="sh">_assets/images</span></span>
+    <span class="sh">- <span class="sh">_assets/javascripts</span></span>
+    <span class="sh">- <span class="sh">_assets/stylesheets</span></span>
+    <span class="sh">- <span class="sh">_vendors/bootstrap/stylesheets</span></span>
+    <span class="sh">- <span class="sh">_vendors/bootstrap/javascripts</span></span></pre></div>
 
 <p>But sometimes this is not enough. For example, with compass. As jekyll-assets
 uses Sprockets internally, you can simply append "global" paths into it. Just
@@ -331,25 +318,23 @@ add following line into your <code>_plugins/ext.rb</code> file:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"sprockets"</span>
 
-<span class="no">Sprockets</span><span class="o">.</span><span class="n">append_path</span> <span class="s2">"/my/vendor"</span>
-</pre></div>
+<span class="no">Sprockets</span>.append_path <span class="s2">"/my/vendor"</span></pre></div>
 
 <p>That's it, now jekyll-assets will try to look for assets inside <code>/my/vendor</code>
 path first.</p>
 
 <h3>
-<a name="built-in-vendors-support" class="anchor" href="#built-in-vendors-support"><span class="octicon octicon-link"></span></a>Built-in Vendors Support</h3>
+<a id="built-in-vendors-support" class="anchor" href="#built-in-vendors-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Built-in Vendors Support</h3>
 
 <p>For your comfort jekyll-assets has built-in support for some popular libraries.</p>
 
 <h4>
-<a name="compass-support" class="anchor" href="#compass-support"><span class="octicon octicon-link"></span></a>Compass Support</h4>
+<a id="compass-support" class="anchor" href="#compass-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compass Support</h4>
 
 <p>Require <code>jekyll-assets/compass</code> to enable, e.g.:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
-<span class="nb">require</span> <span class="s2">"jekyll-assets/compass"</span>
-</pre></div>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/compass"</span></pre></div>
 
 <p>Now you can add <code>@import "compass"</code> in your SASS assets to get Compass goodies.</p>
 
@@ -357,72 +342,66 @@ path first.</p>
   you must require them BEFORE <code>jekyll-assets/compass</code>.</p>
 
 <h4>
-<a name="bootstrap-support" class="anchor" href="#bootstrap-support"><span class="octicon octicon-link"></span></a>Bootstrap Support</h4>
+<a id="bootstrap-support" class="anchor" href="#bootstrap-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bootstrap Support</h4>
 
 <p>Require <code>jekyll-assets/bootstrap</code> to enable, e.g.:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
 
 <span class="c1"># bootstrap requires minimum precision of 10, see https://github.com/twbs/bootstrap-sass/issues/409</span>
-<span class="o">::</span><span class="no">Sass</span><span class="o">::</span><span class="no">Script</span><span class="o">::</span><span class="no">Number</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="o">[</span><span class="mi">10</span><span class="p">,</span> <span class="o">::</span><span class="no">Sass</span><span class="o">::</span><span class="no">Script</span><span class="o">::</span><span class="no">Number</span><span class="o">.</span><span class="n">precision</span><span class="o">].</span><span class="n">max</span>
+::<span class="no">Sass</span>::<span class="no">Script</span>::<span class="no">Number</span>.precision <span class="o">=</span> <span class="o">[</span><span class="m">10</span>, ::<span class="no">Sass</span>::<span class="no">Script</span>::<span class="no">Number</span>.precision<span class="o">]</span>.max
 
-<span class="nb">require</span> <span class="s2">"jekyll-assets/bootstrap"</span>
-</pre></div>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/bootstrap"</span></pre></div>
 
 <p>Now you can add <code>@import "bootstrap"</code> in your SASS assets to get Bootstrap goodies.</p>
 
 <h4>
-<a name="bourbon-support" class="anchor" href="#bourbon-support"><span class="octicon octicon-link"></span></a>Bourbon Support</h4>
+<a id="bourbon-support" class="anchor" href="#bourbon-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bourbon Support</h4>
 
 <p>Require <code>jekyll-assets/bourbon</code> to enable, e.g.:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
-<span class="nb">require</span> <span class="s2">"jekyll-assets/bourbon"</span>
-</pre></div>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/bourbon"</span></pre></div>
 
 <p>Now you can add <code>@import "bourbon"</code> in your SASS assets to get Bourbon goodies.</p>
 
 <h4>
-<a name="font-awesome" class="anchor" href="#font-awesome"><span class="octicon octicon-link"></span></a>Font Awesome</h4>
+<a id="font-awesome" class="anchor" href="#font-awesome" aria-hidden="true"><span class="octicon octicon-link"></span></a>Font Awesome</h4>
 
 <p>Require <code>jekyll-assets/font-awesome</code> to enable, e.g.:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
-<span class="nb">require</span> <span class="s2">"jekyll-assets/font-awesome"</span>
-</pre></div>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/font-awesome"</span></pre></div>
 
 <p>Now you can add <code>@import "font-awesome"</code> in your SASS assets to get Font Awesome goodies.</p>
 
 <h4>
-<a name="neat-support" class="anchor" href="#neat-support"><span class="octicon octicon-link"></span></a>Neat Support</h4>
+<a id="neat-support" class="anchor" href="#neat-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Neat Support</h4>
 
 <p>Require <code>jekyll-assets/neat</code> to enable, e.g.:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"jekyll-assets"</span>
-<span class="nb">require</span> <span class="s2">"jekyll-assets/neat"</span>
-</pre></div>
+<span class="nb">require</span> <span class="s2">"jekyll-assets/neat"</span></pre></div>
 
 <p>Now you can add <code>@import "neat"</code> in your SASS assets to get Neat goodies.</p>
 
 <h2>
-<a name="autoprefixer" class="anchor" href="#autoprefixer"><span class="octicon octicon-link"></span></a>Autoprefixer</h2>
+<a id="autoprefixer" class="anchor" href="#autoprefixer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Autoprefixer</h2>
 
 <p>To enable Autoprefixer, add <code>autoprefixer-rails</code> to your <code>Gemfile</code>:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s2">"autoprefixer-rails"</span>
-</pre></div>
+<div class="highlight highlight-ruby"><pre><span class="nb">gem</span> <span class="s2">"autoprefixer-rails"</span></pre></div>
 
 <p>You can configure it by creating an <code>autoprefixer.yml</code> file in your <code>source</code>
 directory (by default your project's root):</p>
 
-<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">browsers</span><span class="p-Indicator">:</span>
-  <span class="p-Indicator">-</span> <span class="s">"last</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">version"</span>
-  <span class="p-Indicator">-</span> <span class="s">"&gt;</span><span class="nv"> </span><span class="s">1%"</span>
-  <span class="p-Indicator">-</span> <span class="s">"Explorer</span><span class="nv"> </span><span class="s">10"</span>
-</pre></div>
+<div class="highlight highlight-yaml"><pre><span class="sh"><span class="nt">browsers<span class="o">:</span></span><span class="sh"></span></span>
+  <span class="sh">- <span class="s2">"last 1 version"</span></span>
+  <span class="sh">- <span class="s2">"&gt; 1%"</span></span>
+  <span class="sh">- <span class="s2">"Explorer 10"</span></span></pre></div>
 
 <h2>
-<a name="the-directive-processor" class="anchor" href="#the-directive-processor"><span class="octicon octicon-link"></span></a>The Directive Processor</h2>
+<a id="the-directive-processor" class="anchor" href="#the-directive-processor" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Directive Processor</h2>
 
 <p><em>Note:</em> This section extracted from <a href="https://github.com/sstephenson/sprockets#readme">Sprockets</a> README.</p>
 
@@ -447,7 +426,7 @@ contain spaces, similar to commands in the Unix shell.</p>
   that occur after the first line of code.</p>
 
 <h3>
-<a name="supported-comment-types" class="anchor" href="#supported-comment-types"><span class="octicon octicon-link"></span></a>Supported Comment Types</h3>
+<a id="supported-comment-types" class="anchor" href="#supported-comment-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Comment Types</h3>
 
 <p>The directive processor understands comment blocks in three formats:</p>
 
@@ -463,7 +442,7 @@ contain spaces, similar to commands in the Unix shell.</p>
 </code></pre>
 
 <h3>
-<a name="sprockets-directives" class="anchor" href="#sprockets-directives"><span class="octicon octicon-link"></span></a>Sprockets Directives</h3>
+<a id="sprockets-directives" class="anchor" href="#sprockets-directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sprockets Directives</h3>
 
 <p>You can use the following directives to declare dependencies in asset
 source files.</p>
@@ -473,48 +452,48 @@ logical path or a relative path. Relative paths begin with <code>./</code> and
 reference files relative to the location of the current file.</p>
 
 <h4>
-<a name="the-require-directive" class="anchor" href="#the-require-directive"><span class="octicon octicon-link"></span></a>The <code>require</code> Directive</h4>
+<a id="the-require-directive" class="anchor" href="#the-require-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>require</code> Directive</h4>
 
 <p><code>require</code> <em>path</em> inserts the contents of the asset source file
 specified by <em>path</em>. If the file is required multiple times, it will
 appear in the bundle only once.</p>
 
 <h4>
-<a name="the-include-directive" class="anchor" href="#the-include-directive"><span class="octicon octicon-link"></span></a>The <code>include</code> Directive</h4>
+<a id="the-include-directive" class="anchor" href="#the-include-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>include</code> Directive</h4>
 
 <p><code>include</code> <em>path</em> works like <code>require</code>, but inserts the contents of the
 specified source file even if it has already been included or
 required.</p>
 
 <h4>
-<a name="the-require_directory-directive" class="anchor" href="#the-require_directory-directive"><span class="octicon octicon-link"></span></a>The <code>require_directory</code> Directive</h4>
+<a id="the-require_directory-directive" class="anchor" href="#the-require_directory-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>require_directory</code> Directive</h4>
 
 <p><code>require_directory</code> <em>path</em> requires all source files of the same
 format in the directory specified by <em>path</em>. Files are required in
 alphabetical order.</p>
 
 <h4>
-<a name="the-require_tree-directive" class="anchor" href="#the-require_tree-directive"><span class="octicon octicon-link"></span></a>The <code>require_tree</code> Directive</h4>
+<a id="the-require_tree-directive" class="anchor" href="#the-require_tree-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>require_tree</code> Directive</h4>
 
 <p><code>require_tree</code> <em>path</em> works like <code>require_directory</code>, but operates
 recursively to require all files in all subdirectories of the
 directory specified by <em>path</em>.</p>
 
 <h4>
-<a name="the-require_self-directive" class="anchor" href="#the-require_self-directive"><span class="octicon octicon-link"></span></a>The <code>require_self</code> Directive</h4>
+<a id="the-require_self-directive" class="anchor" href="#the-require_self-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>require_self</code> Directive</h4>
 
 <p><code>require_self</code> tells Sprockets to insert the body of the current
 source file before any subsequent <code>require</code> or <code>include</code> directives.</p>
 
 <h4>
-<a name="the-depend_on-directive" class="anchor" href="#the-depend_on-directive"><span class="octicon octicon-link"></span></a>The <code>depend_on</code> Directive</h4>
+<a id="the-depend_on-directive" class="anchor" href="#the-depend_on-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>depend_on</code> Directive</h4>
 
 <p><code>depend_on</code> <em>path</em> declares a dependency on the given <em>path</em> without
 including it in the bundle. This is useful when you need to expire an
 asset's cache in response to a change in another file.</p>
 
 <h4>
-<a name="the-stub-directive" class="anchor" href="#the-stub-directive"><span class="octicon octicon-link"></span></a>The <code>stub</code> Directive</h4>
+<a id="the-stub-directive" class="anchor" href="#the-stub-directive" aria-hidden="true"><span class="octicon octicon-link"></span></a>The <code>stub</code> Directive</h4>
 
 <p><code>stub</code> <em>path</em> allows dependency to be excluded from the asset bundle.
 The <em>path</em> must be a valid asset and may or may not already be part
@@ -522,40 +501,40 @@ of the bundle. Once stubbed, it is blacklisted and can't be brought
 back by any other <code>require</code>.</p>
 
 <h2>
-<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>You can fine-tune configuration by editing your <code>_config.yml</code>:</p>
 
 <div class="highlight highlight-yaml"><pre><span class="c1">#</span>
 <span class="c1"># Plugin: jekyll-assets</span>
 <span class="c1">#</span>
-<span class="l-Scalar-Plain">assets</span><span class="p-Indicator">:</span>
+<span class="sh"><span class="nt">assets<span class="o">:</span></span><span class="sh"></span></span>
   <span class="c1">#</span>
   <span class="c1"># Pathname of the destination of generated (bundled) assets relative</span>
   <span class="c1"># to the destination of the root.</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">dirname</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">assets</span>
+  <span class="sh"><span class="nt">dirname<span class="o">:</span></span> <span class="sh">assets</span></span>
   <span class="c1">#</span>
   <span class="c1"># Base URL of assets paths.</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/assets/</span>
+  <span class="sh"><span class="nt">baseurl<span class="o">:</span></span> <span class="sh">/assets/</span></span>
   <span class="c1">#</span>
   <span class="c1"># Pathnames where to find assets relative to the root of the site.</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">sources</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/javascripts</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/stylesheets</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">_assets/images</span>
+  <span class="sh"><span class="nt">sources<span class="o">:</span></span><span class="sh"></span></span>
+    <span class="sh">- <span class="sh">_assets/javascripts</span></span>
+    <span class="sh">- <span class="sh">_assets/stylesheets</span></span>
+    <span class="sh">- <span class="sh">_assets/images</span></span>
   <span class="c1">#</span>
   <span class="c1"># Sets JS compressor. No compression by default.</span>
   <span class="c1"># Possible variants: 'yui', 'uglifier', nil</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">js_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+  <span class="sh"><span class="nt">js_compressor<span class="o">:</span></span> <span class="sh">~</span></span>
   <span class="c1">#</span>
   <span class="c1"># Sets CSS compressor. No compression by default.</span>
   <span class="c1"># Possible variants: 'yui', 'sass', nil</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">css_compressor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+  <span class="sh"><span class="nt">css_compressor<span class="o">:</span></span> <span class="sh">~</span></span>
   <span class="c1">#</span>
   <span class="c1"># Sets cachebusting policy for generated assets.</span>
   <span class="c1">#</span>
@@ -580,39 +559,38 @@ back by any other <code>require</code>.</p>
   <span class="c1">#     output file:  _site/assets/javascriptis/app-4f41243847da693a4f356c0486114bc6.css</span>
   <span class="c1">#     output URL:   /assets/javascripts/app-4f41243847da693a4f356c0486114bc6.css</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">cachebust</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hard</span>
+  <span class="sh"><span class="nt">cachebust<span class="o">:</span></span> <span class="sh">hard</span></span>
   <span class="c1">#</span>
   <span class="c1"># Whenever or not cache compiled assets (disabled by default).</span>
   <span class="c1"># See `Compilation Cache` section of README for details.</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="sh"><span class="nt">cache<span class="o">:</span></span> <span class="sh">false</span></span>
   <span class="c1">#</span>
   <span class="c1"># Specifies list of MIME types that needs to have gzipped versions.</span>
   <span class="c1"># You can set it to `false` to disable gzipping. Only javascripts and</span>
   <span class="c1"># stylesheets are gzipped by default.</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">gzip</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span> <span class="nv">text/css</span><span class="p-Indicator">,</span> <span class="nv">application/javascript</span> <span class="p-Indicator">]</span>
+  <span class="sh"><span class="nt">gzip<span class="o">:</span></span><span class="sh"> </span></span>[ text/css, application/javascript ]
   <span class="c1">#</span>
   <span class="c1"># Does not concatenates files requested by `javascript` and `stylesheet`</span>
   <span class="c1"># helpers. Instead outputs multiple files in order they are required.</span>
   <span class="c1"># Default: false</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">debug</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="sh"><span class="nt">debug<span class="o">:</span></span> <span class="sh">false</span></span>
   <span class="c1">#</span>
   <span class="c1"># Configuration version. Used to force cache invalidation.</span>
   <span class="c1"># Default: 1</span>
   <span class="c1">#</span>
-  <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1</span>
-</pre></div>
+  <span class="m"><span class="nt">version<span class="o">:</span></span> 1</span></pre></div>
 
 <h2>
-<a name="th-th-th-thats-all-folks" class="anchor" href="#th-th-th-thats-all-folks"><span class="octicon octicon-link"></span></a>"Th-th-th-that's all folks!"</h2>
+<a id="th-th-th-thats-all-folks" class="anchor" href="#th-th-th-thats-all-folks" aria-hidden="true"><span class="octicon octicon-link"></span></a>"Th-th-th-that's all folks!"</h2>
 
 <p>Feel free to follow me on <a href="https://twitter.com/zapparov">twitter</a>, chat via jabber or
 write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 
 <h2>
-<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <ol>
 <li>Fork it</li>
@@ -623,7 +601,7 @@ write an <a href="mailto://ixti@member.fsf.org">e-mail</a>. :D</p>
 </ol>
 
 <h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>Copyright (C) 2012-2013 Aleksey V Zapparov (<a href="http://ixti.net/">http://ixti.net/</a>)</p>
 
@@ -650,16 +628,6 @@ SOFTWARE.</p>
 
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-35573678-3");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-
+    
   </body>
 </html>
