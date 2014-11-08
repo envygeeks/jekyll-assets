@@ -24,12 +24,14 @@ Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
   details.
 - [Compass][compass], [Bourbon][bourbon] and [Neat][neat] built-in support.
   See "Custom Vendors" below.
+- [Rails Assets][rails_assets] support
 - [Autoprefixer][autoprefixer] support
 
 [compass]:      http://compass-style.org/
 [bourbon]:      http://bourbon.io/
 [neat]:         http://neat.bourbon.io/
 [autoprefixer]: https://github.com/postcss/autoprefixer
+[rails_assets]: https://rails-assets.org/
 
 Jekyll-Assets uses fabulous [Sprockets][sprockets] under the hood, so you may
 refer to Rails guide about [Asset Pipeline][rails-guide] for detailed
@@ -374,6 +376,33 @@ require "jekyll-assets/neat"
 
 Now you can add `@import "neat"` in your SASS assets to get Neat goodies.
 
+
+### Rails Assets Support
+
+[Rails Assets][rails_assets] allows you to easily install Bower dependencies via Bundler.
+
+Install your Bower dependencies in the `rails_assets` group in your `Gemfile`:
+
+``` ruby
+group :rails_assets do
+  gem "rails-assets-jquery"
+  gem "rails-assets-angular"
+end
+```
+
+Require `jekyll-assets/rails-assets` to enable, e.g.:
+
+``` ruby
+require "jekyll-assets"
+require "jekyll-assets/rails-assets"
+```
+
+Now you can `require` these dependencies in your assets, e.g. `site.js`:
+
+``` javascript
+//= require jquery
+//= require angular
+```
 
 ## Autoprefixer
 
