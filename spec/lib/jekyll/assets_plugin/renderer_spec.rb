@@ -94,6 +94,20 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
     end
   end
 
+  describe "#options" do
+    subject { renderer.options }
+
+    context "with no options given" do
+      it { is_expected.to be_an Array }
+      it { is_expected.to be_empty }
+    end
+
+    context "with options given" do
+      let(:params) { "app [foo,bar]" }
+      it { is_expected.to eq %w(foo bar) }
+    end
+  end
+
   describe "#render_javascript" do
     subject { renderer.render_javascript }
 
@@ -198,23 +212,28 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
       end
     end
 
-    context "with [autosize] attribute" do
+    context "with [autosize] helper option" do
       let(:params) { "noise.png [autosize]" }
       it { is_expected.to include 'width="100" height="100"' }
     end
 
-    context "with autosize_images enabled" do
-      let(:assets_config) { Hash[:autosize_images, true] }
+    context "with [no-autosize] helper option" do
+      let(:params) { "noise.png [no-autosize]" }
+      it { is_expected.to_not include 'width="100" height="100"' }
+    end
+
+    context "with autosize enabled in config" do
+      let(:assets_config) { Hash[:autosize, true] }
       it { is_expected.to include 'width="100" height="100"' }
 
-      context "unless width is passed" do
-        let(:params) { 'noise.png width="50"' }
-        it { is_expected.to include 'width="50"' }
+      context "and [autosize] helper option given" do
+        let(:params) { "noise.png [autosize]" }
+        it { is_expected.to include 'width="100" height="100"' }
       end
 
-      context "unless height is passed" do
-        let(:params) { 'noise.png height="50"' }
-        it { is_expected.to include 'height="50"' }
+      context "and [no-autosize] helper option given" do
+        let(:params) { "noise.png [no-autosize]" }
+        it { is_expected.to_not include 'width="100" height="100"' }
       end
     end
   end

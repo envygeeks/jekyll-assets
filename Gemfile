@@ -10,8 +10,6 @@ gem "font-awesome-sass", "~> 4.2"
 # https://github.com/chriseppstein/compass/issues/1513
 gem "sass", "~> 3.2.13"
 
-gem "fastimage"
-
 gem "rubocop", "~> 0.26.0"
 gem "rake"
 gem "rspec"

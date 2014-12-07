@@ -105,19 +105,6 @@ You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
 {% asset_path 'my logo.png' %}
 ```
 
-The image Liquid tag accepts one special attribute `[autosize]` which is
-replaced with the width and height of the image. This can also be enabled for
-all images, see `autosize_images` in config.
-
-``` html
-{% image logo.png alt="Logo" [autosize] %}
-
-<!-- renders to this (assuming logo.png is 50x50 pixels) -->
-
-<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo"
-     width="50" height="50">
-```
-
 Also you'll have complimentary Liquid filters as well:
 
 - `{{ 'app' | javascript }}`: Generates `<script>` tag for `app.js`
@@ -249,6 +236,37 @@ assets:
 
 [amazon-s3]: http://aws.amazon.com/s3
 
+
+### Images size (dimension) auto-guessing
+
+The image helper accepts options param (in square brackets) with `autosize`
+switch. If given, then image dimension will be calculated and
+apropriate attributes set:
+
+``` html
+{% image logo.png alt="Logo" [autosize] %}
+
+<!-- assuming logo.png is 50x50, the above will render -->
+
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo"
+     width="50" height="50">
+```
+
+You can also globally enable `autosize` in config (see `autosize` config option
+below). In this case, `image` tag will alway render dimension attributes unless
+you specify `no-autosize` switch. Assume you have `autosize` option enabled in
+config, then:
+
+``` html
+{% image logo.png [no-autosize] %}
+{% image logo.png %}
+
+<!-- assuming logo.png is 50x50, the above will render -->
+
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png">
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png"
+     width="50" height="50">
+```
 
 ### Custom Compressors
 
@@ -563,11 +581,11 @@ assets:
   #
   css_compressor: ~
   #
-  # Enables adding image width and height attributes to image tags.
-  # Does nothing to images with either width or height set.
+  # Globally enables adding image width and height attributes to image tags.
+  # Does nothing if either width or height attribute already set.
   # Disabled by default.
   #
-  autosize_images: false
+  autosize: false
   #
   # Sets cachebusting policy for generated assets.
   #

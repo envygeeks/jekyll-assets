@@ -8,22 +8,27 @@ module Jekyll
       JAVASCRIPT = '<script src="%{path}"%{attrs}></script>'
       IMAGE      = '<img src="%{path}"%{attrs}>'
       IMAGESIZE  = 'width="%d" height="%d"'
-      AUTOSIZE   = "[autosize]"
 
       URI_RE     = %r{^(?:[^:]+:)?//(?:[^./]+\.)+[^./]+/}
-      PARAMS_RE  = / (?: "(?<path>[^"]+)" | '(?<path>[^']+)' | (?<path>[^ ]+) )
-                     (?<attrs>.*)
+      PARAMS_RE  = / ^
+                     \s*
+                     (?: "(?<path>[^"]+)" | '(?<path>[^']+)' | (?<path>[^ ]+) )
+                     (?<attrs>.*?)
+                     (?: \[(?<options>.*)\] )?
+                     \s*
+                     $
                    /x
 
-      attr_reader :site, :path, :attrs
+      attr_reader :site, :path, :attrs, :options
 
       def initialize(context, params)
         @site = context.registers[:site]
 
         match = params.strip.match PARAMS_RE
 
-        @path  = match["path"]
-        @attrs = match["attrs"]
+        @path     = match["path"]
+        @attrs    = match["attrs"]
+        @options  = match["options"].to_s.split(",")
       end
 
       def render_asset
@@ -45,15 +50,7 @@ module Jekyll
       end
 
       def render_image
-        unless attrs =~ /width|height/
-          if attrs.include? AUTOSIZE
-            attrs.sub! AUTOSIZE, render_image_size
-          elsif site.assets_config.autosize_images
-            attrs << " " unless attrs =~ /\s$/
-            attrs << render_image_size
-          end
-        end
-
+        autosize!
         render_tag IMAGE
       end
 
@@ -72,13 +69,24 @@ module Jekyll
         tags.join "\n"
       end
 
-      def render_image_size
+      def autosize!
+        return unless autosize?
+
         if remote?
-          size = FastImage.size(path)
+          width, height = FastImage.size(path)
         else
-          size = FastImage.size(site.assets[path].pathname)
+          width, height = FastImage.size(site.assets[path].pathname)
         end
-        format IMAGESIZE, *size
+
+        @attrs = %(#{@attrs} width="#{width}" height="#{height}").strip
+      end
+
+      def autosize?
+        if site.assets_config.autosize
+          !options.include? "no-autosize"
+        else
+          options.include? "autosize"
+        end
       end
 
       def remote?

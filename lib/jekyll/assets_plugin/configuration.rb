@@ -11,7 +11,7 @@ module Jekyll
                                _assets/images),
         :js_compressor   => nil,
         :css_compressor  => nil,
-        :autosize_images => false,
+        :autosize        => false,
         :cachebust       => :hard,
         :cache           => false,
         :gzip            => %w(text/css application/javascript),

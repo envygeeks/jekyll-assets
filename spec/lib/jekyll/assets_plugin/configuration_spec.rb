@@ -34,6 +34,11 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
       it { is_expected.to be_nil }
     end
 
+    context "autosize" do
+      subject { config.autosize }
+      it { is_expected.to be false }
+    end
+
     context "gzip" do
       subject { config.gzip }
       it { is_expected.to match_array %w(text/css application/javascript) }
@@ -41,7 +46,7 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
 
     context "cache_assets?" do
       subject { config.cache_assets? }
-      it { is_expected.to eq false }
+      it { is_expected.to be false }
     end
 
     context "cache_path" do
@@ -51,7 +56,7 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
 
     context "debug" do
       subject { config.debug }
-      it { is_expected.to eq false }
+      it { is_expected.to be false }
     end
 
   end
