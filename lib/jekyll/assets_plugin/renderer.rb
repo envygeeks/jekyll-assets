@@ -1,9 +1,14 @@
+# 3rd-party
+require "fastimage"
+
 module Jekyll
   module AssetsPlugin
     class Renderer
       STYLESHEET = '<link rel="stylesheet" href="%{path}"%{attrs}>'
       JAVASCRIPT = '<script src="%{path}"%{attrs}></script>'
       IMAGE      = '<img src="%{path}"%{attrs}>'
+      IMAGESIZE  = 'width="%d" height="%d"'
+      AUTOSIZE   = '[autosize]'
 
       URI_RE     = %r{^(?:[^:]+:)?//(?:[^./]+\.)+[^./]+/}
       PARAMS_RE  = / (?: "(?<path>[^"]+)" | '(?<path>[^']+)' | (?<path>[^ ]+) )
@@ -40,6 +45,13 @@ module Jekyll
       end
 
       def render_image
+        if attrs.include? AUTOSIZE
+          attrs.sub! AUTOSIZE, render_image_size
+        elsif site.assets_config.autosize_images
+          attrs << " " unless attrs =~ /\s$/
+          attrs << render_image_size
+        end
+
         render_tag IMAGE
       end
 
@@ -56,6 +68,15 @@ module Jekyll
         end
 
         tags.join "\n"
+      end
+
+      def render_image_size
+        if remote?
+          size = FastImage.size(path)
+        else
+          size = FastImage.size(site.assets[path].pathname)
+        end
+        format IMAGESIZE, *size
       end
 
       def remote?

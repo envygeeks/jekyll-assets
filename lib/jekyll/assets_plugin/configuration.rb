@@ -5,17 +5,18 @@ module Jekyll
   module AssetsPlugin
     class Configuration
       DEFAULTS = {
-        :dirname        => "assets",
-        :sources        => %w(_assets/javascripts
-                              _assets/stylesheets
-                              _assets/images),
-        :js_compressor  => nil,
-        :css_compressor => nil,
-        :cachebust      => :hard,
-        :cache          => false,
-        :gzip           => %w(text/css application/javascript),
-        :debug          => false,
-        :version        => 1
+        :dirname         => "assets",
+        :sources         => %w(_assets/javascripts
+                               _assets/stylesheets
+                               _assets/images),
+        :js_compressor   => nil,
+        :css_compressor  => nil,
+        :autosize_images => false,
+        :cachebust       => :hard,
+        :cache           => false,
+        :gzip            => %w(text/css application/javascript),
+        :debug           => false,
+        :version         => 1
       }.freeze
 
       def initialize(config = {})
