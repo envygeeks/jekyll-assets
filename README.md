@@ -105,6 +105,19 @@ You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
 {% asset_path 'my logo.png' %}
 ```
 
+The image Liquid tag accepts one special attribute `[autosize]` which is
+replaced with the width and height of the image. This can also be enabled for
+all images, see `autosize_images` in config.
+
+``` html
+{% image logo.png alt="Logo" [autosize] %}
+
+<!-- renders to this (assuming logo.png is 50x50 pixels) -->
+
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo"
+     width="50" height="50">
+```
+
 Also you'll have complimentary Liquid filters as well:
 
 - `{{ 'app' | javascript }}`: Generates `<script>` tag for `app.js`
@@ -549,6 +562,12 @@ assets:
   # Possible variants: 'yui', 'sass', nil
   #
   css_compressor: ~
+  #
+  # Enables adding image width and height attributes to image tags.
+  # Does nothing to images with either width or height set.
+  # Disabled by default.
+  #
+  autosize_images: false
   #
   # Sets cachebusting policy for generated assets.
   #
