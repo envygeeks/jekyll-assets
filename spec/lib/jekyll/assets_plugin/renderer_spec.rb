@@ -197,6 +197,16 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
         it { is_expected.to include "data-test=true" }
       end
     end
+
+    context "with [autosize] attribute" do
+      let(:params) { "noise.png [autosize]" }
+      it { is_expected.to include 'width="100" height="100"' }
+    end
+
+    context "with autosize_images enabled" do
+      let(:assets_config) { Hash[:autosize_images, true] }
+      it { is_expected.to include 'width="100" height="100"' }
+    end
   end
 
   describe "#render_asset" do
