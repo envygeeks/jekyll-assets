@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sprockets-sass"
   spec.add_dependency "sprockets-helpers"
   spec.add_dependency "sass", "~> 3.2"
+  spec.add_dependency "fastimage", "~> 1.6"
 
   spec.add_development_dependency "bundler", "~> 1.6"
 end
