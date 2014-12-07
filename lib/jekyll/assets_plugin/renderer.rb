@@ -8,7 +8,7 @@ module Jekyll
       JAVASCRIPT = '<script src="%{path}"%{attrs}></script>'
       IMAGE      = '<img src="%{path}"%{attrs}>'
       IMAGESIZE  = 'width="%d" height="%d"'
-      AUTOSIZE   = '[autosize]'
+      AUTOSIZE   = "[autosize]"
 
       URI_RE     = %r{^(?:[^:]+:)?//(?:[^./]+\.)+[^./]+/}
       PARAMS_RE  = / (?: "(?<path>[^"]+)" | '(?<path>[^']+)' | (?<path>[^ ]+) )
@@ -45,11 +45,13 @@ module Jekyll
       end
 
       def render_image
-        if attrs.include? AUTOSIZE
-          attrs.sub! AUTOSIZE, render_image_size
-        elsif site.assets_config.autosize_images
-          attrs << " " unless attrs =~ /\s$/
-          attrs << render_image_size
+        unless attrs =~ /width|height/
+          if attrs.include? AUTOSIZE
+            attrs.sub! AUTOSIZE, render_image_size
+          elsif site.assets_config.autosize_images
+            attrs << " " unless attrs =~ /\s$/
+            attrs << render_image_size
+          end
         end
 
         render_tag IMAGE

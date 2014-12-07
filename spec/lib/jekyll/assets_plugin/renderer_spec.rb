@@ -206,6 +206,16 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
     context "with autosize_images enabled" do
       let(:assets_config) { Hash[:autosize_images, true] }
       it { is_expected.to include 'width="100" height="100"' }
+
+      context "unless width is passed" do
+        let(:params) { 'noise.png width="50"' }
+        it { is_expected.to include 'width="50"' }
+      end
+
+      context "unless height is passed" do
+        let(:params) { 'noise.png height="50"' }
+        it { is_expected.to include 'height="50"' }
+      end
     end
   end
 
