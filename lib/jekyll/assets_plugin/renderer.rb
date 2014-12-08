@@ -78,7 +78,7 @@ module Jekyll
           width, height = FastImage.size(site.assets[path].pathname)
         end
 
-        @attrs = %(#{@attrs} width="#{width}" height="#{height}").strip
+        @attrs = %(#{@attrs} width="#{width}" height="#{height}")
       end
 
       def autosize?
