@@ -27,8 +27,10 @@ module Jekyll
         match = params.strip.match PARAMS_RE
 
         @path     = match["path"]
-        @attrs    = match["attrs"]
+        @attrs    = match["attrs"].strip
         @options  = match["options"].to_s.split(",")
+
+        @attrs    = " #{@attrs}" unless @attrs.empty?
       end
 
       def render_asset

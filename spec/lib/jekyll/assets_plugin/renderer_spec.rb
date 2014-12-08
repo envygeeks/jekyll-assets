@@ -213,27 +213,35 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
     end
 
     context "with [autosize] helper option" do
-      let(:params) { "noise.png [autosize]" }
-      it { is_expected.to include 'width="100" height="100"' }
+      let(:params)    { "noise.png [autosize]" }
+      let(:attr_src)  { 'src="/assets/noise-[^.]+\.png"' }
+      let(:attr_size) { 'width="100" height="100"' }
+
+      it { is_expected.to match(/^<img #{attr_src} #{attr_size}>$/) }
     end
 
     context "with [no-autosize] helper option" do
-      let(:params) { "noise.png [no-autosize]" }
-      it { is_expected.to_not include 'width="100" height="100"' }
+      let(:params)    { "noise.png [no-autosize]" }
+      let(:attr_src)  { 'src="/assets/noise-[^.]+\.png"' }
+
+      it { is_expected.to match(/^<img #{attr_src}>$/) }
     end
 
     context "with autosize enabled in config" do
       let(:assets_config) { Hash[:autosize, true] }
-      it { is_expected.to include 'width="100" height="100"' }
+      let(:attr_src)      { 'src="/assets/noise-[^.]+\.png"' }
+      let(:attr_size)     { 'width="100" height="100"' }
+
+      it { is_expected.to match(/^<img #{attr_src} #{attr_size}>$/) }
 
       context "and [autosize] helper option given" do
         let(:params) { "noise.png [autosize]" }
-        it { is_expected.to include 'width="100" height="100"' }
+        it { is_expected.to match(/^<img #{attr_src} #{attr_size}>$/) }
       end
 
       context "and [no-autosize] helper option given" do
         let(:params) { "noise.png [no-autosize]" }
-        it { is_expected.to_not include 'width="100" height="100"' }
+        it { is_expected.to match(/^<img #{attr_src}>$/) }
       end
     end
   end
