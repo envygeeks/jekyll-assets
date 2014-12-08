@@ -1,6 +1,23 @@
 ### master (unreleased)
 
 
+### 0.12.1 (2014-12-08)
+
+* Fix regression with image attributes when `autosize` is used. See #117.
+  (Thanks @ingar)
+
+
+### 0.12.0 (2014-12-07)
+
+* Add `[autosize]` for the `image` helper. See #114. (Thanks @devm33)
+
+
+### 0.11.0 (2014-11-09)
+
+* Add Rails Assets support. See #109. (Thanks @ingar)
+* Sass precision Bootstrap. See #107. (Thanks @thbar)
+
+
 ### 0.10.1 (2014-10-13)
 
 * Fix regression in assets finder (#104), appeared after introducing tag
