@@ -161,6 +161,11 @@
 * Update jekyll dependency `~> 1.0`
 
 
+### 0.4.3 (2014-12-21)
+
+* Fix configuration reader. See #119.
+
+
 ### 0.4.2 (2013-05-08)
 
 * Require jekyll < 1.0.0. This is a the last release with support of 0.x branch
