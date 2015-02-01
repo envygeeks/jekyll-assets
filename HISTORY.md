@@ -1,5 +1,8 @@
 ### master (unreleased)
 
+
+### 0.13.0 (2015-02-01)
+
 * Respect Jekyll config's `baseurl` when auto-guessing baseurl. See #125.
 
 
