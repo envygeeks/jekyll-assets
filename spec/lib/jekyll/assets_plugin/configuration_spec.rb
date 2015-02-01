@@ -1,9 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Jekyll::AssetsPlugin::Configuration do
-  context "with defaults" do
-    let(:config) { described_class.new }
+  let(:options)     { {} }
+  subject(:config)  { described_class.new(@site, options) }
 
+  context "with defaults" do
     context "output assets dirname" do
       subject { config.dirname }
       it { is_expected.to eq described_class::DEFAULTS[:dirname] }
@@ -62,7 +63,7 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
   end
 
   it "overrides specified options and leave defaults for missing" do
-    config = described_class.new({
+    config = described_class.new(@site, {
       :sources        => %w(abc),
       :css_compressor => "sass"
     })
@@ -75,95 +76,88 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
 
   context "#cache" do
     context "when specified as String" do
+      let(:options) { { :cache => "/tmp/jekyll-assets" } }
+
       it "overrides default cache path" do
-        config = described_class.new :cache => "/tmp/jekyll-assets"
         expect(config.cache_path).to eq("/tmp/jekyll-assets")
       end
     end
   end
 
   context "#baseurl" do
-    it "respects explicit overrides" do
-      expect(described_class.new({
-        :dirname => "foo",
-        :baseurl => "/bar/"
-      }).baseurl).to eq("/bar")
+    subject { config.baseurl }
+
+    context "when given" do
+      let(:options) { { :dirname => "foo", :baseurl => "/bar/" } }
+      it { is_expected.to eq "/bar" }
     end
 
-    it "is auto-guessed from dirname" do
-      expect(described_class.new({
-        :dirname => "foo"
-      }).baseurl).to eq("/foo")
+    context "when not explicitly given" do
+      let(:options) { { :dirname => "foo" } }
+      it { is_expected.to eq "/foo" }
+
+      context "and site has baseurl config" do
+        before { @site.config["baseurl"] = "/blog" }
+        it { is_expected.to eq "/blog/foo" }
+      end
     end
   end
 
   context "#js_compressor" do
+    subject { config.js_compressor }
+
     context "when js compressor is given as `uglify`" do
-      let(:config) { described_class.new(:js_compressor => "uglify") }
-      subject { config.js_compressor }
+      let(:options) { { :js_compressor => "uglify" } }
       it { is_expected.to be :uglify }
     end
 
     context "otherwise" do
-      let(:config) { described_class.new }
-      subject { config.js_compressor }
       it { is_expected.to be_falsey }
     end
   end
 
   context "#css_compressor" do
+    subject { config.css_compressor }
+
     context "when css compressor is given as `sass`" do
-      let(:config) { described_class.new(:css_compressor => "sass") }
-      subject { config.css_compressor }
+      let(:options) { { :css_compressor => "sass" } }
       it { is_expected.to be :sass }
     end
 
     context "otherwise" do
-      let(:config) { described_class.new }
-      subject { config.css_compressor }
       it { is_expected.to be_falsey }
     end
   end
 
   context "#gzip" do
+    subject { config.gzip }
+
     context "when gzip is disabled" do
-      let(:config) { described_class.new(:gzip => false) }
-      subject { config.gzip }
+      let(:options) { { :gzip => false } }
       it { is_expected.to eq [] }
     end
   end
 
   context "#version" do
-    subject { described_class.new(:version => version).version }
+    let(:options) { { :version => "abc" } }
+    subject       { config.version }
 
-    context "when given as 123" do
-      let(:version) { 123 }
-      it { is_expected.to eq 123 }
-      it { is_expected.to be_a Integer }
-    end
-
-    context "when given as 'abc'" do
-      let(:version) { "abc" }
-      it { is_expected.to eq "abc" }
-      it { is_expected.to be_a String }
-    end
+    it { is_expected.to be options.fetch(:version) }
   end
 
   context "Deprecated options" do
-    subject(:config) { described_class.new options }
-
     context "compress" do
       let :options do
         { :compress => { :js => "uglify", :css => "sass" } }
       end
 
       describe "#js_compressor" do
-        subject { super().js_compressor }
+        subject { config.js_compressor }
         it { is_expected.to be :uglify }
       end
 
       describe "#css_compressor" do
-        subject { super().css_compressor }
+        subject { config.css_compressor }
         it { is_expected.to be :sass }
       end
     end

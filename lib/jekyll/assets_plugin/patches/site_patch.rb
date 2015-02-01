@@ -21,7 +21,7 @@ module Jekyll
         end
 
         def assets_config
-          @assets_config ||= Configuration.new(config["assets"] || {})
+          @assets_config ||= Configuration.new(self, config["assets"] || {})
         end
 
         def assets

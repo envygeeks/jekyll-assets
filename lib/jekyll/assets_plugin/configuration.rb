@@ -19,7 +19,8 @@ module Jekyll
         :version         => 1
       }.freeze
 
-      def initialize(config = {})
+      def initialize(site, config = {})
+        @site = site
         @data = OpenStruct.new DEFAULTS.merge(config)
 
         @data.sources  = [@data.sources] if @data.sources.is_a? String
@@ -30,12 +31,16 @@ module Jekyll
         @data.js_compressor   ||= compress.js
         @data.css_compressor  ||= compress.css
         @data.cache           ||= @data.cache_assets
-
-        # if baseurl not given - autoguess base on dirname
-        @data.baseurl ||= "/#{@data.dirname}/".squeeze "/"
       end
 
       def baseurl
+        unless @data.baseurl
+          baseurl = "/" << [@site.config["baseurl"], @data.dirname].join("/")
+
+          # if baseurl not given - autoguess base on dirname
+          @data.baseurl = baseurl.squeeze("/")
+        end
+
         @data.baseurl.chomp "/"
       end
 
