@@ -29,7 +29,7 @@ module Jekyll
         end
 
         def asset_files
-          @asset_files ||= []
+          @asset_files ||= Set.new
         end
 
         def asset_path(pathname, *args)
@@ -51,13 +51,7 @@ module Jekyll
         end
 
         def __wrap_write
-          static_files.push(*asset_files).uniq! do |asset|
-            case hash = asset.hash
-            when Fixnum then hash
-            else Digest::MD5.new.update(hash.to_s).hash
-            end
-          end
-
+          static_files.push(*asset_files)
           __orig_write
         end
       end

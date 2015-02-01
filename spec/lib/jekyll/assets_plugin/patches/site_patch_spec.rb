@@ -128,6 +128,14 @@ RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
     expect(@dest.join "assets", "app.css").to exist
   end
 
+  it "does not ignores files with duplicate contents" do
+    @site.assets_config.cachebust = :none
+    @site.process
+
+    expect(@dest.join "assets", "noise.png").to exist
+    expect(@dest.join "assets", "noize.png").to exist
+  end
+
   context "with cache" do
     def site
       Jekyll::Site.new(Jekyll.configuration({
