@@ -171,7 +171,6 @@ RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
       expect(@dest.join "assets", "app.css.gz").to_not exist
     end
-
   end
 
   it "is included into Jekyll::Site" do

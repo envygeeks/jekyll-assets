@@ -14,10 +14,14 @@ module Jekyll
         end
 
         def asset_path(pathname, *args)
-          return "" if pathname.to_s.strip.empty?
-          asset = resolve(pathname.to_s[/^[^#?]+/]).to_s
+          pathname = pathname.to_s.strip
+
+          return "" if pathname.empty?
+
+          asset = resolve(pathname[/^[^#?]+/]).to_s
           jekyll_assets << asset
-          (site.asset_path asset, *args) + (pathname.to_s[/[#?].+/] || "")
+
+          site.asset_path(asset, *args) + (pathname[/[#?].+/] || "")
         rescue Sprockets::FileNotFound
           raise Environment::AssetNotFound, pathname
         end

@@ -58,6 +58,7 @@ module Jekyll
 
       private
 
+      # rubocop:disable Metrics/AbcSize
       def render_tag(template, extension = "")
         return format(template, :path => path, :attrs => attrs) if remote?
 
@@ -70,6 +71,7 @@ module Jekyll
 
         tags.join "\n"
       end
+      # rubocop:enable Metrics/AbcSize
 
       def autosize!
         return unless autosize?

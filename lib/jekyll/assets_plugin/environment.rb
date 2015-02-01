@@ -18,6 +18,7 @@ module Jekyll
 
       attr_reader :site
 
+      # rubocop:disable Metrics/AbcSize
       def initialize(site)
         super site.source
 
@@ -43,6 +44,7 @@ module Jekyll
         context_class.instance_variable_set :@site, site
         context_class.send :include, Patches::ContextPatch
       end
+      # rubocop:enable Metrics/AbcSize
 
       def cache_path
         Pathname.new(@site.source).join @site.assets_config.cache_path

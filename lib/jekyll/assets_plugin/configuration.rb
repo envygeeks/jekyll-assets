@@ -19,6 +19,7 @@ module Jekyll
         :version         => 1
       }.freeze
 
+      # rubocop:disable Metrics/AbcSize
       def initialize(site, config = {})
         @site = site
         @data = OpenStruct.new DEFAULTS.merge(config)
@@ -32,6 +33,7 @@ module Jekyll
         @data.css_compressor  ||= compress.css
         @data.cache           ||= @data.cache_assets
       end
+      # rubocop:enable Metrics/AbcSize
 
       def baseurl
         unless @data.baseurl

@@ -31,8 +31,7 @@ module Jekyll
 
           context.jekyll_assets.each do |path|
             @jekyll_assets << path
-            environment.find_asset(path)
-              .jekyll_assets.each { |p| @jekyll_assets << p }
+            @jekyll_assets += environment.find_asset(path).jekyll_assets
           end
 
           __orig_build_dependency_paths environment, context
@@ -41,8 +40,8 @@ module Jekyll
         def __wrap_init_with(environment, coder)
           __orig_init_with environment, coder
 
-          @jekyll_assets = Set.new coder["jekyll_assets"]
-            .map { |p| expand_root_path(p) }
+          jekyll_assets = coder["jekyll_assets"].map { |p| expand_root_path(p) }
+          @jekyll_assets = Set.new jekyll_assets
         end
 
         def __wrap_encode_with(coder)

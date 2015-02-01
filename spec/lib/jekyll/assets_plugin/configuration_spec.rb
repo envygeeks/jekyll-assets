@@ -59,7 +59,6 @@ RSpec.describe Jekyll::AssetsPlugin::Configuration do
       subject { config.debug }
       it { is_expected.to be false }
     end
-
   end
 
   it "overrides specified options and leave defaults for missing" do
