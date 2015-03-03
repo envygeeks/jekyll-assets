@@ -56,13 +56,28 @@ module Jekyll
 
       private
 
-      def browsers
-        file   = Pathname.new(@site.source).join "autoprefixer.yml"
-        opts   = {}
-        params = file.exist? ? YAML.load_file(file) : {}
-        params = params.reduce({}) do |h, (key, value)|
+      def load_autoprefixer_yml(files)
+        params = {}
+
+        files.each do |file|
+          f = Pathname.new(@site.source).join file
+          if f.exist?
+            params = YAML.load_file(f)
+            break
+          end
+        end
+
+        params.reduce({}) do |h, (key, value)|
           h.update(key.to_sym => value)
         end
+      end
+
+      def browsers
+        opts = {}
+        params = load_autoprefixer_yml([
+          "autoprefixer.yml",
+          "_autoprefixer.yml"
+        ])
 
         opts[:safe] = true if params.delete(:safe)
         [params, opts]
