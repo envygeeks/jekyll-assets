@@ -10,6 +10,8 @@ require "sprockets-helpers"
 module Jekyll
   module AssetsPlugin
     class Environment < Sprockets::Environment
+      AUTOPREFIXER_CONFIG_FILES = %w(autoprefixer.yml _autoprefixer.yml)
+
       class AssetNotFound < StandardError
         def initialize(path)
           super "Couldn't find file '#{path}'"
@@ -56,31 +58,23 @@ module Jekyll
 
       private
 
-      def load_autoprefixer_yml(files)
-        params = {}
-
-        files.each do |file|
-          f = Pathname.new(@site.source).join file
-          if f.exist?
-            params = YAML.load_file(f)
-            break
-          end
-        end
-
-        params.reduce({}) do |h, (key, value)|
-          h.update(key.to_sym => value)
-        end
-      end
-
       def browsers
-        opts = {}
-        params = load_autoprefixer_yml([
-          "autoprefixer.yml",
-          "_autoprefixer.yml"
-        ])
+        config = autoprefixer_config
+        opts   = { :safe => params.delete(:safe) }
+        
+        [config, opts]
+      end
+      
+      def autoprefixer_config
+        config_file = AUTOPREFIXER_CONFIG_FILES
+          .map { |f| Pathname.new(@site.source).join f }
+          .find(&:exist?)
+  
+        return {} unless config_file
 
-        opts[:safe] = true if params.delete(:safe)
-        [params, opts]
+        YAML.load_file(config_file).reduce({}) do |h, (k, v)|
+          h.update(k.to_sym => v)
+        end
       end
 
       def install_autoprefixer!
