@@ -60,16 +60,16 @@ module Jekyll
 
       def browsers
         config = autoprefixer_config
-        opts   = { :safe => params.delete(:safe) }
-        
+        opts   = { :safe => config.delete(:safe) }
+
         [config, opts]
       end
-      
+
       def autoprefixer_config
         config_file = AUTOPREFIXER_CONFIG_FILES
-          .map { |f| Pathname.new(@site.source).join f }
-          .find(&:exist?)
-  
+                      .map { |f| Pathname.new(@site.source).join f }
+                      .find(&:exist?)
+
         return {} unless config_file
 
         YAML.load_file(config_file).reduce({}) do |h, (k, v)|
