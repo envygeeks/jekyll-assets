@@ -268,6 +268,27 @@ config, then:
      width="50" height="50">
 ```
 
+### Images resizing
+
+The image helper accepts an option param with [resize:<dimension>] switch.
+If given the image will be resized to the appropriate dimensions.
+
+``` html
+{% image huge-logo.png [resize:50x50] %}
+
+<!-- which will render something like: -->
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png">
+```
+
+You can also mix auto resizing with dimension guessing
+
+``` html
+{% image huge-logo.png [resize:50x50, autosize] %}
+
+<!-- Will be rendered like: -->
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" width="50" height="50">
+```
+
 ### Custom Compressors
 
 Sprockets comes with good set of preconfigured compressors, but imagine you are

@@ -1,5 +1,6 @@
 # 3rd-party
 require "fastimage"
+require "mini_magick"
 
 module Jekyll
   module AssetsPlugin
@@ -19,7 +20,7 @@ module Jekyll
                      $
                    /x
 
-      attr_reader :site, :path, :attrs, :options
+      attr_reader :site, :path, :attrs, :options, :asset
 
       def initialize(context, params)
         @site = context.registers[:site]
@@ -28,14 +29,18 @@ module Jekyll
 
         @path     = match["path"]
         @attrs    = match["attrs"].strip
-        @options  = match["options"].to_s.split(",")
+        @options  = match["options"].to_s.split(",").map(&:strip)
 
         @attrs    = " #{@attrs}" unless @attrs.empty?
+
+        @asset = site.assets[path] unless remote?
+
+        resize!
       end
 
       def render_asset
         fail "Can't render remote asset: #{path}" if remote?
-        site.assets[path].to_s
+        asset.to_s
       end
 
       def render_asset_path
@@ -64,7 +69,6 @@ module Jekyll
 
         path << extension if extension.to_s != File.extname(path)
 
-        asset = site.assets[path]
         tags  = (site.assets_config.debug ? asset.to_a : [asset]).map do |a|
           format template, :path => AssetPath.new(a).to_s, :attrs => attrs
         end
@@ -91,6 +95,29 @@ module Jekyll
         else
           options.include? "autosize"
         end
+      end
+
+      def resize!
+        return unless resize?
+
+        dimensions = options.grep(/resize/)[-1].split(":")[1]
+
+        outdir = Jekyll::AssetsPlugin::Environment::RESIZE_CACHE_DIRECTORY
+        extname = File.extname(asset.pathname)
+        outfile = "#{File.basename(asset.pathname, extname)}-#{dimensions}#{extname}"
+        FileUtils.mkdir_p outdir
+
+        img = MiniMagick::Image.read(asset.to_s, extname) rescue return
+        img.resize dimensions
+        img.write File.open("#{outdir}/#{outfile}", "w")
+
+        site.assets.find_asset("#{outdir}/#{outfile}").jekyll_assets
+        @asset = site.assets[outfile]
+        @path = outfile
+      end
+
+      def resize?
+        options.grep(/resize/).length > 0
       end
 
       def remote?
