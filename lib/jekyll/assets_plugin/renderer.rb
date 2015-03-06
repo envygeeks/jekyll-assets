@@ -1,6 +1,5 @@
 # 3rd-party
 require "fastimage"
-require "mini_magick"
 
 module Jekyll
   module AssetsPlugin

@@ -277,7 +277,7 @@ If given the image will be resized to the appropriate dimensions.
 {% image huge-logo.png [resize:50x50] %}
 
 <!-- which will render something like: -->
-<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png">
+<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png">
 ```
 
 You can also mix auto resizing with dimension guessing
@@ -286,7 +286,7 @@ You can also mix auto resizing with dimension guessing
 {% image huge-logo.png [resize:50x50, autosize] %}
 
 <!-- Will be rendered like: -->
-<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" width="50" height="50">
+<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png" width="50" height="50">
 ```
 
 ### Custom Compressors
