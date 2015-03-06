@@ -244,6 +244,19 @@ RSpec.describe Jekyll::AssetsPlugin::Renderer do
         it { is_expected.to match(/^<img #{attr_src}>$/) }
       end
     end
+
+    context "with [resize:*] helper option" do
+      let(:params)    { "noise.png [resize:10x10]" }
+      let(:attr_src)  { 'src="/assets/noise-10x10-[^.]+\.png"' }
+      it { is_expected.to match(/^<img #{attr_src}>$/) }
+    end
+
+    context "with [resize:*] and [autosize] helpers" do
+      let(:params)    { "noise.png [resize:10x10, autosize]" }
+      let(:attr_src)  { 'src="/assets/noise-10x10-[^.]+\.png"' }
+      let(:attr_size) { 'width="10" height="10"' }
+      it { is_expected.to match(/^<img #{attr_src} #{attr_size}>$/) }
+    end
   end
 
   describe "#render_asset" do

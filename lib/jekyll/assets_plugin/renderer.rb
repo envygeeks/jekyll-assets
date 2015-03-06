@@ -20,7 +20,7 @@ module Jekyll
                      $
                    /x
 
-      attr_reader :site, :path, :attrs, :options, :asset
+      attr_reader :site, :path, :attrs, :options
 
       def initialize(context, params)
         @site = context.registers[:site]
@@ -33,9 +33,11 @@ module Jekyll
 
         @attrs    = " #{@attrs}" unless @attrs.empty?
 
-        @asset = site.assets[path] unless remote?
-
         resize!
+      end
+
+      def asset
+        @asset ||= site.assets[path]
       end
 
       def render_asset
