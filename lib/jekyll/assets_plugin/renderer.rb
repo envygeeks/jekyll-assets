@@ -99,27 +99,22 @@ module Jekyll
         end
       end
 
+      def make_resize_directory!
+        FileUtils.mkdir_p Environment::RESIZE_CACHE_DIRECTORY
+      end
+
       def resize!
         return unless resize?
 
+        make_resize_directory!
         dimensions = options.grep(/resize/)[-1].split(":")[1]
 
-        outdir = Jekyll::AssetsPlugin::Environment::RESIZE_CACHE_DIRECTORY
-        extname = File.extname(asset.pathname)
-        outfile = "#{File.basename(asset.pathname, extname)}-#{dimensions}#{extname}"
-        FileUtils.mkdir_p outdir
-
-        img = MiniMagick::Image.read(asset.to_s, extname) rescue return
-        img.resize dimensions
-        img.write File.open("#{outdir}/#{outfile}", "w")
-
-        site.assets.find_asset("#{outdir}/#{outfile}").jekyll_assets
-        @asset = site.assets[outfile]
-        @path = outfile
+        @path = asset.resize(dimensions, Environment::RESIZE_CACHE_DIRECTORY)
+        @asset = site.assets[path]
       end
 
       def resize?
-        options.grep(/resize/).length > 0
+        options.grep(/resize:/).length > 0
       end
 
       def remote?
