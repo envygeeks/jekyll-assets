@@ -70,12 +70,15 @@ module Jekyll
           end
 
           def resize(dimensions, outdir)
-            outfile = "#{basename}-#{dimensions}#{extname}".gsub(/%/, "P")
-            img = MiniMagick::Image.read(to_s, extname)
-            img.resize dimensions
-            img.write "#{outdir}/#{outfile}"
+            @outfiles ||= {}
+            if !@outfiles.has_key?(dimensions)
+              @outfiles[dimensions] = "#{basename}-#{dimensions}#{extname}".gsub(/%/, "P")
+              img = MiniMagick::Image.read(to_s, extname)
+              img.resize dimensions
+              img.write "#{outdir}/#{@outfiles[dimensions]}"
+            end
 
-            outfile
+            @outfiles[dimensions]
           end
         end
       end
