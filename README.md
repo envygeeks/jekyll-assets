@@ -268,6 +268,43 @@ config, then:
      width="50" height="50">
 ```
 
+### Images resizing
+
+The image helper accepts an option param with [resize:dimension] switch.
+If given the image will be resized to the appropriate dimensions.
+
+``` html
+{% image huge-logo.png [resize:50x50] %}
+
+<!-- which will render something like: -->
+<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png">
+```
+
+You can also mix auto resizing with dimension guessing
+
+``` html
+{% image huge-logo.png [resize:50x50, autosize] %}
+
+<!-- Will be rendered like: -->
+<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png" width="50" height="50">
+```
+
+This feature requires imagemagick to be installed, and the dimension is any
+format that imagemagick understands: [Resize documentation][resize-doc].
+
+More examples:
+``` html
+{% image image.png [resize:400x400] %}  <!-- Fit whole image in these dimensions -->
+{% image image.png [resize:!300x150] %} <!-- Ignore aspect ratio -->
+{% image image.png [resize:200%] %}     <!-- Resize by percentage -->
+{% image image.png [resize:500@] %}     <!-- Resize to specific pixel count -->
+{% image image.png [resize:200x100^] %} <!-- Resize to fill area -->
+{% image image.png [resize:<200x10] %}  <!-- Only enlarge small image -->
+{% image image.png [resize:>200x10] %}  <!-- Only shrink large image -->
+```
+
+[resize-doc]: http://www.imagemagick.org/Usage/resize/#resize
+
 ### Custom Compressors
 
 Sprockets comes with good set of preconfigured compressors, but imagine you are

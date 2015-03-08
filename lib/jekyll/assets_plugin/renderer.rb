@@ -28,14 +28,20 @@ module Jekyll
 
         @path     = match["path"]
         @attrs    = match["attrs"].strip
-        @options  = match["options"].to_s.split(",")
+        @options  = match["options"].to_s.split(",").map(&:strip)
 
         @attrs    = " #{@attrs}" unless @attrs.empty?
+
+        resize!
+      end
+
+      def asset
+        @asset ||= site.assets[path]
       end
 
       def render_asset
         fail "Can't render remote asset: #{path}" if remote?
-        site.assets[path].to_s
+        asset.to_s
       end
 
       def render_asset_path
@@ -64,7 +70,6 @@ module Jekyll
 
         path << extension if extension.to_s != File.extname(path)
 
-        asset = site.assets[path]
         tags  = (site.assets_config.debug ? asset.to_a : [asset]).map do |a|
           format template, :path => AssetPath.new(a).to_s, :attrs => attrs
         end
@@ -91,6 +96,24 @@ module Jekyll
         else
           options.include? "autosize"
         end
+      end
+
+      def make_resize_directory!
+        FileUtils.mkdir_p Environment::RESIZE_CACHE_DIRECTORY
+      end
+
+      def resize!
+        return unless resize?
+
+        make_resize_directory!
+        dimensions = options.grep(/resize/)[-1].split(":")[1]
+
+        @path = asset.resize(dimensions, Environment::RESIZE_CACHE_DIRECTORY)
+        @asset = site.assets[path]
+      end
+
+      def resize?
+        options.grep(/resize:/).length > 0
       end
 
       def remote?

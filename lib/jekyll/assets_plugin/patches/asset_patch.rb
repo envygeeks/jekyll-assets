@@ -1,5 +1,6 @@
 # 3rd-party
 require "sprockets"
+require "mini_magick"
 
 module Jekyll
   module AssetsPlugin
@@ -58,6 +59,27 @@ module Jekyll
 
           def gzip?
             site.assets_config.gzip.include? content_type
+          end
+
+          def extname
+            @extname ||= File.extname(pathname)
+          end
+
+          def basename
+            @basename ||= File.basename(pathname, extname)
+          end
+
+          def resize(dimensions, outdir)
+            @outfiles ||= {}
+            unless @outfiles.key?(dimensions)
+              name = "#{basename}-#{dimensions}#{extname}".gsub(/%/, "P")
+              img = MiniMagick::Image.read(to_s, extname)
+              img.resize dimensions
+              img.write "#{outdir}/#{name}"
+              @outfiles[dimensions] = name
+            end
+
+            @outfiles[dimensions]
           end
         end
       end
