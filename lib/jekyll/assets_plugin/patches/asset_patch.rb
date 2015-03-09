@@ -69,17 +69,29 @@ module Jekyll
             @basename ||= File.basename(pathname, extname)
           end
 
-          def resize(dimensions, outdir)
-            @outfiles ||= {}
-            unless @outfiles.key?(dimensions)
-              name = "#{basename}-#{dimensions}#{extname}".gsub(/%/, "P")
-              img = MiniMagick::Image.read(to_s, extname)
-              img.resize dimensions
-              img.write "#{outdir}/#{name}"
-              @outfiles[dimensions] = name
-            end
+          def resize_outdir
+            site.assets.resize_cache_path
+          end
 
-            @outfiles[dimensions]
+          def ensure_resize_directory!
+            FileUtils.mkdir_p resize_outdir
+          end
+
+          def do_resize(dimensions)
+            name = "#{basename}-#{dimensions}#{extname}".gsub(/%/, "P")
+            img = MiniMagick::Image.read(to_s, extname)
+            img.resize dimensions
+            img.write "#{resize_outdir}/#{name}"
+
+            [name, site.assets[name]]
+          end
+
+          def resize(dimensions)
+            ensure_resize_directory!
+
+            @outfiles ||= {}
+
+            @outfiles[dimensions] ||= do_resize(dimensions)
           end
         end
       end

@@ -99,17 +99,15 @@ module Jekyll
       end
 
       def make_resize_directory!
-        FileUtils.mkdir_p Environment::RESIZE_CACHE_DIRECTORY
+        FileUtils.mkdir_p site.assets.resize_cache_path
       end
 
       def resize!
         return unless resize?
 
-        make_resize_directory!
         dimensions = options.grep(/resize/)[-1].split(":")[1]
 
-        @path = asset.resize(dimensions, Environment::RESIZE_CACHE_DIRECTORY)
-        @asset = site.assets[path]
+        @path, @asset = asset.resize(dimensions)
       end
 
       def resize?
