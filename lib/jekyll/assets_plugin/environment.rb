@@ -11,7 +11,6 @@ module Jekyll
   module AssetsPlugin
     class Environment < Sprockets::Environment
       AUTOPREFIXER_CONFIG_FILES = %w(autoprefixer.yml _autoprefixer.yml)
-      RESIZE_CACHE_DIRECTORY = "/tmp/jekyll-asset-resize-cache"
 
       class AssetNotFound < StandardError
         def initialize(path)
@@ -29,7 +28,7 @@ module Jekyll
 
         # append asset paths
         site.assets_config.sources.each { |p| append_path p }
-        append_path RESIZE_CACHE_DIRECTORY
+        append_path resize_cache_path
 
         self.js_compressor   = site.assets_config.js_compressor
         self.css_compressor  = site.assets_config.css_compressor
@@ -52,6 +51,10 @@ module Jekyll
 
       def cache_path
         Pathname.new(@site.source).join @site.assets_config.cache_path
+      end
+
+      def resize_cache_path
+        cache_path.join "resize"
       end
 
       def find_asset(path, *args)

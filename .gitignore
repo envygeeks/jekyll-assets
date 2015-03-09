@@ -18,3 +18,7 @@ tmp
 tags
 .sass-cache
 .ruby-version
+
+# Vim
+*.swp
+*.swo
