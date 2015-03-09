@@ -1,6 +1,14 @@
 ### master (unreleased)
 
 
+### 0.14.0 (2015-03-09)
+
+* Add support for resizing image assets. See #130. (Thanks @zmbush)
+* Respect `_autoprefixer.yml` along with `autoprefixer.yml` configs.
+  See #128. (Thanks @zmbush)
+* Fix issue with files being ignored when same content. See #112.
+
+
 ### 0.13.0 (2015-02-01)
 
 * Respect Jekyll config's `baseurl` when auto-guessing baseurl. See #125.
