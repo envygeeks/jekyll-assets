@@ -685,16 +685,19 @@ write an [e-mail][e-mail]. :D
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+* Fork [jekyll-assets][] on GitHub
+* Make your changes
+* Ensure all tests pass (`bundle exec rake`)
+* Send a pull request
+* If we like them we'll merge them
+* If we've accepted a patch, feel free to ask for commit access!
+
+[jekyll-assets]: https://github.com/ixti/jekyll-assets
 
 
 ## License
 
-Copyright (C) 2012-2013 Aleksey V Zapparov (http://ixti.net/)
+Copyright (C) 2012-2015 Aleksey V Zapparov
 
 The MIT License
 
