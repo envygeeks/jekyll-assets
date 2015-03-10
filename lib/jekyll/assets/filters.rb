@@ -1,8 +1,8 @@
 # internal
-require "jekyll/assets_plugin/renderer"
+require "jekyll/assets/renderer"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Filters
       %w(asset asset_path image javascript stylesheet).each do |name|
         module_eval <<-RUBY, __FILE__, __LINE__
@@ -16,4 +16,4 @@ module Jekyll
   end
 end
 
-Liquid::Template.register_filter Jekyll::AssetsPlugin::Filters
+Liquid::Template.register_filter Jekyll::Assets::Filters

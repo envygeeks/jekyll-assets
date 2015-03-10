@@ -2,7 +2,7 @@
 require "ostruct"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     class Configuration
       DEFAULTS = {
         :dirname         => "assets",

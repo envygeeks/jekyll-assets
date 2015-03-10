@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "jekyll/assets_plugin/version"
+require "jekyll/assets/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "jekyll-assets"
-  spec.version       = Jekyll::AssetsPlugin::VERSION
+  spec.version       = Jekyll::Assets::VERSION
   spec.homepage      = "http://ixti.github.com/jekyll-assets"
   spec.authors       = ["Aleksey V Zapparov"]
   spec.email         = %w(ixti@member.fsf.org)
   spec.license       = "MIT"
-  spec.summary       = "jekyll-assets-#{Jekyll::AssetsPlugin::VERSION}"
+  spec.summary       = "jekyll-assets-#{Jekyll::Assets::VERSION}"
   spec.description   = <<-DESC
   Jekyll plugin, that allows you to write javascript/css assets in
   other languages such as CoffeeScript, Sass, Less and ERB, concatenate

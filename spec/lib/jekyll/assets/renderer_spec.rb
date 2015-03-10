@@ -3,7 +3,7 @@ require "ostruct"
 
 require "spec_helper"
 
-RSpec.describe Jekyll::AssetsPlugin::Renderer do
+RSpec.describe Jekyll::Assets::Renderer do
   let(:assets_config) { Hash.new }
 
   let(:site) do

@@ -2,7 +2,7 @@
 require "sprockets"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Patches
       module BundledAssetPatch
         def jekyll_assets

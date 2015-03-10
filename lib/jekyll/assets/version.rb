@@ -1,5 +1,5 @@
 module Jekyll
-  module AssetsPlugin
+  module Assets
     VERSION = "0.14.0"
   end
 end

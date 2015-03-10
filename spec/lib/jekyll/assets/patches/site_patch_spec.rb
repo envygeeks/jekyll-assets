@@ -2,7 +2,7 @@ require "spec_helper"
 
 # rubocop:disable LineLength
 
-RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
+RSpec.describe Jekyll::Assets::Patches::SitePatch do
   let(:site) do
     Jekyll::Site.new Jekyll.configuration({
       "source"  => fixtures_path.to_s,
@@ -28,7 +28,7 @@ RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
       context "when requested file not found" do
         it "raises a NotFound error" do
           expect { site.assets["should_fail.css"] }
-            .to raise_error Jekyll::AssetsPlugin::Environment::AssetNotFound
+            .to raise_error Jekyll::Assets::Environment::AssetNotFound
         end
       end
 
@@ -114,7 +114,7 @@ RSpec.describe Jekyll::AssetsPlugin::Patches::SitePatch do
 
   context "#assets_config" do
     subject { site.assets_config }
-    it { is_expected.to be_an_instance_of Jekyll::AssetsPlugin::Configuration }
+    it { is_expected.to be_an_instance_of Jekyll::Assets::Configuration }
 
     it "populated with `assets` section of config" do
       expect(site.assets_config.dirname).not_to eq "foobar"

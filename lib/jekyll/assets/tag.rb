@@ -2,10 +2,10 @@
 require "liquid"
 
 # internal
-require "jekyll/assets_plugin/renderer"
+require "jekyll/assets/renderer"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     class Tag < Liquid::Tag
       def render(context)
         Renderer.new(context, @markup).send :"render_#{@tag_name}"
@@ -15,5 +15,5 @@ module Jekyll
 end
 
 %w(asset asset_path image javascript stylesheet).each do |tag|
-  Liquid::Template.register_tag tag, Jekyll::AssetsPlugin::Tag
+  Liquid::Template.register_tag tag, Jekyll::Assets::Tag
 end

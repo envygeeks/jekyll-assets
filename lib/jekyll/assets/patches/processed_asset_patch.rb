@@ -5,7 +5,7 @@ require "set"
 require "sprockets"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Patches
       module ProcessedAssetPatch
         def self.included(base)

@@ -3,7 +3,7 @@ require "sprockets"
 require "mini_magick"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Patches
       module AssetPatch
         def self.included(base)
@@ -99,4 +99,4 @@ module Jekyll
   end
 end
 
-Sprockets::Asset.send :include, Jekyll::AssetsPlugin::Patches::AssetPatch
+Sprockets::Asset.send :include, Jekyll::Assets::Patches::AssetPatch

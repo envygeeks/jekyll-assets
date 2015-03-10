@@ -1,5 +1,5 @@
 module Jekyll
-  module AssetsPlugin
+  module Assets
     class AssetPath
       attr_writer :anchor, :query
 

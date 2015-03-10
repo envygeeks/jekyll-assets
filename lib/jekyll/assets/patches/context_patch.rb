@@ -2,7 +2,7 @@
 require "set"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Patches
       module ContextPatch
         def site

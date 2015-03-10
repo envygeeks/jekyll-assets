@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Jekyll::AssetsPlugin::Tag do
+RSpec.describe Jekyll::Assets::Tag do
   let(:context) { { :registers => { :site => @site } } }
 
   def render(content)
@@ -12,7 +12,7 @@ RSpec.describe Jekyll::AssetsPlugin::Tag do
   end
 
   def render_tag(template, path, attrs = "")
-    template  = Jekyll::AssetsPlugin::Renderer.const_get template
+    template  = Jekyll::Assets::Renderer.const_get template
     attrs     = " #{attrs}" unless attrs.empty?
 
     format template, :path => path, :attrs => attrs
