@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Jekyll::AssetsPlugin::Configuration do
+RSpec.describe Jekyll::Assets::Configuration do
   let(:options)     { {} }
   subject(:config)  { described_class.new(@site, options) }
 

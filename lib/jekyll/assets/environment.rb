@@ -8,7 +8,7 @@ require "sprockets-sass"
 require "sprockets-helpers"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     class Environment < Sprockets::Environment
       AUTOPREFIXER_CONFIG_FILES = %w(autoprefixer.yml _autoprefixer.yml)
 

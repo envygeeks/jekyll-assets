@@ -1,4 +1,4 @@
-# Jekyll::AssetsPlugin
+# Jekyll::Assets
 
 [![Gem Version](https://badge.fury.io/rb/jekyll-assets.svg)](http://badge.fury.io/rb/jekyll-assets)
 [![Build Status](https://travis-ci.org/ixti/jekyll-assets.svg?branch=master)](http://travis-ci.org/ixti/jekyll-assets)

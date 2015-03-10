@@ -5,12 +5,12 @@ require "digest/md5"
 require "jekyll"
 
 # internal
-require "jekyll/assets_plugin/configuration"
-require "jekyll/assets_plugin/environment"
-require "jekyll/assets_plugin/asset_path"
+require "jekyll/assets/configuration"
+require "jekyll/assets/environment"
+require "jekyll/assets/asset_path"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Patches
       module SitePatch
         def self.included(base)
@@ -59,4 +59,4 @@ module Jekyll
   end
 end
 
-Jekyll::Site.send :include, Jekyll::AssetsPlugin::Patches::SitePatch
+Jekyll::Site.send :include, Jekyll::Assets::Patches::SitePatch

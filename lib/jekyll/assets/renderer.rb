@@ -2,7 +2,7 @@
 require "fastimage"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     class Renderer
       STYLESHEET = '<link rel="stylesheet" href="%{path}"%{attrs}>'
       JAVASCRIPT = '<script src="%{path}"%{attrs}></script>'

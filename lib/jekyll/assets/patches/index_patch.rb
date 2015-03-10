@@ -2,7 +2,7 @@
 require "sprockets"
 
 module Jekyll
-  module AssetsPlugin
+  module Assets
     module Patches
       module IndexPatch
         def self.included(base)
@@ -22,4 +22,4 @@ module Jekyll
   end
 end
 
-Sprockets::Index.send :include, Jekyll::AssetsPlugin::Patches::IndexPatch
+Sprockets::Index.send :include, Jekyll::Assets::Patches::IndexPatch

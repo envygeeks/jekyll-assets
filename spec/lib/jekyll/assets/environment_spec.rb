@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Jekyll::AssetsPlugin::Environment do
+RSpec.describe Jekyll::Assets::Environment do
   context "#asset_path of context" do
     it "properly handles query params" do
       css = @site.assets["vapor.css"].to_s
