@@ -458,11 +458,11 @@ group :rails_assets do
 end
 ```
 
-Require `jekyll-assets/rails-assets` to enable, e.g.:
+Call `Jekyll::Assets::RailsAssets.bind` to enable, e.g.:
 
 ``` ruby
 require "jekyll-assets"
-require "jekyll-assets/rails-assets"
+Jekyll::Assets::RailsAssets.bind
 ```
 
 Now you can `require` these dependencies in your assets, e.g. `site.js`:
