@@ -1,8 +1,20 @@
 # rubocop: disable Style/FileName
-Bundler.require(:rails_assets)
+module Jekyll
+  module Assets
+    module RailsAssets
+      def self.bind
+        require "bundler"
 
-if defined? RailsAssets
-  RailsAssets.components.flat_map(&:load_paths).each do |path|
-    Sprockets.append_path(path)
+        Bundler.require(:rails_assets)
+
+        if defined? RailsAssets
+          Jekyll::Assets.configure do |assets|
+            RailsAssets.components.flat_map(&:load_paths).each do |path|
+              assets.append_path(path)
+            end
+          end
+        end
+      end
+    end
   end
 end
