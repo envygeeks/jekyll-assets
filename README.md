@@ -74,7 +74,7 @@ First of all make sure to require it. Common practice is to add following line
 into `_plugins/ext.rb` file:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 ```
 
 Once plugin installed, you'll have following Liquid tags available:
@@ -314,7 +314,7 @@ but copyrights info. In this case you can define and use your own compressor.
 To do so, first let's define new compressor in `_plugins/ext.rb`:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 require "sprockets"
 
 Sprockets.register_compressor 'application/javascript',
@@ -383,7 +383,7 @@ For your comfort jekyll-assets has built-in support for some popular libraries.
 Call `Jekyll::Assets::Compass.bind` to enable, e.g.:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 Jekyll::Assets::Compass.bind
 ```
 
@@ -398,7 +398,7 @@ Now you can add `@import "compass"` in your SASS assets to get Compass goodies.
 Call `Jekyll::Assets::Bootstrap.bind` to enable, e.g.:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 
 # bootstrap requires minimum precision of 10, see https://github.com/twbs/bootstrap-sass/issues/409
 ::Sass::Script::Number.precision = [10, ::Sass::Script::Number.precision].max
@@ -414,7 +414,7 @@ Now you can add `@import "bootstrap"` in your SASS assets to get Bootstrap goodi
 Call `Jekyll::Assets::Bourbon.bind` to enable, e.g.:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 Jekyll::Assets::Bourbon.bind
 ```
 
@@ -426,7 +426,7 @@ Now you can add `@import "bourbon"` in your SASS assets to get Bourbon goodies.
 Call `Jekyll::Assets::FontAwesome.bind` to enable, e.g.:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 Jekyll::Assets::FontAwesome.bind
 ```
 
@@ -438,7 +438,7 @@ Now you can add `@import "font-awesome"` in your SASS assets to get Font Awesome
 Call `Jekyll::Assets::Neat.bind` to enable, e.g.:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 Jekyll::Assets::Neat.bind
 ```
 
@@ -461,7 +461,7 @@ end
 Call `Jekyll::Assets::RailsAssets.bind` to enable, e.g.:
 
 ``` ruby
-require "jekyll-assets"
+require "jekyll/assets"
 Jekyll::Assets::RailsAssets.bind
 ```
 

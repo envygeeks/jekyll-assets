@@ -9,7 +9,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 
 SimpleCov.start
 
-require_relative "../lib/jekyll-assets"
+require_relative "../lib/jekyll/assets"
 
 require "jekyll"
 require "liquid"
