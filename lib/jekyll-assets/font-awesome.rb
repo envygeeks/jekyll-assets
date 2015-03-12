@@ -1,8 +1,17 @@
 # rubocop: disable Style/FileName
-require "sprockets"
 
-gemspec = Gem::Specification.find_by_name "font-awesome-sass"
+module Jekyll
+  module Assets
+    module FontAwesome
+      def self.bind
+        Jekyll::Assets.configure do |assets|
+          gemspec = Gem::Specification.find_by_name "font-awesome-sass"
 
-%w(fonts stylesheets).each do |asset|
-  Sprockets.append_path File.join(gemspec.gem_dir, "assets", asset)
+          %w(fonts stylesheets).each do |asset|
+            assets.append_path File.join(gemspec.gem_dir, "assets", asset)
+          end
+        end
+      end
+    end
+  end
 end

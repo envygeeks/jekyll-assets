@@ -1,7 +1,15 @@
-require "sprockets"
+module Jekyll
+  module Assets
+    module Bootstrap
+      def self.bind
+        gemspec = Gem::Specification.find_by_name "bootstrap-sass"
 
-gemspec = Gem::Specification.find_by_name "bootstrap-sass"
-
-%w(images fonts javascripts stylesheets).each do |asset|
-  Sprockets.append_path File.join(gemspec.gem_dir, "assets", asset)
+        Jekyll::Assets.configure do |assets|
+          %w(images fonts javascripts stylesheets).each do |asset|
+            assets.append_path File.join(gemspec.gem_dir, "assets", asset)
+          end
+        end
+      end
+    end
+  end
 end

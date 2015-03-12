@@ -20,6 +20,25 @@ require "sprockets"
 Dir[File.expand_path("../support", __FILE__) + "/**/*.rb"]
   .each { |f| require f }
 
+# rubocop:disable Metrics/AbcSize
+def start_site
+  if Gem::Version.new("2") <= Gem::Version.new(Jekyll::VERSION)
+    Jekyll.logger.log_level = :warn
+  else
+    Jekyll.logger.log_level = Jekyll::Stevenson::WARN
+  end
+
+  @dest = fixtures_path.join("_site")
+  @site = Jekyll::Site.new(Jekyll.configuration({
+    "source"      => fixtures_path.to_s,
+    "destination" => @dest.to_s
+  }))
+
+  @dest.rmtree if @dest.exist?
+  @site.process
+end
+# rubocop:enable Metrics/AbcSize
+
 RSpec.configure do |config|
   config.include FixturesHelpers
   config.extend  FixturesHelpers
@@ -27,20 +46,9 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
 
   config.before(:all) do
-    if Gem::Version.new("2") <= Gem::Version.new(Jekyll::VERSION)
-      Jekyll.logger.log_level = :warn
-    else
-      Jekyll.logger.log_level = Jekyll::Stevenson::WARN
-    end
+    Jekyll::Assets.reset_configure
 
-    @dest = fixtures_path.join("_site")
-    @site = Jekyll::Site.new(Jekyll.configuration({
-      "source"      => fixtures_path.to_s,
-      "destination" => @dest.to_s
-    }))
-
-    @dest.rmtree if @dest.exist?
-    @site.process
+    start_site
   end
 
   config.after(:all) do
