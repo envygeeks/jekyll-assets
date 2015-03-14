@@ -2,6 +2,11 @@
 
 
 
+### 1.0.0-alpha1 (2015-03-14)
+
+* Restore support of `require "jekyll-assets"`. (@ixti)
+
+
 ### 1.0.0-alpha0 (2015-03-14)
 
 * Remove all built-in vendors. (@ixti)
