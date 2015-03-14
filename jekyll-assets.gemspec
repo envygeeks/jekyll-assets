@@ -6,9 +6,9 @@ require "jekyll/assets/version"
 Gem::Specification.new do |spec|
   spec.name          = "jekyll-assets"
   spec.version       = Jekyll::Assets::VERSION
-  spec.homepage      = "http://ixti.github.com/jekyll-assets"
-  spec.authors       = ["Aleksey V Zapparov"]
-  spec.email         = %w(ixti@member.fsf.org)
+  spec.homepage      = "http://jekyll-assets.github.com/jekyll-assets"
+  spec.authors       = ["Aleksey V Zapparov", "Zachary Bush"]
+  spec.email         = %w(ixti@member.fsf.org zach@zmbush.com)
   spec.license       = "MIT"
   spec.summary       = "jekyll-assets-#{Jekyll::Assets::VERSION}"
   spec.description   = <<-DESC
