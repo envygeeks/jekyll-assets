@@ -5,17 +5,10 @@ require "jekyll/assets/version"
 
 module Jekyll
   module Assets
-    def self.configure(&block)
-      @configure_blocks ||= []
-      @configure_blocks << block
-    end
+    HOOKS = []
 
-    def self.reset_configure
-      @configure_blocks = []
-    end
-
-    def self.configure_blocks
-      @configure_blocks || []
+    def self.configure(&blk)
+      HOOKS << blk
     end
   end
 end

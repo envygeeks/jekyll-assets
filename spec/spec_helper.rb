@@ -46,8 +46,7 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
 
   config.before(:all) do
-    Jekyll::Assets.reset_configure
-
+    Jekyll::Assets::HOOKS.clear
     start_site
   end
 

@@ -33,7 +33,7 @@ module Jekyll
         self.js_compressor   = site.assets_config.js_compressor
         self.css_compressor  = site.assets_config.css_compressor
 
-        Jekyll::Assets.configure_blocks.each { |block| block.call(self) }
+        Jekyll::Assets::HOOKS.each { |block| block.call(self) }
 
         if site.assets_config.cache_assets?
           self.cache = Sprockets::Cache::FileStore.new cache_path
