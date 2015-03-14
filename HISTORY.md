@@ -1,6 +1,15 @@
 ### master (unreleased)
 
 
+
+### 1.0.0-alpha0 (2015-03-14)
+
+* Remove all built-in vendors. (@ixti)
+* Remove support of `require "jekyll-assets"`.
+  Use `require "jekyll/assets"`instead. (@ixti)
+* Add environment init hooks (@zmbush)
+
+
 ### 0.14.0 (2015-03-09)
 
 * Add support for resizing image assets. See #130. (Thanks @zmbush)
