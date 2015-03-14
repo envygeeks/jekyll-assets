@@ -10,8 +10,6 @@ require "sprockets-helpers"
 module Jekyll
   module Assets
     class Environment < Sprockets::Environment
-      AUTOPREFIXER_CONFIG_FILES = %w(autoprefixer.yml _autoprefixer.yml)
-
       class AssetNotFound < StandardError
         def initialize(path)
           super "Couldn't find file '#{path}'"
@@ -39,9 +37,6 @@ module Jekyll
           self.cache = Sprockets::Cache::FileStore.new cache_path
         end
 
-        # load css autoprefix post-processor
-        install_autoprefixer!
-
         # reset cache if config changed
         self.version = site.assets_config.marshal_dump
 
@@ -61,34 +56,6 @@ module Jekyll
 
       def find_asset(path, *args)
         super || fail(AssetNotFound, path)
-      end
-
-      private
-
-      def browsers
-        config = autoprefixer_config
-        opts   = { :safe => config.delete(:safe) }
-
-        [config, opts]
-      end
-
-      def autoprefixer_config
-        config_file = AUTOPREFIXER_CONFIG_FILES
-                      .map { |f| Pathname.new(@site.source).join f }
-                      .find(&:exist?)
-
-        return {} unless config_file
-
-        YAML.load_file(config_file).reduce({}) do |h, (k, v)|
-          h.update(k.to_sym => v)
-        end
-      end
-
-      def install_autoprefixer!
-        require "autoprefixer-rails"
-        AutoprefixerRails.install(self, *browsers)
-      rescue LoadError
-        nil
       end
     end
   end

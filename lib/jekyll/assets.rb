@@ -12,5 +12,3 @@ module Jekyll
     end
   end
 end
-
-Dir[File.dirname(__FILE__) + "/jekyll-assets/*.rb"].each { |file| require file }
