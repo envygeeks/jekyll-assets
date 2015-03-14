@@ -1,10 +1,10 @@
 # Jekyll::Assets
 
 [![Gem Version](https://badge.fury.io/rb/jekyll-assets.svg)](http://badge.fury.io/rb/jekyll-assets)
-[![Build Status](https://travis-ci.org/ixti/jekyll-assets.svg?branch=master)](http://travis-ci.org/ixti/jekyll-assets)
-[![Dependency Status](https://gemnasium.com/ixti/jekyll-assets.svg)](https://gemnasium.com/ixti/jekyll-assets)
-[![Code Climate](https://codeclimate.com/github/ixti/jekyll-assets.svg)](https://codeclimate.com/github/ixti/jekyll-assets)
-[![Coverage Status](https://coveralls.io/repos/ixti/jekyll-assets/badge.svg?branch=master)](https://coveralls.io/r/ixti/jekyll-assets?branch=master)
+[![Build Status](https://travis-ci.org/jekyll-assets/jekyll-assets.svg?branch=master)](http://travis-ci.org/jekyll-assets/jekyll-assets)
+[![Dependency Status](https://gemnasium.com/jekyll-assets/jekyll-assets.svg)](https://gemnasium.com/jekyll-assets/jekyll-assets)
+[![Code Climate](https://codeclimate.com/github/jekyll-assets/jekyll-assets.svg)](https://codeclimate.com/github/jekyll-assets/jekyll-assets)
+[![Coverage Status](https://coveralls.io/repos/jekyll-assets/jekyll-assets/badge.svg?branch=master)](https://coveralls.io/r/jekyll-assets/jekyll-assets?branch=master)
 
 Jekyll plugin, that adds Rails-alike assets pipeline, that means that:
 
