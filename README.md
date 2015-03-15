@@ -70,7 +70,7 @@ First of all make sure to require it. Common practice is to add following line
 into `_plugins/ext.rb` file:
 
 ``` ruby
-require "jekyll/assets"
+require "jekyll-assets"
 ```
 
 Once plugin installed, you'll have following Liquid tags available:
@@ -310,7 +310,7 @@ but copyrights info. In this case you can define and use your own compressor.
 To do so, first let's define new compressor in `_plugins/ext.rb`:
 
 ``` ruby
-require "jekyll/assets"
+require "jekyll-assets"
 require "sprockets"
 
 Sprockets.register_compressor 'application/javascript',
