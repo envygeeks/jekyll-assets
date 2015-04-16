@@ -4,9 +4,9 @@ require "fastimage"
 module Jekyll
   module Assets
     class Renderer
-      STYLESHEET = '<link rel="stylesheet" href="%{path}"%{attrs}>'
+      STYLESHEET = '<link rel="stylesheet" href="%{path}"%{attrs} />'
       JAVASCRIPT = '<script src="%{path}"%{attrs}></script>'
-      IMAGE      = '<img src="%{path}"%{attrs}>'
+      IMAGE      = '<img src="%{path}"%{attrs} />'
       IMAGESIZE  = 'width="%d" height="%d"'
 
       URI_RE     = %r{^(?:[^:]+:)?//(?:[^./]+\.)+[^./]+/}
