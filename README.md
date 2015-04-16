@@ -90,10 +90,10 @@ You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
 
 <!-- renders to something like this (linebreaks in tags for readability here) -->
 
-<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo">
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo" />
 <script src="/assets/app-6b95b1b3231c52113ca34ae9d1b5dabf.js" async></script>
 <link rel="stylesheet" href="/assets/app-349212fba570137adfec745e37b6d7fb.css"
-      actually="anything" you might='want'>
+      actually="anything" you might='want' />
 
 <!-- NOTICE !!! if your asset file contains spaces, surround it's name with quotes -->
 
@@ -245,7 +245,7 @@ apropriate attributes set:
 <!-- assuming logo.png is 50x50, the above will render -->
 
 <img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" alt="Logo"
-     width="50" height="50">
+     width="50" height="50" />
 ```
 
 You can also globally enable `autosize` in config (see `autosize` config option
@@ -259,9 +259,9 @@ config, then:
 
 <!-- assuming logo.png is 50x50, the above will render -->
 
-<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png">
+<img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png" />
 <img src="/assets/logo-68b329da9893e34099c7d8ad5cb9c940.png"
-     width="50" height="50">
+     width="50" height="50" />
 ```
 
 ### Images resizing
@@ -273,7 +273,7 @@ If given the image will be resized to the appropriate dimensions.
 {% image huge-logo.png [resize:50x50] %}
 
 <!-- which will render something like: -->
-<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png">
+<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png" />
 ```
 
 You can also mix auto resizing with dimension guessing
@@ -282,7 +282,7 @@ You can also mix auto resizing with dimension guessing
 {% image huge-logo.png [resize:50x50, autosize] %}
 
 <!-- Will be rendered like: -->
-<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png" width="50" height="50">
+<img src="/assets/logo-50x50-68b329da9893e34099c7d8ad5cb9c940.png" width="50" height="50" />
 ```
 
 This feature requires imagemagick to be installed, and the dimension is any
