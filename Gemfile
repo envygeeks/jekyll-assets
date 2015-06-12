@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 group :development do
-  gem "rubocop"
+  gem "rubocop", "~>0.29.1"
   gem "rake"
   gem "rspec"
   gem "appraisal"
