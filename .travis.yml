@@ -8,3 +8,8 @@ rvm:
 gemfile:
   - gemfiles/jekyll_2.gemfile
   - gemfiles/jekyll_3.gemfile
+
+matrix:
+  exclude:
+    - rvm: 1.9.3
+      gemfile: gemfiles/jekyll_3.gemfile
