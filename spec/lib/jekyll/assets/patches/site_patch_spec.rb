@@ -137,20 +137,17 @@ RSpec.describe Jekyll::Assets::Patches::SitePatch do
   end
 
   context "with cache" do
-    def site
-      Jekyll::Site.new(Jekyll.configuration({
-        "source"      => fixtures_path.to_s,
-        "assets"      => { "cache" => true, "cachebust" => :none },
-        "destination" => @dest.to_s
-      }))
+    before do
+      @site.assets_config.cache = true
+      @site.assets_config.cachebust = :none
     end
 
     after do
-      site.assets.cache_path.rmtree if site.assets.cache_path.exist?
+      @site.assets.cache_path.rmtree if site.assets.cache_path.exist?
     end
 
     it "regenerates static assets upon multiple #process" do
-      2.times { site.process }
+      2.times { @site.process }
       expect(@dest.join "assets", "noise.png").to exist
     end
   end
