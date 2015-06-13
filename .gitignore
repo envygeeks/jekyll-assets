@@ -22,3 +22,5 @@ tags
 # Vim
 *.swp
 *.swo
+gemfiles/jekyll_2.gemfile.lock
+gemfiles/jekyll_3.gemfile.lock
