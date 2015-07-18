@@ -2,7 +2,9 @@
 
 # Jekyll 3 Assets
 
-Jekyll 3 assets is an asset pipeline using Sprockets 3 for Jekyll 3.
+Jekyll 3 assets is an asset pipeline using Sprockets 3 for Jekyll 3.  This
+software is deeply alpha and still is missing pieces from old Jekyll-Assets
+so beware when you use it, these pieces will be added soon (tm.)
 
 ## Configuration
 
@@ -27,6 +29,20 @@ a PNG image and you delete that PNG image it will not get readded because
 it's cached and not compiled so our methods never get called so you'll
 need to add it to the asset list so it's always compiled for you.
 
+## Asset Digesting
+
+We will digest assets by default in production and default to non-digested
+assets for efficiency in development/testing, this way we can ensure that your
+builds remain fast in Jekyll3, you can however force asset digesting with
+`digest:true` which will digest even in development and kick on deep regen
+integration which ***will** result in increased build times because every
+asset change will cause the entire site to rebuild.
+
+### What about caching?
+
+Worry not, see: https://github.com/jekyll/jekyll/pull/3792 (https://github.com/jekyll/jekyll/commit/931c3b149030edcedaf59eb42516e65088fa2c93#diff-eeca36730c9db808f27e5c330dc7838fR57) which will *should* land in Jekyll3 and will provide built-in support
+for non-caching in development.
+
 ## When I try to use ERB I get an error
 
 Because we disable ERB processing in the hopes that this can one day be
@@ -39,6 +55,13 @@ which will give you powerful syntax with Ruby to do what you like.
 * javascript, js
 * image, img
 * asset_path
+
+### Tag Example:
+
+```liquid
+{% img src @2x alt:'This is my alt' %}
+{% img src @2x alt:'This is my alt' accept:image/gif %}
+```
 
 ### Proxy/Arguments
 
