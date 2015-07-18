@@ -71,3 +71,10 @@ content_type` we will search for the content type through Sprockets but if you
 send `a:b` then `a="b"` will be on the tag.  You can also escape colons to
 prevent mistakes: `{% css asset hello:world\:how\:are\:you }` will end up
 as `<link type="text/css" rel="stylesheet" href="" hello="world:how:are:you">`
+
+## Hooks
+
+We support basic hooks at the following points: `:pre_init, :post_init`, you
+can register them with `Jekyll::Assets::Env.register_hook` and it takes a
+block.  The post_init hook will receive the env so you can work on it if you
+want to do what you like in your own plugins!

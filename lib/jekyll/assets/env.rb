@@ -7,9 +7,44 @@ module Jekyll
     class Env < Sprockets::Environment
       attr_reader :jekyll, :used
       include Helpers
+      HOOK_POINTS = [
+        :pre_init, :post_init
+      ]
+
+      class UnknownHookPointError < RuntimeError
+        def initialize(point)
+          super "Unknown jekyll-assets hook point (#{point}) given."
+        end
+      end
 
       class << self
         attr_accessor :assets_cache, :digest_cache
+        def hooks
+          @_hooks ||= {
+            #
+          }
+        end
+
+        def trigger_hooks(point, *args)
+          if hooks[point]
+            then hooks[point].map do |v|
+              v.call(
+                *args
+              )
+            end
+          end
+        end
+
+        def register_hook(point, &block)
+          if HOOK_POINTS.include?(point)
+            (hooks[point] ||= Set.new) << \
+              block
+          else
+            raise(
+              UnknownHookPointError, point
+            )
+          end
+        end
       end
 
       def initialize(path, jekyll = nil)
