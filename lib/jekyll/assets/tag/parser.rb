@@ -12,6 +12,8 @@ module Jekyll
 
     class Tag
       class Parser
+        attr_reader :args, :raw_args
+
         ACCEPT = { "css" => "text/css", "js" => "application/javascript" }
         ACCEPT["javascript"] = ACCEPT[ "js"]
         ACCEPT["style"]      = ACCEPT["css"]
