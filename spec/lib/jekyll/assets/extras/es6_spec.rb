@@ -2,13 +2,11 @@ require "rspec/helper"
 
 describe "transpiling-es6" do
   let :site do
-    stub_jekyll_site
+    stub_jekyll_site_with_processing
   end
 
   let :env do
-    Jekyll::Assets::Env.new(
-      site
-    )
+    site.sprockets
   end
 
   it "transpiles es6" do

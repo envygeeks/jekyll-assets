@@ -2,18 +2,13 @@ require "rspec/helper"
 require "nokogiri"
 
 describe Jekyll::Assets::Tag do
-  let :site do
-    stub_jekyll_site
+  def site
+    @_site ||= \
+    stub_jekyll_site_with_processing
   end
 
-  def stub
-    silence_stdout do
-      site.process
-    end
-  end
-
-  before :each do
-    stub
+  before :all do
+    site
   end
 
   def file
@@ -69,7 +64,11 @@ describe Jekyll::Assets::Tag do
   end
 
   it "adds write options to assets" do
-    asset = site.sprockets.used.select { |v| v.logical_path =~ /bundle\.css/ }.first
+    asset = site.sprockets.used.select do |v|
+      v.logical_path =~ /bundle\.css/
+    end\
+    .first
+
     expect(asset.metadata[:write_options]).to be_a(
       Hash
     )

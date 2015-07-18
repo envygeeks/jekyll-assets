@@ -2,16 +2,11 @@ require "rspec/helper"
 
 describe "css-auto-prefixing" do
   let :site do
-    stub_jekyll_site
+    stub_jekyll_site_with_processing
   end
 
   let :env do
     site.sprockets
-  end
-
-  before do
-    site.\
-    process
   end
 
   it "prefixes css" do

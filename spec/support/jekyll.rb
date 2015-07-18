@@ -30,6 +30,7 @@ module Jekyll::RSpecHelpers
   end
 
   def stub_jekyll_site(oth_opts = {})
+    Jekyll::RSpecHelpers.cleanup_trash
     opts = Jekyll::Utils.deep_merge_hashes(
       Jekyll::Configuration::DEFAULTS, {
         "full_rebuild" => true,
@@ -43,6 +44,12 @@ module Jekyll::RSpecHelpers
         opts, oth_opts
       )
     )
+  end
+
+  def stub_jekyll_site_with_processing(oth_opts = {})
+    site = stub_jekyll_site(oth_opts)
+    silence_stdout { site.process }
+    site
   end
 
   def get_stubbed_file(file)
@@ -68,6 +75,6 @@ end
 
 RSpec.configure do |c|
   c.include Jekyll::RSpecHelpers
-  c.before(:each) { Jekyll::RSpecHelpers.cleanup_trash }
-  c.after (:each) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.before(:all) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.after (:all) { Jekyll::RSpecHelpers.cleanup_trash }
 end

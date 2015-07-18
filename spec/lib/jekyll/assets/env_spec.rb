@@ -182,7 +182,7 @@ describe Jekyll::Assets::Env do
   end
 
   context do
-    before do
+    before :each do
       site.process
     end
 
