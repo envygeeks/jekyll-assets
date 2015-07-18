@@ -48,14 +48,11 @@ module Jekyll
         private
         def parse
           @args = sort_args(Shellwords.shellwords(@raw_args).inject({}) do |h, k|
-            unless h.has_key?(:argv)
-              h.update(
-                :argv => []
-              )
-            end
+            h.update(:argv => Set.new) unless h.has_key?(:argv)
+            h.update(:args => Set.new) unless h.has_key?(:args)
 
             if (k = k.split(/(?<!\\):/)).size >= 3
-              raise UnescapedDoubleColon
+              raise UnescapedDoubleColonError
             end
 
             if k.size == 2
@@ -65,12 +62,11 @@ module Jekyll
                 )
               )
             else
-              h.update(
-                :argv => h[:argv].push(
-                  k[0]
-                )
-              )
+              h[h[:argv].size == 1 ? :args : :argv] << \
+                k[0]
             end
+
+            h
           end)
         end
 
@@ -82,9 +78,11 @@ module Jekyll
                 k.to_sym => v
               )
             elsif k == :argv
-              h[:argv] = v[
-                0
-              ]
+              h[:argv] = v. \
+                first
+            elsif k == :args
+              h[:args] = v. \
+                to_a
             else
               h[:other].update(
                 k => v
