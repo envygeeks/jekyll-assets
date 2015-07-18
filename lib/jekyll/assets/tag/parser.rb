@@ -29,9 +29,11 @@ module Jekyll
         end
 
         def initialize(args, tag)
-          @tag = tag
-          @raw_args = args
-          parse
+          @raw_args, @tag = args, tag
+
+          parse_raw
+          sort_base_args
+          set_proxy
         end
 
         def [](key)
@@ -47,9 +49,13 @@ module Jekyll
           join
         end
 
+        # Very rudamentary sort before we do a more fine-grained sort
+        # later in the code, this basically just takes the first arg and then
+        # every other non-colon (valued) argument and pushes it.
+
         private
-        def parse
-          @args = sort_args(from_shellwords.inject(base_args) do |h, k|
+        def parse_raw
+          @args = from_shellwords.inject(base_args) do |h, k|
             if (k = k.split(/(?<!\\):/)).size >= 3
               raise UnescapedDoubleColonError
 
@@ -65,22 +71,29 @@ module Jekyll
             end
 
             h
-          end)
+          end
         end
 
+        # If it's not a proxy argument (going into Sprockets) or an
+        # argument that sets a boolean choice for us (such as convert) then
+        # we pass it onto other, where it will become an HTML attr.
+
         private
-        def sort_args(args)
-          add_proxy(args.inject({ :proxy => {}, :other => {} }) do |h, (k, v)|
+        def sort_base_args
+          @args = @args.inject({ :proxy => {}, :other => {} }) do |h, (k, v)|
             if PROXY.include?(k)
               then h[:proxy].update(
                 k.to_sym => v
               )
+
             elsif k == :argv
               h[:argv] = v. \
                 first
+
             elsif k == :args
               h[:args] = v. \
                 to_a
+
             else
               h[:other].update(
                 k => v
@@ -88,18 +101,23 @@ module Jekyll
             end
 
             h
-          end)
+          end
         end
 
+        # If you try to tap bundle and you have bundle.css and bundle.js
+        # it will return whichever one it chooses to parse first, so by default
+        # we add a proxy with accept so that we can pick out what we would
+        # prefer to be the default so you can do it Rails Style.
+        #
+        # This can also be achieved by you with accept:content_type on tag.
+
         private
-        def add_proxy(args)
-          unless args[:proxy][:accept]
-            then args[:proxy][:accept] = ACCEPT[
+        def set_proxy
+          unless @args[:proxy][:accept]
+            then @args[:proxy][:accept] = ACCEPT[
               @tag
             ]
           end
-
-          args
         end
 
         private
