@@ -6,7 +6,7 @@ module Jekyll
   module Assets
     class Env < Sprockets::Environment
       attr_reader :jekyll, :used
-      include Helpers::JavaScript
+      include Helpers
 
       class << self
         attr_accessor :assets_cache, :digest_cache

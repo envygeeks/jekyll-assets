@@ -1,9 +1,9 @@
-require_relative "assets/helpers/javascript"
+require_relative "assets/helpers"
 require "sprockets"
 require "sprockets/helpers"
 require "jekyll"
 
-Jekyll::Assets::Helpers::JavaScript.has_javascript? do
+Jekyll::Assets::Helpers.has_javascript? do
   require "sprockets/es6"
   require "autoprefixer-rails"
 end
