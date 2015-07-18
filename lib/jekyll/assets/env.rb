@@ -1,4 +1,5 @@
 require_relative "logger"
+require_relative "context"
 require_relative "cached"
 
 module Jekyll
@@ -6,44 +7,8 @@ module Jekyll
     class Env < Sprockets::Environment
       attr_reader :jekyll, :used
       include Helpers
-      HOOK_POINTS = [
-        :pre_init, :post_init
-      ]
-
-      class UnknownHookPointError < RuntimeError
-        def initialize(point)
-          super "Unknown jekyll-assets hook point (#{point}) given."
-        end
-      end
-
       class << self
         attr_accessor :assets_cache, :digest_cache
-        def hooks
-          @_hooks ||= {
-            #
-          }
-        end
-
-        def trigger_hooks(point, *args)
-          if hooks[point]
-            then hooks[point].map do |v|
-              v.call(
-                *args
-              )
-            end
-          end
-        end
-
-        def register_hook(point, &block)
-          if HOOK_POINTS.include?(point)
-            (hooks[point] ||= Set.new) << \
-              block
-          else
-            raise(
-              UnknownHookPointError, point
-            )
-          end
-        end
       end
 
       def initialize(path, jekyll = nil)
@@ -61,42 +26,57 @@ module Jekyll
         setup_cache
       end
 
+      # This is normally triggered when you save an asset and the
+      # incremental regeneration in Jekyll3 does not trigger that rebuild
+      # which means we aren't going to process any liquid which means
+      # that you won't get any used assets, which means we need
+      # to detect that and then check our caches to determine if
+      # we should update any of your assets for you.
+
       def cached_write?
         !@used.\
           any?
       end
 
+      #
+
       def all_used_assets
         return Set.new(@used).merge(
-          extra_logical_paths
+          extra_assets
         )
       end
+
+      #
 
       def all_cached_assets
         return Set.new(self.class.assets_cache).merge(
-          extra_logical_paths
+          extra_assets
         )
       end
 
-      def extra_logical_paths
-        each_logical_path(*extra_assets).map do |v|
+      #
+
+      def extra_assets
+        each_logical_path(*asset_config.fetch("assets", [])).map do |v|
           find_asset(
             v
           )
         end
       end
 
-      def extra_assets
-        asset_config.fetch(
-          "assets", []
-        )
-      end
+      #
 
       def asset_config
         jekyll.config.fetch(
           "assets", {}
         )
       end
+
+      # There are two ways to enable digesting.  You can 1. be in production
+      # or two, you can do the following in your `_config.yml`:
+      # ```YAML
+      # assets:
+      #   digest: true
 
       def digest?
         !%W(development test).include?(Jekyll.env) || \
@@ -105,6 +85,9 @@ module Jekyll
         )
       end
 
+      # See: `setup_css_compressor`
+      # See: ` setup_js_compressor`
+
       def compress?(what)
         !%W(development test).include?(Jekyll.env) || \
         asset_config.fetch("compress", {}).fetch(
@@ -112,17 +95,26 @@ module Jekyll
         )
       end
 
+      # See: `Cached`
+
       def cached
         Cached.new(
           self
         )
       end
 
+      # See: `write_cached_assets`
+      # See: `write_assets`
+
       def write_all
         if cached_write?
           then write_cached_assets else write_assets
         end
       end
+
+      # If we have used assets then we are working with a brand new
+      # build and a brand new set of assets, so we reset the asset_cache
+      # and digest_cache and write everything fresh from the start.
 
       private
       def write_assets(assets = self.all_used_assets)
@@ -140,15 +132,25 @@ module Jekyll
         end
       end
 
+      # If we do not hae used assets then we assume at that point
+      # that we are working with an old cache and that the Jekyll watcher
+      # triggered our build and incremental regen already left and
+      # ditched out because it had nothing to worry about.
+      #
+      # At this point we write from the caches, one cache that holds
+      # all the previous files we tracked and their digests and then we
+      # compare their digests to decide if we rewrite.
+
       private
       def write_cached_assets
-        all_cached_assets.each do |a, n = find_asset(a.logical_path)|
-          if !n || self.class.digest_cache[n.logical_path] == n.digest
-            then next
+        all_cached_assets.each do |a|
+          if self.class.digest_cache[a.logical_path] \
+              == a.digest
+            next
           else
-            self.class.digest_cache[n.logical_path] = n.digest
-            n.write_to(as_path(
-              n
+            self.class.digest_cache[a.logical_path] = a.digest
+            a.write_to(as_path(
+              a
             ))
           end
         end
@@ -163,12 +165,24 @@ module Jekyll
         ))
       end
 
+      # You can enable compression with:
+      # ```YAML
+      # assets:
+      #   compress:
+      #     css: true
+
       private
       def setup_css_compressor
         if compress?("css")
           self.css_compressor = :sass
         end
       end
+
+      # You can enable compression with:
+      # ```YAML
+      # assets:
+      #   compress:
+      #     js: true
 
       private
       def setup_js_compressor
@@ -177,6 +191,10 @@ module Jekyll
         end
       end
 
+      # Bases the version of your assets on the configuration so that if
+      # you modify the configuration we can recompile the entire asset chain
+      # for you and keep things fresh and clean!
+
       private
       def set_version
         self.version = Digest::MD5.hexdigest(
@@ -184,30 +202,24 @@ module Jekyll
         )
       end
 
-      # -----------------------------------------------------------------------
-      # TODO: Move this into it's own file and patch Sprocket::Context
-      # -----------------------------------------------------------------------
+      # SEE: `Context#patch`
 
       private
       def patch_context
-        context_class.class_eval do
-          alias_method :_old_asset_path, :asset_path
-          def asset_path(asset, opts = {})
-            out = _old_asset_path(
-              asset, opts = {}
-            )
-
-            if out
-              environment.parent.used.add(
-                environment.find_asset(
-                  resolve(asset)
-                )
-              )
-            end
-          out
-          end
-        end
+        Context.new(
+          context_class
+        )
       end
+
+      # Append assets that you always wish to be compiled that aren't
+      # ever really called but can be used in other ways:
+      # ```YAML
+      # assets:
+      #   assets:
+      #     - "*.jpg"
+      #
+      # This does not need to be a *, it can be a logical path or
+      # probably even a full path... if `find_asset` will accept.
 
       private
       def append_sources
@@ -231,14 +243,16 @@ module Jekyll
         end
       end
 
+      # Pass the logger onto `Jekyll`.
+      # See: Logger
+      # See: Jekyll
+
       private
       def setup_logger
         self.logger = Logger.new
       end
 
-      # -----------------------------------------------------------------------
       # TODO: Support a configurable asset-cache directory.
-      # -----------------------------------------------------------------------
 
       private
       def setup_cache

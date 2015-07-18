@@ -74,7 +74,13 @@ as `<link type="text/css" rel="stylesheet" href="" hello="world:how:are:you">`
 
 ## Hooks
 
-We support basic hooks at the following points: `:pre_init, :post_init`, you
-can register them with `Jekyll::Assets::Env.register_hook` and it takes a
-block.  The post_init hook will receive the env so you can work on it if you
-want to do what you like in your own plugins!
+* :env => [
+    :pre_init, :post_init
+  ]
+
+You can register and trigger hooks like so:
+
+```ruby
+Jekyll::Assets::Hook.register(:env, :post_init)
+Jekyll::Assets::Hook.trigger (:env, :post_init)
+```

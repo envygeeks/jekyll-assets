@@ -11,31 +11,6 @@ describe Jekyll::Assets::Env do
     )
   end
 
-  context :singleton_class do
-    context :register_hook do
-      it "adds the hook to the point" do
-        Jekyll::Assets::Env.register_hook(:pre_init, &proc {})
-        expect(Jekyll::Assets::Env.hooks[:pre_init].size).to eq 1
-      end
-
-      it "raises if there is no hook point" do
-        expect { Jekyll::Assets::Env.register_hook(:unknown, &proc {}) }.to(
-          raise_error(Jekyll::Assets::Env::UnknownHookPointError)
-        )
-      end
-    end
-
-    context :trigger_hooks do
-      it "calls hooks" do
-        a = 1; Jekyll::Assets::Env.register_hook(:pre_init, &proc { a = 2 })
-        Jekyll::Assets::Env.trigger_hooks(:pre_init)
-        expect(a).to eq(
-          2
-        )
-      end
-    end
-  end
-
   context :jekyll do
     it "responds" do
       expect(env).to respond_to(

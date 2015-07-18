@@ -1,5 +1,10 @@
 module Jekyll
   module Assets
+
+    # This is a temporary class until I get back upstream and push out a
+    # change that fixes Jekyll's logger's inability to accept a block and spit
+    # that back out to you, for now though we work around it.
+
     class Logger
       def instance
         @logger ||= (

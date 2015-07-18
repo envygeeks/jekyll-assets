@@ -2,10 +2,7 @@ module Jekyll
   class Cleaner
     alias_method :_old_obsolete_files, :obsolete_files
 
-    # -------------------------------------------------------------------------
-    # TODO: Add a `obsolte_asset_files` method here that uses the manifest.
     # TODO: jekyll/jekyll@upstream: This method should really have a hook ya.
-    # -------------------------------------------------------------------------
 
     def obsolete_files
       _old_obsolete_files.delete_if do |v|
