@@ -49,11 +49,7 @@ module Jekyll
 
         private
         def parse
-          _args = {
-            :argv => Set.new, :args => Set.new
-          }
-
-          @args = sort_args(Shellwords.shellwords(@raw_args).inject(_args) do |h, k|
+          @args = sort_args(from_shellwords.inject(base_args) do |h, k|
             if (k = k.split(/(?<!\\):/)).size >= 3
               raise UnescapedDoubleColonError
 
@@ -104,6 +100,21 @@ module Jekyll
           end
 
           args
+        end
+
+        private
+        def base_args
+          {
+            :argv => Set.new,
+            :args => Set.new
+          }
+        end
+
+        private
+        def from_shellwords
+          Shellwords.shellwords(
+            @raw_args
+          )
         end
       end
     end
