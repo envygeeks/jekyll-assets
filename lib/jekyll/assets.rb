@@ -1,14 +1,17 @@
-require "jekyll/assets/patches"
-require "jekyll/assets/filters"
-require "jekyll/assets/tag"
-require "jekyll/assets/version"
+require_relative "assets/helpers/javascript"
+require "sprockets"
+require "sprockets/helpers"
+require "jekyll"
 
-module Jekyll
-  module Assets
-    HOOKS = []
-
-    def self.configure(&blk)
-      HOOKS << blk
-    end
-  end
+Jekyll::Assets::Helpers::JavaScript.has_javascript? do
+  require "sprockets/es6"
+  require "autoprefixer-rails"
 end
+
+require_relative "assets/patches/jekyll/cleaner"
+require_relative "assets/patches/sprockets/erb_processor"
+require_relative "assets/patches/jekyll/site"
+
+require_relative "assets/hooks/post_read"
+require_relative "assets/hooks/post_write"
+require_relative "assets/tag"

@@ -1,34 +1,31 @@
-# coding: utf-8
-lib = File.expand_path("../lib", __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+$:.unshift(File.expand_path("../lib", __FILE__))
 require "jekyll/assets/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "jekyll-assets"
-  spec.version       = Jekyll::Assets::VERSION
-  spec.homepage      = "http://jekyll-assets.github.com/jekyll-assets"
-  spec.authors       = ["Aleksey V Zapparov", "Zachary Bush"]
-  spec.email         = %w(ixti@member.fsf.org zach@zmbush.com)
-  spec.license       = "MIT"
-  spec.summary       = "jekyll-assets-#{Jekyll::Assets::VERSION}"
-  spec.description   = <<-DESC
-  Jekyll plugin, that allows you to write javascript/css assets in
-  other languages such as CoffeeScript, Sass, Less and ERB, concatenate
-  them, respecting dependencies, minify and many more.
+  spec.version = Jekyll::Assets::VERSION
+  spec.homepage = "http://github.com/envygeeks/ruby-jekyll3-assets/"
+  spec.authors = ["Jordon Bedwell", "Aleksey V Zapparov", "Zachary Bush"]
+  spec.email = ["jordon@envygeeks.io", "ixti@member.fsf.org", "zach@zmbush.com"]
+  spec.files = %W(Rakefile Gemfile README.md LICENSE) + Dir["lib/**/*"]
+  spec.summary = "Assets for Jekyll"
+  spec.name = "jekyll3-assets"
+  spec.license = "MIT"
+  spec.has_rdoc = false
+  spec.require_paths = ["lib"]
+  spec.description =   spec.description   = <<-DESC
+    A Jekyll plugin, that allows you to write javascript/css assets in
+    other languages such as CoffeeScript, Sass, Less and ERB, concatenate
+    them, respecting dependencies, minify and many more.
   DESC
 
-  spec.files         = `git ls-files`.split($RS)
-  spec.executables   = spec.files.grep(/^bin\//).map { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(/^(test|spec|features)\//)
-  spec.require_paths = ["lib"]
+  spec.add_runtime_dependency("sprockets", "~> 3.2")
+  spec.add_runtime_dependency("sprockets-helpers", "~> 1.2")
+  spec.add_runtime_dependency("sprockets-es6", "~> 0.6")
+  spec.add_runtime_dependency("jekyll", "~> 3.0.0.pre.beta8")
+  spec.add_runtime_dependency("autoprefixer-rails", "~> 5.2")
 
-  spec.add_dependency "jekyll",       ">= 2"
-  spec.add_dependency "sass",         "~> 3.2"
-  spec.add_dependency "fastimage",    "~> 1.6"
-  spec.add_dependency "mini_magick",  "~> 4.1"
-  spec.add_dependency "sprockets",    "~> 2.10"
-  spec.add_dependency "sprockets-sass"
-  spec.add_dependency "sprockets-helpers"
-
-  spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency("nokogiri", "~> 1.6")
+  spec.add_development_dependency("envygeeks-coveralls", "~> 1.0")
+  spec.add_development_dependency("luna-rspec-formatters", "~> 3.3")
+  spec.add_development_dependency("rspec", "~> 3.3")
 end

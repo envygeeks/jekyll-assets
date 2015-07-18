@@ -1,16 +1,10 @@
-language: ruby
-
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.6
-  - 2.2.2
-
-gemfile:
-  - gemfiles/jekyll_2.gemfile
-  - gemfiles/jekyll_3.gemfile
-
-matrix:
-  exclude:
-    - rvm: 1.9.3
-      gemfile: gemfiles/jekyll_3.gemfile
+  - 2.0
+  - 2.1
+  - 2.2
+notifications:
+  recipients:
+    - jordon@envygeeks.io
+branches:
+  only:
+    - master

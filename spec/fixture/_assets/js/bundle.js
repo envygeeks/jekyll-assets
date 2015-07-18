@@ -1,0 +1,2 @@
+//= require ./strict
+//= require ./transpile
