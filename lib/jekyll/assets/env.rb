@@ -61,14 +61,29 @@ module Jekyll
         setup_cache
       end
 
-      def all_assets
-        out = Set.new(@used)
-        out.merge(each_logical_path(*extra_assets).map do |v|
+      def cached_write?
+        !@used.\
+          any?
+      end
+
+      def all_used_assets
+        return Set.new(@used).merge(
+          extra_logical_paths
+        )
+      end
+
+      def all_cached_assets
+        return Set.new(self.class.assets_cache).merge(
+          extra_logical_paths
+        )
+      end
+
+      def extra_logical_paths
+        each_logical_path(*extra_assets).map do |v|
           find_asset(
             v
           )
-        end)
-      out
+        end
       end
 
       def extra_assets
@@ -104,18 +119,13 @@ module Jekyll
       end
 
       def write_all
-        assets = all_assets
-        if !assets.any?
-          then write_cached_assets
-        else
-          write_assets(
-            assets
-          )
+        if cached_write?
+          then write_cached_assets else write_assets
         end
       end
 
       private
-      def write_assets(assets)
+      def write_assets(assets = self.all_used_assets)
         self.class.assets_cache = Set.new(assets)
         self.class.digest_cache = Hash[Set.new(assets).map do |a|
           [a.logical_path, a.digest]
@@ -132,17 +142,14 @@ module Jekyll
 
       private
       def write_cached_assets
-        self.class.assets_cache.each do |a|
-          if !(n = find_asset(a.logical_path)) || \
-              self.class.digest_cache[n.logical_path] == n.digest
-            next
+        all_cached_assets.each do |a, n = find_asset(a.logical_path)|
+          if !n || self.class.digest_cache[n.logical_path] == n.digest
+            then next
           else
             self.class.digest_cache[n.logical_path] = n.digest
-            n.write_to(
-              as_path(
-                n
-              )
-            )
+            n.write_to(as_path(
+              n
+            ))
           end
         end
       end

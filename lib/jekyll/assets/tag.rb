@@ -64,6 +64,11 @@ module Jekyll
             sprockets, asset
           )
         else
+          if ENV["ENABLE_PRY"]
+            require "pry"
+            binding. pry
+          end
+
           sprockets.used.add(asset)
           return TAGS[@tag] % [
             path(sprockets, asset), @args.\

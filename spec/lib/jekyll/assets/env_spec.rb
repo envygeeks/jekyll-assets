@@ -205,4 +205,27 @@ describe Jekyll::Assets::Env do
       site.config["assets"] = old_value
     end
   end
+
+  context do
+    before do
+      site.process
+    end
+
+    it "writes cached assets" do
+      path = File.expand_path("../../../../fixture/_site/assets", __FILE__)
+      FileUtils.rm_r(path)
+      site.sprockets.used. \
+        clear
+
+      site.sprockets.class.digest_cache.each do |k, v|
+        site.sprockets.class.digest_cache[k] = \
+          "ShouldNotMatch"
+      end
+
+      site.sprockets.write_all
+      expect(Dir[File.join(path, "*")].size).to eq(
+        3
+      )
+    end
+  end
 end
