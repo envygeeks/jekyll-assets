@@ -49,15 +49,15 @@ module Jekyll
 
         private
         def parse
-          @args = sort_args(Shellwords.shellwords(@raw_args).inject({}) do |h, k|
-            h.update(:argv => Set.new) unless h.has_key?(:argv)
-            h.update(:args => Set.new) unless h.has_key?(:args)
+          _args = {
+            :argv => Set.new, :args => Set.new
+          }
 
+          @args = sort_args(Shellwords.shellwords(@raw_args).inject(_args) do |h, k|
             if (k = k.split(/(?<!\\):/)).size >= 3
               raise UnescapedDoubleColonError
-            end
 
-            if k.size == 2
+            elsif k.size == 2
               h.update(
                 k[0] => k[1].gsub(
                   /\\:/, ":"

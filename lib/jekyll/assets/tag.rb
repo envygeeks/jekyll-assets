@@ -47,16 +47,18 @@ module Jekyll
         site = context.registers[:site]
         page = context.registers.fetch(:page, {}).fetch("path", nil)
         sprockets = site.sprockets
-        asset = find_asset(
-          sprockets
+
+        asset = find_asset(sprockets)
+        add_as_jekyll_dependency(site, sprockets, page, asset)
+        process_tag(sprockets, asset)
+      rescue => e
+        capture_and_out_error(
+          site, e
         )
+      end
 
-        if page && sprockets.digest?
-          site.regenerator.add_dependency(
-            site.in_source_dir(page), site.in_source_dir(asset.logical_path)
-          )
-        end
-
+      private
+      def process_tag(sprockets, asset)
         if @tag == "asset_path"
           return path(
             sprockets, asset
@@ -68,10 +70,15 @@ module Jekyll
               to_html
           ]
         end
-      rescue => e
-        capture_and_out_error(
-          site, e
-        )
+      end
+
+      private
+      def add_as_jekyll_dependency(site, sprockets, page, asset)
+        if page && sprockets.digest?
+          site.regenerator.add_dependency(
+            site.in_source_dir(page), site.in_source_dir(asset.logical_path)
+          )
+        end
       end
 
       private
