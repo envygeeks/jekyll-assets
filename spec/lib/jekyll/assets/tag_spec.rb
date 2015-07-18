@@ -67,4 +67,11 @@ describe Jekyll::Assets::Tag do
       end
     end
   end
+
+  it "adds write options to assets" do
+    asset = site.sprockets.used.select { |v| v.logical_path =~ /bundle\.css/ }.first
+    expect(asset.metadata[:write_options]).to be_a(
+      Hash
+    )
+  end
 end

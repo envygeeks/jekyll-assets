@@ -9,6 +9,8 @@ module Jekyll
     #   - {% tag value argument:value\:with\:colon %}
     #   - {% tag value argument:"I can even escape \\: here too!" %}
     # -------------------------------------------------------------------------
+    # XXX: This code is pretty nasty in the way that it handles sorting.
+    # -------------------------------------------------------------------------
 
     class Tag
       class Parser
@@ -19,8 +21,19 @@ module Jekyll
         ACCEPT["style"]      = ACCEPT["css"]
         ACCEPT["stylesheet"] = ACCEPT["css"]
         ACCEPT.freeze
-        PROXY = ["accept"]. \
-          freeze
+
+        PROXY = {
+          :find => [
+            "accept"
+          ],
+
+          :write => [
+            "resize",
+            "convert",
+            "crop",
+            "@2x"
+          ]
+        }
 
         class UnescapedDoubleColonError < StandardError
           def initialize
@@ -33,7 +46,7 @@ module Jekyll
 
           parse_raw
           sort_base_args
-          set_proxy
+          set_accept
         end
 
         def [](key)
@@ -66,7 +79,7 @@ module Jekyll
                 )
               )
             else
-              h[h[:argv].size == 1 ? :args : :argv] << \
+              h[h[:file].size == 1 ? :args : :file] << \
                 k[0]
             end
 
@@ -80,19 +93,27 @@ module Jekyll
 
         private
         def sort_base_args
-          @args = @args.inject({ :proxy => {}, :other => {} }) do |h, (k, v)|
-            if PROXY.include?(k)
-              then h[:proxy].update(
-                k.to_sym => v
+          @args = @args.inject(base_sorted_args) do |h, (k, v)|
+            if (find = PROXY[:find].include?(k)) || PROXY[:write].include?(k)
+              h[:proxy][find ? :find : :write].update(
+                find ? k.to_sym : k => v
               )
 
-            elsif k == :argv
-              h[:argv] = v. \
+            elsif k == :file
+              h[:file] = v. \
                 first
 
             elsif k == :args
-              h[:args] = v. \
-                to_a
+              v.each do |s|
+                if PROXY[:write].include?(s)
+                  h[:proxy][:write][s] = \
+                    true
+                else
+                  h[:other].update(
+                    s => true
+                  )
+                end
+              end
 
             else
               h[:other].update(
@@ -112,19 +133,34 @@ module Jekyll
         # This can also be achieved by you with accept:content_type on tag.
 
         private
-        def set_proxy
-          unless @args[:proxy][:accept]
-            then @args[:proxy][:accept] = ACCEPT[
+        def set_accept
+          unless @args[:proxy][:find][:accept]
+            then @args[:proxy][:find][:accept] = ACCEPT[
               @tag
             ]
           end
         end
 
         private
+        def sproxy
+        end
+
+        private
         def base_args
           {
-            :argv => Set.new,
+            :file => Set.new,
             :args => Set.new
+          }
+        end
+
+        private
+        def base_sorted_args
+          {
+            :other => {},
+            :proxy => {
+              :find  => {},
+              :write => {}
+            }
           }
         end
 

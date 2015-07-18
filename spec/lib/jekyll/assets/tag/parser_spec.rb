@@ -1,21 +1,35 @@
 require "rspec/helper"
 describe Jekyll::Assets::Tag::Parser do
-  it "properly parses syntax" do
-    v = described_class.new("hello.jpg @2x lol world accept:image/gif key:value", \
-      "img").instance_variable_get(:@args)
+  let :tag do
+    %Q{hello.jpg lol accept:image/gif key:value convert:png}
+  end
 
-    expect(v[:proxy]).to eq({ :accept => "image/gif" })
-    expect(v[:other]).to eq({ "key" => "value" })
-    expect(v[:args ]).to include "@2x"
-    expect(v[:args ]).to include "world"
-    expect(v[:args ]).to include "lol"
+  it "properly parses syntax" do
+    v = described_class.new(tag, "img").instance_variable_get(:@args)
+    expect(v).to match({
+      :file  => "hello.jpg",
+
+      :proxy => {
+        :find => {
+          :accept => "image/gif"
+        },
+
+        :write => {
+          "convert" => "png"
+        }
+      },
+
+      :other => {
+        "lol" => true, "key" => "value"
+      }
+    })
   end
 
   it "allows escaping the colon" do
     v = described_class.new("hello.jpg accept:image\\\\:gif", "img"). \
       instance_variable_get(:@args)
 
-    expect(v[:proxy][:accept]).to eq(
+    expect(v[:proxy][:find][:accept]).to eq(
       "image:gif"
     )
   end
@@ -24,7 +38,7 @@ describe Jekyll::Assets::Tag::Parser do
     v = described_class.new('hello.jpg accept:"image\\\:gif"', "img"). \
       instance_variable_get(:@args)
 
-    expect(v[:proxy][:accept]).to eq(
+    expect(v[:proxy][:find][:accept]).to eq(
       "image:gif"
     )
   end
@@ -34,7 +48,7 @@ describe Jekyll::Assets::Tag::Parser do
       v = described_class.new("hello.jpg 'accept:image/gif'", "img"). \
         instance_variable_get(:@args)
 
-      expect(v[:proxy][:accept]).to eq(
+      expect(v[:proxy][:find][:accept]).to eq(
         "image/gif"
       )
     end
@@ -43,7 +57,7 @@ describe Jekyll::Assets::Tag::Parser do
       v = described_class.new("hello.jpg accept:'image/gif'", "img"). \
         instance_variable_get(:@args)
 
-      expect(v[:proxy][:accept]).to eq(
+      expect(v[:proxy][:find][:accept]).to eq(
         "image/gif"
       )
     end

@@ -64,11 +64,6 @@ module Jekyll
             sprockets, asset
           )
         else
-          if ENV["ENABLE_PRY"]
-            require "pry"
-            binding. pry
-          end
-
           sprockets.used.add(asset)
           return TAGS[@tag] % [
             path(sprockets, asset), @args.\
@@ -88,12 +83,15 @@ module Jekyll
 
       private
       def find_asset(sprockets)
-        asset = sprockets.find_asset(@args[:argv], @args[:proxy])
-        if !asset
-          raise AssetNotFound, @args[
-            :argv
+        if !(asset = sprockets.find_asset(@args[:file], \
+              @args[:proxy][:find]))
+
+          raise AssetNotFoundError, @args[
+            :file
           ]
         else
+          asset.metadata[:write_options] = \
+            @args[:proxy][:write]
           asset
         end
       end
