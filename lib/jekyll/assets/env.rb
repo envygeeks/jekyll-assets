@@ -1,6 +1,5 @@
 require_relative "logger"
 require_relative "cached"
-require "set"
 
 module Jekyll
   module Assets
@@ -58,7 +57,6 @@ module Jekyll
         append_sources
         setup_css_compressor
         setup_js_compressor
-        setup_autoprefixer
         patch_context
         setup_cache
       end
@@ -134,15 +132,6 @@ module Jekyll
               )
             )
           end
-        end
-      end
-
-      private
-      def setup_autoprefixer
-        if defined?(AutoprefixerRails)
-          AutoprefixerRails.install(
-            self
-          )
         end
       end
 

@@ -205,16 +205,4 @@ describe Jekyll::Assets::Env do
       site.config["assets"] = old_value
     end
   end
-
-  it "transpiles es6" do
-    expect(env.find_asset("transpile.js").to_s.strip.gsub(/$\n+/, " ")).to eq(
-      %Q{"use strict"; var Hello = Symbol();}
-    )
-  end
-
-  it "prefixes css" do
-    result = env.find_asset("prefix.css").to_s
-    expect(result).to match %r!-webkit-order:\s+1!
-    expect(result).to match %r!-ms-flex-order:\s+1!
-  end
 end

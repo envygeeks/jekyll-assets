@@ -34,4 +34,16 @@ describe Jekyll::Assets::Helpers do
       )
     end
   end
+
+  context "#try_require_if_javascript?" do
+    it "just works" do
+      o = described_class.try_require_if_javascript? "jekyll/assets" do
+        "wat?"
+      end
+
+      expect(o).to eq(
+        "wat?"
+      )
+    end
+  end
 end

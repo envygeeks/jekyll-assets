@@ -3,9 +3,9 @@ require "sprockets"
 require "sprockets/helpers"
 require "jekyll"
 
-Jekyll::Assets::Helpers.has_javascript? do
-  require "sprockets/es6"
-  require "autoprefixer-rails"
+require_relative "assets/env"
+Dir[File.expand_path("../assets/extras/*.rb", __FILE__)].each do |f|
+  require f
 end
 
 require_relative "assets/patches/jekyll/cleaner"
