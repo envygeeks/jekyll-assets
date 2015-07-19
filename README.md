@@ -84,3 +84,29 @@ You can register and trigger hooks like so:
 Jekyll::Assets::Hook.register(:env, :post_init)
 Jekyll::Assets::Hook.trigger (:env, :post_init)
 ```
+
+## Optional Processing Engines
+
+* CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
+* ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
+* Stylus - add "stylus" and "tilt" to your gemfile.
+
+### Engine Settings
+
+Some engines take settings, if they do you can add them like so:
+
+```YAML
+assets:
+  engines:
+    stylus:
+      "option": "value"
+
+Some options are removed (intentionally) such as options to set paths
+and if we cannot adjust that, then we flat out ignore options until a white
+list of options can be created.
+
+## Plugins where did they go?
+
+They're dead, in the way that they were, use Hooks, they require less
+patching and give more flexibility to us because we can trigger them every
+time we have a new environment not just occasionally.

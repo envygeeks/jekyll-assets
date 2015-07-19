@@ -11,3 +11,5 @@ end
 
 gem "sprockets-es6", "~> 0.6"
 gem "autoprefixer-rails", "~> 5.2"
+gem "tilt", "~> 2.0" # Stylus
+gem "stylus", "~> 1.0"
