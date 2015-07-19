@@ -35,7 +35,7 @@ We will digest assets by default in production and default to non-digested
 assets for efficiency in development/testing, this way we can ensure that your
 builds remain fast in Jekyll3, you can however force asset digesting with
 `digest:true` which will digest even in development and kick on deep regen
-integration which ***will** result in increased build times because every
+integration which ***will*** result in increased build times because every
 asset change will cause the entire site to rebuild.
 
 ### What about caching?
@@ -100,6 +100,7 @@ assets:
   engines:
     stylus:
       "option": "value"
+```
 
 Some options are removed (intentionally) such as options to set paths
 and if we cannot adjust that, then we flat out ignore options until a white
