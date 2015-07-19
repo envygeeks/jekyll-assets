@@ -81,8 +81,10 @@ as `<link type="text/css" rel="stylesheet" href="" hello="world:how:are:you">`
 You can register and trigger hooks like so:
 
 ```ruby
-Jekyll::Assets::Hook.register(:env, :post_init)
-Jekyll::Assets::Hook.trigger (:env, :post_init)
+Jekyll::Assets::Hook.trigger  :env, :post_init
+Jekyll::Assets::Hook.register :env, :post_init do
+  # Your Work
+end
 ```
 
 ## Optional Processing Engines
