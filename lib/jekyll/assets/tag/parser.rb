@@ -1,20 +1,25 @@
+require "forwardable"
+
 module Jekyll
   module Assets
 
-    # -------------------------------------------------------------------------
     # Examples:
     #   - {% tag value argument:value %}
     #   - {% tag value "argument:value" %}
     #   - {% tag value argument:"I have spaces" %}
     #   - {% tag value argument:value\:with\:colon %}
     #   - {% tag value argument:"I can even escape \\: here too!" %}
-    # -------------------------------------------------------------------------
-    # XXX: This code is pretty nasty in the way that it handles sorting.
-    # -------------------------------------------------------------------------
+    #   - {% tag value proxy:key:value %}
 
     class Tag
       class Parser
         attr_reader :args, :raw_args
+        extend Forwardable
+
+        def_delegator :@args, :to_h
+        def_delegator :@args, :has_key?
+        def_delegator :@args, :fetch
+        def_delegator :@args, :[]
 
         ACCEPT = { "css" => "text/css", "js" => "application/javascript" }
         ACCEPT["javascript"] = ACCEPT[ "js"]
@@ -23,17 +28,31 @@ module Jekyll
         ACCEPT.freeze
 
         PROXY = {
-          :find => [
-            "accept"
+          "sprockets" => [
+            "accept",
+            "write_to"
           ],
 
-          :write => [
+          # See: https://github.com/minimagick/minimagick#usage -- All but
+          #   the boolean @ options are provided by Minimagick.
+
+          "magick" => [
             "resize",
-            "convert",
+            "format",
+            "rotate",
             "crop",
-            "@2x"
+            "flip",
+            "@2x",
+            "@4x",
+            "@half"
           ]
         }
+
+        class UnknownProxyError < StandardError
+          def initialize
+            super "Unknown proxy argument."
+          end
+        end
 
         class UnescapedDoubleColonError < StandardError
           def initialize
@@ -45,83 +64,75 @@ module Jekyll
           @raw_args, @tag = args, tag
 
           parse_raw
-          sort_base_args
           set_accept
         end
 
-        def [](key)
-          @args[
-            key
-          ]
-        end
-
         def to_html
-          @args[:other].map do |k, v|
+          @args[:html].map do |k, v|
             %Q{ #{k}="#{v}"}
           end. \
           join
         end
 
-        # Very rudamentary sort before we do a more fine-grained sort
-        # later in the code, this basically just takes the first arg and then
-        # every other non-colon (valued) argument and pushes it.
+        # Parse the string that we get like we would parse a command line
+        # so that people can escape, quote and do all sorts of fancy stuff with
+        # their tags to get data to us without much resistance.
 
         private
         def parse_raw
-          @args = from_shellwords.inject(base_args) do |h, k|
-            if (k = k.split(/(?<!\\):/)).size >= 3
-              raise UnescapedDoubleColonError
+          @args = from_shellwords.each_with_index.inject(dhash) do |h, (k, i)|
+            if i == 0
+              h[:file] = \
+                k
 
-            elsif k.size == 2
-              h.update(
-                k[0] => k[1].gsub(
-                  /\\:/, ":"
-                )
+            elsif k =~ /:/ && (k = k.split(/(?<!\\):/))
+              parse_col_arg(
+                h, k
               )
+
             else
-              h[h[:file].size == 1 ? :args : :file] << \
-                k[0]
+              h[:html][k] = \
+                true
             end
 
             h
           end
         end
 
-        # If it's not a proxy argument (going into Sprockets) or an
-        # argument that sets a boolean choice for us (such as convert) then
-        # we pass it onto other, where it will become an HTML attr.
+        # Parse colon:argument and modify the incomming hash based on that.
+        # 1. engine:key:value (engine exists)  { engine => { key => value }}
+        # 2. engine:key:value (engine not exists)  UnescapedDoubleColonError
+        # 3. engine:key:value (engine exists, key unknown) UnknownProxyError
+        # 4. key:value { :html => { key => value }}
+        #
+        # See: parser_spec.rb for more information, the first example is a
+        #   literal example of what we parse and how.
 
         private
-        def sort_base_args
-          @args = @args.inject(base_sorted_args) do |h, (k, v)|
-            if (find = PROXY[:find].include?(k)) || PROXY[:write].include?(k)
-              h[:proxy][find ? :find : :write].update(
-                find ? k.to_sym : k => v
-              )
+        def parse_col_arg(h, k)
+          k[-1] = k[-1].gsub(/\\:/, ":")
+          if k.size == 3 && PROXY[k[0]] && PROXY[k[0]] && \
+                PROXY[k[0]].include?(k[1])
 
-            elsif k == :file
-              h[:file] = v. \
-                first
+            h[k[0].to_sym][k[1].to_sym] = \
+              k[2]
+          elsif k.size == 3 && PROXY[k[0]]
+            raise(
+              UnknownProxyError
+            )
 
-            elsif k == :args
-              v.each do |s|
-                if PROXY[:write].include?(s)
-                  h[:proxy][:write][s] = \
-                    true
-                else
-                  h[:other].update(
-                    s => true
-                  )
-                end
-              end
+          elsif k.size == 2 && PROXY[k[0]] && PROXY[k[0]].include?("@#{k[1]}")
+            h[k[0].to_sym][k[1].to_sym] = \
+              true
 
-            else
-              h[:other].update(
-                k => v
-              )
-            end
+          elsif k.size == 2
+            h[:html][k[0]] = \
+              k[1]
 
-            h
+          else
+            raise(
+              UnescapedDoubleColonError
+            )
           end
         end
 
@@ -134,34 +145,17 @@ module Jekyll
 
         private
         def set_accept
-          unless @args[:proxy][:find][:accept]
-            then @args[:proxy][:find][:accept] = ACCEPT[
-              @tag
-            ]
+          if !@args[:sprockets][:accept] && (accept = ACCEPT[@tag])
+            then @args[:sprockets][:accept] = \
+              accept
           end
         end
 
         private
-        def sproxy
-        end
-
-        private
-        def base_args
-          {
-            :file => Set.new,
-            :args => Set.new
-          }
-        end
-
-        private
-        def base_sorted_args
-          {
-            :other => {},
-            :proxy => {
-              :find  => {},
-              :write => {}
-            }
-          }
+        def dhash
+          Hash.new do |h, k|
+            h[k] = {}
+          end
         end
 
         private

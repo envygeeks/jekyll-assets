@@ -63,14 +63,14 @@ describe Jekyll::Assets::Tag do
     end
   end
 
-  it "adds write options to assets" do
+  it "adds tag stuff as [tag] on metadata" do
     asset = site.sprockets.used.select do |v|
       v.logical_path =~ /bundle\.css/
     end\
     .first
 
-    expect(asset.metadata[:write_options]).to be_a(
-      Hash
+    expect(asset.metadata[:tag]).to be_a(
+      Jekyll::Assets::Tag::Parser
     )
   end
 end

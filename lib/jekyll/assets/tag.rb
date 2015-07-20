@@ -83,17 +83,16 @@ module Jekyll
 
       private
       def find_asset(sprockets)
-        if !(asset = sprockets.find_asset(@args[:file], \
-              @args[:proxy][:find]))
-
+        if !(asset = sprockets.find_asset(@args[:file], @args[:sprockets]))
           raise AssetNotFoundError, @args[
             :file
           ]
         else
-          asset.metadata[:write_options] = \
-            @args[:proxy][:write]
-          asset
+          asset.metadata[:tag] = \
+            @args
         end
+
+        asset
       end
 
       private
@@ -112,7 +111,7 @@ module Jekyll
           Jekyll.logger.error(%Q{Error in #{file}:#{error.sass_line}  #{error}})
         else
           Jekyll.logger.error(
-            error.to_s
+            "", "#{error.to_s}\n\t#{error.backtrace.first(4).join("\n\t")}"
           )
         end
 

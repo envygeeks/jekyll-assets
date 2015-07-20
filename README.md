@@ -59,18 +59,25 @@ which will give you powerful syntax with Ruby to do what you like.
 ### Tag Example:
 
 ```liquid
-{% img src @2x alt:'This is my alt' %}
-{% img src @2x alt:'This is my alt' accept:image/gif %}
+{% img src magick:2x alt:'This is my alt' %}
+{% img src magick:2x alt:'This is my alt' sprockets:accept:image/gif %}
 ```
 
-### Proxy/Arguments
+### What do the colons mean? Proxies/Tags
 
-Any arguments that are not being proxied to Sprockets will be set on the tag
-that we give back to you (if we give back a tag...) so if you pass `accept:
-content_type` we will search for the content type through Sprockets but if you
-send `a:b` then `a="b"` will be on the tag.  You can also escape colons to
-prevent mistakes: `{% css asset hello:world\:how\:are\:you }` will end up
-as `<link type="text/css" rel="stylesheet" href="" hello="world:how:are:you">`
+* Sending "argument" is a boolean HTML argument.
+* Sending "key:value" is an HTML key="value" if no proxy exists.
+* Sending "proxy:key:value" will set a proxy key with the given value.
+* Sending "proxy:key" is a boolean argument if the proxy and key exists.
+* Sending "unknown:key:value" will raise DoubleColonError, escape it.
+* Sending "proxy:unknown:value" will raise a Proxy error.
+
+Lets say we have `sprockets` proxies and sprockets allows you to proxy
+accept, if you send `{% img src sprockets:accept:image/gif }` then Sprockets
+find_asset will get `{ :accept => "image/gif" }` but if you try to proxy
+"unknown" on sprockets we will raise a Proxy error.  For more information
+then look at `parser_spec.rb` in the spec folder because it literally lays out
+the ground rules for our tags as a specification.
 
 ## Hooks
 

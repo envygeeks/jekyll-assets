@@ -29,6 +29,18 @@ describe Jekyll::Assets::Logger do
         v
       )
     end
+
+    it "does not prevent standard strings on the method #{v}" do
+      out = capture_stdout do
+        logger.send(
+          v, v.to_s
+        )
+      end
+
+      expect(strip_ansi(out.last.empty?? out.first : out.last).strip).to eq(
+        v.to_s
+      )
+    end
   end
 
   it "should raise if trying to set log level" do
