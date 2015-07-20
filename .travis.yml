@@ -4,6 +4,10 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
+  - jruby-head
+matrix:
+  allow_failures:
+    - rvm: jruby-head
 notifications:
   recipients:
     - jordon@envygeeks.io
