@@ -65,12 +65,12 @@ which will give you powerful syntax with Ruby to do what you like.
 
 ### What do the colons mean? Proxies/Tags
 
-* Sending "argument" is a boolean HTML argument.
-* Sending "key:value" is an HTML key="value" if no proxy exists.
-* Sending "proxy:key:value" will set a proxy key with the given value.
-* Sending "proxy:key" is a boolean argument if the proxy and key exists.
-* Sending "unknown:key:value" will raise DoubleColonError, escape it.
-* Sending "proxy:unknown:value" will raise a Proxy error.
+* Sending `argument` is a boolean HTML argument.
+* Sending `key:value` is an HTML key="value" if no proxy exists.
+* Sending `proxy:key:value` will set a proxy key with the given value.
+* Sending `proxy:key` is a boolean argument if the proxy and key exists.
+* Sending `unknown:key:value` will raise `DoubleColonError`, escape it.
+* Sending `proxy:unknown:value` will raise a `UnknownProxyError`.
 
 Lets say we have `sprockets` proxies and sprockets allows you to proxy
 accept, if you send `{% img src sprockets:accept:image/gif }` then Sprockets
@@ -78,6 +78,20 @@ find_asset will get `{ :accept => "image/gif" }` but if you try to proxy
 "unknown" on sprockets we will raise a Proxy error.  For more information
 then look at `parser_spec.rb` in the spec folder because it literally lays out
 the ground rules for our tags as a specification.
+
+### Current Proxies:
+
+* `sprockets:accept:<value>` - Tell Sprockets your preferred content type.
+* `sprockets:write_to:<value>` - The filename you wish us to write your file to.
+* `magick:resize:<value>` - Takes standard ImageMagick resize values.
+* `magick:format:<value>` - Takes standard ImageMagick format values.
+* `magick:rotate:<value>` - Takes standard ImageMagick resize values.
+* `magick:crop:<value>` - Takes standard ImageMagick crop values.
+* `magick:flip:<value>` - Takes standard ImageMagick flip values.
+* `magick:2x` - Tells us to write a double width/height image.
+* `magick:4x` - Tells us to write a quadruple width/height image.
+* `magick:half` - Tells us to shrink the image to half.
+* `magick:quality` - Allows you to set image quality.
 
 ## Hooks
 
