@@ -26,7 +26,7 @@ describe Jekyll::Assets::Logger do
       end
 
       expect(strip_ansi(out.last.empty?? out.first : out.last).strip).to eq(
-        v
+        "Jekyll Assets: #{v}"
       )
     end
 
@@ -38,7 +38,7 @@ describe Jekyll::Assets::Logger do
       end
 
       expect(strip_ansi(out.last.empty?? out.first : out.last).strip).to eq(
-        v.to_s
+        "Jekyll Assets: #{v.to_s}"
       )
     end
   end

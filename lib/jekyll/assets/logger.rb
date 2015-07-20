@@ -16,11 +16,11 @@ module Jekyll
         define_method k do |msg = nil, &block|
           if block
             instance.send(
-              k, block.call
+              k, "Jekyll Assets:", block.call
             )
           else
             instance.send(
-              k, msg
+              k, "Jekyll Assets:", msg
             )
           end
         end
