@@ -4,11 +4,13 @@ gemspec
 gem "rake"
 group :development do
   gem "pry"
-  gem "therubyracer"
+  gem "therubyracer", :platforms => :mri
+  gem "therubyrhino", :platforms => :jruby
   gem "guard-rspec"
   gem "guard"
 end
 
+gem "mini_magick", "~> 4.2"
 gem "sprockets-es6", "~> 0.6"
 gem "autoprefixer-rails", "~> 5.2"
 gem "tilt", "~> 2.0" # Stylus
