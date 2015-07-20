@@ -100,35 +100,57 @@ module Jekyll
         end
 
         # Parse colon:argument and modify the incomming hash based on that.
-        # 1. engine:key:value (engine exists)  { engine => { key => value }}
-        # 2. engine:key:value (engine not exists)  UnescapedDoubleColonError
-        # 3. engine:key:value (engine exists, key unknown) UnknownProxyError
-        # 4. key:value { :html => { key => value }}
-        #
         # See: parser_spec.rb for more information, the first example is a
         #   literal example of what we parse and how.
 
         private
         def parse_col_arg(h, k)
           k[-1] = k[-1].gsub(/\\:/, ":")
-          if k.size == 3 && PROXY[k[0]] && PROXY[k[0]] && \
-                PROXY[k[0]].include?(k[1])
+          if k.size == 3
+            parse_as_proxy(
+              h, k
+            )
 
+          elsif k.size == 2
+            parse_as_boolean_or_html(
+              h, k
+            )
+          end
+        end
+
+        # Any argument that is key:value, if there is a proxy and the
+        # proxy key exists we assume it's a boolean setter for the proxy and
+        # if it doesn't then we assume it's an HTML argument.
+
+        private
+        def parse_as_boolean_or_html(h, k)
+          if PROXY[k[0]] && PROXY[k[0]].include?("@#{k[1]}")
+            h[k[0].to_sym][k[1].to_sym] = \
+              true
+
+          else
+            h[:html][k[0]] = \
+              k[1]
+          end
+        end
+
+        # Anything that comes is a proxy:key:value.  If the proxy exists
+        # then we check if the key exists and if it does then we set the value
+        # on the key for the proxy.  If the proxy exists but the key is
+        # not allowed we will raise a ProxyError and if the Proxy doesn't
+        # exists we will raise an DoubleColon error, escape your colons.
+
+        private
+        def parse_as_proxy(h, k)
+          if PROXY[k[0]] && PROXY[k[0]] && \
+                PROXY[k[0]].include?(k[1])
             h[k[0].to_sym][k[1].to_sym] = \
               k[2]
+
           elsif k.size == 3 && PROXY[k[0]]
             raise(
               UnknownProxyError
             )
-
-          elsif k.size == 2 && PROXY[k[0]] && PROXY[k[0]].include?("@#{k[1]}")
-            h[k[0].to_sym][k[1].to_sym] = \
-              true
-
-          elsif k.size == 2
-            h[:html][k[0]] = \
-              k[1]
-
           else
             raise(
               UnescapedDoubleColonError
