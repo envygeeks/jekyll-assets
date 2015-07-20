@@ -8,6 +8,9 @@ module Jekyll
       attr_reader :jekyll, :used
       class << self
         attr_accessor :assets_cache, :digest_cache
+        def digest_cache
+          @_digest_cache ||= {}
+        end
       end
 
       def initialize(path, jekyll = nil)
@@ -143,8 +146,14 @@ module Jekyll
       private
       def write_cached_assets
         all_cached_assets.each do |a|
-          if self.class.digest_cache[a.logical_path] \
-              == a.digest
+          viejo = self.class.digest_cache[a.logical_path]
+          nuevo = find_asset(a.logical_path).digest
+
+          if nuevo == viejo
+            logger.debug "Skipping the #{a.logical_path} #{nuevo} == #{
+              viejo
+            }"
+
             next
           else
             self.class.digest_cache[a.logical_path] = a.digest
