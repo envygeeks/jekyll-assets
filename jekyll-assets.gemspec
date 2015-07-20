@@ -3,12 +3,12 @@ require "jekyll/assets/version"
 
 Gem::Specification.new do |spec|
   spec.version = Jekyll::Assets::VERSION
-  spec.homepage = "http://github.com/envygeeks/ruby-jekyll3-assets/"
+  spec.homepage = "http://github.com/jekyll-assets/jekyll-assets/"
   spec.authors = ["Jordon Bedwell", "Aleksey V Zapparov", "Zachary Bush"]
   spec.email = ["jordon@envygeeks.io", "ixti@member.fsf.org", "zach@zmbush.com"]
   spec.files = %W(Rakefile Gemfile README.md LICENSE) + Dir["lib/**/*"]
   spec.summary = "Assets for Jekyll"
-  spec.name = "jekyll3-assets"
+  spec.name = "jekyll-assets"
   spec.license = "MIT"
   spec.has_rdoc = false
   spec.require_paths = ["lib"]
