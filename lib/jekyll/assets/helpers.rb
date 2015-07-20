@@ -1,12 +1,6 @@
 module Jekyll
   module Assets
     module Helpers
-      def has_javascript?
-        self.class.has_javascript(
-          &Proc.new
-        )
-      end
-
       class << self
         def has_javascript?
           require "execjs"
