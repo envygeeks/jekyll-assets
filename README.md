@@ -1,5 +1,10 @@
 [![Build Status](https://travis-ci.org/jekyll-assets/jekyll-assets.png?branch=master)](https://travis-ci.org/jekyll-assets/jekyll-assets) [![Coverage Status](https://coveralls.io/repos/jekyll-assets/jekyll-assets/badge.png?branch=master)](https://coveralls.io/r/jekyll-assets/jekyll-assets) [![Code Climate](https://codeclimate.com/github/jekyll-assets/jekyll-assets/badges/gpa.svg)](https://codeclimate.com/github/jekyll-assets/jekyll-assets) [![Dependency Status](https://gemnasium.com/jekyll-assets/jekyll-assets.svg)](https://gemnasium.com/jekyll-assets/jekyll-assets)
 
+
+## Are you looking for the docs for Jekyll Assets < 2.0.0?
+
+See: https://github.com/jekyll-assets/jekyll-assets/tree/legacy#jekyllassets
+
 # Jekyll 3 Assets
 
 Jekyll 3 assets is an asset pipeline using Sprockets 3 for Jekyll 3.  This
