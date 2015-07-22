@@ -87,9 +87,9 @@ module Jekyll
       #
 
       def cdn?
-        !!asset_config["force_cdn"] || (!dev? && !!asset_config[
+        !dev? && !!asset_config[
           "cdn"
-        ])
+        ]
       end
 
       # There are two ways to enable digesting.  You can 1. be in production
