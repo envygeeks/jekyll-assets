@@ -115,10 +115,16 @@ module Jekyll
 
       #
 
+      def prefix
+        if asset_config["skip_prefix_with_cdn"]
+          "" else asset_config["prefix"]
+        end
+      end
+
+      #
+
       def prefix_path(path = nil)
-        prefix = asset_config[
-          "prefix"
-        ]
+        prefix = self.prefix
 
         if cdn? && (cdn = asset_config["cdn"])
           return File.join(cdn, prefix) if !path

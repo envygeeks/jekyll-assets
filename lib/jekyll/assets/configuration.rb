@@ -2,6 +2,7 @@ module Jekyll
   module Assets
     module Configuration
       DEVELOPMENT = {
+        "skip_prefix_with_cdn" => false,
         "force_cdn" => false,
         "prefix"    => "/assets",
         "digest"    => false,

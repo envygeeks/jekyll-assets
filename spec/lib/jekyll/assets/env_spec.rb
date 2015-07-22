@@ -36,13 +36,15 @@ describe Jekyll::Assets::Env do
   context :prefix_path do
     context "env == production" do
       before do
-        allow(Jekyll).to receive(:env).and_return "production"
+        allow(Jekyll).to receive(:env).and_return(
+          "production"
+        )
       end
 
-      let :site do
-        stub_jekyll_site({
+      it "returns the cnd with a prefix" do
+        site = stub_jekyll_site({
           "assets"      => {
-            "cdn"       => "https://cdn.example.com/",
+            "cdn"       => "https://cdn.example.com",
             "digest"    => false,
             "compress"  => {
               "css"     => false,
@@ -50,11 +52,28 @@ describe Jekyll::Assets::Env do
             }
           }
         })
-      end
 
-      it "returns the cnd with a prefix" do
         expect(Jekyll::Assets::Env.new(site).prefix_path).to eq(
           "https://cdn.example.com/assets"
+        )
+      end
+
+      it "skips the prefix if told to do so" do
+        site = stub_jekyll_site({
+          "assets"      => {
+            "cdn"       => "https://cdn.example.com",
+            "digest"    => false,
+            "compress"  => {
+              "css"     => false,
+              "js"      => false
+            },
+
+            "skip_prefix_with_cdn"  => true,
+          }
+        })
+
+        expect(Jekyll::Assets::Env.new(site).prefix_path).to eq(
+          "https://cdn.example.com/"
         )
       end
     end
