@@ -113,6 +113,26 @@ module Jekyll
         ]
       end
 
+      #
+
+      def prefix_path(path = nil)
+        prefix = asset_config[
+          "prefix"
+        ]
+
+        if cdn? && (cdn = asset_config["cdn"])
+          return File.join(cdn, prefix) if !path
+          File.join(
+            cdn, prefix, path
+          )
+        else
+          return  prefix if !path
+          File.join(
+            prefix, path
+          )
+        end
+      end
+
       # See: `Cached`
 
       def cached

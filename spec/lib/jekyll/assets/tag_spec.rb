@@ -57,47 +57,51 @@ describe Jekyll::Assets::Tag do
     end
   end
 
-  context :path do
-    it "returns simply just an asset path" do
-      html.xpath("//body/p[contains(., '/assets/bundle')]").each do |v|
-        expect(v.text).to match(
-          %r!\A/assets/bundle\.(css|js)\Z!
-        )
-      end
+  it "returns simply just an asset path" do
+    html.xpath("//body/p[contains(., '/assets/bundle')]").each do |v|
+      expect(v.text).to match(
+        %r!\A/assets/bundle\.(css|js)\Z!
+      )
+    end
+  end
+
+  context "env == production" do
+    before do
+      allow(Jekyll).to receive(:env).and_return "production"
     end
 
-    context "env == production" do
-      before do
-        allow(Jekyll).to receive(:env).and_return "production"
-      end
+    let :site do
+      stub_jekyll_site({
+        "assets"      => {
+          "cdn"       => "https://cdn.example.com/",
+          "digest"    => false,
+          "compress"  => {
+            "css"     => false,
+            "js"      => false
+          }
+        }
+      })
+    end
 
-      let :site do
-        stub_jekyll_site({
-          "assets"      => {
-            "cdn"       => "https://cdn.example.com/",
-            "digest"    => false,
-            "compress"  => {
-              "css"     => false,
-              "js"      => false
-            }
+    let :sprockets do
+      site.sprockets = Jekyll::Assets::Env.new(
+        site
+      )
+    end
+
+    it "returns a url w/ CDN if it exists" do
+      site.sprockets = sprockets
+      result = Jekyll::Assets::Tag.send(:new, "css", "bundle", []).render(
+        OpenStruct.new({
+          :registers => {
+            :site => site
           }
         })
-      end
+      )
 
-      it "returns a url w/ CDN if it exists" do
-        site.sprockets = Jekyll::Assets::Env.new(site)
-        result = Jekyll::Assets::Tag.send(:new, "css", "bundle", []).render(
-          OpenStruct.new({
-            :registers => {
-              :site => site
-            }
-          })
-        )
-
-        expect(result).to eq(
-          %Q{<link type="text/css" rel="stylesheet" href="https://cdn.example.com/assets/bundle.css">}
-        )
-      end
+      expect(result).to eq(
+        %Q{<link type="text/css" rel="stylesheet" href="https://cdn.example.com/assets/bundle.css">}
+      )
     end
   end
 

@@ -15,6 +15,7 @@ so beware when you use it, these pieces will be added soon (tm.)
 
 ```yaml
 assets:
+  cdn: https://cdn.example.com
   prefix: "/assets"
   assets:
     - "*.png"
