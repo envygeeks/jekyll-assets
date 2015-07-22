@@ -1,6 +1,10 @@
 require "rspec/helper"
 require "nokogiri"
 
+# XXX: This entire file can be switched from writing to simply hacking
+#   the Liquid tag chain the way we did with the CDN, this would probably
+#   speed up our tests a bit because we reduce some writing.
+
 describe Jekyll::Assets::Tag do
   def site
     @_site ||= \
@@ -53,7 +57,7 @@ describe Jekyll::Assets::Tag do
     end
   end
 
-  context :asset_path do
+  context :path do
     it "returns simply just an asset path" do
       html.xpath("//body/p[contains(., '/assets/bundle')]").each do |v|
         expect(v.text).to match(
@@ -61,14 +65,44 @@ describe Jekyll::Assets::Tag do
         )
       end
     end
+
+    context "env == production" do
+      before do
+        allow(Jekyll).to receive(:env).and_return "production"
+      end
+
+      let :site do
+        stub_jekyll_site({
+          "assets"      => {
+            "cdn"       => "https://cdn.example.com/",
+            "digest"    => false,
+            "compress"  => {
+              "css"     => false,
+              "js"      => false
+            }
+          }
+        })
+      end
+
+      it "returns a url w/ CDN if it exists" do
+        site.sprockets = Jekyll::Assets::Env.new(site)
+        result = Jekyll::Assets::Tag.send(:new, "css", "bundle", []).render(
+          OpenStruct.new({
+            :registers => {
+              :site => site
+            }
+          })
+        )
+
+        expect(result).to eq(
+          %Q{<link type="text/css" rel="stylesheet" href="https://cdn.example.com/assets/bundle.css">}
+        )
+      end
+    end
   end
 
   it "adds tag stuff as [tag] on metadata" do
-    asset = site.sprockets.used.select do |v|
-      v.logical_path =~ /bundle\.css/
-    end\
-    .first
-
+    asset = site.sprockets.used.select { |v| v.logical_path =~ /bundle\.css/ }[0]
     expect(asset.metadata[:tag]).to be_a(
       Jekyll::Assets::Tag::Parser
     )

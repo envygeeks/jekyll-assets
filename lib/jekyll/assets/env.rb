@@ -1,4 +1,5 @@
 require_relative "logger"
+require_relative "configuration"
 require_relative "context"
 require_relative "cached"
 
@@ -19,6 +20,7 @@ module Jekyll
         path ? super(path) : super()
         jekyll.sprockets = self
 
+        merge_config
         set_version
         setup_logger
         append_sources
@@ -69,9 +71,25 @@ module Jekyll
       #
 
       def asset_config
-        jekyll.config.fetch(
-          "assets", {}
+        jekyll.config["assets"] ||= {
+          #
+        }
+      end
+
+      #
+
+      def dev?
+        %W(development test).include?(
+          Jekyll.env
         )
+      end
+
+      #
+
+      def cdn?
+        !!asset_config["force_cdn"] || (!dev? && !!asset_config[
+          "cdn"
+        ])
       end
 
       # There are two ways to enable digesting.  You can 1. be in production
@@ -81,20 +99,18 @@ module Jekyll
       #   digest: true
 
       def digest?
-        !%W(development test).include?(Jekyll.env) || \
-        asset_config.fetch(
-          "digest", false
-        )
+        !!asset_config[
+          "digest"
+        ]
       end
 
       # See: `setup_css_compressor`
       # See: ` setup_js_compressor`
 
       def compress?(what)
-        !%W(development test).include?(Jekyll.env) || \
-        asset_config.fetch("compress", {}).fetch(
-          what, false
-        )
+        !!asset_config["compress"][
+          what
+        ]
       end
 
       # See: `Cached`
@@ -112,6 +128,27 @@ module Jekyll
         if cached_write?
           then write_cached_assets else write_assets
         end
+      end
+
+      # Merge the defaults with your configuration.
+
+      private
+      def merge_config(config = nil, merge_into = asset_config)
+        config ||= dev?? Configuration::DEVELOPMENT : Configuration::PRODUCTION
+        config.each_with_object(merge_into) do |(k, v), h|
+          if !h.has_key?(k)
+            h[k] = \
+              v
+          elsif v.is_a?(Hash)
+            h[k] = merge_config(
+              v, h[k]
+            )
+          end
+        end
+
+        return(
+          merge_into
+        )
       end
 
       # If we have used assets then we are working with a brand new
@@ -195,7 +232,9 @@ module Jekyll
       private
       def setup_js_compressor
         if compress?("js")
-          self.js_compressor = :uglify
+          Helpers.try_require "uglifier" do
+            self.js_compressor = :uglify
+          end
         end
       end
 

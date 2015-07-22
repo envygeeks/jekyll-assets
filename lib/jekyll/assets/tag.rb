@@ -59,14 +59,16 @@ module Jekyll
 
       private
       def process_tag(sprockets, asset)
+        out = path(
+          sprockets, asset
+        )
+
         if @tag == "asset_path"
-          return path(
-            sprockets, asset
-          )
+          return out
         else
           sprockets.used.add(asset)
           return TAGS[@tag] % [
-            path(sprockets, asset), @args.\
+            out, @args.\
               to_html
           ]
         end
@@ -97,11 +99,20 @@ module Jekyll
 
       private
       def path(sprockets, asset)
-        File.join(
+        out = File.join(
           sprockets.asset_config.fetch("prefix", "/assets"), (
             sprockets.digest?? asset.digest_path : asset.logical_path
           )
         )
+
+        if sprockets.cdn?
+          cdn = sprockets.asset_config.fetch("cdn", "").gsub(/\/\Z/, "")
+          out = out.gsub(/\A\//, "")
+          return(
+            "#{cdn}/#{out}"
+          )
+        end
+      out
       end
 
       private

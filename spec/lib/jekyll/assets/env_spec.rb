@@ -34,43 +34,33 @@ describe Jekyll::Assets::Env do
   end
 
   context :digest? do
-    it "should not digest on digest = false config" do
-      old_value = site.config["assets"]
-      site.config["assets"] = {
-        "digest" => false
-      }
-
-      expect(env.digest?).to eq false
-      site.config["assets"] = old_value
-    end
-
-    it "should digest on digest = true config" do
-      allow(Jekyll).to receive(:env).and_return("development")
-      old_value = site.config["assets"]
-      site.config["assets"] = {
-        "digest" => true
-      }
-
-      expect(env.digest?).to eq true
-      site.config["assets"] = old_value
-    end
-
     context "Jekyll.env == production" do
+      before do
+        allow(Jekyll).to receive(:env).and_return(
+          "production"
+        )
+      end
+
+      let :site do
+        stub_jekyll_site
+      end
+
       it "digests by default" do
-        allow(Jekyll).to receive(:env).and_return "production"
-        old_value = site.config.delete("assets")
-        expect(env.digest?).to eq true
-        site.config["assets"] = old_value
+        expect(env.digest?).to eq(
+          true
+        )
+      end
+
+      it "compresses by default" do
+        expect(env.compress?( "js")).to eq true
+        expect(env.compress?("css")).to eq true
       end
     end
 
     context "Jekyll.env == test | development" do
       it "doesn't not digest by default" do
         %W(development test).each do |v|
-          allow(Jekyll).to receive(:env).and_return v
-          old_value = site.config.delete("assets")
           expect(env.digest?).to eq false
-          site.config["assets"] = old_value
         end
       end
     end
