@@ -116,16 +116,15 @@ module Jekyll
       #
 
       def prefix
-        if asset_config["skip_prefix_with_cdn"]
-          "" else asset_config["prefix"]
-        end
+        asset_config[
+          "prefix"
+        ]
       end
 
       #
 
       def prefix_path(path = nil)
-        prefix = self.prefix
-
+        prefix = asset_config["skip_prefix_with_cdn"] ? "" : self.prefix
         if cdn? && (cdn = asset_config["cdn"])
           return File.join(cdn, prefix) if !path
           File.join(
@@ -230,9 +229,7 @@ module Jekyll
       private
       def as_path(v)
         jekyll.in_dest_dir(File.join(
-          asset_config.fetch("prefix", "/assets"), (
-            digest?? v.digest_path : v.logical_path
-          )
+          prefix, digest?? v.digest_path : v.logical_path
         ))
       end
 
