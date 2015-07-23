@@ -11,6 +11,12 @@ module Jekyll
           "js"      => false
         },
 
+        "sources"   => [
+          "_assets/css", "_assets/stylesheets",
+          "_assets/images", "_assets/img", "_assets/fonts",
+          "_assets/javascripts", "_assets/js"
+        ],
+
         "assets"    => [
           #
         ]

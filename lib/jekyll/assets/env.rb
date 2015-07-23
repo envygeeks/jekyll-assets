@@ -296,20 +296,7 @@ module Jekyll
 
       private
       def append_sources
-        if asset_config.fetch("sources", nil)
-          then sources = asset_config[
-            "sources"
-          ]
-        else
-          sources = %W(
-            _assets/css
-            _assets/fonts
-            _assets/img
-            _assets/js
-          )
-        end
-
-        sources.each do |v|
+        asset_config["sources"].each do |v|
           append_path(
             jekyll.in_source_dir(v)
           )
