@@ -65,6 +65,11 @@ module Jekyll
 
         if @tag == "asset_path"
           return out
+        elsif @args[:data][:uri]
+          return TAGS[@tag] % [
+            data_uri(asset), @args.\
+              to_html
+          ]
         else
           sprockets.used.add(asset)
           return TAGS[@tag] % [
@@ -72,6 +77,15 @@ module Jekyll
               to_html
           ]
         end
+      end
+
+      private
+      def data_uri(asset)
+        "data:#{asset.content_type};base64,#{Rack::Utils.escape(
+          Base64.encode64(
+            asset.to_s
+          )
+        )}"
       end
 
       private

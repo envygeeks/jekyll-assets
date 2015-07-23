@@ -33,14 +33,26 @@ describe Jekyll::Assets::Tag do
     end
   end
 
+  it "uses a data uri if asked to" do
+    result = html.xpath("//body/p/img")
+    expect(result.size).to eq 1
+    expect(result.attr("src").text).to match(
+      /\Adata:image\/png;base64,/
+    )
+  end
+
   it "converts js and javascript" do
     result = html.xpath("//head/script[@src='/assets/bundle.js']")
-    expect(result.size).to eq(2)
+    expect(result.size).to eq(
+      2
+    )
   end
 
   it "converts style, css and stylesheet" do
     result = html.xpath("//head/link[@href='/assets/bundle.css']")
-    expect(result.size).to eq(3)
+    expect(result.size).to eq(
+      3
+    )
   end
 
   context :css_link do
@@ -107,8 +119,6 @@ describe Jekyll::Assets::Tag do
 
   it "adds tag stuff as [tag] on metadata" do
     asset = site.sprockets.used.select { |v| v.logical_path =~ /bundle\.css/ }[0]
-    expect(asset.metadata[:tag]).to be_a(
-      Jekyll::Assets::Tag::Parser
-    )
+    expect(asset.metadata[:tag]).to be_a(Jekyll::Assets::Tag::Parser)
   end
 end

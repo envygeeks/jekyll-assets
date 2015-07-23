@@ -28,6 +28,10 @@ module Jekyll
         ACCEPT.freeze
 
         PROXY = {
+          "data" => [
+            "@uri"
+          ],
+
           "sprockets" => [
             "accept",
             "write_to"
