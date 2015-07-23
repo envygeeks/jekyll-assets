@@ -118,7 +118,7 @@ module Jekyll
           Jekyll.logger.error(%Q{Error in #{file}:#{error.sass_line}  #{error}})
         else
           Jekyll.logger.error(
-            "", "#{error.to_s}\n\t#{error.backtrace.first(4).join("\n\t")}"
+            "", error.to_s
           )
         end
 
