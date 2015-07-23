@@ -27,6 +27,13 @@ describe Jekyll::Assets::Tag do
     )
   end
 
+  it "adds a default alt attribute" do
+    result = html.xpath("//body/p/img")
+    expect(result.attr("alt").text).to eq(
+      "ruby.png"
+    )
+  end
+
   it "adds attributes" do
     html.xpath("//head/*[self::script or self::link]").each do |v|
       expect(v.attr("id").to_i).to be > 0

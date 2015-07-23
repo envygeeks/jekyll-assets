@@ -59,9 +59,8 @@ module Jekyll
 
       private
       def process_tag(sprockets, asset)
-        out = sprockets.prefix_path(
-          sprockets.digest?? asset.digest_path : asset.logical_path
-        )
+        out = sprockets.prefix_path(sprockets.digest?? asset.digest_path : asset.logical_path)
+        set_img_alt asset if ["img", "image"].include?(@tag)
 
         if @tag == "asset_path"
           return out
@@ -76,6 +75,13 @@ module Jekyll
             out, @args.\
               to_html
           ]
+        end
+      end
+
+      private
+      def set_img_alt(asset)
+        if !@args[:html]["alt"]
+          return @args[:html]["alt"] = asset.logical_path
         end
       end
 
