@@ -1,13 +1,8 @@
 require "rspec/helper"
 
 describe "css-auto-prefixing" do
-  let :site do
-    stub_jekyll_site_with_processing
-  end
-
-  let :env do
-    site.sprockets
-  end
+  let( :env) { Jekyll::Assets::Env.new(site) }
+  let(:site) { stub_jekyll_site }
 
   it "prefixes css" do
     result = env.find_asset("prefix.css").to_s
