@@ -28,6 +28,9 @@ module Jekyll
         setup_js_compressor
         patch_context
         setup_cache
+
+        Hook.trigger :env, :post_init, \
+          self
       end
 
       # This is normally triggered when you save an asset and the
