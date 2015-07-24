@@ -7,24 +7,16 @@ require "nokogiri"
 
 describe Jekyll::Assets::Tag do
   def site
-    @_site ||= \
-    stub_jekyll_site_with_processing
+    @_site ||= stub_jekyll_site_with_processing
   end
 
   before :all do
     site
   end
 
-  def file
-    get_stubbed_file(
-      "index.html"
-    )
-  end
-
   def html
-    Nokogiri::HTML(
-      file
-    )
+    Nokogiri::HTML get_stubbed_file \
+      "index.html"
   end
 
   it "adds a default alt attribute" do
@@ -84,15 +76,12 @@ describe Jekyll::Assets::Tag do
     end
   end
 
-  context "env == production" do
-    before do
-      allow(Jekyll).to receive(:env).and_return "production"
-    end
-
+  context "in production" do
+    before { allow(Jekyll).to receive(:env).and_return "production" }
     let :site do
       stub_jekyll_site({
         "assets"      => {
-          "cdn"       => "https://cdn.example.com/",
+          "cdn"       => "//localhost",
           "digest"    => false,
           "compress"  => {
             "css"     => false,
@@ -103,9 +92,7 @@ describe Jekyll::Assets::Tag do
     end
 
     let :sprockets do
-      site.sprockets = Jekyll::Assets::Env.new(
-        site
-      )
+      site.sprockets = Jekyll::Assets::Env.new(site)
     end
 
     it "returns a url w/ CDN if it exists" do
@@ -119,13 +106,13 @@ describe Jekyll::Assets::Tag do
       )
 
       expect(result).to eq(
-        %Q{<link type="text/css" rel="stylesheet" href="https://cdn.example.com/assets/bundle.css">}
+        %Q{<link type="text/css" rel="stylesheet" href="//localhost/assets/bundle.css">}
       )
     end
   end
 
   it "adds tag stuff as [tag] on metadata" do
-    asset = site.sprockets.used.select { |v| v.logical_path =~ /bundle\.css/ }[0]
-    expect(asset.metadata[:tag]).to be_a(Jekyll::Assets::Tag::Parser)
+    expect(site.sprockets.used.select { |v| v.content_type =~ /css/ }[0]. \
+      metadata[:tag]).to be_a Jekyll::Assets::Tag::Parser
   end
 end

@@ -28,11 +28,6 @@ module Jekyll
         )
 
         super
-      rescue => e
-        Jekyll.logger.error(e.to_s)
-        raise(
-          e
-        )
       end
 
       # -----------------------------------------------------------------------

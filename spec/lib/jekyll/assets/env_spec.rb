@@ -1,198 +1,125 @@
 require "rspec/helper"
 
 describe Jekyll::Assets::Env do
+  let  :env do
+    Jekyll::Assets::Env.new(site)
+  end
+
   let :site do
     stub_jekyll_site
   end
 
-  let :env do
-    Jekyll::Assets::Env.new(
-      site
-    )
+  it "adds the jekyll instance" do
+    expect(env.jekyll).to eq site
   end
 
-  context :jekyll do
-    it "responds" do
-      expect(env).to respond_to(
-        :jekyll
-      )
-    end
-
-    it "matches site" do
-      expect(env.jekyll).to eq(
-        site
-      )
-    end
-  end
-
-  context :used do
-    it "is a new set" do
-      expect(env.used).to be_kind_of(
-        Set
-      )
-    end
+  it "creates a new used set" do
+    expect(env.used).to be_kind_of Set
+    expect(env.used).to be_empty
   end
 
   context :prefix_path do
-    context "env == production" do
-      before do
-        allow(Jekyll).to receive(:env).and_return(
-          "production"
-        )
+    it "returns a cdn w/ prefix if in production mode" do
+      allow(Jekyll).to receive(:env).and_return "production"
+      stub_asset_config "cdn" => "//localhost"
+      expect(env.prefix_path).to eq "//localhost/assets"
+    end
+
+    context "with the option skip_prefix_with_cdn" do
+      it "does not skip the prefix if there is no cdn" do
+        allow(Jekyll).to receive(:env).and_return "production"
+        stub_asset_config "skip_prefix_with_cdn" => true
+        expect(env.prefix_path).to eq "/assets"
       end
 
-      it "returns the cnd with a prefix" do
-        site = stub_jekyll_site({
-          "assets"      => {
-            "cdn"       => "https://cdn.example.com",
-            "digest"    => false,
-            "compress"  => {
-              "css"     => false,
-              "js"      => false
-            }
-          }
-        })
-
-        expect(Jekyll::Assets::Env.new(site).prefix_path).to eq(
-          "https://cdn.example.com/assets"
-        )
+      it "skips the prefix only when in production" do
+        stub_asset_config "skip_prefix_with_cdn" => true, "cdn" => "//localhost"
+        expect(env.prefix_path).to eq "/assets"
       end
 
-      it "skips the prefix if told to do so" do
-        site = stub_jekyll_site({
-          "assets"      => {
-            "cdn"       => "https://cdn.example.com",
-            "digest"    => false,
-            "compress"  => {
-              "css"     => false,
-              "js"      => false
-            },
-
-            "skip_prefix_with_cdn"  => true,
-          }
-        })
-
-        expect(Jekyll::Assets::Env.new(site).prefix_path).to eq(
-          "https://cdn.example.com/"
-        )
+      it "skips the prefix when in production" do
+        allow(Jekyll).to receive(:env).and_return "production"
+        stub_asset_config "skip_prefix_with_cdn" => true, "cdn" => "//localhost"
+        expect(env.prefix_path).to eq "//localhost/"
       end
     end
   end
 
-  context :digest? do
-    context "Jekyll.env == production" do
-      before do
-        allow(Jekyll).to receive(:env).and_return(
-          "production"
-        )
-      end
-
-      let :site do
-        stub_jekyll_site
-      end
-
+  context "digesting" do
+    context "in production" do
       it "digests by default" do
-        expect(env.digest?).to eq(
-          true
-        )
+        allow(Jekyll).to receive(:env).and_return "production"
+        expect(env.digest?).to be true
+        expect(env.send(:as_path, env.find_asset("bundle.css"))).to match( \
+          /bundle-([a-zA-Z0-9]+)\.css\Z/)
       end
 
-      it "compresses by default" do
-        expect(env.compress?( "js")).to eq true
-        expect(env.compress?("css")).to eq true
+      it "allows the user to disable digesting" do
+        allow(Jekyll).to receive(:env).and_return "production"
+        stub_asset_config "digest" => false
+        expect(env.digest?).to be false
+        expect(env.send(:as_path, env.find_asset("bundle.css"))).to eq \
+          site.in_dest_dir(env.asset_config["prefix"], "bundle.css")
       end
     end
 
-    context "Jekyll.env == test | development" do
-      it "doesn't not digest by default" do
-        %W(development test).each do |v|
-          expect(env.digest?).to eq false
-        end
+    context "in development/test" do
+      it "does not digest by default" do
+        expect(env.digest?).to be false
+        expect(env.send(:as_path, env.find_asset("bundle.css"))).to eq \
+          site.in_dest_dir(env.asset_config["prefix"], "bundle.css")
+      end
+
+      it "allows people to enable digesting" do
+        stub_asset_config "digest" => true
+        expect(env.digest?).to be true
+        expect(env.send(:as_path, env.find_asset("bundle.css"))).to match( \
+          /bundle-([a-zA-Z0-9]+)\.css\Z/)
       end
     end
   end
 
-  it "overrides the default cache" do
-    expect(env.cached).to be_kind_of(
+  it "overrides the default object cache" do
+    expect(env.cached).to be_kind_of \
       Jekyll::Assets::Cached
-    )
   end
 
   it "sets the logger" do
-    expect(env.logger).to be_kind_of(
+    expect(env.logger).to be_kind_of \
       Jekyll::Assets::Logger
-    )
   end
 
   it "patches asset context" do
-    expect(env.context_class.method_defined?(:_old_asset_path)).to eq(
-      true
-    )
+    expect(env.context_class.method_defined?(:_old_asset_path)).to be true
   end
 
   context :context_class do
     context :_asset_path do
-      it "adds the asset to the used set" do
-        env.find_asset("context", {
-          :accept => "text/css"
-        })
+      it "adds the asset to the env#used set" do
+        env.find_asset "context", :accept => "text/css"
 
         expect(env.used.size).to eq 1
-        expect(env.used.first.pathname.fnmatch?("*/context.jpg")).to eq(
-          true
-        )
+        expect(env.used.first.pathname.fnmatch?("*/context.jpg")).to eq true
       end
     end
   end
 
-  context :config do
-    it "allows users to set default sources" do
-      old_value = site.config.delete("assets")
-      site.config["assets"] = {
-        "sources" => [
-          "_foo/bar"
-        ]
-      }
-
-      result = env.class.new(site).paths.grep(
-        %r!fixture/_foo/bar\Z!
-      )
-
-      expect(result.size).to eq(1)
-      site.config["assets"] = old_value
-    end
+  it "allows user to set their own sources" do
+    stub_asset_config "sources" => %W(_foo/bar)
+    results = env.paths.grep(/\A#{Regexp.union(site.in_source_dir)}/)
+    expect(results).to include site.in_source_dir("_foo/bar")
+    expect(results.size).to eq 1
   end
 
-  it "sets up a cache" do
-    expect(env.cache.instance_variable_get(:@cache_wrapper).cache).to be_kind_of(
-      Sprockets::Cache::FileStore
-    )
+  it "sets up a file cache" do
+    expect(env.cache.instance_variable_get(:@cache_wrapper).cache).to \
+      be_kind_of Sprockets::Cache::FileStore
   end
 
-  it "sets the JS compressor if asked to" do
-    old_value = site.config.delete("assets")
-    site.config["assets"] = {
-      "compress" => {
-        "js" => true
-      }
-    }
-
-    result = env.class.new(site)
-    expect(result.js_compressor).to eq(Sprockets::UglifierCompressor)
-    site.config["assets"] = old_value
-  end
-
-  it "sets the CSS compressor if ask to" do
-    old_value = site.config.delete("assets")
-    site.config["assets"] = {
-      "compress" => {
-        "css" => true
-      }
-    }
-
-    result = env.class.new(site)
-    expect(result.css_compressor).to eq(Sprockets::SassCompressor)
-    site.config["assets"] = old_value
+  it "it compresses if asked to" do
+    stub_asset_config "compress" => { "js" => true, "css" => true }
+    expect(env. js_compressor).to eq Sprockets::UglifierCompressor
+    expect(env.css_compressor).to eq Sprockets::    SassCompressor
   end
 
   context :compress? do
@@ -202,41 +129,40 @@ describe Jekyll::Assets::Env do
     end
 
     it "should allow compression if the user wants it" do
-      allow(Jekyll).to receive(:env).and_return "development"
-      old_value = site.config.delete("assets")
-      site.config["assets"] = {
-        "compress" => {
-          "css" => true,
-          "js"  => true
-        }
-      }
-
-      expect(env.compress?("css")).to eq true
-      expect(env.compress?( "js")).to eq true
-      site.config["assets"] = old_value
+      stub_asset_config "compress" => { "css" => true, "js" => true }
+      expect(env.compress?("css")).to be true
+      expect(env.compress?( "js")).to be true
     end
   end
 
   context do
-    before :each do
-      site.process
+       let(:path) { site.in_dest_dir(Jekyll::Assets::Configuration::DEVELOPMENT["prefix"]) }
+    before(:each) { site.process }
+
+    it "writes user assets" do
+      expect(Dir[File.join(path, "*")]).not_to be_empty
     end
 
     it "writes cached assets" do
-      path = File.expand_path("../../../../fixture/_site/assets", __FILE__)
       FileUtils.rm_r(path)
       site.sprockets.used. \
         clear
 
       site.sprockets.class.digest_cache.each do |k, v|
-        site.sprockets.class.digest_cache[k] = \
-          "ShouldNotMatch"
+        site.sprockets.class.digest_cache[k] = "ShouldNotMatch"
       end
 
       site.sprockets.write_all
-      expect(Dir[File.join(path, "*")].size).to eq(
-        3
-      )
+      expect(Dir[File.join(path, "*")].size).to eq \
+        site.sprockets.class.digest_cache.keys.size
+    end
+
+    it "writes missing assets" do
+      file = Dir[File.join(path, "*")][0]
+      FileUtils.rm(file)
+
+      site.sprockets.write_all
+      expect(Pathname.new(file)).to exist
     end
   end
 end

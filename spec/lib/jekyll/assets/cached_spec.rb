@@ -1,38 +1,16 @@
 require "rspec/helper"
 describe Jekyll::Assets::Cached do
-  let :site do
-    stub_jekyll_site
-  end
-
-  let :env do
-    Jekyll::Assets::Env.new(
-      site
-    )
-  end
-
-  let :cached do
-    Jekyll::Assets::Cached.new(
-      env
-    )
-  end
+  let(:cached) { Jekyll::Assets::Cached.new(Jekyll::Assets::Env.new(site)) }
+  let(  :site) { stub_jekyll_site }
 
   it "adds jekyll" do
-    expect(cached).to respond_to(
-      :jekyll
-    )
+    expect(cached).to respond_to :jekyll
+    expect(cached.jekyll).to be_kind_of \
+      Jekyll::Site
   end
 
-  context :parent do
-    it "is an Environment" do
-      expect(cached.parent).to be_kind_of(
-        Jekyll::Assets::Env
-      )
-    end
-
-    it "responds" do
-      expect(cached).to respond_to(
-        :parent
-      )
-    end
+  it "adds the parent" do
+    expect(cached).to respond_to :parent
+    expect(cached.parent).to be_kind_of Jekyll::Assets::Env
   end
 end
