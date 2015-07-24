@@ -7,29 +7,23 @@ module Jekyll
 
     class Logger
       def instance
-        @logger ||= (
-          Jekyll.logger
-        )
+        @logger ||= Jekyll.logger
       end
+
+      # See: Jekyll.logger.methods
 
       %W(warn error info debug).each do |k|
         define_method k do |msg = nil, &block|
-          if block
-            instance.send(
-              k, "Jekyll Assets:", block.call
-            )
-          else
-            instance.send(
-              k, "Jekyll Assets:", msg
-            )
-          end
+          instance.send(k, "Jekyll Assets:", block ? block.call : msg)
         end
       end
 
+      # We don't let you set the logger level here because we are just
+      # wrapping around Jekyll's own logger and making sure it supports the
+      # most basic logging behavior, blocks as msgs being sent.
+
       def log_level=(*a)
-        raise(
-          RuntimeError, "Please set log levels on Jekyll.logger"
-        )
+        raise RuntimeError, "Please set log levels on Jekyll.logger"
       end
     end
   end

@@ -7,11 +7,8 @@ module Jekyll
           if block_given?
             yield
           end
-
         rescue LoadError, ExecJS::RuntimeUnavailable
-          Jekyll.logger.debug(
-            "No JavaScript runtime available, skipping."
-          )
+          Jekyll.logger.debug("No JavaScript runtime available, skipping.")
         end
 
         def try_require(file)
@@ -19,7 +16,6 @@ module Jekyll
           if block_given?
             yield
           end
-
         rescue LoadError
           return nil
         end

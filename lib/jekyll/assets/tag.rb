@@ -23,10 +23,7 @@ module Jekyll
 
       def initialize(tag, args, tokens)
         @tokens, @tag, @url_options = tokens, tag, {}
-        @args = Parser.new(
-          args, tag
-        )
-
+        @args = Parser.new(args, tag)
         super
       end
 
@@ -47,10 +44,12 @@ module Jekyll
         add_as_jekyll_dependency(site, sprockets, page, asset)
         process_tag(sprockets, asset)
       rescue => e
-        capture_and_out_error(
-          site, e
-        )
+        capture_and_out_error site, e
       end
+
+      # Process a tag and output the data that you asked for, if you asked
+      # for the path, we'll give it you, if you asked for an image we'll give
+      # it you and so forth.  We also set a single default here.
 
       private
       def process_tag(sprockets, asset)
@@ -59,19 +58,21 @@ module Jekyll
 
         if @tag == "asset_path"
           return out
+
         elsif @args[:data][:uri]
           return TAGS[@tag] % [
-            data_uri(asset), @args.\
-              to_html
+            data_uri(asset), @args.to_html
           ]
+
         else
           sprockets.used.add(asset)
           return TAGS[@tag] % [
-            out, @args.\
-              to_html
+            out, @args.to_html
           ]
         end
       end
+
+      #
 
       private
       def set_img_alt(asset)
@@ -80,14 +81,17 @@ module Jekyll
         end
       end
 
+      # This is stolen right out of a Google search for Sprockets data
+      # URI which took me to a ticket, where Sprockets themselves did this
+      # and I took that commit and embedded it here, seriously...
+
       private
       def data_uri(asset)
-        "data:#{asset.content_type};base64,#{Rack::Utils.escape(
-          Base64.encode64(
-            asset.to_s
-          )
-        )}"
+        data = Rack::Utils.escape(Base64.encode64(asset.to_s))
+        "data:#{asset.content_type};base64,#{data}"
       end
+
+      #
 
       private
       def add_as_jekyll_dependency(site, sprockets, page, asset)
@@ -98,19 +102,19 @@ module Jekyll
         end
       end
 
+      #
+
       private
       def find_asset(sprockets)
-        if !(asset = sprockets.find_asset(@args[:file], @args[:sprockets]))
-          raise AssetNotFoundError, @args[
-            :file
-          ]
-        else
-          asset.metadata[:tag] = \
+        if !(out = sprockets.find_asset(@args[:file], @args[:sprockets]))
+          raise AssetNotFoundError, @args[:file] else out.metadata[:tag] = \
             @args
         end
 
-        asset
+        out
       end
+
+      #
 
       private
       def capture_and_out_error(site, error)

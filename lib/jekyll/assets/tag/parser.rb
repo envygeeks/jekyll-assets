@@ -90,9 +90,7 @@ module Jekyll
                 k
 
             elsif k =~ /:/ && (k = k.split(/(?<!\\):/))
-              parse_col_arg(
-                h, k
-              )
+              parse_col_arg h, k
 
             else
               h[:html][k] = \
@@ -111,14 +109,10 @@ module Jekyll
         def parse_col_arg(h, k)
           k[-1] = k[-1].gsub(/\\:/, ":")
           if k.size == 3
-            parse_as_proxy(
-              h, k
-            )
+            parse_as_proxy h, k
 
           elsif k.size == 2
-            parse_as_boolean_or_html(
-              h, k
-            )
+            parse_as_boolean_or_html h, k
           end
         end
 
@@ -152,13 +146,11 @@ module Jekyll
               k[2]
 
           elsif k.size == 3 && PROXY[k[0]]
-            raise(
-              UnknownProxyError
-            )
+            raise UnknownProxyError
+
           else
-            raise(
+            raise \
               UnescapedDoubleColonError
-            )
           end
         end
 
@@ -186,9 +178,7 @@ module Jekyll
 
         private
         def from_shellwords
-          Shellwords.shellwords(
-            @raw_args
-          )
+          Shellwords.shellwords(@raw_args)
         end
       end
     end

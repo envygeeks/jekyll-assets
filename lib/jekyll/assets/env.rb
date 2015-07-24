@@ -48,51 +48,43 @@ module Jekyll
       #
 
       def all_used_assets
-        return Set.new(@used).merge(
+        return Set.new(@used).merge \
           extra_assets
-        )
       end
 
       #
 
       def all_cached_assets
-        return Set.new(self.class.assets_cache).merge(
+        return Set.new(self.class.assets_cache).merge \
           extra_assets
-        )
       end
 
       #
 
       def extra_assets
         each_logical_path(*asset_config.fetch("assets", [])).map do |v|
-          find_asset(
-            v
-          )
+          find_asset v
         end
       end
 
       #
 
       def asset_config
-        jekyll.config["assets"] ||= {
-          #
-        }
+        jekyll.config["assets"] ||= {}
       end
 
       #
 
       def dev?
-        %W(development test).include?(
+        %W(development test).include? \
           Jekyll.env
-        )
       end
 
       #
 
       def cdn?
-        !dev? && !!asset_config[
-          "cdn"
-        ]
+        !dev? && \
+        !!asset_config["cdn"]
       end
 
       # There are two ways to enable digesting.  You can 1. be in production
@@ -102,26 +94,20 @@ module Jekyll
       #   digest: true
 
       def digest?
-        !!asset_config[
-          "digest"
-        ]
+        !!asset_config["digest"]
       end
 
       # See: `setup_css_compressor`
       # See: ` setup_js_compressor`
 
       def compress?(what)
-        !!asset_config["compress"][
-          what
-        ]
+        !!asset_config["compress"][what]
       end
 
       #
 
       def prefix
-        asset_config[
-          "prefix"
-        ]
+        asset_config["prefix"]
       end
 
       #
@@ -130,9 +116,7 @@ module Jekyll
         prefix = cdn? && asset_config["skip_prefix_with_cdn"] ? "" : self.prefix
         if cdn? && (cdn = asset_config["cdn"])
           return File.join(cdn, prefix) if !path
-          File.join(
-            cdn, prefix, path
-          )
+          File.join(cdn, prefix, path)
         else
           return  prefix if !path
           File.join(
@@ -144,9 +128,7 @@ module Jekyll
       # See: `Cached`
 
       def cached
-        Cached.new(
-          self
-        )
+        Cached.new(self)
       end
 
       # See: `write_cached_assets`
@@ -167,6 +149,7 @@ module Jekyll
           if !h.has_key?(k)
             h[k] = \
               v
+
           elsif v.is_a?(Hash)
             h[k] = merge_config(
               v, h[k]
@@ -174,9 +157,8 @@ module Jekyll
           end
         end
 
-        return(
-          merge_into
-        )
+
+        merge_into
       end
 
       # If we have used assets then we are working with a brand new
@@ -191,11 +173,7 @@ module Jekyll
         end]
 
         assets.each do |v|
-          v.write_to(
-            as_path(
-              v
-            )
-          )
+          v.write_to as_path v
         end
       end
 
@@ -213,27 +191,17 @@ module Jekyll
         all_cached_assets.each do |a|
           viejo = self.class.digest_cache[a.logical_path]
           nuevo = find_asset(a.logical_path).digest
+          next if nuevo == viejo
 
-          if nuevo == viejo
-            logger.debug "Skipping the #{a.logical_path} #{nuevo} == #{
-              viejo
-            }"
-
-            next
-          else
-            self.class.digest_cache[a.logical_path] = a.digest
-            a.write_to(as_path(
-              a
-            ))
-          end
+          self.class.digest_cache[a.logical_path] = a.digest
+          a.write_to as_path a
         end
       end
 
       private
       def as_path(v)
-        jekyll.in_dest_dir(File.join(
-          prefix, digest?? v.digest_path : v.logical_path
-        ))
+        path = digest?? v.digest_path : v.logical_path
+        jekyll.in_dest_dir(File.join(prefix, path))
       end
 
       # You can enable compression with:
@@ -270,18 +238,15 @@ module Jekyll
 
       private
       def set_version
-        self.version = Digest::MD5.hexdigest(
-          jekyll.config.fetch("assets", {}).to_s
-        )
+        self.version = Digest::MD5.hexdigest( \
+          jekyll.config.fetch("assets", {}).to_s)
       end
 
       # SEE: `Context#patch`
 
       private
       def patch_context
-        Context.new(
-          context_class
-        )
+        Context.new(context_class)
       end
 
       # Append assets that you always wish to be compiled that aren't
@@ -297,9 +262,7 @@ module Jekyll
       private
       def append_sources
         asset_config["sources"].each do |v|
-          append_path(
-            jekyll.in_source_dir(v)
-          )
+          append_path jekyll.in_source_dir(v)
         end
       end
 
@@ -316,11 +279,8 @@ module Jekyll
 
       private
       def setup_cache
-        self.cache = Sprockets::Cache::FileStore.new(
-          jekyll.in_source_dir(
-            ".asset-cache"
-          )
-        )
+        self.cache = Sprockets::Cache::FileStore.new( \
+          jekyll.in_source_dir(".asset-cache"))
       end
     end
   end

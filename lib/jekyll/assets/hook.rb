@@ -15,17 +15,13 @@ module Jekyll
 
       class << self
         def hooks
-          @_hooks ||= {
-            #
-          }
+          @_hooks ||= {}
         end
 
         def trigger(base, point, *args)
           if hooks[base][point]
             then hooks[base][point].map do |v|
-              v.call(
-                *args
-              )
+              v.call(*args)
             end
           end
         end
@@ -36,9 +32,7 @@ module Jekyll
             (hooks[base][point] ||= Set.new) << \
               block
           else
-            raise UnknownHookError.new(
-              base, point
-            )
+            raise UnknownHookError.new(base, point)
           end
         end
       end

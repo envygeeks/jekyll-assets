@@ -9,8 +9,7 @@ module Jekyll
       attr_reader :jekyll, :parent
 
       def initialize(env)
-        @parent, @jekyll = \
-          env, env.jekyll
+        @parent, @jekyll = env, env.jekyll
         super env
       end
     end

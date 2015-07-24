@@ -2,9 +2,7 @@ module Jekyll
   module Assets
     class Context
       def initialize(context)
-        patch(
-          context
-        )
+        patch context
       end
 
       # Patches context_class so that we can override Sprockets::Helpers
@@ -15,17 +13,11 @@ module Jekyll
         what.class_eval do
           alias_method :_old_asset_path, :asset_path
           def asset_path(asset, opts = {})
-            out = _old_asset_path(
-              asset, opts = {}
-            )
+            out = _old_asset_path asset, opts = {}
+            return unless out
 
-            if out
-              environment.parent.used.add(
-                environment.find_asset(
-                  resolve(asset)
-                )
-              )
-            end
+            environment.parent.used.add(environment.find_asset( \
+              resolve(asset)))
           out
           end
         end
