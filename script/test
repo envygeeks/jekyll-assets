@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == "jruby" ]] || [[ "$1" == "ruby" ]]
+then
+  interpretors=(
+    "$1"
+  )
+
+  shift
+else
+  interpretors=(
+    "jruby" "ruby"
+  )
+fi
+
+if [[ ! -z "$1" ]] && [[ -f "$1" ]]
+then
+  for i in $interpretors; do
+    $i -S bundle exec rspec "$1"
+  done
+else
+  for i in $interpretors; do
+    $i -S bundle exec rake spec
+  done
+fi
