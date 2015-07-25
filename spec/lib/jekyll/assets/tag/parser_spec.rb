@@ -9,16 +9,16 @@ describe Jekyll::Assets::Tag::Parser do
     expect(described_class.new(tag, "img").args).to match({
       :file=>"hello.jpg",
 
-      :sprockets=>{
+      :sprockets => {
         :accept=>"image/gif"
       },
 
-      :html=>{
+      :html => {
         "lol"=>true,
         "key"=>"value"
       },
 
-      :magick=>{
+      :magick => {
         :format=>"png",
         :"2x" => true
       }
