@@ -16,6 +16,7 @@ so beware when you use it, these pieces will be added soon (tm.)
 ```yaml
 assets:
   cdn: https://cdn.example.com
+  skip_prefix_with_cdn: false
   prefix: "/assets"
   assets:
     - "*.png"
@@ -25,35 +26,18 @@ assets:
     - "_assets/folder"
 ```
 
-### Do I need to provide `assets`?
-
-No, you don't.  That is there to make your life easier when it comes to
-missing assets in a cached chain.  Take for example bundle.css, if you use
-that file in another asset or with a tag it will get compiled because we
-detect that the best we can, but if you change that file and it uses
-a PNG image and you delete that PNG image it will not get readded because
-it's cached and not compiled so our methods never get called so you'll
-need to add it to the asset list so it's always compiled for you.
-
 ## Asset Digesting
 
-We will digest assets by default in production and default to non-digested
-assets for efficiency in development/testing, this way we can ensure that your
-builds remain fast in Jekyll3, you can however force asset digesting with
-`digest:true` which will digest even in development and kick on deep regen
-integration which ***will*** result in increased build times because every
-asset change will cause the entire site to rebuild.
+* Disable digesting by default in development.
+* Digest by default in production
 
-### What about caching?
+***You can force digesting with `digest: true` in your `_config.yml`***
 
-Worry not, see: https://github.com/jekyll/jekyll/pull/3792 (https://github.com/jekyll/jekyll/commit/931c3b149030edcedaf59eb42516e65088fa2c93#diff-eeca36730c9db808f27e5c330dc7838fR57) which will *should* land in Jekyll3 and will provide built-in support
-for non-caching in development.
+## ERB Support
 
-## When I try to use ERB I get an error
-
-Because we disable ERB processing in the hopes that this can one day be
-used on Github Pages to help you with caching, so we remove access to ERB
-which will give you powerful syntax with Ruby to do what you like.
+ERB Support is removed in favor of trying to get this included on Github Pages
+eventually (if I can.) Having ERB presents a security risk to Github because
+it would allow you to use Ruby in ways they don't want you to.
 
 ## Tags
 
@@ -71,12 +55,12 @@ which will give you powerful syntax with Ruby to do what you like.
 
 ### What do the colons mean? Proxies/Tags
 
-* Sending `argument` is a boolean HTML argument.
-* Sending `key:value` is an HTML key="value" if no proxy exists.
-* Sending `proxy:key:value` will set a proxy key with the given value.
-* Sending `proxy:key` is a boolean argument if the proxy and key exists.
-* Sending `unknown:key:value` will raise `DoubleColonError`, escape it.
-* Sending `proxy:unknown:value` will raise a `UnknownProxyError`.
+* `argument` is a boolean HTML argument.
+* `key:value` is an HTML key="value" if no proxy exists.
+* `proxy:key:value` will set a proxy key with the given value.
+* `proxy:key` is a boolean argument if the proxy and key exists.
+* `unknown:key:value` will raise `DoubleColonError`, escape it.
+* `proxy:unknown:value` will raise a `UnknownProxyError`.
 
 Lets say we have `sprockets` proxies and sprockets allows you to proxy
 accept, if you send `{% img src sprockets:accept:image/gif }` then Sprockets
@@ -101,9 +85,9 @@ the ground rules for our tags as a specification.
 
 ## Hooks
 
-* :env => [
+* `:env => [
     :pre_init, :post_init
-  ]
+  ]`
 
 You can register and trigger hooks like so:
 
@@ -116,9 +100,12 @@ end
 
 ## Optional Processing Engines
 
-* CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
-* Stylus - add "stylus" and "tilt" to your gemfile.
+* CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
+
+***Please note that some of these (if not all) have trouble with Rhino --
+`therubyrhino` so you would probably be best to just use Node.js or io.js at
+that point rather than trying to fight it.***
 
 ### Engine Settings
 
@@ -127,13 +114,13 @@ Some engines take settings, if they do you can add them like so:
 ```YAML
 assets:
   engines:
-    stylus:
-      "option": "value"
+    engine_name:
+      option: value
 ```
 
-Some options are removed (intentionally) such as options to set paths
-and if we cannot adjust that, then we flat out ignore options until a white
-list of options can be created.
+Only whitelisted options are allowed by default, so that we can guard against
+using paths we don't want to be used.  If you wish to have an option
+whitelisted please file a ticket or submit a pull request.
 
 ## Plugins where did they go?
 
