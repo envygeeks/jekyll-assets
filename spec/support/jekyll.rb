@@ -36,9 +36,19 @@ module Jekyll::RSpecHelpers
 
   def stub_asset_config(hash)
     hash = Jekyll::Utils.deep_merge_hashes(site.config.fetch("assets", {}), hash)
-    allow(site).to receive(:config).and_return(site.config.merge({
+    inst = @site || site
+
+    allow(inst).to receive(:config).and_return(site.config.merge({
       "assets" => hash
     }))
+  end
+
+  #
+
+  def stub_env_config(hash)
+    inst = @env || env
+    hash = Jekyll::Utils.deep_merge_hashes(@env.asset_config, hash)
+    allow(inst).to receive(:asset_config).and_return(hash)
   end
 
   # Strips ANSI from the output so that you can test just a plain text
@@ -78,7 +88,8 @@ module Jekyll::RSpecHelpers
   # to pull, so beware of that when testing.
 
   def get_stubbed_file(file)
-    File.read(File.join(File.expand_path("../../fixture/_site", __FILE__), file))
+    path = File.expand_path("../../fixture/_site", __FILE__)
+    File.read(File.join(path, file))
   end
 
   class << self

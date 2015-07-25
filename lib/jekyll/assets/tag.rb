@@ -13,17 +13,19 @@ module Jekyll
         "css" => %Q{<link type="text/css" rel="stylesheet" href="%s"%s>},
         "js"  => %Q{<script type="text/javascript" src="%s"%s></script>},
         "img" => %Q{<img src="%s"%s>}
+      }. \
+      freeze
+
+      ALIAS = {
+        "image" => "img",
+        "stylesheet" => "css",
+        "javascript" => "js",
+        "style" => "css"
       }
 
-      TAGS["javascript"] = TAGS[ "js"]
-      TAGS["image"]      = TAGS["img"]
-      TAGS["style"]      = TAGS["css"]
-      TAGS["stylesheet"] = TAGS["css"]
-      TAGS.freeze
-
       def initialize(tag, args, tokens)
-        @tokens, @tag, @url_options = tokens, tag, {}
-        @args = Parser.new(args, tag)
+        @tokens, @tag, @og_tag, @url_options = tokens, from_alias(tag), tag, {}
+        @args = Parser.new(args, @tag)
         super
       end
 
@@ -47,14 +49,20 @@ module Jekyll
         capture_and_out_error site, e
       end
 
+      private
+      def from_alias(tag)
+        ALIAS[tag] || \
+          tag
+      end
+
       # Process a tag and output the data that you asked for, if you asked
       # for the path, we'll give it you, if you asked for an image we'll give
       # it you and so forth.  We also set a single default here.
 
       private
       def process_tag(sprockets, asset)
-        out = sprockets.prefix_path(sprockets.digest?? asset.digest_path : asset.logical_path)
-        set_img_alt asset if ["img", "image"].include?(@tag)
+        set_img_alt asset if @tag == "img"
+        out = get_path sprockets, asset
 
         if @tag == "asset_path"
           return out
@@ -70,6 +78,14 @@ module Jekyll
             out, @args.to_html
           ]
         end
+      end
+
+      #
+
+      private
+      def get_path(sprockets, asset)
+        asset_path = sprockets.digest?? asset.digest_path : asset.logical_path
+        sprockets.prefix_path(asset_path)
       end
 
       #
@@ -135,8 +151,6 @@ module Jekyll
   end
 end
 
-(Jekyll::Assets::Tag::TAGS.keys + ["asset_path"]).each do |t|
-  Liquid::Template.register_tag(
-    t, Jekyll::Assets::Tag
-  )
+%W(js css img image javascript stylesheet style asset_path).each do |t|
+  Liquid::Template.register_tag t, Jekyll::Assets::Tag
 end

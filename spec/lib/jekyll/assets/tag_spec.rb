@@ -6,113 +6,100 @@ require "nokogiri"
 #   speed up our tests a bit because we reduce some writing.
 
 describe Jekyll::Assets::Tag do
-  def site
-    @_site ||= stub_jekyll_site_with_processing
-  end
-
   before :all do
-    site
+    @site = stub_jekyll_site
+    @env  = Jekyll::Assets::Env.new(@site)
+    @site_struct = OpenStruct.new(:registers => {
+      :sprockets => @env, :site => @site
+    })
   end
 
-  def html
-    Nokogiri::HTML get_stubbed_file \
-      "index.html"
+  def stub_tag(tag, data)
+    fragment(Jekyll::Assets::Tag.send(:new, tag, data, []).render( \
+      @site_struct))
   end
 
-  it "adds a default alt attribute" do
-    result = html.xpath("//body/p/img")
-    expect(result.attr("alt").text).to eq(
-      "ruby.png"
-    )
+  def fragment(html)
+    Nokogiri::HTML.fragment(html).children. \
+      first
+  end
+
+  context do
+    it "adds a default alt attribute to img" do
+      expect(stub_tag("img", "ruby.png").attr("alt")).to eq "ruby.png"
+    end
   end
 
   it "adds attributes" do
-    html.xpath("//head/*[self::script or self::link]").each do |v|
-      expect(v.attr("id").to_i).to be > 0
-    end
+    expect(stub_tag("css", "bundle id:1").attr("id")).to eq "1"
   end
 
   it "uses a data uri if asked to" do
-    result = html.xpath("//body/p/img")
-    expect(result.size).to eq 1
-    expect(result.attr("src").text).to match(
-      /\Adata:image\/png;base64,/
-    )
+    expect(stub_tag("img", "ruby.png data:uri").attr("src")).to match \
+      %r!\Adata:image\/png;base64,!
   end
 
-  it "converts js and javascript" do
-    result = html.xpath("//head/script[@src='/assets/bundle.js']")
-    expect(result.size).to eq(
-      2
-    )
+  it "convert js" do
+    result = stub_tag "js", "bundle"
+    expect(result.name).to eq "script"
+    expect(result.attr("type")).to eq "text/javascript"
+    expect(result.attr("src")).to eq "/assets/bundle.js"
   end
 
-  it "converts style, css and stylesheet" do
-    result = html.xpath("//head/link[@href='/assets/bundle.css']")
-    expect(result.size).to eq(
-      3
-    )
+  it "converts javascript" do
+    result = stub_tag "js", "bundle"
+    expect(result.name).to eq "script"
+    expect(result.attr("type")).to eq "text/javascript"
+    expect(result.attr("src")).to eq "/assets/bundle.js"
   end
 
-  context :css_link do
-    it "adds text/css" do
-      html.xpath("//head/link[@href='/assets/bundle.css']").each do |v|
-        expect(v.attr("type")).to eq "text/css"
-      end
-    end
-
-    it "adds rel stylesheet to links" do
-      html.xpath("//head/link[@href='/assets/bundle.css']").each do |v|
-        expect(v.attr("rel")).to eq "stylesheet"
-      end
-    end
+  it "converts css" do
+    result = stub_tag "css", "bundle"
+    expect(result.name).to eq "link"
+    expect(result.attr("rel")).to eq "stylesheet"
+    expect(result.attr("href")).to eq "/assets/bundle.css"
+    expect(result.attr("type")).to eq "text/css"
   end
 
-  it "returns simply just an asset path" do
-    html.xpath("//body/p[contains(., '/assets/bundle')]").each do |v|
-      expect(v.text).to match(
-        %r!\A/assets/bundle\.(css|js)\Z!
-      )
-    end
+  it "converts style" do
+    result = stub_tag "style", "bundle"
+    expect(result.name).to eq "link"
+    expect(result.attr("rel")).to eq "stylesheet"
+    expect(result.attr("href")).to eq "/assets/bundle.css"
+    expect(result.attr("type")).to eq "text/css"
+  end
+
+  it "converts stylesheet" do
+    result = stub_tag "stylesheet", "bundle"
+    expect(result.name).to eq "link"
+    expect(result.attr("rel")).to eq "stylesheet"
+    expect(result.attr("href")).to eq "/assets/bundle.css"
+    expect(result.attr("type")).to eq "text/css"
+  end
+
+  it "returns the path on asset_path" do
+    expect(stub_tag("asset_path", "bundle.css").text).to eq "/assets/bundle.css"
   end
 
   context "in production" do
-    before { allow(Jekyll).to receive(:env).and_return "production" }
-    let :site do
-      stub_jekyll_site({
-        "assets"      => {
-          "cdn"       => "//localhost",
-          "digest"    => false,
-          "compress"  => {
-            "css"     => false,
-            "js"      => false
-          }
-        }
-      })
+    it "returns a url w/ CDN if it exists and skips the prefix is told" do
+      allow(Jekyll).to receive(:env).and_return "production"
+      stub_env_config "cdn" => "//localhost", "skip_prefix_with_cdn" => true
+      expect(stub_tag("img", "bundle").attr("src")).to eq \
+        "//localhost/bundle.css"
     end
 
-    let :sprockets do
-      site.sprockets = Jekyll::Assets::Env.new(site)
-    end
-
-    it "returns a url w/ CDN if it exists" do
-      site.sprockets = sprockets
-      result = Jekyll::Assets::Tag.send(:new, "css", "bundle", []).render(
-        OpenStruct.new({
-          :registers => {
-            :site => site
-          }
-        })
-      )
-
-      expect(result).to eq(
-        %Q{<link type="text/css" rel="stylesheet" href="//localhost/assets/bundle.css">}
-      )
+    it "returns a url w/ a CDN if it exists" do
+      allow(Jekyll).to receive(:env).and_return "production"
+      stub_env_config "cdn" => "//localhost"
+      expect(stub_tag("img", "bundle").attr("src")).to eq \
+        "//localhost/assets/bundle.css"
     end
   end
 
-  it "adds tag stuff as [tag] on metadata" do
-    expect(site.sprockets.used.select { |v| v.content_type =~ /css/ }[0]. \
-      metadata[:tag]).to be_a Jekyll::Assets::Tag::Parser
+  it "adds tag stuff as [:tag] on metadata" do
+    stub_tag "stylesheet", "bundle.css"
+    expect(@env.find_asset("bundle.css").metadata[:tag]).to be_kind_of \
+      Jekyll::Assets::Tag::Parser
   end
 end

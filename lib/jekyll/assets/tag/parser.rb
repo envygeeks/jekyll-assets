@@ -21,35 +21,43 @@ module Jekyll
         def_delegator :@args, :fetch
         def_delegator :@args, :[]
 
-        ACCEPT = { "css" => "text/css", "js" => "application/javascript" }
-        ACCEPT["javascript"] = ACCEPT[ "js"]
-        ACCEPT["style"]      = ACCEPT["css"]
-        ACCEPT["stylesheet"] = ACCEPT["css"]
-        ACCEPT.freeze
+        ACCEPT = {
+          "css" => "text/css", "js" => "application/javascript"
+        }.\
+        freeze
 
         PROXY = {
-          "data" => [
-            "@uri"
-          ],
+          "data" => {
+            :for => :all,
+            :key => [
+              "@uri"
+            ]
+          },
 
-          "sprockets" => [
-            "accept",
-            "write_to"
-          ],
+          "sprockets" => {
+            :for => :all,
+            :key => [
+              "accept",
+              "write_to"
+            ]
+          },
 
           # See: https://github.com/minimagick/minimagick#usage -- All but
           #   the boolean @ options are provided by Minimagick.
 
-          "magick" => [
-            "resize",
-            "format",
-            "rotate",
-            "crop",
-            "flip",
-            "@2x",
-            "@4x",
-            "@half"
-          ]
+          "magick" => {
+            :for => "img",
+            :key => [
+              "resize",
+              "format",
+              "rotate",
+              "crop",
+              "flip",
+              "@2x",
+              "@4x",
+              "@half"
+            ]
+          }
         }
 
         class UnknownProxyError < StandardError
@@ -122,7 +130,7 @@ module Jekyll
 
         private
         def parse_as_boolean_or_html(h, k)
-          if PROXY[k[0]] && PROXY[k[0]].include?("@#{k[1]}")
+          if is_proxy?(k[0]) && PROXY[k[0]][:key].include?("@#{k[1]}")
             h[k[0].to_sym][k[1].to_sym] = \
               true
 
@@ -140,18 +148,23 @@ module Jekyll
 
         private
         def parse_as_proxy(h, k)
-          if PROXY[k[0]] && PROXY[k[0]] && \
-                PROXY[k[0]].include?(k[1])
+          if is_proxy?(k[0]) && PROXY[k[0]][:key].include?(k[1])
             h[k[0].to_sym][k[1].to_sym] = \
               k[2]
 
-          elsif k.size == 3 && PROXY[k[0]]
+          elsif k.size == 3 && is_proxy?(k[0])
             raise UnknownProxyError
 
           else
             raise \
               UnescapedDoubleColonError
           end
+        end
+
+        #
+
+        def is_proxy?(k)
+          PROXY[k] && (PROXY[k][:for] == :all || PROXY[k][:for] == @tag)
         end
 
         # If you try to tap bundle and you have bundle.css and bundle.js
