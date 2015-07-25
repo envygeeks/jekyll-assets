@@ -1,5 +1,4 @@
 backtrace.mask=true
-compile.invokedynamic=false
 objectspace.enabled=true
 backtrace.color=true
 compat.version=2.2
