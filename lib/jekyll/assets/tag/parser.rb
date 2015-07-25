@@ -66,7 +66,7 @@ module Jekyll
           end
         end
 
-        class UnescapedDoubleColonError < StandardError
+        class UnescapedColonError < StandardError
           def initialize
             super "Unescaped double colon argument."
           end
@@ -116,11 +116,9 @@ module Jekyll
         private
         def parse_col_arg(h, k)
           k[-1] = k[-1].gsub(/\\:/, ":")
-          if k.size == 3
-            parse_as_proxy h, k
-
-          elsif k.size == 2
-            parse_as_boolean_or_html h, k
+          if k.size == 3 then parse_as_proxy h, k
+            elsif k.size == 2 then parse_as_boolean_or_html h, k
+            else raise UnescapedColonError
           end
         end
 
@@ -152,12 +150,8 @@ module Jekyll
             h[k[0].to_sym][k[1].to_sym] = \
               k[2]
 
-          elsif k.size == 3 && is_proxy?(k[0])
+          elsif is_proxy?(k[0])
             raise UnknownProxyError
-
-          else
-            raise \
-              UnescapedDoubleColonError
           end
         end
 

@@ -1,12 +1,14 @@
 require "rspec/helper"
 describe Jekyll::Assets::Tag::Parser do
+  let(:escaping_error) { Jekyll::Assets::Tag::Parser::UnescapedColonError }
+  let(:proxy_error) { Jekyll::Assets::Tag::Parser::UnknownProxyError }
   let(:klass) { described_class }
-  let :tag do
-    %Q{hello.jpg lol magick:2x sprockets:accept:image/gif key:value magick:format:png}
-  end
 
   it "properly parses syntax" do
-    expect(described_class.new(tag, "img").args).to match({
+    input = "hello.jpg lol magick:2x sprockets:accept:image/gif " \
+      "key:value magick:format:png"
+
+    expect(described_class.new(input, "img").args).to match({
       :file=>"hello.jpg",
 
       :sprockets => {
@@ -25,49 +27,57 @@ describe Jekyll::Assets::Tag::Parser do
     })
   end
 
-  it "raises a proxy error if the proxy argument is invalid" do
-    expect { klass.new("img.jpg sprockets:unknown:argument", "img") }.to \
-      raise_error Jekyll::Assets::Tag::Parser::UnknownProxyError
+  it "raises an error if there is no proxy available" do
+    input = "img.jpg sprockets:unknown:hello"
+    expect { klass.new(input, "img") }.to raise_error \
+      Jekyll::Assets::Tag::Parser::UnknownProxyError
   end
 
-  it "raises unescaped colon error if colons aren't escaped" do
-    expect { klass.new("img.jpg unknown:argument:raises", "img") }.to \
-      raise_error Jekyll::Assets::Tag::Parser::UnescapedDoubleColonError
+  it "makes like 'proxy' argument an HTML argument if there is no proxy key" do
+    input = "img.jpg sprockets:unknown"
+    expect(klass.new(input, "img").args[:html]["sprockets"]).to eq \
+      "unknown"
   end
 
-  it "does not assume an argument is a proxy if it's boolean HTML" do
-    result = klass.new("img.jpg sprockets:unknown", "img").args
-    expect(result[:html]).to match({ "sprockets" => "unknown" })
+  it "allows boolean proxy arguments" do
+    input = "img.jpg magick:2x"
+    expect(klass.new(input, "img").args[:magick][:"2x"]).to eq \
+      true
   end
 
-  it "allows escaping the colon" do
-    v = klass.new("hello.jpg sprockets:accept:image\\\\:gif", "img").args
-    expect(v[:sprockets][:accept]).to eq "image:gif"
+  it "does not allocate boolean arguments as proxy values" do
+    input = "img.jpg magick:2x:raise"
+    expect { klass.new(input, "img") }.to raise_error \
+      proxy_error
   end
 
-  it "works with escaping in quotes" do
-    v = klass.new('hello.jpg sprockets:accept:"image\\\:gif"', "img").args
-    expect(v[:sprockets][:accept]).to eq "image:gif"
+  it "expects escaping more than one colon with quotes" do
+    input = "hello.jpg sprockets:accept:'image:gif'"
+    expect { klass.new(input, "img") }.to raise_error \
+      escaping_error
   end
 
-  context "with quoting" do
-    it "works with complete arg quoting" do
-      v = klass.new("hello.jpg 'sprockets:accept:image/gif'", "img").args
-      expect(v[:sprockets][:accept]).to eq "image/gif"
-    end
-
-    it "works with partial arg quoting" do
-      v = klass.new("hello.jpg sprockets:accept:'image/gif'", "img").args
-      expect(v[:sprockets][:accept]).to eq "image/gif"
-    end
+  it "expects escaping more than one colon without quotes" do
+    input = "hello.jpg sprockets:acpet:image:gif"
+    expect { klass.new(input, "img") }.to raise_error \
+      escaping_error
   end
 
-  it "converts arguments we don't want into html arguments" do
-    v = klass.new("hello.jpg hello:world how:are you:today", "img")
-    v = v.to_html.split(" ")
-    expect(v.size).to eq 3
-    expect(v).to include 'hello="world"'
-    expect(v).to include 'how="are"'
-    expect(v).to include 'you="today"'
+  it "allows escaping inside of quotes" do
+    input = 'hello.jpg sprockets:accept:"image\\\:gif"'
+    expect(klass.new(input, "img")[:sprockets][:accept]).to eq \
+      "image:gif"
+  end
+
+  it "allows quoting the entire argument" do
+    input = "hello.jpg 'sprockets:accept:image/gif'"
+    expect(klass.new(input, "img").args[:sprockets][:accept]).to eq \
+      "image/gif"
+  end
+
+  it "allows quoting only fragments of an argument" do
+    input = "hello.jpg sprockets:accept:'image/gif'"
+    expect(klass.new(input, "img").args[:sprockets][:accept]).to eq \
+      "image/gif"
   end
 end
