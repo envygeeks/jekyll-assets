@@ -1,0 +1,1 @@
+Pry.pager = false
