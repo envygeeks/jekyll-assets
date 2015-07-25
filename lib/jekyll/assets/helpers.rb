@@ -8,7 +8,8 @@ module Jekyll
             yield
           end
         rescue LoadError, ExecJS::RuntimeUnavailable
-          Jekyll.logger.debug("No JavaScript runtime available, skipping.")
+          Jekyll.logger.debug("ExecJS or JS Runtime not available." \
+            " Skipping loading of library.")
         end
 
         def try_require(file)
@@ -21,13 +22,14 @@ module Jekyll
         end
 
         def try_require_if_javascript?(file)
-          has_javascript? do
-            try_require file do
-              if block_given?
-                yield
-              end
-            end
+          ["execjs", file].map(&method(:require))
+          if block_given?
+            yield
           end
+        rescue LoadError, ExecJS::RuntimeUnavailable
+          Jekyll.logger.debug("ExecJS, JS Runtime or `#{file}' not available." \
+            " Skipping the loading of libraries.")
+          return
         end
       end
     end

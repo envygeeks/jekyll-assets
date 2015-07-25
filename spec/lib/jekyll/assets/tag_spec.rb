@@ -1,10 +1,6 @@
 require "rspec/helper"
 require "nokogiri"
 
-# XXX: This entire file can be switched from writing to simply hacking
-#   the Liquid tag chain the way we did with the CDN, this would probably
-#   speed up our tests a bit because we reduce some writing.
-
 describe Jekyll::Assets::Tag do
   before :all do
     @site = stub_jekyll_site
@@ -26,12 +22,14 @@ describe Jekyll::Assets::Tag do
 
   context do
     it "adds a default alt attribute to img" do
-      expect(stub_tag("img", "ruby.png").attr("alt")).to eq "ruby.png"
+      expect(stub_tag("img", "ruby.png").attr("alt")).to eq \
+        "ruby.png"
     end
   end
 
   it "adds attributes" do
-    expect(stub_tag("css", "bundle id:1").attr("id")).to eq "1"
+    expect(stub_tag("css", "bundle id:1").attr("id")).to eq \
+      "1"
   end
 
   it "uses a data uri if asked to" do

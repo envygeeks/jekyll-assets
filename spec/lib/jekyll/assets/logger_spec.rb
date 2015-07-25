@@ -28,6 +28,7 @@ describe Jekyll::Assets::Logger do
   end
 
   it "should raise if trying to set log level" do
-    expect { logger.log_level = :debug }.to raise_error RuntimeError
+    expect { logger.log_level = :debug }.to raise_error \
+      RuntimeError
   end
 end

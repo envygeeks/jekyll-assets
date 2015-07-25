@@ -1,4 +1,5 @@
 require "rspec/helper"
+
 describe Jekyll::Assets::Whitelist do
   let(:klass) { described_class }
 

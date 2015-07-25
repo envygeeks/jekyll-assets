@@ -1,46 +1,37 @@
 require "rspec/helper"
 
 describe Jekyll::Assets::Env do
-  let  :env do
-    Jekyll::Assets::Env.new(site)
-  end
+  let( :env) { Jekyll::Assets::Env.new(site) }
+  let(:site) { stub_jekyll_site }
 
-  let :site do
-    stub_jekyll_site
-  end
-
-  it "adds the jekyll instance" do
-    expect(env.jekyll).to eq site
+  it "adds the Jekyll instance" do
+    expect(env.jekyll).to eq \
+      site
   end
 
   it "creates a new used set" do
     expect(env.used).to be_kind_of Set
-    expect(env.used).to be_empty
+    expect(env.used).to \
+      be_empty
   end
 
-  context :prefix_path do
-    it "returns a cdn w/ prefix if in production mode" do
-      allow(Jekyll).to receive(:env).and_return "production"
-      stub_asset_config "cdn" => "//localhost"
-      expect(env.prefix_path).to eq "//localhost/assets"
+  context "paths" do
+    context "in production" do
+      it "returns a cdn w/ prefix" do
+        allow(Jekyll).to receive(:env).and_return "production"
+        stub_asset_config "cdn" => "//localhost"
+        expect(env.prefix_path).to eq "//localhost/assets"
+      end
+
+      it "skips the prefix when skip_prefix_with_cdn => true" do
+        stub_asset_config "skip_prefix_with_cdn" => true, "cdn" => "//localhost"
+        expect(env.prefix_path).to eq "/assets"
+      end
     end
 
-    context "with the option skip_prefix_with_cdn" do
-      it "does not skip the prefix if there is no cdn" do
-        allow(Jekyll).to receive(:env).and_return "production"
-        stub_asset_config "skip_prefix_with_cdn" => true
+    context "in development" do
+      it "does not use a cdn" do
         expect(env.prefix_path).to eq "/assets"
-      end
-
-      it "skips the prefix only when in production" do
-        stub_asset_config "skip_prefix_with_cdn" => true, "cdn" => "//localhost"
-        expect(env.prefix_path).to eq "/assets"
-      end
-
-      it "skips the prefix when in production" do
-        allow(Jekyll).to receive(:env).and_return "production"
-        stub_asset_config "skip_prefix_with_cdn" => true, "cdn" => "//localhost"
-        expect(env.prefix_path).to eq "//localhost/"
       end
     end
   end
@@ -63,7 +54,7 @@ describe Jekyll::Assets::Env do
       end
     end
 
-    context "in development/test" do
+    context "in development" do
       it "does not digest by default" do
         expect(env.digest?).to be false
         expect(env.send(:as_path, env.find_asset("bundle.css"))).to eq \
@@ -93,13 +84,13 @@ describe Jekyll::Assets::Env do
     expect(env.context_class.method_defined?(:_old_asset_path)).to be true
   end
 
-  context :context_class do
-    context :_asset_path do
+  context "#context_class" do
+    context "#_asset_path" do
       it "adds the asset to the env#used set" do
         env.find_asset "context", :accept => "text/css"
-
         expect(env.used.size).to eq 1
-        expect(env.used.first.pathname.fnmatch?("*/context.jpg")).to eq true
+        expect(env.used.first.pathname.fnmatch?("*/context.jpg")).to eq \
+          true
       end
     end
   end
@@ -116,27 +107,42 @@ describe Jekyll::Assets::Env do
       be_kind_of Sprockets::Cache::FileStore
   end
 
-  it "it compresses if asked to" do
-    stub_asset_config "compress" => { "js" => true, "css" => true }
-    expect(env. js_compressor).to eq Sprockets::UglifierCompressor
-    expect(env.css_compressor).to eq Sprockets::    SassCompressor
-  end
+  context "compression" do
+    it "compresses if asked to" do
+      stub_asset_config "compress" => { "js" => true, "css" => true }
+      expect(env. js_compressor).to eq Sprockets::UglifierCompressor
+      expect(env.css_compressor).to eq \
+        Sprockets::SassCompressor
 
-  context :compress? do
-    it "should default to compression being off" do
-      expect(env.compress?("css")).to eq false
-      expect(env.compress?( "js")).to eq false
+      expect(env.compress?("css")).to eq true
+      expect(env.compress?( "js")).to eq true
     end
 
-    it "should allow compression if the user wants it" do
-      stub_asset_config "compress" => { "css" => true, "js" => true }
-      expect(env.compress?("css")).to be true
-      expect(env.compress?( "js")).to be true
+    context "in production" do
+      it "defaults to compressing" do
+        allow(Jekyll).to receive(:env).and_return "production"
+        expect(env. js_compressor).to eq Sprockets::UglifierCompressor
+        expect(env.css_compressor).to eq \
+          Sprockets::SassCompressor
+
+        expect(env.compress?("css")).to eq true
+        expect(env.compress?( "js")).to eq true
+      end
+
+      it "disables compression if asked to" do
+        allow(Jekyll).to receive(:env).and_return "production"
+        stub_asset_config "compress" => { "js" => false, "css" => false }
+        expect(env. js_compressor).to be_nil
+        expect(env.css_compressor).to be_nil
+
+        expect(env.compress?("css")).to eq false
+        expect(env.compress?( "js")).to eq false
+      end
     end
   end
 
   context do
-       let(:path) { site.in_dest_dir(Jekyll::Assets::Configuration::DEVELOPMENT["prefix"]) }
+       let(:path) { site.in_dest_dir("/assets") }
     before(:each) { site.process }
 
     it "writes user assets" do
@@ -162,7 +168,8 @@ describe Jekyll::Assets::Env do
       FileUtils.rm(file)
 
       site.sprockets.write_all
-      expect(Pathname.new(file)).to exist
+      expect(Pathname.new(file)).to \
+        exist
     end
   end
 end
