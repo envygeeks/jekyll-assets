@@ -34,20 +34,23 @@ module Jekyll::RSpecHelpers
   # in a new context or at the top of a context so that you can stub the
   # configuration and have it reset afterwards.
 
-  def stub_asset_config(hash)
-    hash = Jekyll::Utils.deep_merge_hashes(site.config.fetch("assets", {}), hash)
-    inst = @site || site
+  def stub_asset_config(inst, hash = nil)
+    hash, inst = inst, nil if inst.is_a?(Hash)
+    inst = @site || site if !inst
 
-    allow(inst).to receive(:config).and_return(site.config.merge({
+    hash = Jekyll::Utils.deep_merge_hashes(inst.config.fetch("assets", {}), hash)
+    allow(inst).to receive(:config).and_return(inst.config.merge({
       "assets" => hash
     }))
   end
 
   #
 
-  def stub_env_config(hash)
-    inst = @env || env
-    hash = Jekyll::Utils.deep_merge_hashes(@env.asset_config, hash)
+  def stub_env_config(inst, hash = nil)
+    hash, inst = inst, nil if inst.is_a?(Hash)
+    inst = @env || env if !inst
+
+    hash = Jekyll::Utils.deep_merge_hashes(inst.asset_config, hash)
     allow(inst).to receive(:asset_config).and_return(hash)
   end
 
