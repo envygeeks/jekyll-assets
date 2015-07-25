@@ -1,8 +1,8 @@
 require "rspec/helper"
 describe Jekyll::Assets::Tag::Parser do
-  let(:escaping_error) { Jekyll::Assets::Tag::Parser::UnescapedColonError }
-  let(:proxy_error) { Jekyll::Assets::Tag::Parser::UnknownProxyError }
-  let(:klass) { described_class }
+  let(:escape_error) { Jekyll::Assets::Tag::Parser::UnescapedColonError }
+  let( :proxy_error) { Jekyll::Assets::Tag::Parser::UnknownProxyError }
+  let(       :klass) { described_class }
 
   it "properly parses syntax" do
     input = "hello.jpg lol magick:2x sprockets:accept:image/gif " \
@@ -54,13 +54,13 @@ describe Jekyll::Assets::Tag::Parser do
   it "expects escaping more than one colon with quotes" do
     input = "hello.jpg sprockets:accept:'image:gif'"
     expect { klass.new(input, "img") }.to raise_error \
-      escaping_error
+      escape_error
   end
 
   it "expects escaping more than one colon without quotes" do
     input = "hello.jpg sprockets:acpet:image:gif"
     expect { klass.new(input, "img") }.to raise_error \
-      escaping_error
+      escape_error
   end
 
   it "allows escaping inside of quotes" do
