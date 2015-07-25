@@ -5,7 +5,6 @@ gem "rake"
 group :development do
   gem "pry"
   gem "therubyracer", :platforms => :mri
-  gem "therubyrhino", :platforms => :jruby
   gem "guard-rspec"
   gem "guard"
 end
