@@ -7,7 +7,7 @@ rvm:
   - jruby-9.0.0.0
 matrix:
   allow_failures:
-    - rvm: jruby-jruby-9.0.0.0
+    - rvm: jruby-9.0.0.0
 notifications:
   recipients:
     - jordon@envygeeks.io
