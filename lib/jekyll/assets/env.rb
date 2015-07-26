@@ -275,12 +275,18 @@ module Jekyll
         self.logger = Logger.new
       end
 
-      # TODO: Support a configurable asset-cache directory.
+      # Sets up a cache directory for you, you can configure this
+      # directory inside of your `_config.yml` with the assets key cache.
+      # You can even disable it by making it `nil` or `false`.
 
       private
       def setup_cache
-        self.cache = Sprockets::Cache::FileStore.new( \
-          jekyll.in_source_dir(".asset-cache"))
+        cache_dir = asset_config.fetch("cache", ".asset-cache")
+
+        if cache
+          self.cache = Sprockets::Cache::FileStore.new \
+            jekyll.in_source_dir(cache_dir)
+        end
       end
     end
   end

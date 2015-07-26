@@ -15,6 +15,7 @@ so beware when you use it, these pieces will be added soon (tm.)
 
 ```yaml
 assets:
+  cache: false | directory | default: .asset-cache
   cdn: https://cdn.example.com
   skip_prefix_with_cdn: false
   prefix: "/assets"
