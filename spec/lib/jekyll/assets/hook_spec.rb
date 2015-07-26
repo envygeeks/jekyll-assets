@@ -3,8 +3,7 @@ require "rspec/helper"
 describe Jekyll::Assets::Hook do
   it "allows registration of receivers onto hook points" do
     Jekyll::Assets::Hook.register(:env, :pre_init, &proc {})
-    expect(Jekyll::Assets::Hook.hooks[:env][:pre_init].size).to eq \
-      1
+    expect(Jekyll::Assets::Hook.all[:env][:pre_init].size).to eq 1
   end
 
   it "raises if there is no hook" do

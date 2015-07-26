@@ -23,10 +23,9 @@ module Jekyll
 
         ACCEPT = {
           "css" => "text/css", "js" => "application/javascript"
-        }.\
-        freeze
+        }
 
-        PROXY = {
+        PROXY  = {
           "data" => {
             :for => :all,
             :key => [
@@ -40,25 +39,14 @@ module Jekyll
               "accept",
               "write_to"
             ]
-          },
-
-          # See: https://github.com/minimagick/minimagick#usage -- All but
-          #   the boolean @ options are provided by Minimagick.
-
-          "magick" => {
-            :for => "img",
-            :key => [
-              "resize",
-              "format",
-              "rotate",
-              "crop",
-              "flip",
-              "@2x",
-              "@4x",
-              "@half"
-            ]
           }
         }
+
+        class UnescapedColonError < StandardError
+          def initialize
+            super "Unescaped double colon argument."
+          end
+        end
 
         class UnknownProxyError < StandardError
           def initialize
@@ -66,21 +54,18 @@ module Jekyll
           end
         end
 
-        class UnescapedColonError < StandardError
-          def initialize
-            super "Unescaped double colon argument."
-          end
-        end
-        # XXX: Doc
-
         def initialize(args, tag)
-          @raw_args, @tag = args, tag
-
+          @raw_args = args
+          @tag = tag
           parse_raw
           set_accept
         end
 
-        # XXX: Doc
+        def proxies
+          @_proxies ||= Proxies.all.each_with_object(PROXY.dup) do |k, h|
+            h[k.args[:name].to_s] = k.args
+          end
+        end
 
         def to_html
           @args[:html].map do |k, v|
@@ -89,67 +74,39 @@ module Jekyll
           join
         end
 
-        # Parse the string that we get like we would parse a command line
-        # so that people can escape, quote and do all sorts of fancy stuff with
-        # their tags to get data to us without much resistance.
-
         private
         def parse_raw
           @args = from_shellwords.each_with_index.inject(dhash) do |h, (k, i)|
-            if i == 0
-              h[:file] = \
-                k
-
-            elsif k =~ /:/ && (k = k.split(/(?<!\\):/))
-              parse_col_arg h, k
-
-            else
-              h[:html][k] = \
-                true
+            if i == 0 then h[:file] = k
+              elsif k =~ /:/ && (k = k.split(/(?<!\\):/)) then parse_col h, k
+              else h[:html][k] = true
             end
 
             h
           end
         end
 
-        # Parse colon:argument and modify the incomming hash based on that.
-        # See: parser_spec.rb for more information, the first example is a
-        #   literal example of what we parse and how.
-
         private
-        def parse_col_arg(h, k)
+        def parse_col(h, k)
           k[-1] = k[-1].gsub(/\\:/, ":")
-          if k.size == 3 then parse_as_proxy h, k
-            elsif k.size == 2 then parse_as_boolean_or_html h, k
+          if k.size == 3 then as_proxy h, k
+            elsif k.size == 2 then as_bool_or_html h, k
             else raise UnescapedColonError
           end
         end
 
-        # Any argument that is key:value, if there is a proxy and the
-        # proxy key exists we assume it's a boolean setter for the proxy and
-        # if it doesn't then we assume it's an HTML argument.
-
         private
-        def parse_as_boolean_or_html(h, k)
-          if is_proxy?(k[0]) && PROXY[k[0]][:key].include?("@#{k[1]}")
-            h[k[0].to_sym][k[1].to_sym] = \
-              true
-
+        def as_bool_or_html(h, k)
+          if is_proxy?(k[0]) && proxies[k[0]][:key].include?("@#{k[1]}")
+            h[k[0].to_sym][k[1].to_sym] = true
           else
-            h[:html][k[0]] = \
-              k[1]
+            h[:html][k[0]] = k[1]
           end
         end
 
-        # Anything that comes is a proxy:key:value.  If the proxy exists
-        # then we check if the key exists and if it does then we set the value
-        # on the key for the proxy.  If the proxy exists but the key is
-        # not allowed we will raise a ProxyError and if the Proxy doesn't
-        # exists we will raise an DoubleColon error, escape your colons.
-
         private
-        def parse_as_proxy(h, k)
-          if is_proxy?(k[0]) && PROXY[k[0]][:key].include?(k[1])
+        def as_proxy(h, k)
+          if is_proxy?(k[0]) && proxies[k[0]][:key].include?(k[1])
             h[k[0].to_sym][k[1].to_sym] = \
               k[2]
 
@@ -158,18 +115,9 @@ module Jekyll
           end
         end
 
-        # XXX: Doc
-
         def is_proxy?(k)
-          PROXY[k] && (PROXY[k][:for] == :all || PROXY[k][:for] == @tag)
+          proxies[k] && (proxies[k][:for] == :all || proxies[k][:for] == @tag)
         end
-
-        # If you try to tap bundle and you have bundle.css and bundle.js
-        # it will return whichever one it chooses to parse first, so by default
-        # we add a proxy with accept so that we can pick out what we would
-        # prefer to be the default so you can do it Rails Style.
-        #
-        # This can also be achieved by you with accept:content_type on tag.
 
         private
         def set_accept
@@ -179,16 +127,12 @@ module Jekyll
           end
         end
 
-        # XXX: Doc
-
         private
         def dhash
           Hash.new do |h, k|
             h[k] = {}
           end
         end
-
-        # XXX: Doc
 
         private
         def from_shellwords

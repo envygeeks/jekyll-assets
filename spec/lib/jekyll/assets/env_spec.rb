@@ -13,6 +13,11 @@ describe Jekyll::Assets::Env do
      @env = Jekyll::Assets::Env.new(@site)
   end
 
+  it "does not let you use erb to process" do
+    expect(@env.find_asset("failed.scss.erb").to_s).to eq \
+      %Q{body { you: <%= "failed" %> }\n}
+  end
+
   it "adds the current Jekyll instance" do
     expect(@env.jekyll).to eq @site
   end

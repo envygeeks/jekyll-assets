@@ -14,29 +14,26 @@ module Jekyll
       }
 
       class << self
-
-        # XXX: Doc
-
-        def hooks
-          @_hooks ||= {}
+        def all
+          @_all ||= {}
         end
 
-        # XXX: Doc
-
         def trigger(base, point, *args)
-          if hooks[base][point]
-            then hooks[base][point].map do |v|
+          if all[base][point]
+            then all[base][point].map do |v|
               v.call(*args)
             end
           end
         end
 
-        # XXX: Doc
+        def point(base, point)
+          all[base][point] ||= Set.new
+        end
 
         def register(base, point, &block)
           if HOOK_POINTS.has_key?(base) && HOOK_POINTS[base].include?(point)
-             hooks[base] ||= {}
-            (hooks[base][point] ||= Set.new) << \
+             all[base] ||= {}
+             point(base, point) << \
               block
           else
             raise UnknownHookError.new(base, point)

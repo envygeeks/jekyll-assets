@@ -1,4 +1,5 @@
 require_relative "assets/helpers"
+require_relative "assets/hook"
 require "sprockets"
 require "sprockets/helpers"
 require "jekyll"
@@ -11,7 +12,6 @@ end
 require_relative "assets/env"
 require_relative "assets/whitelist"
 require_relative "assets/patches/jekyll/cleaner"
-require_relative "assets/patches/sprockets/erb_processor"
 require_relative "assets/patches/jekyll/site"
 
 require_relative "assets/hooks/post_read"

@@ -9,12 +9,11 @@ module Jekyll
         end
       end
 
-      TAGS  = {
+      TAGS = {
         "css" => %Q{<link type="text/css" rel="stylesheet" href="%s"%s>},
         "js"  => %Q{<script type="text/javascript" src="%s"%s></script>},
         "img" => %Q{<img src="%s"%s>}
-      }. \
-      freeze
+      }
 
       ALIAS = {
         "image" => "img",
@@ -44,20 +43,15 @@ module Jekyll
         add_as_jekyll_dependency(site, sprockets, page, asset)
         process_tag(sprockets, asset)
       rescue => e
-        capture_and_out_error site, e
+        capture_and_out_error \
+          site, e
       end
-
-      # XXX: Doc
 
       private
       def from_alias(tag)
         ALIAS[tag] || \
           tag
       end
-
-      # Process a tag and output the data that you asked for, if you asked
-      # for the path, we'll give it you, if you asked for an image we'll give
-      # it you and so forth.  We also set a single default here.
 
       private
       def process_tag(sprockets, asset)
@@ -80,15 +74,11 @@ module Jekyll
         end
       end
 
-      # XXX: Doc
-
       private
       def get_path(sprockets, asset)
         asset_path = sprockets.digest?? asset.digest_path : asset.logical_path
         sprockets.prefix_path(asset_path)
       end
-
-      # XXX: Doc
 
       private
       def set_img_alt(asset)
@@ -97,17 +87,11 @@ module Jekyll
         end
       end
 
-      # This is stolen right out of a Google search for Sprockets data
-      # URI which took me to a ticket, where Sprockets themselves did this
-      # and I took that commit and embedded it here, seriously...
-
       private
       def data_uri(asset)
         data = Rack::Utils.escape(Base64.encode64(asset.to_s))
         "data:#{asset.content_type};base64,#{data}"
       end
-
-      # XXX: Doc
 
       private
       def add_as_jekyll_dependency(site, sprockets, page, asset)
@@ -117,8 +101,6 @@ module Jekyll
           )
         end
       end
-
-      # XXX: Doc
 
       private
       def find_asset(sprockets)
@@ -130,7 +112,10 @@ module Jekyll
         out
       end
 
-      # XXX: Doc
+      # There is no guarantee that Jekyll will pass on the error for
+      # some reason (unless you are just booting up) so we capture that error
+      # and always output it, it can lead to some double errors but
+      # I would rather there be a double error than no error.
 
       private
       def capture_and_out_error(site, error)
@@ -138,14 +123,11 @@ module Jekyll
           file = error.sass_filename.gsub(/#{Regexp.escape(site.source)}\//, "")
           Jekyll.logger.error(%Q{Error in #{file}:#{error.sass_line}  #{error}})
         else
-          Jekyll.logger.error(
+          Jekyll.logger.error \
             "", error.to_s
-          )
         end
 
-        raise(
-          error
-        )
+        raise error
       end
     end
   end

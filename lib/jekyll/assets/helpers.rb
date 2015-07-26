@@ -2,9 +2,6 @@ module Jekyll
   module Assets
     module Helpers
       class << self
-
-        # XXX: Doc
-
         def has_javascript?
           require "execjs"
           if block_given?
@@ -15,8 +12,6 @@ module Jekyll
             " Skipping loading of library.")
         end
 
-        # XXX: Doc
-
         def try_require(file)
           require file
           if block_given?
@@ -25,8 +20,6 @@ module Jekyll
         rescue LoadError
           return nil
         end
-
-        # XXX: Doc
 
         def try_require_if_javascript?(file)
           ["execjs", file].map(&method(:require))

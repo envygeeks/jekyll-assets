@@ -20,11 +20,9 @@ describe Jekyll::Assets::Tag do
       first
   end
 
-  context do
-    it "adds a default alt attribute to img" do
-      expect(stub_tag("img", "ruby.png").attr("alt")).to eq \
-        "ruby.png"
-    end
+  it "adds a default alt attribute to img" do
+    expect(stub_tag("img", "ruby.png").attr("alt")).to eq \
+      "ruby.png"
   end
 
   it "adds attributes" do
@@ -79,25 +77,28 @@ describe Jekyll::Assets::Tag do
     expect(stub_tag("asset_path", "bundle.css").text).to eq "/assets/bundle.css"
   end
 
-  context "in production" do
-    it "returns a url w/ CDN if it exists and skips the prefix is told" do
-      allow(Jekyll).to receive(:env).and_return "production"
-      stub_env_config "cdn" => "//localhost", "skip_prefix_with_cdn" => true
-      expect(stub_tag("img", "bundle").attr("src")).to eq \
-        "//localhost/bundle.css"
-    end
+  it "returns a url w/ CDN in production if exists and skips the prefix" do
+    allow(Jekyll).to receive(:env).and_return "production"
+    stub_env_config "cdn" => "//localhost", "skip_prefix_with_cdn" => true
+    expect(stub_tag("img", "bundle").attr("src")).to eq \
+      "//localhost/bundle.css"
+  end
 
-    it "returns a url w/ a CDN if it exists" do
-      allow(Jekyll).to receive(:env).and_return "production"
-      stub_env_config "cdn" => "//localhost"
-      expect(stub_tag("img", "bundle").attr("src")).to eq \
-        "//localhost/assets/bundle.css"
-    end
+  it "returns a url w/ CDN in production" do
+    allow(Jekyll).to receive(:env).and_return "production"
+    stub_env_config "cdn" => "//localhost"
+    expect(stub_tag("img", "bundle").attr("src")).to eq \
+      "//localhost/assets/bundle.css"
   end
 
   it "adds tag stuff as [:tag] on metadata" do
     stub_tag "stylesheet", "bundle.css"
     expect(@env.find_asset("bundle.css").metadata[:tag]).to be_kind_of \
       Jekyll::Assets::Tag::Parser
+  end
+
+  it "captures and outputs errors" do
+    expect(Jekyll.logger).to receive(:error).and_return nil
+    expect { stub_tag "css", "error" }.to raise_error Sass::SyntaxError
   end
 end
