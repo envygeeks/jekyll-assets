@@ -1,13 +1,16 @@
 module Jekyll
   module Assets
 
-    # Takes over Sprockets cached so that we can add the parent and
-    # `Jekyll` just incase you need them... we need both at times to do certain
-    # tasks such as checking things without having to do long work arounds.
+    # Creates:
+    #   * `#parent` - Leading back to the original Jekyll::Assets::Env instance.
+    #   * `#jekyll` - Leading back to the `Jekyll::Site` instance.
+    #
+    # The reason we add these is because sometimes we might need access to
+    # the configuration or even to find another asset tied to a cached asset
+    # so we can verify, find... etc, etc, etc.
 
     class Cached < Sprockets::CachedEnvironment
       attr_reader :jekyll, :parent
-
       def initialize(env)
         @parent, @jekyll = env, env.jekyll
         super env

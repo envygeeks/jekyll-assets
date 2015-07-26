@@ -29,8 +29,7 @@ module Jekyll
         patch_context
         setup_cache
 
-        Hook.trigger :env, :post_init, \
-          self
+        Hook.trigger :env, :post_init, self
       end
 
       # This is normally triggered when you save an asset and the
@@ -41,25 +40,22 @@ module Jekyll
       # we should update any of your assets for you.
 
       def cached_write?
-        !@used.\
-          any?
+        !@used.any?
       end
 
-      #
+      # XXX: Doc
 
       def all_used_assets
-        return Set.new(@used).merge \
-          extra_assets
+        return Set.new(@used).merge extra_assets
       end
 
-      #
+      # XXX: Doc
 
       def all_cached_assets
-        return Set.new(self.class.assets_cache).merge \
-          extra_assets
+        return Set.new(self.class.assets_cache).merge extra_assets
       end
 
-      #
+      # XXX: Doc
 
       def extra_assets
         each_logical_path(*asset_config.fetch("assets", [])).map do |v|
@@ -67,20 +63,20 @@ module Jekyll
         end
       end
 
-      #
+      # XXX: Doc
 
       def asset_config
         jekyll.config["assets"] ||= {}
       end
 
-      #
+      # XXX: Doc
 
       def dev?
         %W(development test).include? \
           Jekyll.env
       end
 
-      #
+      # XXX: Doc
 
       def cdn?
         !dev? && \
@@ -97,20 +93,29 @@ module Jekyll
         !!asset_config["digest"]
       end
 
-      # See: `setup_css_compressor`
-      # See: ` setup_js_compressor`
+      # Checks to see if you would like to compress a specific type of file
+      # You can configure this with:
+      # ```YAML
+      # assets:
+      #   compress:
+      #     css: true | false
+      #      js: true | false
+      # ```
+      #
+      # @see `setup_css_compressor`
+      # @see ` setup_js_compressor`
 
       def compress?(what)
         !!asset_config["compress"][what]
       end
 
-      #
+      # XXX: Doc
 
       def prefix
         asset_config["prefix"]
       end
 
-      #
+      # XXX: Doc
 
       def prefix_path(path = nil)
         prefix = cdn? && asset_config["skip_prefix_with_cdn"] ? "" : self.prefix
@@ -140,7 +145,10 @@ module Jekyll
         end
       end
 
-      # Merge the defaults with your configuration.
+      # Merge the defaults with your configuration so that there is always
+      # some state and so that there need not be any configuration provided
+      # by the user, this allows you to just accept our defaults while
+      # changing only the things that you want changed.
 
       private
       def merge_config(config = nil, merge_into = asset_config)
@@ -209,6 +217,7 @@ module Jekyll
       # assets:
       #   compress:
       #     css: true
+      # ```
 
       private
       def setup_css_compressor
@@ -222,6 +231,7 @@ module Jekyll
       # assets:
       #   compress:
       #     js: true
+      # ```
 
       private
       def setup_js_compressor
@@ -242,7 +252,7 @@ module Jekyll
           jekyll.config.fetch("assets", {}).to_s)
       end
 
-      # SEE: `Context#patch`
+      # @see `Context#patch`
 
       private
       def patch_context
@@ -251,13 +261,16 @@ module Jekyll
 
       # Append assets that you always wish to be compiled that aren't
       # ever really called but can be used in other ways:
+      #
       # ```YAML
       # assets:
       #   assets:
       #     - "*.jpg"
+      # ```
       #
-      # This does not need to be a *, it can be a logical path or
-      # probably even a full path... if `find_asset` will accept.
+      # This does not need to be a *, it can be a logical path or probably
+      # even a full path... if `find_asset` will accept then we will accept it
+      # too, with one difference, we will make sure it's in your source.
 
       private
       def append_sources
@@ -267,8 +280,8 @@ module Jekyll
       end
 
       # Pass the logger onto `Jekyll`.
-      # See: Logger
-      # See: Jekyll
+      # @see Logger
+      # @see Jekyll
 
       private
       def setup_logger

@@ -5,6 +5,8 @@ module Jekyll
         @opts, @list = opts, list
       end
 
+      # XXX: Doc
+
       def process
         @list.inject({}) do |h, k|
           val = @opts[k] || @opts[k.is_a?(String) ? k.to_sym : k.to_s]

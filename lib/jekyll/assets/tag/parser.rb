@@ -71,6 +71,7 @@ module Jekyll
             super "Unescaped double colon argument."
           end
         end
+        # XXX: Doc
 
         def initialize(args, tag)
           @raw_args, @tag = args, tag
@@ -78,6 +79,8 @@ module Jekyll
           parse_raw
           set_accept
         end
+
+        # XXX: Doc
 
         def to_html
           @args[:html].map do |k, v|
@@ -155,7 +158,7 @@ module Jekyll
           end
         end
 
-        #
+        # XXX: Doc
 
         def is_proxy?(k)
           PROXY[k] && (PROXY[k][:for] == :all || PROXY[k][:for] == @tag)
@@ -176,12 +179,16 @@ module Jekyll
           end
         end
 
+        # XXX: Doc
+
         private
         def dhash
           Hash.new do |h, k|
             h[k] = {}
           end
         end
+
+        # XXX: Doc
 
         private
         def from_shellwords

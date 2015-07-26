@@ -14,9 +14,14 @@ module Jekyll
       }
 
       class << self
+
+        # XXX: Doc
+
         def hooks
           @_hooks ||= {}
         end
+
+        # XXX: Doc
 
         def trigger(base, point, *args)
           if hooks[base][point]
@@ -25,6 +30,8 @@ module Jekyll
             end
           end
         end
+
+        # XXX: Doc
 
         def register(base, point, &block)
           if HOOK_POINTS.has_key?(base) && HOOK_POINTS[base].include?(point)

@@ -1,16 +1,17 @@
 module Jekyll
   module Assets
 
-    # This is a temporary class until I get back upstream and push out a
-    # change that fixes Jekyll's logger's inability to accept a block and spit
-    # that back out to you, for now though we work around it.
+    # TODO: jekyll/jekyll@upstream add support for blocks as messages...
+    # NOTE: This is a temporary class, until we can go upstream and fix
+    #   the little known fact that it doesn't accept a block for a message
+    #   it is passing on.  Until then we are holding this.
 
     class Logger
       def instance
         @logger ||= Jekyll.logger
       end
 
-      # See: Jekyll.logger.methods
+      # @see Jekyll.logger.methods
 
       %W(warn error info debug).each do |k|
         define_method k do |msg = nil, &block|

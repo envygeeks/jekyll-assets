@@ -29,13 +29,11 @@ module Jekyll
         super
       end
 
-      # -----------------------------------------------------------------------
       # NOTE: We only attach to the regenerator if you are using digested
-      #       assets, otherwise we forego any association with it so that we
-      #       keep your builds ultra fast, this is ideal in dev.  Disable
-      #       digests and let us process independent so the entire site
-      #       isn't regenerated because of a single asset change.
-      # -----------------------------------------------------------------------
+      #   assets, otherwise we forego any association with it so that we keep
+      #   your builds ultra fast, this is ideal in dev.  Disable digests and
+      #   let us process independent so the entire site isn't regenerated
+      #   because of a single asset change.
 
       def render(context)
         site = context.registers[:site]
@@ -48,6 +46,8 @@ module Jekyll
       rescue => e
         capture_and_out_error site, e
       end
+
+      # XXX: Doc
 
       private
       def from_alias(tag)
@@ -80,7 +80,7 @@ module Jekyll
         end
       end
 
-      #
+      # XXX: Doc
 
       private
       def get_path(sprockets, asset)
@@ -88,7 +88,7 @@ module Jekyll
         sprockets.prefix_path(asset_path)
       end
 
-      #
+      # XXX: Doc
 
       private
       def set_img_alt(asset)
@@ -107,7 +107,7 @@ module Jekyll
         "data:#{asset.content_type};base64,#{data}"
       end
 
-      #
+      # XXX: Doc
 
       private
       def add_as_jekyll_dependency(site, sprockets, page, asset)
@@ -118,7 +118,7 @@ module Jekyll
         end
       end
 
-      #
+      # XXX: Doc
 
       private
       def find_asset(sprockets)
@@ -130,7 +130,7 @@ module Jekyll
         out
       end
 
-      #
+      # XXX: Doc
 
       private
       def capture_and_out_error(site, error)
