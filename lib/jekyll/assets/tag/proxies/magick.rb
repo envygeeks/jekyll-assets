@@ -1,5 +1,3 @@
-require "mini_magick"
-
 module Jekyll
   module Assets
     class Tag

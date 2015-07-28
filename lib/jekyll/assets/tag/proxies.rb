@@ -81,4 +81,4 @@ module Jekyll
   end
 end
 
-require_relative "proxies/magick"
+Jekyll::Assets::Helpers.try_require("mini_magick") { require_relative "proxies/magick" }
