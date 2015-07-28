@@ -9,10 +9,8 @@ module Jekyll
         what.class_eval do
           alias_method :_old_asset_path, :asset_path
           def asset_path(asset, opts = {})
-            out = _old_asset_path asset, opts = {}
-            unless out
-              return
-            end
+            out = _old_asset_path asset
+            return unless out
 
             environment.parent.used.add(environment.find_asset \
               resolve(asset))

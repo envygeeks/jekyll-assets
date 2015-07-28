@@ -91,10 +91,13 @@ describe Jekyll::Assets::Tag do
       "//localhost/assets/bundle.css"
   end
 
-  it "adds tag stuff as [:tag] on metadata" do
+  it "adds itself to #tags on the asset" do
+    @env.find_asset("bundle.css").liquid_tags.clear
     stub_tag "stylesheet", "bundle.css"
-    expect(@env.find_asset("bundle.css").metadata[:tag]).to be_kind_of \
-      Jekyll::Assets::Tag::Parser
+    expect(@env.find_asset("bundle.css").liquid_tags).not_to be_empty
+    expect(@env.find_asset("bundle.css").liquid_tags.size).to eq 1
+    expect(@env.find_asset("bundle.css").liquid_tags.first).to be_kind_of \
+      Jekyll::Assets::Tag
   end
 
   it "captures and outputs errors" do

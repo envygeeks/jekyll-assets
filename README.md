@@ -82,7 +82,6 @@ the ground rules for our tags as a specification.
 * `magick:2x` - Tells us to write a double width/height image.
 * `magick:4x` - Tells us to write a quadruple width/height image.
 * `magick:half` - Tells us to shrink the image to half.
-* `magick:quality` - Allows you to set image quality.
 
 ## Hooks
 

@@ -1,3 +1,4 @@
+require_relative "proxies"
 require "forwardable"
 
 module Jekyll
@@ -25,23 +26,6 @@ module Jekyll
           "css" => "text/css", "js" => "application/javascript"
         }
 
-        PROXY  = {
-          "data" => {
-            :for => :all,
-            :key => [
-              "@uri"
-            ]
-          },
-
-          "sprockets" => {
-            :for => :all,
-            :key => [
-              "accept",
-              "write_to"
-            ]
-          }
-        }
-
         class UnescapedColonError < StandardError
           def initialize
             super "Unescaped double colon argument."
@@ -55,16 +39,10 @@ module Jekyll
         end
 
         def initialize(args, tag)
-          @raw_args = args
+          @raw_args, @tags = args, tag
           @tag = tag
           parse_raw
           set_accept
-        end
-
-        def proxies
-          @_proxies ||= Proxies.all.each_with_object(PROXY.dup) do |k, h|
-            h[k.args[:name].to_s] = k.args
-          end
         end
 
         def to_html
@@ -72,6 +50,17 @@ module Jekyll
             %Q{ #{k}="#{v}"}
           end. \
           join
+        end
+
+        def proxies
+          keys = (args.keys - Proxies.base_keys - [:file, :html])
+          args.select do |k, v|
+            keys.include?(k)
+          end
+        end
+
+        def has_proxies?
+          proxies.any?
         end
 
         private
@@ -97,33 +86,29 @@ module Jekyll
 
         private
         def as_bool_or_html(h, k)
-          if is_proxy?(k[0]) && proxies[k[0]][:key].include?("@#{k[1]}")
-            h[k[0].to_sym][k[1].to_sym] = true
+          key, sub_key = k
+          if Proxies.has?(key, @tag, "@#{sub_key}")
+            h[key.to_sym][sub_key.to_sym] = true
           else
-            h[:html][k[0]] = k[1]
+            h[:html][key] = k[1]
           end
         end
 
         private
         def as_proxy(h, k)
-          if is_proxy?(k[0]) && proxies[k[0]][:key].include?(k[1])
-            h[k[0].to_sym][k[1].to_sym] = \
-              k[2]
-
-          elsif is_proxy?(k[0])
+          key, sub_key, value = k
+          if Proxies.has?(key, @tag, sub_key)
+            h[key.to_sym][sub_key.to_sym] = \
+              value
+          elsif Proxies.has?(key)
             raise UnknownProxyError
           end
         end
 
-        def is_proxy?(k)
-          proxies[k] && (proxies[k][:for] == :all || proxies[k][:for] == @tag)
-        end
-
         private
         def set_accept
-          if !@args[:sprockets][:accept] && (accept = ACCEPT[@tag])
-            then @args[:sprockets][:accept] = \
-              accept
+          if (accept = ACCEPT[@tag]) && !args[:sprockets][:accept]
+            @args[:sprockets][:accept]  =  accept
           end
         end
 

@@ -27,6 +27,13 @@ module Jekyll
         jekyll.sprockets = self
       end
 
+      def in_cache_dir(*paths)
+        cache_dir = asset_config.fetch("cache", ".asset-cache") || nil
+        jekyll.in_source_dir(
+          cache_dir, *paths
+        )
+      end
+
       def cached_write?
         !@used.any?
       end
@@ -57,21 +64,14 @@ module Jekyll
           return File.join(cdn, prefix) if !path
           File.join(cdn, prefix, path)
         else
-          return  prefix if !path
-          File.join(
-            prefix, path
-          )
+          return prefix if !path
+          File.join(prefix, path)
         end
       end
-
-      # See: `Cached`
 
       def cached
         Cached.new(self)
       end
-
-      # See: `write_cached_assets`
-      # See: `write_assets`
 
       def write_all
         if cached_write?
@@ -79,38 +79,10 @@ module Jekyll
         end
       end
 
-      # Merge the defaults with your configuration so that there is always
-      # some state and so that there need not be any configuration provided
-      # by the user, this allows you to just accept our defaults while
-      # changing only the things that you want changed.
-
       private
-      def merge_config(config = nil, merge_into = asset_config)
-        config ||= dev?? Configuration::DEVELOPMENT : Configuration::PRODUCTION
-        config.each_with_object(merge_into) do |(k, v), h|
-          if !h.has_key?(k)
-            h[k] = \
-              v
-
-          elsif v.is_a?(Hash)
-            h[k] = merge_config(
-              v, h[k]
-            )
-          end
-        end
-
-
-        merge_into
-      end
-
-      # If we have used assets then we are working with a brand new
-      # build and a brand new set of assets, so we reset the asset_cache
-      # and digest_cache and write everything fresh from the start.
-
-      private
-      def write_assets(assets = self.all_used_assets)
-        self.class.assets_cache = Set.new(assets)
-        self.class.digest_cache = Hash[Set.new(assets).map do |a|
+      def write_assets(assets = self.all_assets)
+        self.class.assets_cache = assets
+        self.class.digest_cache = Hash[assets.map do |a|
           [a.logical_path, a.digest]
         end]
 
@@ -120,11 +92,21 @@ module Jekyll
       end
 
       private
-      def write_cached_assets
-        all_assets(true).each do |a|
-          viejo = self.class.digest_cache[a.logical_path]
-          nuevo = find_asset(a.logical_path).digest
-          next if nuevo == viejo
+      def write_cached_assets(assets = all_assets(true))
+        assets.each do |a|
+          if !a.is_a?(Tag::ProxiedAsset)
+            viejo = self.class.digest_cache[a.logical_path]
+            nuevo = find_asset(a.logical_path).digest
+            path  = as_path a
+
+            if nuevo == viejo && File.file?(path)
+              next
+            end
+          else
+            if File.file?(a.logical_path)
+              next
+            end
+          end
 
           self.class.digest_cache[a.logical_path] = a.digest
           a.write_to as_path a

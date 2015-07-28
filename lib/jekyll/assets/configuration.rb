@@ -27,22 +27,19 @@ module Jekyll
         },
       })
 
-      # Merges the users configuration with the default configuration so
-      # that there is always some form of stable configuration for you to tap
-      # into.  This is merged into `#asset_config`.
+      def self.defaults
+        %W(development test).include?(Jekyll.env) ? DEVELOPMENT : PRODUCTION
+      end
 
-      def self.merge(merge_into, config = nil)
-        config ||= %(development test).include?(Jekyll.env) ? DEVELOPMENT : PRODUCTION
+      def self.merge(merge_into, config = self.defaults)
         merge_into = merge_into.dup
+        config.each_with_object(merge_into) do |(k, v), h|
+          if !h.has_key?(k) || (v.is_a?(Hash) && !h[k])
+            h[k] = v
 
-        config.each_with_object(merge_into) do |(key, value), hash|
-          if !hash.has_key?(key) || (value.is_a?(Hash) && !hash[key])
-            hash[key] = \
-              value
-
-          elsif value.is_a?(Hash)
-            hash[key] = merge hash[key], \
-              value
+          elsif v.is_a?(Hash)
+            h[k] = merge h[k], \
+              v
           end
         end
 

@@ -3,26 +3,38 @@ describe Jekyll::Assets::Tag::Parser do
   let(:escape_error) { Jekyll::Assets::Tag::Parser::UnescapedColonError }
   let( :proxy_error) { Jekyll::Assets::Tag::Parser::UnknownProxyError }
   let(       :klass) { described_class }
+  before :each, :proxies => true do
+    allow(Jekyll::Assets::Tag::Proxies).to receive(:all).and_return(Set.new([{
+      :cls=> :internal,
+      :args=>[
+        "resize",
+        "@2x"
+      ],
 
-  it "properly parses syntax" do
-    input = "hello.jpg lol magick:2x sprockets:accept:image/gif " \
-      "key:value magick:format:png"
+      :name=>[
+        :magick,
+        "magick"
+      ],
 
-    expect(described_class.new(input, "img").args).to match({
+      :tags=>[
+        :img,
+        "img"
+      ],
+    }]))
+  end
+
+  it "properly parses syntax", :proxies => true do
+    input = "hello.jpg lol key:value magick:2x magick:resize:2x2"
+    expect(klass.new(input, "img").args).to match({
       :file=>"hello.jpg",
-
-      :sprockets => {
-        :accept=>"image/gif"
+      :magick => {
+        :resize => "2x2",
+        :"2x" => true
       },
 
       :html => {
         "lol"=>true,
         "key"=>"value"
-      },
-
-      :magick => {
-        :format=>"png",
-        :"2x" => true
       }
     })
   end
@@ -39,15 +51,13 @@ describe Jekyll::Assets::Tag::Parser do
       "unknown"
   end
 
-  it "allows boolean proxy arguments" do
-    input = "img.jpg magick:2x"
-    expect(klass.new(input, "img").args[:magick][:"2x"]).to eq \
+  it "allows boolean proxy arguments", :proxies => true do
+    expect(klass.new("img.jpg magick:2x", "img").args[:magick][:"2x"]).to eq \
       true
   end
 
-  it "does not allocate boolean arguments as proxy values" do
-    input = "img.jpg magick:2x:raise"
-    expect { klass.new(input, "img") }.to raise_error \
+  it "does not allocate boolean arguments as proxy values", :proxies => true do
+    expect { klass.new("img.jpg magick:2x:raise", "img") }.to raise_error \
       proxy_error
   end
 

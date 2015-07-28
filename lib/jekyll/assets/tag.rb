@@ -1,7 +1,13 @@
 module Jekyll
   module Assets
+
+    # TODO: Somewhere in here we need to designate the proxy as an asset
+    #   so that the env does not need to be aware of anything.
+
     class Tag < Liquid::Tag
+      require_relative "tag/proxied_asset"
       require_relative "tag/parser"
+      attr_reader :args
 
       class AssetNotFoundError < StandardError
         def initialize(asset)
@@ -23,8 +29,10 @@ module Jekyll
       }
 
       def initialize(tag, args, tokens)
-        @tokens, @tag, @og_tag, @url_options = tokens, from_alias(tag), tag, {}
+        @tokens = tokens
+        @tag = from_alias(tag)
         @args = Parser.new(args, @tag)
+        @og_tag = tag
         super
       end
 
@@ -63,7 +71,7 @@ module Jekyll
 
         elsif @args[:data][:uri]
           return TAGS[@tag] % [
-            data_uri(asset), @args.to_html
+            asset.data_uri, @args.to_html
           ]
 
         else
@@ -76,8 +84,9 @@ module Jekyll
 
       private
       def get_path(sprockets, asset)
-        asset_path = sprockets.digest?? asset.digest_path : asset.logical_path
-        sprockets.prefix_path(asset_path)
+        sprockets.prefix_path(
+          sprockets.digest?? asset.digest_path : asset.logical_path
+        )
       end
 
       private
@@ -85,12 +94,6 @@ module Jekyll
         if !@args[:html]["alt"]
           return @args[:html]["alt"] = asset.logical_path
         end
-      end
-
-      private
-      def data_uri(asset)
-        data = Rack::Utils.escape(Base64.encode64(asset.to_s))
-        "data:#{asset.content_type};base64,#{data}"
       end
 
       private
@@ -105,11 +108,15 @@ module Jekyll
       private
       def find_asset(sprockets)
         if !(out = sprockets.find_asset(@args[:file], @args[:sprockets]))
-          raise AssetNotFoundError, @args[:file] else out.metadata[:tag] = \
-            @args
+          raise AssetNotFoundError, @args[:file]
+        else
+          out.liquid_tags << self
+          if !@args.has_proxies?
+            out else ProxiedAsset.new(
+              out, @args, sprockets, self
+            )
+          end
         end
-
-        out
       end
 
       # There is no guarantee that Jekyll will pass on the error for
