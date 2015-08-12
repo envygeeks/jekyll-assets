@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
     them, respecting dependencies, minify and many more.
   DESC
 
-  spec.add_runtime_dependency("sprockets", "~> 3.2")
+  spec.add_runtime_dependency("sprockets", "~> 3.3")
   spec.add_runtime_dependency("sprockets-helpers", "~> 1.2")
   spec.add_runtime_dependency("jekyll", "~> 3.0.0.pre.beta8")
 
