@@ -9,7 +9,7 @@ module Jekyll
     module Liquid
       module Filters
         ACCEPTABLE_FILTERS = [:css, :img, :asset_path, :stylesheet,
-          :javascript, :style, :img, :js]
+          :javascript, :style, :image, :js]
 
         # --
         # The base filters.
