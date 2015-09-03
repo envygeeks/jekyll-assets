@@ -155,7 +155,7 @@ module Jekyll
           def cache_file
             return true if @_cached || find_cached
 
-            filename.dirname.mkdir_p unless filename.dirname == env.in_cache_dir
+            filename.dirname.mkdir_p
             Pathutil.new(asset.filename).cp filename
             true
           end
