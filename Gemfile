@@ -9,7 +9,8 @@ group :development do
   gem "guard"
 end
 
-gem "mini_magick", "~> 4.2"
 gem "sprockets-es6", "~> 0.6"
 gem "autoprefixer-rails", "~> 6.0"
+gem "font-awesome-sass", "~> 4.4.0"
+gem "mini_magick", "~> 4.2"
 gem "uglifier"

@@ -5,6 +5,7 @@ require "jekyll"
 require_relative "assets/hook"
 require_relative "assets/helpers"
 require_relative "assets/extras/es6"
+require_relative "assets/extras/font-awesome"
 require_relative "assets/extras/helpers"
 require_relative "assets/extras/prefix"
 
