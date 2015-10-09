@@ -172,4 +172,9 @@ describe Jekyll::Assets::Env do
     uncached_site.sprockets.write_all
     expect(Pathname.new(file)).to exist
   end
+
+  it "allows you to merge CSS with sprockets.", :process => true do
+    expect(@env.find_asset("merge").to_s).to match(\
+      /\Abody {\n\s+/)
+  end
 end
