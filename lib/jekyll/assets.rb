@@ -16,4 +16,5 @@ require_relative "assets/patches/jekyll/site"
 
 require_relative "assets/hooks/post_read"
 require_relative "assets/hooks/post_write"
+require_relative "assets/filters"
 require_relative "assets/tag"

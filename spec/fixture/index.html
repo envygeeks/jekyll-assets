@@ -6,3 +6,4 @@ layout: default
 <p>{% asset_path bundle sprockets:accept:"application/javascript" %}</p>
 <p>{% img ruby.png  data:uri %}</p>
 <p>{% img ruby.png magick:2x %}</p>
+<p>{{ "ruby.png" | img : "magick:2x alt:'filter'" }}</p>
