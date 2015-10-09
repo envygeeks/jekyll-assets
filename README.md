@@ -81,6 +81,12 @@ Once plugin installed, you'll have following Liquid tags available:
 - `{% asset_path logo.png %}`: Returns _resulting_ URL for `logo.png`
 - `{% asset app.css %}`: Returns _compiled_ body of `app.css`
 
+The syntax order of tags and filters is:
+
+```
+{% tag_name asset_path html_attributes* options* %}
+```
+
 You can pass extra attributes to `javascript`, `stylesheet` and `image` tags:
 
 ``` html
