@@ -66,6 +66,8 @@ module Jekyll
         set_img_alt asset if @tag == "img"
         out = get_path sprockets, asset
 
+        sprockets.used.add(asset)
+
         if @tag == "asset_path"
           return out
 
@@ -75,7 +77,6 @@ module Jekyll
           ]
 
         else
-          sprockets.used.add(asset)
           return TAGS[@tag] % [
             out, @args.to_html
           ]
