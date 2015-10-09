@@ -7,9 +7,9 @@ See: https://github.com/jekyll-assets/jekyll-assets/tree/legacy#jekyllassets
 
 # Jekyll 3 Assets
 
-Jekyll 3 assets is an asset pipeline using Sprockets 3 for Jekyll 3.  This
-software is deeply alpha and still is missing pieces from old Jekyll-Assets so
-beware when you use it, these pieces will be added soon (tm.)
+Jekyll 3 assets is an asset pipeline using Sprockets 3 to build especially
+for Jekyll 3.  It utilizes new features of both Sprockets and Jekyll to achieve
+a clean and extensible assets platform for Jekyll.
 
 ## Configuration
 
@@ -86,7 +86,7 @@ rules for our tags as a specification.
 ## Filters
 
 There is a full suite of filters, actually, any tag and any proxy can be a
-filter by way of filter arguments, take the following example: 
+filter by way of filter arguments, take the following example:
 
 ```liquid
 {{ src | img : "magick:2x" }}
