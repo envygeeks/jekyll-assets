@@ -52,20 +52,24 @@ module Jekyll
       end
 
       def cdn?() !dev? && !!asset_config["cdn"] end
+      def baseurl() jekyll.config["baseurl"] || "" end
       def dev?() %W(development test).include? Jekyll.env end
       def compress?(what) !!asset_config["compress"][what] end
       def asset_config() jekyll.config["assets"] ||= {} end
       def digest?() !!asset_config["digest"] end
       def prefix() asset_config["prefix"] end
 
-      def prefix_path(path = nil)
+      def prefix_path(path = "")
         prefix = cdn? && asset_config["skip_prefix_with_cdn"] ? "" : self.prefix
+        path   = [baseurl, prefix, path]
         if cdn? && (cdn = asset_config["cdn"])
-          return File.join(cdn, prefix) if !path
-          File.join(cdn, prefix, path)
+          File.join(cdn, *path).chomp(
+            "/"
+          )
         else
-          return prefix if !path
-          File.join(prefix, path)
+          File.join(*path).chomp(
+            "/"
+          )
         end
       end
 

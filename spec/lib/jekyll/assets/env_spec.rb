@@ -42,6 +42,12 @@ describe Jekyll::Assets::Env do
     expect(@env.prefix_path).to eq "/assets"
   end
 
+  it "uses Jekylls baseurl when prefixing the url" do
+    @env.jekyll.config["baseurl"] = "/hello"
+    expect(@env.prefix_path).to eq "/hello/assets"
+    @env.jekyll.config["baseurl"] = ""
+  end
+
   it "digests by default in production" do
     allow(Jekyll).to receive(:env).and_return "production"
     expect(uncached_env.digest?).to be true
