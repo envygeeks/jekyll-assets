@@ -30,8 +30,15 @@ module Jekyll
           end
 
           private
+          def quality(img)
+            if opts[:quality]
+              img.quality opts[:quality]
+            end
+          end
+
+          private
           def magick_resize(img)
-            if opts[:resize] && opts[:"@2x"]
+            if opts[:resize] && (opts[:"2x"] || opts[:"4x"] || opts[:half])
               raise DoubleResizeError
 
             elsif @opts[:resize]
@@ -78,6 +85,7 @@ module Jekyll
         end
 
         add Magick, :magick, :img, [
+          "quality",
           "resize",
           "format",
           "rotate",
