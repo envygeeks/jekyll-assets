@@ -28,7 +28,8 @@ module Jekyll
       })
 
       def self.defaults
-        %W(development test).include?(Jekyll.env) ? DEVELOPMENT : PRODUCTION
+        %W(development test).include?(Jekyll.env) ? \
+          DEVELOPMENT : PRODUCTION
       end
 
       def self.merge(merge_into, config = self.defaults)
