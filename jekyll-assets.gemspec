@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency("sprockets", "~> 3.3")
   spec.add_runtime_dependency("sprockets-helpers", "~> 1.2")
-  spec.add_runtime_dependency("jekyll", "~> 3.0.0.pre.beta8")
+  spec.add_runtime_dependency("jekyll", "~> 3.0.0.pre.beta9")
 
   spec.add_development_dependency("nokogiri", "~> 1.6")
   spec.add_development_dependency("envygeeks-coveralls", "~> 1.0")
