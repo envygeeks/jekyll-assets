@@ -8,8 +8,8 @@ See: https://github.com/jekyll-assets/jekyll-assets/tree/legacy#jekyllassets
 # Jekyll 3 Assets
 
 Jekyll 3 assets is an asset pipeline using Sprockets 3 for Jekyll 3.  This
-software is deeply alpha and still is missing pieces from old Jekyll-Assets
-so beware when you use it, these pieces will be added soon (tm.)
+software is deeply alpha and still is missing pieces from old Jekyll-Assets so
+beware when you use it, these pieces will be added soon (tm.)
 
 ## Configuration
 
@@ -37,8 +37,8 @@ assets:
 ## ERB Support
 
 ERB Support is removed in favor of trying to get this included on Github Pages
-eventually (if I can.) Having ERB presents a security risk to Github because
-it would allow you to use Ruby in ways they don't want you to.
+eventually (if I can.) Having ERB presents a security risk to Github because it
+would allow you to use Ruby in ways they don't want you to.
 
 ## Tags
 
@@ -63,12 +63,12 @@ it would allow you to use Ruby in ways they don't want you to.
 * `unknown:key:value` will raise `DoubleColonError`, escape it.
 * `proxy:unknown:value` will raise a `UnknownProxyError`.
 
-Lets say we have `sprockets` proxies and sprockets allows you to proxy
-accept, if you send `{% img src sprockets:accept:image/gif }` then Sprockets
-find_asset will get `{ :accept => "image/gif" }` but if you try to proxy
-"unknown" on sprockets we will raise a Proxy error.  For more information
-then look at `parser_spec.rb` in the spec folder because it literally lays out
-the ground rules for our tags as a specification.
+Lets say we have `sprockets` proxies and sprockets allows you to proxy accept,
+if you send `{% img src sprockets:accept:image/gif }` then Sprockets find_asset
+will get `{ :accept => "image/gif" }` but if you try to proxy "unknown" on
+sprockets we will raise a Proxy error.  For more information then look at
+`parser_spec.rb` in the spec folder because it literally lays out the ground
+rules for our tags as a specification.
 
 ### Current Proxies:
 
@@ -82,6 +82,15 @@ the ground rules for our tags as a specification.
 * `magick:2x` - Tells us to write a double width/height image.
 * `magick:4x` - Tells us to write a quadruple width/height image.
 * `magick:half` - Tells us to shrink the image to half.
+
+## Filters
+
+There is a full suite of filters, actually, any tag and any proxy can be a
+filter by way of filter arguments, take the following example: 
+
+```liquid
+{{ src | img : "magick:2x" }}
+```
 
 ## Hooks
 
