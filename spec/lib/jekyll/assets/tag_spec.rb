@@ -74,13 +74,13 @@ describe Jekyll::Assets::Tag do
   end
 
   it "returns the source with asset_source" do
-    expect(stub_tag("asset_source", "simple").text).to eq \
-      "body {\n  background: #000;\n}\n"
+    expect(stub_tag("asset_source", "simple").text.strip).to eq \
+      "body {\n  background: #000;\n}"
   end
 
   it "returns the source with asset" do
-    expect(stub_tag("asset_source", "simple").text).to eq \
-      "body {\n  background: #000;\n}\n"
+    expect(stub_tag("asset_source", "simple").text.strip).to eq \
+      "body {\n  background: #000;\n}"
   end
 
   it "returns the path on asset_path" do
