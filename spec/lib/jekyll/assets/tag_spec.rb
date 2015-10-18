@@ -73,6 +73,16 @@ describe Jekyll::Assets::Tag do
     expect(result.attr("type")).to eq "text/css"
   end
 
+  it "returns the source with asset_source" do
+    expect(stub_tag("asset_source", "simple").text).to eq \
+      "body {\n  background: #000;\n}\n"
+  end
+
+  it "returns the source with asset" do
+    expect(stub_tag("asset_source", "simple").text).to eq \
+      "body {\n  background: #000;\n}\n"
+  end
+
   it "returns the path on asset_path" do
     expect(stub_tag("asset_path", "bundle.css").text).to eq "/assets/bundle.css"
   end

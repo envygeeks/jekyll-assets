@@ -65,11 +65,13 @@ module Jekyll
       def process_tag(sprockets, asset)
         set_img_alt asset if @tag == "img"
         out = get_path sprockets, asset
-
         sprockets.used.add(asset)
 
         if @tag == "asset_path"
           return out
+
+        elsif @tag == "asset" || @tag == "asset_source"
+          return asset.to_s
 
         elsif @args[:data][:uri]
           return TAGS[@tag] % [
@@ -141,6 +143,6 @@ module Jekyll
   end
 end
 
-%W(js css img image javascript stylesheet style asset_path).each do |t|
+%W(js css img image javascript stylesheet style asset_path asset_source asset).each do |t|
   Liquid::Template.register_tag t, Jekyll::Assets::Tag
 end
