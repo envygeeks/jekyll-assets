@@ -32,6 +32,12 @@ assets:
 * Disable digesting by default in development.
 * Digest by default in production
 
+## Asset Compression
+
+* Requires sass and uglify.
+* Disable compression by default in development.
+* Enable by default in production.
+
 ***You can force digesting with `digest: true` in your `_config.yml`***
 
 ## ERB Support
@@ -42,9 +48,10 @@ would allow you to use Ruby in ways they don't want you to.
 
 ## Tags
 
-* stylesheet, css, style
-* javascript, js
 * image, img
+* javascript, js
+* stylesheet, css, style
+* asset, asset_source
 * asset_path
 
 ### Tag Example:
