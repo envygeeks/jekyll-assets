@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jekyll-assets/jekyll-assets.png?branch=master)](https://travis-ci.org/jekyll-assets/jekyll-assets) [![Coverage Status](https://coveralls.io/repos/jekyll-assets/jekyll-assets/badge.png?branch=master)](https://coveralls.io/r/jekyll-assets/jekyll-assets) [![Code Climate](https://codeclimate.com/github/jekyll-assets/jekyll-assets/badges/gpa.svg)](https://codeclimate.com/github/jekyll-assets/jekyll-assets) [![Dependency Status](https://gemnasium.com/jekyll-assets/jekyll-assets.svg)](https://gemnasium.com/jekyll-assets/jekyll-assets)
+[![Build Status](https://travis-ci.org/jekyll/jekyll-assets.png?branch=master)](https://travis-ci.org/jekyll/jekyll-assets) [![Coverage Status](https://coveralls.io/repos/jekyll/jekyll-assets/badge.png?branch=master)](https://coveralls.io/r/jekyll/jekyll-assets) [![Code Climate](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)](https://codeclimate.com/github/jekyll/jekyll-assets) [![Dependency Status](https://gemnasium.com/jekyll/jekyll-assets.svg)](https://gemnasium.com/jekyll/jekyll-assets)
 
 
 ## Are you looking for the docs for Jekyll Assets < 2.0.0?
