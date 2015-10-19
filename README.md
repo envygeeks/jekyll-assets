@@ -15,6 +15,9 @@ a clean and extensible assets platform for Jekyll.
 
 ```yaml
 assets:
+  compress:
+    css: false | true | default - development: false, production: true
+     js: false | true | default - development: false, production: true
   cache: false | directory | default: .asset-cache
   cdn: https://cdn.example.com
   skip_prefix_with_cdn: false
