@@ -11,6 +11,19 @@ Jekyll 3 assets is an asset pipeline using Sprockets 3 to build especially
 for Jekyll 3.  It utilizes new features of both Sprockets and Jekyll to achieve
 a clean and extensible assets platform for Jekyll.
 
+## Using Jekyll Assets with Jekyll
+
+When you are using a Gemfile and bundler you need to do nothing special to get
+Jekyll Assets to work, it will automatically load itself and work with Jekyll
+when you bundle install and run Jekyll through bundle exec. However, when you
+have globally installed Gems (`gem install jekyll-assets`) then in your
+`_config.yml` do:
+
+```yaml
+gems:
+  - jekyll-assets
+```
+
 ## Configuration
 
 ```yaml
