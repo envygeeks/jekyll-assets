@@ -1,9 +1,5 @@
 module Jekyll
   module Assets
-
-    # TODO: Somewhere in here we need to designate the proxy as an asset
-    #   so that the env does not need to be aware of anything.
-
     class Tag < Liquid::Tag
       require_relative "tag/proxied_asset"
       require_relative "tag/parser"
@@ -63,10 +59,9 @@ module Jekyll
 
       private
       def process_tag(sprockets, asset)
+        sprockets.used.add(asset) unless @tag == "asset_source"
         set_img_alt asset if @tag == "img"
         out = get_path sprockets, asset
-        sprockets.used.add(asset)
-
         if @tag == "asset_path"
           return out
 
