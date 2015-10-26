@@ -1,9 +1,17 @@
 require "rspec/helper"
 
 describe Jekyll::Assets::Hook do
-  it "allows registration of receivers onto hook points" do
-    Jekyll::Assets::Hook.register(:env, :pre_init, &proc {})
-    expect(Jekyll::Assets::Hook.all[:env][:pre_init].size).to eq 1
+  before :each do
+    Jekyll::Assets::Hook::HookPoints.store(:test, [:test])
+    Jekyll::Assets::Hook.all.store(:test, {
+      :test => { :early => Set.new, :late => Set.new }
+    })
+  end
+
+  it "allows registration of receivers onto points" do
+    hooks = Jekyll::Assets::Hook.point(:test, :test, :late)
+    Jekyll::Assets::Hook.register(:test, :test, &proc {})
+    expect(hooks.size).to eq 1
   end
 
   it "raises if there is no hook" do
@@ -16,10 +24,10 @@ describe Jekyll::Assets::Hook do
       raise_error Jekyll::Assets::Hook::UnknownHookError
   end
 
-  it "sends a message to hooks on a point to all receivers" do
+  it "sends a message to all receivers on a point" do
     result, tproc = 1, proc { result = 2 }
-    Jekyll::Assets::Hook.register(:env, :pre_init, &tproc)
-    Jekyll::Assets::Hook. trigger(:env, :pre_init)
+    Jekyll::Assets::Hook.register(:test, :test, &tproc)
+    Jekyll::Assets::Hook. trigger(:test, :test)
     expect(result).to eq 2
   end
 end

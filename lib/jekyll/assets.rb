@@ -1,20 +1,22 @@
 require "sprockets"
-require "sprockets/helpers"
 require "jekyll"
 
-require_relative "assets/hook"
-require_relative "assets/helpers"
-require_relative "assets/extras/es6"
-require_relative "assets/extras/font-awesome"
-require_relative "assets/extras/helpers"
-require_relative "assets/extras/prefix"
+Dir.glob(File.expand_path("hooks/*.rb", __dir__)).map do |file|
+  require file
+end
 
-require_relative "assets/env"
-require_relative "assets/patches/jekyll/cleaner"
-require_relative "assets/patches/sprockets/asset"
-require_relative "assets/patches/jekyll/site"
-
-require_relative "assets/hooks/post_read"
-require_relative "assets/hooks/post_write"
-require_relative "assets/filters"
-require_relative "assets/tag"
+module Jekyll
+  module Assets
+    %W(patches/**/* cached config env hook logger version liquid/*
+         hooks/* addons/{*,**/*}).each do |path|
+      if path !~ /\*/
+        require_relative "assets/#{path}"
+      else
+        Dir.glob(File.expand_path("assets/#{path}.rb", __dir__)). \
+            map do |file|
+          require file
+        end
+      end
+    end
+  end
+end

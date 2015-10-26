@@ -6,13 +6,11 @@ describe Jekyll::Assets::Cached do
 
   it "adds the Jekyll instance" do
     expect(cached).to respond_to :jekyll
-    expect(cached.jekyll).to be_kind_of \
-      Jekyll::Site
+    expect(cached.jekyll).to be_kind_of Jekyll::Site
   end
 
   it "adds the parent the *non-cached* instance" do
     expect(cached).to respond_to :parent
-    expect(cached.parent).to be_kind_of \
-      Jekyll::Assets::Env
+    expect(cached.parent).to be_kind_of Jekyll::Assets::Env
   end
 end
