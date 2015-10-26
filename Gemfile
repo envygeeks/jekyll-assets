@@ -3,10 +3,8 @@ gemspec
 
 gem "rake"
 group :development do
-  gem "pry"
   gem "therubyracer", :platforms => :mri
-  gem "guard-rspec"
-  gem "guard"
+  gem "pry"
 end
 
 gem "sprockets-es6", "~> 0.6"
