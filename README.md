@@ -126,6 +126,7 @@ end
 * CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
 * Image Magick - add "mini_magick"  to your Gemfile, only works with `img`, `image`.
+* Compass - add "compass-core" to your Gemfile and "@import 'compass'"
 * Font Awesome - add "font-awesome-sass" to your Gemfile.
 
 ***Please note that some of these (if not all) have trouble with Rhino --
