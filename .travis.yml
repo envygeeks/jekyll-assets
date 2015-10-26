@@ -1,16 +1,19 @@
+---
 cache: bundler
+language: ruby
 sudo: false
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
-  - jruby-9.0.3.0
+- 2.0
+- 2.1
+- 2.2
+- jruby-9.0.3.0
 matrix:
   allow_failures:
-    - rvm: jruby-9.0.0.0
+  - rvm: jruby-9.0.3.0
 notifications:
-  recipients:
+  email:
+    recipients:
     - jordon@envygeeks.io
 branches:
   only:
-    - master
+  - master
