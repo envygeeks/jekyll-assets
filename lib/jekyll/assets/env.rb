@@ -83,13 +83,13 @@ module Jekyll
       # -----------------------------------------------------------------------
 
       def cdn?
-        !dev? && !!asset_config["cdn"]
+        !dev? && asset_config.has_key?("cdn") && asset_config.fetch("cdn")
       end
 
       # -----------------------------------------------------------------------
 
       def baseurl
-        jekyll.config["baseurl"] || ""
+        jekyll.config.fetch("baseurl", "")
       end
 
       # -----------------------------------------------------------------------
@@ -101,25 +101,25 @@ module Jekyll
       # -----------------------------------------------------------------------
 
       def compress?(what)
-        !!asset_config["compress"][what]
+        !!asset_config.fetch("compress").fetch(what, false)
       end
 
       # -----------------------------------------------------------------------
 
       def asset_config
-        jekyll.config["assets"] ||= {}
+        jekyll.config.fetch_or_store("assets", {})
       end
 
       # -----------------------------------------------------------------------
 
       def digest?
-        !!asset_config["digest"]
+        !!asset_config.fetch("digest")
       end
 
       # -----------------------------------------------------------------------
 
       def prefix
-        asset_config["prefix"]
+        asset_config.fetch("prefix", "")
       end
 
       # -----------------------------------------------------------------------
@@ -127,10 +127,12 @@ module Jekyll
       # -----------------------------------------------------------------------
 
       def prefix_path(path = "")
-        prefix = cdn? && asset_config["skip_prefix_with_cdn"] ? "" : self.prefix
-        path   = [baseurl, prefix, path]
+        prefix  = cdn? && asset_config.fetch( "skip_prefix_with_cdn") ? "" : self. prefix
+        baseurl = cdn? && asset_config.fetch("skip_baseurl_with_cdn") ? "" : self.baseurl
+        path    = [baseurl, prefix, path]
 
-        cdn? && (cdn = asset_config["cdn"]) ? File.join(cdn, *path).chomp("/") : \
+        cdn = asset_config.fetch("cdn") if asset_config.has_key?("cdn")
+        cdn? && cdn ? File.join(cdn, *path).chomp("/") : \
           File.join(*path).chomp("/")
       end
 

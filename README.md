@@ -35,7 +35,8 @@ assets:
      js: false | true | default - development: false, production: true
   cache: false | directory | default: .asset-cache
   cdn: https://cdn.example.com
-  skip_prefix_with_cdn: false
+  skip_baseurl_with_cdn: false
+   skip_prefix_with_cdn: false
   prefix: "/assets"
   assets:
     - "*.png"

@@ -43,6 +43,14 @@ describe Jekyll::Assets::Env do
     @env.jekyll.config["baseurl"] = ""
   end
 
+  it "skips the baseurl on a cdn if asked to" do
+    allow(Jekyll).to receive(:env).and_return "production"
+    stub_asset_config site, "skip_baseurl_with_cdn" => true, "cdn" => "//localhost"
+    env.jekyll.config["baseurl"] = "/hello"
+    expect(env.prefix_path).to eq \
+      "//localhost/assets"
+  end
+
   it "digests by default in production" do
     allow(Jekyll).to receive(:env).and_return "production"
     expect(env.digest?).to be true
