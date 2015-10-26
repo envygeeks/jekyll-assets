@@ -1,9 +1,11 @@
-[![Build Status](https://travis-ci.org/jekyll/jekyll-assets.png?branch=master)](https://travis-ci.org/jekyll/jekyll-assets) [![Coverage Status](https://coveralls.io/repos/jekyll/jekyll-assets/badge.png?branch=master)](https://coveralls.io/r/jekyll/jekyll-assets) [![Code Climate](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)](https://codeclimate.com/github/jekyll/jekyll-assets) [![Dependency Status](https://gemnasium.com/jekyll/jekyll-assets.svg)](https://gemnasium.com/jekyll/jekyll-assets)
+[![](https://travis-ci.org/jekyll/jekyll-assets.png?branch=master)][travis]
+[![](https://coveralls.io/repos/jekyll/jekyll-assets/badge.png?branch=master)][coveralls]
+[![](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)][code-climate] [![](https://gemnasium.com/jekyll/jekyll-assets.svg)][gemnasium]
 
-
-## Are you looking for the docs for Jekyll Assets < 2.0.0?
-
-See: https://github.com/jekyll-assets/jekyll-assets/tree/legacy#jekyllassets
+[gemnasium]: https://gemnasium.com/jekyll/jekyll-assets
+[code-climate]: https://codeclimate.com/github/jekyll/jekyll-assets
+[coveralls]: https://coveralls.io/r/jekyll/jekyll-assets
+[travis]: https://travis-ci.org/jekyll/jekyll-assets
 
 # Jekyll 3 Assets
 
@@ -43,12 +45,12 @@ assets:
     - "_assets/folder"
 ```
 
-## Asset Digesting
+### Digesting
 
 * Disable digesting by default in development.
 * Digest by default in production
 
-## Asset Compression
+### Compression
 
 * Requires sass and uglify.
 * Disable compression by default in development.
@@ -95,16 +97,8 @@ rules for our tags as a specification.
 
 ### Current Proxies:
 
-* `sprockets:accept:<value>` - Tell Sprockets your preferred content type.
-* `sprockets:write_to:<value>` - The filename you wish us to write your file to.
-* `magick:resize:<value>` - Takes standard ImageMagick resize values.
-* `magick:format:<value>` - Takes standard ImageMagick format values.
-* `magick:rotate:<value>` - Takes standard ImageMagick resize values.
-* `magick:crop:<value>` - Takes standard ImageMagick crop values.
-* `magick:flip:<value>` - Takes standard ImageMagick flip values.
-* `magick:2x` - Tells us to write a double width/height image.
-* `magick:4x` - Tells us to write a quadruple width/height image.
-* `magick:half` - Tells us to shrink the image to half.
+* `sprockets:accept:<value>`
+* `sprockets:write_to:<value>`
 
 ## Filters
 
@@ -112,47 +106,43 @@ There is a full suite of filters, actually, any tag and any proxy can be a
 filter by way of filter arguments, take the following example:
 
 ```liquid
-{{ src | img : "magick:2x" }}
+{{ src | img : "magick:2x magick:quality:92" }}
 ```
 
 ## Hooks
 
-* `:env => [
-    :pre_init, :post_init
-  ]`
+* `:env => [:init]`
 
 You can register and trigger hooks like so:
 
 ```ruby
-Jekyll::Assets::Hook.trigger  :env, :post_init
-Jekyll::Assets::Hook.register :env, :post_init do
+Jekyll::Assets::Hook.register :env, :init do
   # Your Work
 end
 ```
 
-## Optional Processing Engines
+## Addons
 
-* ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
 * CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
+* ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
+* Image Magick - add "mini_magick"  to your Gemfile, only works with `img`, `image`.
+* Font Awesome - add "font-awesome-sass" to your Gemfile.
 
 ***Please note that some of these (if not all) have trouble with Rhino --
 `therubyrhino` so you would probably be best to just use Node.js or io.js at
 that point rather than trying to fight it.***
 
-### Engine Settings
+### Image Magick Proxy arguments:
 
-Some engines take settings, if they do you can add them like so:
-
-```YAML
-assets:
-  engines:
-    engine_name:
-      option: value
-```
-
-Only whitelisted options are allowed by default, so that we can guard against
-using paths we don't want to be used.  If you wish to have an option
-whitelisted please file a ticket or submit a pull request.
+* `magick:resize:<value>`
+* `magick:format:<value>`
+* `magick:quality:<value>`
+* `magick:rotate:<value>`
+* `magick:crop:<value>`
+* `magick:flip:<value>`
+* `magick:half`
+* `magick:2x`
+* `magick:4x`
 
 ## Plugins where did they go?
 
