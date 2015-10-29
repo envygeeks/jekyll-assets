@@ -27,6 +27,8 @@ try_require "mini_magick" do
       img.write(
         @path
       )
+    ensure
+      img.destroy!
     end
 
     # ---------------------------------------------------------------
