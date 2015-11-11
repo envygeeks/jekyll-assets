@@ -122,7 +122,7 @@ module Jekyll
     # -------------------------------------------------------------------------
 
     def self.cleanup_trash
-      %W(.asset-cache .jekyll-metadata _site).each do |v|
+      %W(tmp/.asset-cache .jekyll-metadata _site).each do |v|
         FileUtils.rm_rf(File.join(File.expand_path("../../fixture", __FILE__), v))
       end
     end

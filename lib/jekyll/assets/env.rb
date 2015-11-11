@@ -46,7 +46,7 @@ module Jekyll
       # -----------------------------------------------------------------------
 
       def in_cache_dir(*paths)
-        cache_dir = asset_config.fetch("cache", ".asset-cache") || nil
+        cache_dir = asset_config.fetch("cache", "tmp/.asset-cache") || nil
         jekyll.in_source_dir(cache_dir, *paths)
       end
 
