@@ -33,7 +33,7 @@ assets:
   compress:
     css: false | true | default - development: false, production: true
      js: false | true | default - development: false, production: true
-  cache: false | directory | default: .asset-cache
+  cache: false | directory | default: tmp/.asset-cache
   cdn: https://cdn.example.com
   skip_baseurl_with_cdn: false
    skip_prefix_with_cdn: false
