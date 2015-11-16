@@ -122,6 +122,14 @@ Jekyll::Assets::Hook.register :env, :init do
 end
 ```
 
+## Sass Helpers
+
+***Our currently supported helpers are:***
+
+* asset_path
+* image_path
+* font_path
+
 ## Addons
 
 * CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
