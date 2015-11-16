@@ -51,6 +51,11 @@ describe Jekyll::Assets::Env do
       "//localhost/assets"
   end
 
+  it "allows the user to set a relative path" do
+    stub_asset_config site, "prefix" => "assets"
+    expect(env.prefix_path).to eq "assets"
+  end
+
   it "digests by default in production" do
     allow(Jekyll).to receive(:env).and_return "production"
     expect(env.digest?).to be true

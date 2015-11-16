@@ -120,10 +120,11 @@ module Jekyll
       # Prefixes a path with both the #base_url, the prefix and the CDN.
 
       def prefix_path(path = "")
-        prefix  = cdn? && asset_config[ "skip_prefix_with_cdn"] ? "" : self. prefix
-        baseurl = cdn? && asset_config["skip_baseurl_with_cdn"] ? "" : self.baseurl
+        prefix  = cdn? && asset_config[ "skip_prefix_with_cdn"] ? nil : self. prefix
+        baseurl = cdn? && asset_config["skip_baseurl_with_cdn"] ? nil : self.baseurl
         path    = [baseurl, prefix, path]
 
+        path.delete_if(&:nil?).delete_if(&:empty?)
         cdn = asset_config["cdn"] if asset_config.has_key?("cdn")
         cdn? && cdn ? File.join(cdn, *path).chomp("/") : \
           File.join(*path).chomp("/")
