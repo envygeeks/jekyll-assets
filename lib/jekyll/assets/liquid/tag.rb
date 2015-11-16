@@ -4,6 +4,7 @@ module Jekyll
   module Assets
     module Liquid
       class Tag < ::Liquid::Tag
+        require_relative "tag/proxies"
         require_relative "tag/proxied_asset"
         require_relative "tag/parser"
         attr_reader :args
