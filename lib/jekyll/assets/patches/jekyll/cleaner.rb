@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012-2015 - MIT License
+# Encoding: utf-8
+
 module Jekyll
   class Cleaner
     # TODO: jekyll/jekyll@upstream: This method should really have a hook ya.

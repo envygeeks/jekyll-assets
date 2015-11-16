@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012-2015 - MIT License
+# Encoding: utf-8
+
 try_require "mini_magick" do
   args = %W(resize quality rotate crop flip @2x @4x @half)
   Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *args do

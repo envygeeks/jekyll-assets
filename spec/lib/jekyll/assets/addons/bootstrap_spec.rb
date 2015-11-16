@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012-2015 - MIT License
+# Encoding: utf-8
+
 require "rspec/helper"
 describe "bootstrap" do
   let(:env) { Jekyll::Assets::Env.new(stub_jekyll_site) }
