@@ -34,7 +34,7 @@ try_require "mini_magick" do
     private
     def magick_quality(img)
       if @opts.has_key?(:quality)
-        img.quality @opts.fetch(:quality)
+        then img.quality @opts[:quality]
       end
     end
 
@@ -47,7 +47,7 @@ try_require "mini_magick" do
         raise DoubleResizeError
 
       elsif @opts.has_key?(:resize)
-        img.resize @opts.fetch(:resize)
+        then img.resize @opts[:resize]
       end
     end
 
@@ -56,7 +56,7 @@ try_require "mini_magick" do
     private
     def magick_rotate(img)
       if @opts.has_key?(:rotate)
-        img.rotate @opts.fetch(:rotate)
+        then img.rotate @opts[:rotate]
       end
     end
 
@@ -65,7 +65,7 @@ try_require "mini_magick" do
     private
     def magick_flip(img)
       if @opts.has_key?(:flip)
-        img.flip @opts.fetch(:flip)
+        then img.flip @opts[:flip]
       end
     end
 
@@ -74,7 +74,7 @@ try_require "mini_magick" do
     private
     def magick_crop(img)
       if @opts.has_key?(:crop)
-        img.crop @opts.fetch(:crop)
+        then img.crop @opts[:crop]
       end
     end
 

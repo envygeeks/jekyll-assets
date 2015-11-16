@@ -31,7 +31,7 @@ module Jekyll
 
       def self.trigger(base, _point, *args, &block)
         raise ArgumentError, "Do not give args with a block" if args.size > 0 && block_given?
-        if all.has_key?(base) && all.fetch(base).has_key?(_point)
+        if all.has_key?(base) && all[base].has_key?(_point)
           Set.new.merge(point(base, _point, :early)).merge(point(base, _point)).map do |v|
             block_given?? block.call(v) : v.call(*args)
           end
@@ -41,19 +41,24 @@ module Jekyll
       #
 
       def self.point(base, point, _when = :late)
-        point = all.fetch(base).fetch(point, nil) || all.fetch(base).store(point, {
-          :late => Set.new, :early => Set.new })
-        point.fetch(_when)
+        point = all[base][point] ||= {
+           :late => Set.new,
+          :early => Set.new
+        }
+
+        point[_when]
       end
 
       #
 
       def self.register(base, point, _when = :late, &block)
         raise UnknownHookError.new(base: base) unless HookPoints.has_key?(base)
-        point = HookAliases.fetch(base).fetch(point) if HookAliases.fetch(base, {}).has_key?(point)
-        raise UnknownHookError.new(point: point) unless HookPoints.fetch(base).include?(point)
-        all.fetch(base, nil) || all.store(base, {})
-        point(base, point, _when).add(block)
+        point = HookAliases[base][point] if  HookAliases.fetch(base, {}).has_key?(point)
+        raise UnknownHookError.new(point: point) unless HookPoints[base].include?(point)
+        all[base] ||= {}
+
+        point(base, point, _when). \
+          add(block)
       end
     end
   end

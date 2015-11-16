@@ -46,8 +46,8 @@ module Jekyll
         #   because of a single asset change.
 
         def render(context)
-          site = context.registers.fetch(:site)
-          page = context.registers.fetch(:page, {}).fetch("path", nil)
+          site = context.registers[:site]
+          page = context.registers.fetch(:page, {})["path"]
           sprockets = site.sprockets
 
           asset = find_asset(sprockets)
@@ -62,7 +62,7 @@ module Jekyll
 
         private
         def from_alias(tag)
-          Alias.has_key?(tag) ? Alias.fetch(tag) : tag
+          Alias.has_key?(tag) ? Alias[tag] : tag
         end
 
         #
@@ -78,13 +78,13 @@ module Jekyll
           elsif @tag == "asset" || @tag == "asset_source"
             return asset.to_s
 
-          elsif @args.has_key?(:data) && @args.fetch(:data).has_key?(:uri)
-            return Tags.fetch(@tag) % [
+          elsif @args.has_key?(:data) && @args[:data].has_key?(:uri)
+            return Tags[@tag] % [
               asset.data_uri, @args.to_html
             ]
 
           else
-            return Tags.fetch(@tag) % [
+            return Tags[@tag] % [
               out, @args.to_html
             ]
           end
@@ -101,8 +101,8 @@ module Jekyll
 
         private
         def set_img_alt(asset)
-          if !@args.has_key?(:html) || !@args.fetch(:html).has_key?("alt")
-            @args.fetch_or_store(:html, {}).store("alt", asset.logical_path)
+          if !@args.has_key?(:html) || !@args[:html].has_key?("alt")
+            then (@args[:html] ||= {})["alt"] = asset.logical_path
           end
         end
 
@@ -121,9 +121,9 @@ module Jekyll
 
         private
         def find_asset(sprockets)
-          file, _sprockets = @args.fetch(:file), @args.fetch(:sprockets, {})
+          file, _sprockets = @args[:file], @args[:sprockets] ||= {}
           if !(out = sprockets.find_asset(file, _sprockets))
-            raise AssetNotFoundError, @args.fetch(:file)
+            raise AssetNotFoundError, @args[:file]
           else
             out.liquid_tags << self
             !args.has_proxies?? out : ProxiedAsset.new(out, \

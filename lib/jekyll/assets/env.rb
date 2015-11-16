@@ -44,7 +44,7 @@ module Jekyll
       # Make sure a path falls withint our cache dir.
 
       def in_cache_dir(*paths)
-        cache_dir = asset_config.fetch("cache", ".asset-cache") || nil
+        cache_dir = asset_config["cache"] || ".asset-cache"
         jekyll.in_source_dir(cache_dir, *paths)
       end
 
@@ -67,7 +67,8 @@ module Jekyll
       # use them.  Just like Rails this is probably normally used.
 
       def extra_assets
-        each_logical_path(*asset_config.fetch("assets", [])).map do |v|
+        assets = asset_config["assets"] ||= []
+        each_logical_path(*assets).map do |v|
           find_asset v
         end
       end
@@ -75,13 +76,14 @@ module Jekyll
       #
 
       def cdn?
-        !dev? && asset_config.has_key?("cdn") && asset_config.fetch("cdn")
+        !dev? && asset_config.has_key?("cdn") && \
+          asset_config["cdn"]
       end
 
       #
 
       def baseurl
-        jekyll.config.fetch("baseurl", "")
+        jekyll.config["baseurl"]
       end
 
       #
@@ -93,35 +95,36 @@ module Jekyll
       #
 
       def compress?(what)
-        !!asset_config.fetch("compress").fetch(what, false)
+        !!asset_config["compress"]. \
+          fetch(what, false)
       end
 
       #
 
       def asset_config
-        jekyll.config.fetch_or_store("assets", {})
+        jekyll.config["assets"] ||= {}
       end
 
       #
 
       def digest?
-        !!asset_config.fetch("digest")
+        !!asset_config["digest"]
       end
 
       #
 
       def prefix
-        asset_config.fetch("prefix", "")
+        asset_config["prefix"]
       end
 
       # Prefixes a path with both the #base_url, the prefix and the CDN.
 
       def prefix_path(path = "")
-        prefix  = cdn? && asset_config.fetch( "skip_prefix_with_cdn") ? "" : self. prefix
-        baseurl = cdn? && asset_config.fetch("skip_baseurl_with_cdn") ? "" : self.baseurl
+        prefix  = cdn? && asset_config[ "skip_prefix_with_cdn"] ? "" : self. prefix
+        baseurl = cdn? && asset_config["skip_baseurl_with_cdn"] ? "" : self.baseurl
         path    = [baseurl, prefix, path]
 
-        cdn = asset_config.fetch("cdn") if asset_config.has_key?("cdn")
+        cdn = asset_config["cdn"] if asset_config.has_key?("cdn")
         cdn? && cdn ? File.join(cdn, *path).chomp("/") : \
           File.join(*path).chomp("/")
       end

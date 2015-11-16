@@ -26,8 +26,8 @@ module Jekyll
           #
 
           def self.keys
-            all.select { |val| !val.fetch(:class).is_a?(Symbol) }.map do |v|
-              v[:name]
+            all.select { |val| !val[:class].is_a?(Symbol) }.map do |val|
+              val[:name]
             end. \
             flatten
           end
@@ -35,8 +35,8 @@ module Jekyll
           #
 
           def self.base_keys
-            all.select { |val| val.fetch(:class).is_a?(Symbol) }.map do |v|
-              v[:name]
+            all.select { |val| val[:class].is_a?(Symbol) }.map do |val|
+              val[:name]
             end. \
             flatten
           end
@@ -62,7 +62,7 @@ module Jekyll
 
             else
               all.select do |val|
-                val.fetch(:name).include?(name)
+                val[:name].include?(name)
               end
             end
           end
@@ -71,10 +71,10 @@ module Jekyll
 
           def self.get_by_name_and_tag_and_arg(name, tag, arg)
             all.select do |val|
-              (val.fetch(:name).include?(name))   && \
-              (val.fetch(:tags).include?(:all)    || \
-                  val.fetch(:tags).include?(tag)) && \
-              (val.fetch(:args).include?( arg))
+              (val[:name].include?(name))   && \
+              (val[:tags].include?(:all)    || \
+                  val[:tags].include?(tag)) && \
+              (val[:args].include?( arg))
             end
           end
 
@@ -82,9 +82,9 @@ module Jekyll
 
           def self.get_by_name_and_tag(name, tag)
             all.select do |val|
-              (val.fetch(:name).include?(name))   &&
-              (val.fetch(:tags).include?(:all)    || \
-                  val.fetch(:tags).include?(tag))
+              (val[:name].include?(name))   &&
+              (val[:tags].include?(:all)    || \
+                  val[:tags].include?(tag))
             end
           end
 

@@ -1,7 +1,7 @@
 module Sprockets
   class Asset
     def liquid_tags
-      metadata.fetch_or_store(:liquid_tags, Set.new)
+      metadata[:liquid_tags] ||= Set.new
     end
 
     #

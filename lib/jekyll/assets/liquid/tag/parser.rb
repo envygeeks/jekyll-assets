@@ -20,9 +20,9 @@ module Jekyll
 
           def_delegator :@args, :to_h
           def_delegator :@args, :has_key?
-          def_delegator :@args, :fetch_or_store
           def_delegator :@args, :fetch
           def_delegator :@args, :store
+          def_delegator :@args, :[]=
           def_delegator :@args, :[]
 
           #
@@ -90,8 +90,8 @@ module Jekyll
                 parse_col hash, key
 
               else
-                hash.fetch_or_store(:html, {}). \
-                  store(key, true)
+                (hash[:html] ||= {})[key] = \
+                  true
               end
 
               hash
@@ -115,11 +115,10 @@ module Jekyll
           def as_bool_or_html(hash, key)
             okey = key; key, sub_key = key
             if Proxies.has?(key, @tag, "@#{sub_key}")
-              hash.fetch_or_store(key.to_sym, {}). \
-                store(sub_key.to_sym, true)
+              (hash[key.to_sym] ||= {})[sub_key.to_sym] = true
             else
-              hash.fetch_or_store(:html, {}). \
-                store(key, okey.fetch(1))
+              (hash[:html] ||= {})[key] = \
+                okey[1]
             end
           end
 
@@ -129,8 +128,9 @@ module Jekyll
           def as_proxy(hash, key)
             key, sub_key, val = key
             if Proxies.has?(key, @tag, sub_key)
-              hash.fetch_or_store(key.to_sym, {}). \
-                store(sub_key.to_sym, val)
+              (hash[key.to_sym] ||= {})[sub_key.to_sym] = \
+                val
+
             elsif Proxies.has?(key)
               raise UnknownProxyError
             end
@@ -141,10 +141,10 @@ module Jekyll
           private
           def set_accept
             if Accept.has_key?(@tag) && (!@args.has_key?(:sprockets) || \
-                !@args.fetch(:sprockets).has_Key?(:accept))
+                  !@args[:sprockets].has_key?(:accept))
 
-              @args.fetch_or_store(:sprockets, {}). \
-                store(:accept, Accept.fetch(@tag))
+              (@args[:sprockets] ||= {})[:accept] = \
+                Accept[@tag]
             end
           end
 
