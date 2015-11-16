@@ -1,5 +1,7 @@
-require_relative "hooks/jekyll/write_assets"
 require_relative "hooks/jekyll/initialize"
+require_relative "hooks/jekyll/write_assets"
+require_relative "hooks/jekyll/ignore"
+
 require_relative "hooks/compression"
 require_relative "hooks/configuration"
 require_relative "hooks/context_patches"
