@@ -5,7 +5,6 @@ module Jekyll
   module Assets
     module Liquid
 
-      # -----------------------------------------------------------------------
       # Examples:
       #   - {% tag value argument:value %}
       #   - {% tag value "argument:value" %}
@@ -13,7 +12,6 @@ module Jekyll
       #   - {% tag value argument:value\:with\:colon %}
       #   - {% tag value argument:"I can even escape \\: here too!" %}
       #   - {% tag value proxy:key:value %}
-      # -----------------------------------------------------------------------
 
       class Tag
         class Parser
@@ -27,13 +25,13 @@ module Jekyll
           def_delegator :@args, :store
           def_delegator :@args, :[]
 
-          # -------------------------------------------------------------------
+          #
 
           Accept = {
             "css" => "text/css", "js" => "application/javascript"
           }
 
-          # -------------------------------------------------------------------
+          #
 
           class UnescapedColonError < StandardError
             def initialize
@@ -41,7 +39,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           class UnknownProxyError < StandardError
             def initialize
@@ -49,7 +47,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def initialize(args, tag)
             @raw_args, @tags = args, tag
@@ -58,7 +56,7 @@ module Jekyll
             set_accept
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def to_html
             @args.fetch(:html, {}).map do |key, val|
@@ -67,7 +65,7 @@ module Jekyll
             join
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def proxies
             keys = (args.keys - Proxies.base_keys - [:file, :html])
@@ -76,13 +74,13 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def has_proxies?
             proxies.any?
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def parse_raw
@@ -100,7 +98,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def parse_col(hash, key)
@@ -111,7 +109,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def as_bool_or_html(hash, key)
@@ -125,7 +123,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def as_proxy(hash, key)
@@ -138,7 +136,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def set_accept
@@ -150,7 +148,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def from_shellwords

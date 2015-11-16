@@ -7,16 +7,14 @@ try_require "mini_magick" do
       end
     end
 
-    # -----------------------------------------------------------------
     # @see https://github.com/minimagick/minimagick#usage -- All but
     #   the boolean @ options are provided by Minimagick.
-    # -----------------------------------------------------------------
 
     def initialize(asset, opts)
       @asset, @path, @opts = asset, asset.filename, opts
     end
 
-    # ---------------------------------------------------------------
+    #
 
     def process
       img = MiniMagick::Image.open(@path)
@@ -31,7 +29,7 @@ try_require "mini_magick" do
       img.destroy!
     end
 
-    # ---------------------------------------------------------------
+    #
 
     private
     def magick_quality(img)
@@ -40,7 +38,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ---------------------------------------------------------------
+    #
 
     private
     def magick_resize(img)
@@ -53,7 +51,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ---------------------------------------------------------------
+    #
 
     private
     def magick_rotate(img)
@@ -62,7 +60,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ---------------------------------------------------------------
+    #
 
     private
     def magick_flip(img)
@@ -71,7 +69,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ---------------------------------------------------------------
+    #
 
     private
     def magick_crop(img)
@@ -80,7 +78,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ---------------------------------------------------------------
+    #
 
     private
     def magick_preset_resize(img)

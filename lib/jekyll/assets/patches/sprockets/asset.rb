@@ -4,7 +4,7 @@ module Sprockets
       metadata.fetch_or_store(:liquid_tags, Set.new)
     end
 
-    # -------------------------------------------------------------------------
+    #
 
     def data_uri
       "data:#{content_type};base64,#{Rack::Utils.escape(Base64.encode64(to_s))}"

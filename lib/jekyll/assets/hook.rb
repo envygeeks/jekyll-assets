@@ -25,11 +25,9 @@ module Jekyll
         @_all ||= {}
       end
 
-      # ---------------------------------------------------------------------
       # Trigger a hook, giving an optional block where we pass you the,
       # proc we got and then you can do as you please (such as instance eval)
       # but if you do not give us one then we simply pass the args.
-      # ---------------------------------------------------------------------
 
       def self.trigger(base, _point, *args, &block)
         raise ArgumentError, "Do not give args with a block" if args.size > 0 && block_given?
@@ -40,7 +38,7 @@ module Jekyll
         end
       end
 
-      # ---------------------------------------------------------------------
+      #
 
       def self.point(base, point, _when = :late)
         point = all.fetch(base).fetch(point, nil) || all.fetch(base).store(point, {
@@ -48,7 +46,7 @@ module Jekyll
         point.fetch(_when)
       end
 
-      # ---------------------------------------------------------------------
+      #
 
       def self.register(base, point, _when = :late, &block)
         raise UnknownHookError.new(base: base) unless HookPoints.has_key?(base)

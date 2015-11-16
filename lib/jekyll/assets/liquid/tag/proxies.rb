@@ -17,13 +17,13 @@ module Jekyll
           all
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.add(name, tag, *args, &block)
             add_by_class(*generate_class(name, tag, &block), *args)
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.keys
             all.select { |val| !val.fetch(:class).is_a?(Symbol) }.map do |v|
@@ -32,7 +32,7 @@ module Jekyll
             flatten
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.base_keys
             all.select { |val| val.fetch(:class).is_a?(Symbol) }.map do |v|
@@ -41,23 +41,25 @@ module Jekyll
             flatten
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.has?(name, tag = nil, arg = nil)
             get(name, tag, arg).any?
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.get(name, tag = nil, arg = nil)
             if name && tag && arg
               get_by_name_and_tag_and_arg(
                 name, tag, arg
               )
+
             elsif name && tag
               get_by_name_and_tag(
                 name, tag
               )
+
             else
               all.select do |val|
                 val.fetch(:name).include?(name)
@@ -65,7 +67,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.get_by_name_and_tag_and_arg(name, tag, arg)
             all.select do |val|
@@ -76,7 +78,7 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.get_by_name_and_tag(name, tag)
             all.select do |val|
@@ -86,13 +88,13 @@ module Jekyll
             end
           end
 
-          # -------------------------------------------------------------------
+          #
 
           def self.all
             @_all ||= Set.new
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def self.generate_class(name, tag, &block)
@@ -101,14 +103,12 @@ module Jekyll
             return _class, name, tag
           end
 
-          # -------------------------------------------------------------------
+          #
 
           private
           def self.random_name
             (0...12).map { ("a".."z").to_a.values_at(rand(26)) }.join.capitalize
           end
-
-          # -------------------------------------------------------------------
 
           # TODO: Put in a better place.
           add_by_class :internal, :data, :all, ["@uri"]

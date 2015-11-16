@@ -9,14 +9,14 @@ module Jekyll
           return @digest_cache ||= {}
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         def liquid_proxies
           return Liquid::Tag::Proxies
         end
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def inspect
         "<#{self.class.name} compress_js=#{compress?("js")} compress_css=#{compress?("css")} asset_path=#{
@@ -24,7 +24,7 @@ module Jekyll
         }>"
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def initialize(path, jekyll = nil)
         jekyll, path = path, nil if path.is_a?(Jekyll::Site)
@@ -35,32 +35,26 @@ module Jekyll
         end
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def liquid_proxies
         return self.class.liquid_proxies
       end
 
-      # -----------------------------------------------------------------------
       # Make sure a path falls withint our cache dir.
-      # -----------------------------------------------------------------------
 
       def in_cache_dir(*paths)
         cache_dir = asset_config.fetch("cache", ".asset-cache") || nil
         jekyll.in_source_dir(cache_dir, *paths)
       end
 
-      # -----------------------------------------------------------------------
       # Whether or not we are writing from the cache.
-      # -----------------------------------------------------------------------
 
       def cached_write?
         !@used.any?
       end
 
-      # -----------------------------------------------------------------------
       # Merged form of `#extra_assets` and `@used` assets.
-      # -----------------------------------------------------------------------
 
       def all_assets(cached = false)
         if !cached
@@ -69,10 +63,8 @@ module Jekyll
         end
       end
 
-      # -----------------------------------------------------------------------
       # Assets you tell us you want to always compile, even if you do not
       # use them.  Just like Rails this is probably normally used.
-      # -----------------------------------------------------------------------
 
       def extra_assets
         each_logical_path(*asset_config.fetch("assets", [])).map do |v|
@@ -80,51 +72,49 @@ module Jekyll
         end
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def cdn?
         !dev? && asset_config.has_key?("cdn") && asset_config.fetch("cdn")
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def baseurl
         jekyll.config.fetch("baseurl", "")
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def dev?
         %W(development test).include?(Jekyll.env)
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def compress?(what)
         !!asset_config.fetch("compress").fetch(what, false)
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def asset_config
         jekyll.config.fetch_or_store("assets", {})
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def digest?
         !!asset_config.fetch("digest")
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def prefix
         asset_config.fetch("prefix", "")
       end
 
-      # -----------------------------------------------------------------------
       # Prefixes a path with both the #base_url, the prefix and the CDN.
-      # -----------------------------------------------------------------------
 
       def prefix_path(path = "")
         prefix  = cdn? && asset_config.fetch( "skip_prefix_with_cdn") ? "" : self. prefix
@@ -136,13 +126,13 @@ module Jekyll
           File.join(*path).chomp("/")
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def cached
         Cached.new(self)
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def write_all
         if cached_write?
@@ -150,7 +140,7 @@ module Jekyll
         end
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       private
       def write_assets(assets = self.all_assets)
@@ -164,7 +154,7 @@ module Jekyll
         end
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       private
       def write_cached_assets(assets = all_assets(true))
@@ -188,7 +178,7 @@ module Jekyll
         end
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       private
       def as_path(v)

@@ -20,7 +20,7 @@ module Jekyll
         ]
       }
 
-      # -----------------------------------------------------------------------
+      #
 
       Production = Development.merge({
         "digest"    => true,
@@ -30,13 +30,13 @@ module Jekyll
         },
       })
 
-      # -----------------------------------------------------------------------
+      #
 
       def self.defaults
         %W(development test).include?(Jekyll.env) ? Development : Production
       end
 
-      # -----------------------------------------------------------------------
+      #
 
       def self.merge(nhash, ohash = defaults)
         ohash.merge(nhash) do |key, oval, nval|

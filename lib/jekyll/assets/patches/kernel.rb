@@ -9,6 +9,8 @@ module Kernel
       " Skipping loading of library.")
   end
 
+  #
+
   def try_require(file)
     require file
     if block_given?
@@ -17,6 +19,8 @@ module Kernel
   rescue LoadError
     return nil
   end
+
+  #
 
   def try_require_if_javascript(file)
     ["execjs", file].map(&method(:require))

@@ -12,7 +12,7 @@ module Jekyll
           end
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         Tags = {
           "css" => %Q{<link type="text/css" rel="stylesheet" href="%s"%s>},
@@ -20,7 +20,7 @@ module Jekyll
           "img" => %Q{<img src="%s"%s>}
         }
 
-        # ---------------------------------------------------------------------
+        #
 
         Alias = {
           "image" => "img",
@@ -29,7 +29,7 @@ module Jekyll
           "style" => "css"
         }
 
-        # ---------------------------------------------------------------------
+        #
 
         def initialize(tag, args, tokens)
           @tokens = tokens
@@ -39,13 +39,11 @@ module Jekyll
           super
         end
 
-        # ---------------------------------------------------------------------
         # NOTE: We only attach to the regenerator if you are using digested
         #   assets, otherwise we forego any association with it so that we keep
         #   your builds ultra fast, this is ideal in dev.  Disable digests and
         #   let us process independent so the entire site isn't regenerated
         #   because of a single asset change.
-        # ---------------------------------------------------------------------
 
         def render(context)
           site = context.registers.fetch(:site)
@@ -60,14 +58,14 @@ module Jekyll
             site, e
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         private
         def from_alias(tag)
           Alias.has_key?(tag) ? Alias.fetch(tag) : tag
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         private
         def process_tag(sprockets, asset)
@@ -92,14 +90,14 @@ module Jekyll
           end
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         private
         def get_path(sprockets, asset)
           sprockets.prefix_path(sprockets.digest?? asset.digest_path : asset.logical_path)
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         private
         def set_img_alt(asset)
@@ -108,7 +106,7 @@ module Jekyll
           end
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         private
         def add_as_jekyll_dependency(site, sprockets, page, asset)
@@ -119,7 +117,7 @@ module Jekyll
           end
         end
 
-        # ---------------------------------------------------------------------
+        #
 
         private
         def find_asset(sprockets)
@@ -133,12 +131,10 @@ module Jekyll
           end
         end
 
-        # ---------------------------------------------------------------------
         # There is no guarantee that Jekyll will pass on the error for some
         # reason (unless you are just booting up) so we capture that error and
         # always output it, it can lead to some double errors but I would
         # rather there be a double error than no error.
-        # ---------------------------------------------------------------------
 
         private
         def capture_and_out_error(site, error)
