@@ -7,9 +7,11 @@ rvm:
 - 2.1
 - 2.2
 - jruby-9.0.3.0
+- ruby-head
 matrix:
   allow_failures:
   - rvm: jruby-9.0.3.0
+  - rvm: ruby-head
 notifications:
   email:
     recipients:
