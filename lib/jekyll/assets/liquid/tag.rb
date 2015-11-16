@@ -1,3 +1,5 @@
+require "fastimage"
+
 module Jekyll
   module Assets
     module Liquid
@@ -70,8 +72,8 @@ module Jekyll
         private
         def process_tag(sprockets, asset)
           sprockets.used.add(asset) unless @tag == "asset_source"
-          set_img_alt asset if @tag == "img"
-          out = get_path sprockets, asset
+          set_img_alt_and_dimensions asset if @tag == "img"
+          out = get_path  sprockets, asset
           if @tag == "asset_path"
             return out
 
@@ -100,10 +102,31 @@ module Jekyll
         #
 
         private
+        def set_img_alt_and_dimensions(asset)
+          set_img_dimensions(asset)
+          set_img_alt(asset)
+        end
+
+        #
+
+        private
         def set_img_alt(asset)
-          if !@args.has_key?(:html) || !@args[:html].has_key?("alt")
-            then (@args[:html] ||= {})["alt"] = asset.logical_path
+          @args[:html] ||= {}
+          if !@args[:html].has_key?("alt")
+            then @args[:html]["alt"] = asset.logical_path
           end
+        end
+
+        #
+
+        private
+        def set_img_dimensions(asset)
+          dimensions = FastImage.new(asset.filename).size
+          return unless dimensions
+          @args[:html] ||= {}
+
+          @args[:html][ "width"] ||= dimensions.first
+          @args[:html]["height"] ||= dimensions. last
         end
 
         #
@@ -126,8 +149,8 @@ module Jekyll
             raise AssetNotFoundError, @args[:file]
           else
             out.liquid_tags << self
-            !args.has_proxies?? out : ProxiedAsset.new(out, \
-              @args, sprockets, self)
+            !args.has_proxies?? out : ProxiedAsset.new( \
+              out, @args, sprockets, self)
           end
         end
 

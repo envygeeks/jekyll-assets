@@ -9,8 +9,8 @@ module Jekyll
           extend Forwardable
 
           def_delegator :@asset, :liquid_tags
+          def_delegator :@asset, :filename, :source_filename
           def_delegator :@asset, :content_type
-          def_delegator :@asset, :filename
 
           def initialize(asset, args, env, tag)
             @env = env
