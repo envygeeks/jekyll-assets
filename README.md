@@ -43,7 +43,13 @@ assets:
     - "bundle.css"
   digest: true
   sources:
-    - "_assets/folder"
+    - _assets/css
+    - _assets/images
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _assets/fonts
+    - _assets/img
+    - _assets/js
 ```
 
 ### Digesting
