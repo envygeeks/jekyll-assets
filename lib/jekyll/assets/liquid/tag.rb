@@ -13,6 +13,11 @@ module Jekyll
         require_relative "tag/parser"
         attr_reader :args
 
+        class << self
+          public \
+            :new
+        end
+
         class AssetNotFoundError < StandardError
           def initialize(asset)
             super "Could not find the asset `#{asset}'"
