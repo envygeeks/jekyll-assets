@@ -59,12 +59,6 @@ assets:
 
 ***You can force digesting with `digest: true` in your `_config.yml`***
 
-## ERB Support
-
-ERB Support is removed in favor of trying to get this included on Github Pages
-eventually (if I can.) Having ERB presents a security risk to Github because it
-would allow you to use Ruby in ways they don't want you to.
-
 ## Tags
 
 * image, img
@@ -100,6 +94,24 @@ rules for our tags as a specification.
 
 * `sprockets:accept:<value>`
 * `sprockets:write_to:<value>`
+
+## Liquid Variables in Arguments
+
+You can use Liquid variables inside of your arguments, but you must quote
+them to get them to work, this can be a partial argument quote a full argument
+quote or otherwise, it just must be quoted or escaped.
+
+```liquid
+{% img '{{ image_path }}' %}
+{% img '{{ image_path }}' proxy:key:'{{ value }}' %}
+{% img {{\ image_path\ }} %}
+```
+
+## ERB Support
+
+ERB Support is removed in favor of trying to get this included on Github Pages
+eventually (if I can.) Having ERB presents a security risk to Github because it
+would allow you to use Ruby in ways they don't want you to.
 
 ## Filters
 
