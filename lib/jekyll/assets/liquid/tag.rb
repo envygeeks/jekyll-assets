@@ -122,7 +122,8 @@ module Jekyll
 
         private
         def get_path(sprockets, asset)
-          sprockets.prefix_path(sprockets.digest?? asset.digest_path : asset.logical_path)
+          sprockets.prefix_path(sprockets.digest?? asset.digest_path : \
+            asset.logical_path)
         end
 
         #
