@@ -6,6 +6,27 @@ require "nokogiri"
 
 module Jekyll
   module RSpecHelpers
+    class ContextThief < Liquid::Tag
+      class << self
+        attr_accessor :context
+      end
+
+      def render(context)
+        return self.class.context = \
+          context
+      end
+    end
+
+    # Allows you to get a real context context, to test methods directly
+    # if you need to, most can be tested indirectly.
+
+    def build_context
+      site = stub_jekyll_site
+      site.liquid_renderer.file("").parse("{% context_thief %}"). \
+        render!(site.site_payload, :registers => { :site => site })
+      ContextThief.context
+    end
+
     def fragment(html)
       Nokogiri::HTML.fragment(html)
     end
@@ -115,6 +136,10 @@ module Jekyll
     end
   end
 end
+
+Liquid::Template.register_tag "context_thief", \
+  Jekyll::RSpecHelpers::ContextThief
+
 
 RSpec.configure do |c|
   c.include Jekyll::RSpecHelpers

@@ -22,10 +22,11 @@ module Jekyll
           attr_reader :args, :raw_args
           extend Forwardable
 
-          def_delegator :@args, :to_h
+          def_delegator :@args, :each
           def_delegator :@args, :has_key?
           def_delegator :@args, :fetch
           def_delegator :@args, :store
+          def_delegator :@args, :to_h
           def_delegator :@args, :[]=
           def_delegator :@args, :[]
 
@@ -58,6 +59,13 @@ module Jekyll
             @tag = tag
             parse_raw
             set_accept
+          end
+
+          #
+
+          def parse_liquid!(context)
+            return @args unless context.is_a?(::Liquid::Context)
+            @args = _parse_liquid(@args, context)
           end
 
           #
@@ -157,6 +165,24 @@ module Jekyll
           private
           def from_shellwords
             Shellwords.shellwords(@raw_args)
+          end
+
+          #
+
+          def _parse_liquid(hash, context)
+            lqd = context.registers[:site].liquid_renderer. \
+              file(raw_args)
+
+            hash.inject({}) do |hsh, (key, val)|
+              if val.is_a?(Hash) || val.is_a?(String)
+                val = val.is_a?(Hash) ? _parse_liquid(val, context) : \
+                  lqd.parse(val).render!(context)
+              end
+
+              hsh.update(
+                key => val
+              )
+            end
           end
         end
       end

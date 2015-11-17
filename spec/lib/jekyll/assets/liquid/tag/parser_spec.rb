@@ -44,6 +44,13 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
     })
   end
 
+  it "processes liquid when asked to" do
+    input = "img.jpg?version='{{ jekyll.version }}' env:'{{ jekyll.environment }}'"
+    result = subject.new(input, "img").parse_liquid!(build_context)
+    expect(result).to(include(:file => "img.jpg?version=#{Jekyll::VERSION}"))
+    expect(result[:html]).to(include("env" => Jekyll.env))
+  end
+
   it "raises an error if there is no proxy available" do
     input = "img.jpg sprockets:unknown:hello"
     expect_it = expect { subject.new(input, "img") }

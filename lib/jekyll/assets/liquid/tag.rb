@@ -53,6 +53,7 @@ module Jekyll
         #   because of a single asset change.
 
         def render(context)
+          @args.parse_liquid!(context)
           site = context.registers[:site]
           page = context.registers.fetch(:page, {})["path"]
           sprockets = site.sprockets

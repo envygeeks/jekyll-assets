@@ -29,10 +29,10 @@ describe Jekyll::Assets::Liquid::Tag do
       first
   end
 
-  # it "allows the user to use Liquid variables" do
-  #   require "pry"
-  #   binding. pry
-  # end
+  it "allows the user to use Liquid variables" do
+    expect(stub_tag(:img, "'ruby.png' version:'{{ jekyll.version }}'"). \
+      attr("version")).to(eq(Jekyll::VERSION))
+  end
 
   it "works with alias tags" do
     expect(subject.send(:new, "image", "ruby.png", []).instance_variable_get(:@tag)).to eq \
