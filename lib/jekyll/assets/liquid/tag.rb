@@ -21,6 +21,21 @@ module Jekyll
 
         #
 
+        AcceptableTags = %W(
+          img
+          image
+          javascript
+          asset_source
+          stylesheet
+          asset_path
+          style
+          asset
+          css
+          js
+        )
+
+        #
+
         Tags = {
           "css" => %Q{<link type="text/css" rel="stylesheet" href="%s"%s>},
           "js"  => %Q{<script type="text/javascript" src="%s"%s></script>},
@@ -182,6 +197,6 @@ module Jekyll
   end
 end
 
-%W(js css img image javascript stylesheet style asset_path asset_source asset).each do |tag|
+Jekyll::Assets::Liquid::Tag::AcceptableTags.each do |tag|
   Liquid::Template.register_tag tag, Jekyll::Assets::Liquid::Tag
 end

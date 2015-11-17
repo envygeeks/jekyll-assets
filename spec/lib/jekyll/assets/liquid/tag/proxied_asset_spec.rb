@@ -12,14 +12,15 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
     @site  = stub_jekyll_site
     @env   = Jekyll::Assets::Env.new(@site)
     @env.liquid_proxies.add :test, :img, "@hello" do
-      def initialize(asset, opts)
-        @_asset = asset
-        @_path  = asset.filename
-        @_opts  = opts
+      def initialize(asset, opts, args)
+        @path  = asset.filename
+        @opts  = opts
+        @asset = asset
+        @args = args
       end
 
       def process
-        File.write(@_path, "hello")
+        File.write(@path, "hello")
       end
     end
 
