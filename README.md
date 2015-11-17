@@ -151,9 +151,13 @@ that point rather than trying to fight it.***
 * `magick:rotate:<value>`
 * `magick:crop:<value>`
 * `magick:flip:<value>`
-* `magick:half`
-* `magick:2x`
-* `magick:4x`
+* `magick:quadruple`, `magick:4x`
+* `magick:one-third`, `magick:1/3`
+* `magick:three-fourths`, `magick:3/4`
+* `magick:two-fourths`, `magick:2/4`
+* `magick:two-thirds`, `magick:2/3`
+* `magick:one-fourth`, `magick:1/4`
+* `magick:half`, `magick:1/2`
 
 ## Plugins where did they go?
 
