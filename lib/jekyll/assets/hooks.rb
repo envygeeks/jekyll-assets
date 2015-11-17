@@ -4,6 +4,7 @@
 
 require_relative "hooks/jekyll/initialize"
 require_relative "hooks/jekyll/write_assets"
+require_relative "hooks/jekyll/asset_drops"
 require_relative "hooks/jekyll/ignore"
 
 require_relative "hooks/compression"

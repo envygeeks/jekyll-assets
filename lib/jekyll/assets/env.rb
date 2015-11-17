@@ -22,6 +22,23 @@ module Jekyll
 
       #
 
+      def all_unparsed_assets
+        @unparsed_assets ||= logical_paths.select do |(_, val)|
+          val.start_with?(jekyll.in_source_dir)
+        end
+      end
+
+      #
+
+      def to_liquid_payload
+        jekyll.sprockets.all_unparsed_assets.inject({}) do |hsh, (key, val)|
+          hsh[key] = Jekyll::Assets::Liquid::Drop.new(val, jekyll)
+        hsh
+        end
+      end
+
+      #
+
       def inspect
         "<#{self.class.name} compress_js=#{compress?("js")} compress_css=#{compress?("css")} asset_path=#{
           path
