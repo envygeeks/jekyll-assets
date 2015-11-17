@@ -79,7 +79,7 @@ module Jekyll
           def proxy_file
             unless cached?
               args.proxies.each do |key, val|
-                Proxies.get(key).first[:class].new(self, val).process
+                Proxies.get(key).first[:class].new(self, val, @args).process
               end
             end
           end

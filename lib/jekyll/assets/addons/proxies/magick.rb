@@ -19,8 +19,11 @@ try_require "mini_magick" do
     # @see https://github.com/minimagick/minimagick#usage -- All but
     #   the boolean @ options are provided by Minimagick.
 
-    def initialize(asset, opts)
-      @asset, @path, @opts = asset, asset.filename, opts
+    def initialize(asset, opts, args)
+      @path = asset.filename
+      @opts = opts
+      @asset = asset
+      @args = args
     end
 
     #
