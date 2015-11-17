@@ -3,12 +3,13 @@
 # Encoding: utf-8
 
 try_require "mini_magick" do
-  Args = %W(resize quality rotate crop flip)
-  Preset = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
+  args = %W(resize quality rotate crop flip)
+  presets = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
       @two-fourths @three-fourths)
 
-  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(Args + Preset) do
+  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(args + presets) do
+    Presets, Args = presets, args
     class DoubleResizeError < RuntimeError
       def initialize
         "Both resize and @*x provided, this is not supported."
