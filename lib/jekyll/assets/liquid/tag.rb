@@ -75,8 +75,9 @@ module Jekyll
         def render(context)
           @args.parse_liquid!(context)
           site = context.registers[:site]
-          page = context.registers.fetch(:page, {})["path"]
+          page = context.registers.fetch(:page, {})
           sprockets = site.sprockets
+          page = page["path"]
 
           asset = find_asset(sprockets)
           add_as_jekyll_dependency(site, sprockets, page, asset)
