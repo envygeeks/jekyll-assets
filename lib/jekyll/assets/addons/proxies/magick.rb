@@ -3,8 +3,12 @@
 # Encoding: utf-8
 
 try_require "mini_magick" do
-  args = %W(resize quality rotate crop flip @2x @4x @half)
-  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *args do
+  Args = %W(resize quality rotate crop flip)
+  Preset = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
+    @double @quadruple @half @one-third @two-thirds @one-fourth
+      @two-fourths @three-fourths)
+
+  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(Args + Preset) do
     class DoubleResizeError < RuntimeError
       def initialize
         "Both resize and @*x provided, this is not supported."
@@ -36,6 +40,22 @@ try_require "mini_magick" do
     #
 
     private
+    def any_preset?(*keys)
+      @opts.keys.any? do |key|
+        keys.include?(key)
+      end
+    end
+
+    #
+
+    private
+    def preset?
+      (@opts.keys - Args.map(&:to_sym)).any?
+    end
+
+    #
+
+    private
     def magick_quality(img)
       if @opts.has_key?(:quality)
         then img.quality @opts[:quality]
@@ -46,11 +66,8 @@ try_require "mini_magick" do
 
     private
     def magick_resize(img)
-      if @opts.has_key?(:resize) && (@opts.has_key?(:"2x") || \
-            @opts.has_key?(:"4x") || @opts.has_key?(:half))
-        raise DoubleResizeError
-
-      elsif @opts.has_key?(:resize)
+      raise DoubleResizeError if @opts.has_key?(:resize) && preset?
+      if @opts.has_key?(:resize)
         then img.resize @opts[:resize]
       end
     end
@@ -82,14 +99,21 @@ try_require "mini_magick" do
       end
     end
 
-    #
+    # I just want you to know, we don't even care if you do multiple
+    # resizes or try to, we don't attempt to even attempt to attempt to care
+    # we expect you to be logical and if you aren't we will comply.
 
     private
     def magick_preset_resize(img)
-      return unless @opts.has_key?(:"2x") || @opts.has_key?(:"4x") || @opts.has_key?(:half)
-      width, height = img.width * 2, img.height * 2 if @opts.has_key?(:"2x")
-      width, height = img.width * 4, img.height * 4 if @opts.has_key?(:"4x")
-      width, height = img.width / 2, img.height / 2 if @opts.has_key?(:half)
+      return unless preset?
+      width, height = img.width * 4, img.height * 4 if any_preset?(:"4x", :quadruple)
+      width, height = img.width * 2, img.height * 2 if any_preset?(:"2x", :double)
+      width, height = img.width / 2, img.height / 2 if any_preset?(:"1/2", :half)
+      width, height = img.width / 3, img.height / 3 if any_preset?(:"1/3", :"one-third")
+      width, height = img.width / 4, img.height / 4 if any_preset?(:"1/4", :"one-fourth")
+      width, height = img.width / 3 * 2, img.height / 3 * 2 if any_preset?(:"2/3", :"two-thirds")
+      width, height = img.width / 4 * 2, img.height / 4 * 2 if any_preset?(:"2/4", :"two-fourths")
+      width, height = img.width / 4 * 3, img.height / 4 * 3 if any_preset?(:"3/4", :"three-fourths")
       img.resize "#{width}x#{height}"
     end
   end

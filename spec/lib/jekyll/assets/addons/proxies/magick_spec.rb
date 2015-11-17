@@ -37,25 +37,125 @@ describe "Magick Image Proxy" do
 
   context "boolean resizes" do
     def dimensions(asset)
-      as_magick(asset).info(:dimensions)
+      return FastImage.new(asset).size
+    end
+
+    def rdim(val)
+      return [
+        val - 2, val + 2
+      ]
     end
 
     it "allows 2x" do
-      odimensions = dimensions(@asset.pathname)
-      expect(dimensions(get_asset(stub_tag("magick:2x")))).to eq \
-        [odimensions.first * 2, odimensions.last * 2]
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:2x")))
+      expect(nd[0]).to(be_between(*rdim(og[0] * 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] * 2)))
     end
 
     it "allows 4x" do
-      odimensions = dimensions(@asset.pathname)
-      expect(dimensions(get_asset(stub_tag("magick:4x")))).to eq \
-        [odimensions.first * 4, odimensions.last * 4]
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:4x")))
+      expect(nd[0]).to(be_between(*rdim(og[0] * 4)))
+      expect(nd[1]).to(be_between(*rdim(og[1] * 4)))
+    end
+
+    it "allows 1/2" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:1/2")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 2)))
+    end
+
+    it "allows 1/3" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:1/3")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 3)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 3)))
+    end
+
+    it "allows 2/3" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:2/3")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 3 * 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 3 * 2)))
+    end
+
+    it "allows 1/4" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:1/4")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 4)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 4)))
+    end
+
+    it "allows 2/4" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:2/4")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 4 * 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 4 * 2)))
+    end
+
+    it "allows 3/4" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:3/4")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 4 * 3)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 4 * 3)))
+    end
+
+    it "allows double" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:double")))
+      expect(nd[0]).to(be_between(*rdim(og[0] * 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] * 2)))
+    end
+
+    it "allows quadruple" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:quadruple")))
+      expect(nd[0]).to(be_between(*rdim(og[0] * 4)))
+      expect(nd[1]).to(be_between(*rdim(og[1] * 4)))
     end
 
     it "allows half" do
-      odimensions = dimensions(@asset.pathname)
-      expect(dimensions(get_asset(stub_tag("magick:half")))).to eq \
-        [odimensions.first / 2, odimensions.last / 2]
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:half")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 2)))
+    end
+
+    it "allows one-third" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:one-third")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 3)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 3)))
+    end
+
+    it "allows two-thirds" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:two-thirds")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 3 * 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 3 * 2)))
+    end
+
+    it "allows one-fourth" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:one-fourth")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 4)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 4)))
+    end
+
+    it "allows two-fourths" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:two-fourths")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 4 * 2)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 4 * 2)))
+    end
+
+    it "allows three-fourts" do
+      og = dimensions(@asset.pathname)
+      nd = dimensions(get_asset(stub_tag("magick:three-fourths")))
+      expect(nd[0]).to(be_between(*rdim(og[0] / 4 * 3)))
+      expect(nd[1]).to(be_between(*rdim(og[1] / 4 * 3)))
     end
   end
 end
