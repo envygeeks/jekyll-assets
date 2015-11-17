@@ -82,7 +82,7 @@ module Jekyll
       silence_stdout do
         Jekyll::Site.new(Jekyll.configuration(opts.merge({
           "source" => path, "destination" => File.join(path, "_site")
-        })))
+        }))).tap(&:read)
       end
     end
 

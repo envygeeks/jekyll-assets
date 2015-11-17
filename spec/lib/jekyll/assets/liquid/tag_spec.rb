@@ -9,21 +9,30 @@ describe Jekyll::Assets::Liquid::Tag do
   subject { described_class }
   before :all do
     @site = stub_jekyll_site
-    @env  = Jekyll::Assets::Env.new(@site)
-    @site_struct = OpenStruct.new(:registers => {
-      :sprockets => @env, :site => @site
-    })
+    @env = Jekyll::Assets::Env.new(@site)
+    @renderer = @site.liquid_renderer
+    @register = {
+      :registers => {
+        :site => @site
+      }
+    }
   end
 
   def stub_tag(tag, data)
-    fragment(subject.send(:new, tag, data, []).render( \
-      @site_struct))
+    payload = "{%% %s %s %%}" % [tag, data]
+    fragment(@renderer.file(__FILE__).parse(payload).render!( \
+      @site.site_payload, @register))
   end
 
   def fragment(html)
     Nokogiri::HTML.fragment(html).children. \
       first
   end
+
+  # it "allows the user to use Liquid variables" do
+  #   require "pry"
+  #   binding. pry
+  # end
 
   it "works with alias tags" do
     expect(subject.send(:new, "image", "ruby.png", []).instance_variable_get(:@tag)).to eq \
