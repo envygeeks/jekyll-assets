@@ -39,20 +39,6 @@ describe Jekyll::Assets::Liquid::Tag do
       "img"
   end
 
-  it "adds a default alt attribute to img" do
-    expect(stub_tag("img", "ruby.png").attr("alt")).to eq "ruby.png"
-  end
-
-  it "sets a default width" do
-    expect(stub_tag("img", "ruby.png").attr("width")).to( \
-      match(/\A\d+\Z/))
-  end
-
-  it "sets a default height" do
-    expect(stub_tag("img", "ruby.png").attr("height")).to( \
-      match(/\A\d+\Z/))
-  end
-
   it "adds attributes" do
     expect(stub_tag("css", "bundle id:1").attr("id")).to eq \
       "1"

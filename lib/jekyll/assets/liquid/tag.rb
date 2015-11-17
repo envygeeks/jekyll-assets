@@ -10,6 +10,7 @@ module Jekyll
       class Tag < ::Liquid::Tag
         require_relative "tag/proxies"
         require_relative "tag/proxied_asset"
+        require_relative "tag/defaults"
         require_relative "tag/parser"
         attr_reader :args
 
@@ -99,8 +100,8 @@ module Jekyll
         private
         def process_tag(sprockets, asset)
           sprockets.used.add(asset) unless @tag == "asset_source"
-          set_img_alt_and_dimensions asset if @tag == "img"
-          out = get_path  sprockets, asset
+          Defaults.set_defaults_for!(@tag, @args ||= {}, asset)
+          out = get_path sprockets, asset
           if @tag == "asset_path"
             return out
 
@@ -125,36 +126,6 @@ module Jekyll
         def get_path(sprockets, asset)
           sprockets.prefix_path(sprockets.digest?? asset.digest_path : \
             asset.logical_path)
-        end
-
-        #
-
-        private
-        def set_img_alt_and_dimensions(asset)
-          set_img_dimensions(asset)
-          set_img_alt(asset)
-        end
-
-        #
-
-        private
-        def set_img_alt(asset)
-          @args[:html] ||= {}
-          if !@args[:html].has_key?("alt")
-            then @args[:html]["alt"] = asset.logical_path
-          end
-        end
-
-        #
-
-        private
-        def set_img_dimensions(asset)
-          dimensions = FastImage.new(asset.filename).size
-          return unless dimensions
-          @args[:html] ||= {}
-
-          @args[:html][ "width"] ||= dimensions.first
-          @args[:html]["height"] ||= dimensions. last
         end
 
         #
