@@ -98,16 +98,14 @@ describe Jekyll::Assets::Env do
   end
 
   it "writes cached assets on a simple refresh", :process => true do
-    FileUtils.rm_r(path)
+    path_ = Pathname.new(path)
+    path_.rmtree
 
     site.sprockets.used.clear
-    site.sprockets.class.digest_cache.each do |k, v|
-      site.sprockets.class.digest_cache[k] = "ShouldNotMatch"
-    end
-
     site.sprockets.write_all
-    expect(Dir[File.join(path, "*")].size).to eq \
-      site.sprockets.class.digest_cache.keys.size
+    expect(path_).to(exist)
+    expect(path_.children). \
+      not_to(be_empty)
   end
 
   it "writes missing assets even when cached", :process => true do

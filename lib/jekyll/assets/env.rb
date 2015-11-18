@@ -8,13 +8,7 @@ module Jekyll
       attr_reader :jekyll, :used
 
       class << self
-        attr_accessor :assets_cache, :digest_cache
-        def digest_cache
-          return @digest_cache ||= {}
-        end
-
-        #
-
+        attr_accessor :past
         def liquid_proxies
           return Liquid::Tag::Proxies
         end
@@ -42,6 +36,7 @@ module Jekyll
       def initialize(path, jekyll = nil)
         jekyll, path = path, nil if path.is_a?(Jekyll::Site)
         @used, @jekyll = Set.new, jekyll
+
         path ? super(path) : super()
         Hook.trigger :env, :init do |hook|
           hook.arity > 0 || 0 > hook.arity ? hook.call(self) : \
@@ -62,19 +57,10 @@ module Jekyll
         jekyll.in_source_dir(cache_dir, *paths)
       end
 
-      # Whether or not we are writing from the cache.
+      # Merged form of `#extra_assets`
 
-      def cached_write?
-        !@used.any?
-      end
-
-      # Merged form of `#extra_assets` and `@used` assets.
-
-      def all_assets(cached = false)
-        if !cached
-          then Set.new(@used).merge extra_assets
-          else Set.new(self.class.assets_cache).merge(extra_assets)
-        end
+      def all_assets
+        Set.new(@used).merge extra_assets
       end
 
       # Assets you tell us you want to always compile, even if you do not
@@ -150,22 +136,11 @@ module Jekyll
       #
 
       def write_all
-        if cached_write?
-          write_cached_assets else write_assets
-        end
-      end
-
-      #
-
-      private
-      def write_assets(assets = self.all_assets)
-        self.class.assets_cache = assets
-        self.class.digest_cache = Hash[assets.map do |a|
-          [a.logical_path, a.digest]
-        end]
-
-        assets.each do |v|
-          v.write_to as_path v
+        past = self.class.past ||= Set.new
+        (@used.any?? all_assets : past).each do |obj|
+          if past.add(obj) && path = as_path(obj)
+            obj.write_to path
+          end
         end
       end
 
@@ -177,30 +152,6 @@ module Jekyll
         rtn << baseurl unless cdn? && asset_config["skip_baseurl_with_cdn"]
         rtn <<  prefix unless cdn? && asset_config[ "skip_prefix_with_cdn"]
         rtn.delete_if { |val| val.nil? || val.empty? }
-      end
-
-      #
-
-      private
-      def write_cached_assets(assets = all_assets(true))
-        assets.each do |a|
-          if !a.is_a?(Liquid::Tag::ProxiedAsset)
-            viejo = self.class.digest_cache[a.logical_path]
-            nuevo = find_asset(a.logical_path).digest
-            path  = as_path a
-
-            if nuevo == viejo && File.file?(path)
-              next
-            end
-          else
-            if File.file?(a.logical_path)
-              next
-            end
-          end
-
-          self.class.digest_cache[a.logical_path] = a.digest
-          a.write_to as_path a
-        end
       end
 
       #
