@@ -43,7 +43,7 @@ module Jekyll
         jekyll, path = path, nil if path.is_a?(Jekyll::Site)
         @used, @jekyll = Set.new, jekyll
         path ? super(path) : super()
-        Hook.trigger(:env, :init) do |hook|
+        Hook.trigger :env, :init do |hook|
           hook.arity > 0 || 0 > hook.arity ? hook.call(self) : \
             instance_eval(&hook)
         end
