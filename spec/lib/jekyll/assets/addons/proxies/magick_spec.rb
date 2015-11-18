@@ -17,7 +17,7 @@ describe "Magick Image Proxy" do
 
   def get_asset(html)
     Pathname.new(@env.in_cache_dir(fragment(html).children.first.attr("src").gsub(/^#{ \
-      Regexp.escape(@env.prefix)}\//, "")))
+      Regexp.escape(@env.asset_config["prefix"])}\//, "")))
   end
 
   def as_magick(path)

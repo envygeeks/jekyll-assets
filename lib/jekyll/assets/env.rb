@@ -83,7 +83,13 @@ module Jekyll
       #
 
       def baseurl
-        jekyll.config["baseurl"]
+        ary = []
+
+        ary << jekyll.config["baseurl"] unless cdn? && asset_config["skip_baseurl_with_cdn"]
+        ary <<  asset_config[ "prefix"] unless cdn? && asset_config[ "skip_prefix_with_cdn"]
+        File.join(*ary.delete_if do |val|
+          val.nil? || val.empty?
+        end)
       end
 
       #
@@ -111,20 +117,19 @@ module Jekyll
         !!asset_config["digest"]
       end
 
-      #
+      # Prefix path prefixes the path with the baseurl and the cdn if it
+      # exists and is in the right mode to use it.  Otherwise it will only use
+      # the baseurl and asset prefix.  All of these can be adjusted.
 
-      def prefix
-        asset_config["prefix"]
-      end
-
-      # Prefixes a path with both the #base_url, the prefix and the CDN.
-
-      def prefix_path(path = "")
-        path_ = _baseurl
+      def prefix_path(path = nil)
+        _baseurl = baseurl
         cdn = asset_config["cdn"]
-        path_ << path unless path.nil? || path.empty?
-        cdn? && cdn ? File.join(cdn, *path_).chomp("/") : \
-          File.join(*path_).chomp("/")
+        _path = []
+
+        _path << _baseurl unless _baseurl.empty?
+        _path << path unless path.nil?
+        cdn? && cdn ? File.join(cdn, *_path).chomp("/") : \
+          File.join(*_path).chomp("/")
       end
 
       #
@@ -147,19 +152,9 @@ module Jekyll
       #
 
       private
-      def _baseurl
-        rtn = []
-        rtn << baseurl unless cdn? && asset_config["skip_baseurl_with_cdn"]
-        rtn <<  prefix unless cdn? && asset_config[ "skip_prefix_with_cdn"]
-        rtn.delete_if { |val| val.nil? || val.empty? }
-      end
-
-      #
-
-      private
       def as_path(v)
         path = digest?? v.digest_path : v.logical_path
-        jekyll.in_dest_dir(File.join(prefix, path))
+        jekyll.in_dest_dir(File.join(asset_config[ "prefix"], path))
       end
     end
   end

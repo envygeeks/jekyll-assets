@@ -16,6 +16,6 @@ describe "sprockets helpers" do
   end
 
   it "adds our prefix" do
-    expect(Sprockets::Helpers.prefix).to eq env.prefix
+    expect(Sprockets::Helpers.prefix).to eq env.prefix_path
   end
 end
