@@ -101,9 +101,15 @@ module Jekyll
         def process_tag(sprockets, asset)
           sprockets.used.add(asset) unless @tag == "asset_source"
           Defaults.set_defaults_for!(@tag, @args ||= {}, asset)
-          out = get_path sprockets, asset
+          build_html(sprockets, asset)
+        end
+
+        #
+
+        private
+        def build_html(sprockets, asset, path = get_path(sprockets, asset))
           if @tag == "asset_path"
-            return out
+            return path
 
           elsif @tag == "asset" || @tag == "asset_source"
             return asset.to_s
@@ -115,7 +121,7 @@ module Jekyll
 
           else
             return Tags[@tag] % [
-              out, @args.to_html
+              path, @args.to_html
             ]
           end
         end
