@@ -63,6 +63,21 @@ assets:
 * Disable compression by default in development.
 * Enable by default in production.
 
+
+### Bower (web components support.)
+
+Modify your `.bowerrc` file and add:
+
+```javascript
+{
+  "directory": "_assets/bower"
+}
+```
+
+And then add `_assets/bower` to your sources list and Sprockets will do the
+the rest for you... you can even `//= require bower_asset.js`.  We will even
+compress them for you per normal if Sprockets supports it and allows us to.
+
 ***You can force digesting with `digest: true` in your `_config.yml`***
 
 ## Tags
