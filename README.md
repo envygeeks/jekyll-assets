@@ -113,6 +113,31 @@ quote or otherwise, it just must be quoted or escaped.
 {% img {{\ image_path\ }} %}
 ```
 
+## Getting a list of your assets and basic info from Liquid
+
+We provide all *your* assets as a hash of Liquid Drops so you can get basic
+info that we wish you to have access to without having to prepare the class.
+
+```liquid
+{{ assets["bundle.css"].content_type }} => "text/css"
+{{ assets["images.jpg"].width  }} => 62
+{{ assets["images.jpg"].height }} => 62
+```
+
+The current list of available accessors:
+
+* `logical_path`
+* `content_type` -> `type`
+* `filename`
+* `basename`
+* `width`
+* `height`
+
+If you would like more, please feel free to add a pull request, at this
+time we will reject all pull requests that wish to add any digested paths as
+those are dynamically created when a proxy is ran so we can never predict
+it reliably unless we proxy and that would be a performance problem.
+
 ## ERB Support
 
 ERB Support is removed in favor of trying to get this included on Github Pages
