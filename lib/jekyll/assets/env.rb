@@ -134,14 +134,11 @@ module Jekyll
       # Prefixes a path with both the #base_url, the prefix and the CDN.
 
       def prefix_path(path = "")
-        prefix  = cdn? && asset_config[ "skip_prefix_with_cdn"] ? nil : self. prefix
-        baseurl = cdn? && asset_config["skip_baseurl_with_cdn"] ? nil : self.baseurl
-        path    = [baseurl, prefix, path]
-
-        path.delete_if(&:nil?).delete_if(&:empty?)
-        cdn = asset_config["cdn"] if asset_config.has_key?("cdn")
-        cdn? && cdn ? File.join(cdn, *path).chomp("/") : \
-          File.join(*path).chomp("/")
+        path_ = _baseurl
+        cdn = asset_config["cdn"]
+        path_ << path unless path.nil? || path.empty?
+        cdn? && cdn ? File.join(cdn, *path_).chomp("/") : \
+          File.join(*path_).chomp("/")
       end
 
       #
@@ -170,6 +167,16 @@ module Jekyll
         assets.each do |v|
           v.write_to as_path v
         end
+      end
+
+      #
+
+      private
+      def _baseurl
+        rtn = []
+        rtn << baseurl unless cdn? && asset_config["skip_baseurl_with_cdn"]
+        rtn <<  prefix unless cdn? && asset_config[ "skip_prefix_with_cdn"]
+        rtn.delete_if { |val| val.nil? || val.empty? }
       end
 
       #
