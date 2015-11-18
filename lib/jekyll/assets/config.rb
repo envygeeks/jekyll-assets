@@ -5,6 +5,12 @@
 module Jekyll
   module Assets
     module Config
+      DefaultSources = %W(
+        _assets/css _assets/stylesheets
+        _assets/images _assets/img _assets/fonts
+        _assets/javascripts _assets/js
+      )
+
       Development = {
         "skip_baseurl_with_cdn" => false,
         "skip_prefix_with_cdn"  => false,
@@ -15,13 +21,7 @@ module Jekyll
         "compress"  => {
           "css"     => false,
           "js"      => false
-        },
-
-        "sources"   => [
-          "_assets/css", "_assets/stylesheets",
-          "_assets/images", "_assets/img", "_assets/fonts",
-          "_assets/javascripts", "_assets/js"
-        ]
+        }
       }
 
       #
@@ -36,15 +36,23 @@ module Jekyll
 
       #
 
+      def self.merge_sources(jekyll, config)
+        config["sources"] = (DefaultSources + (config["sources"] ||= [])).map do |val|
+          jekyll.in_source_dir(val)
+        end
+      end
+
+      #
+
       def self.defaults
         %W(development test).include?(Jekyll.env) ? Development : Production
       end
 
       #
 
-      def self.merge(nhash, ohash = defaults)
-        ohash.merge(nhash) do |key, oval, nval|
-          oval.is_a?(Hash) && nval.is_a?(Hash) ? merge(nval, oval) : nval
+      def self.merge(new_hash, old_hash = defaults)
+        old_hash.merge(new_hash) do |key, old_val, new_val|
+          old_val.is_a?(Hash) && new_val.is_a?(Hash) ? merge(new_val, old_val) : new_val
         end
       end
     end
