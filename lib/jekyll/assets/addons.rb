@@ -5,6 +5,7 @@
 require_relative "addons/compass"
 require_relative "addons/bootstrap"
 require_relative "addons/autoprefixer"
+require_relative "addons/processors/liquid"
 require_relative "addons/proxies/magick"
 require_relative "addons/font_awesome"
 require_relative "addons/js_es6"

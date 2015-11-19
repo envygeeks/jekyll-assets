@@ -2,6 +2,7 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
+require "tilt"
 require "sprockets"
 require "jekyll"
 
