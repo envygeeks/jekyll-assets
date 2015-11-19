@@ -28,6 +28,8 @@ gems:
 
 ## Configuration
 
+A lot of our configuration transforms based on the `JEKYLL_ENV` variable set in your environment.  Such as digesting and whether or not to enable the CDN.  Some of them can be explictly overriden but a few cannot right now.  You should set your `JEKYLL_ENV=development` on your development machine and `JEKYLL_ENV=production` when building to push.
+
 ```yaml
 assets:
   compress:
