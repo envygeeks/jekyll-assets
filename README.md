@@ -126,17 +126,33 @@ rules for our tags as a specification.
 * `sprockets:accept:<value>`
 * `sprockets:write_to:<value>`
 
-## Liquid Variables in Arguments
+## Liquid Variables
 
-You can use Liquid variables inside of your arguments, but you must quote
-them to get them to work, this can be a partial argument quote a full argument
-quote or otherwise, it just must be quoted or escaped.
+We support liquid arguments for tag values (but not tag keys), and we also
+support Liquid pre-processing (with your Jekyll context) sass/less/css files
+you need do nothing special for the preprocessing an entire file, it's
+always done.
+
+An example of using Liquid in your tags:
 
 ```liquid
 {% img '{{ image_path }}' %}
 {% img '{{ image_path }}' proxy:key:'{{ value }}' %}
 {% img {{\ image_path\ }} %}
 ```
+
+An example of using Liquid in your SCSS:
+
+```scss
+.bg {
+  background: url(asset_path("{{ site.background_image }}"));
+}
+```
+
+You have full access to your entire Jekyll context from any liquid
+processing we do, so you can do whatever you like and be as dynamic as you
+like, including full loops and conditional Liquid based CSS since we
+pre-process your text files.
 
 ## Getting a list of your assets and basic info from Liquid
 
