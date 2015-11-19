@@ -74,7 +74,7 @@ The listed resources in the example are all defaults. It should be noted that we
 * Enable by default in production.
 
 
-### Bower (web components support.)
+### Bower Components
 
 Modify your `.bowerrc` file and add:
 
@@ -87,6 +87,10 @@ Modify your `.bowerrc` file and add:
 And then add `_assets/bower` to your sources list and Sprockets will do the
 the rest for you... you can even `//= require bower_asset.js`.  We will even
 compress them for you per normal if Sprockets supports it and allows us to.
+
+***You do not need to modify your `.bowerrc` file, you can optionally just
+add it to your sources list and it will work that way too!  As long as it's in
+your Jekyll folder.***
 
 ***You can force digesting with `digest: true` in your `_config.yml`***
 
