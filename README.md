@@ -58,6 +58,10 @@ assets:
     - _assets/js
 ```
 
+### Sources
+
+The listed resources in the example are all defaults. It should be noted that we append your sources instead of replace our resources with yours.  So if you add "_assets/folder" then we will append that to our sources and both will work.
+
 ### Digesting
 
 * Disable digesting by default in development.
