@@ -67,6 +67,8 @@ The listed resources in the example are all defaults. It should be noted that we
 * Disable digesting by default in development.
 * Digest by default in production
 
+***You can force digesting with `digest: true` in your `_config.yml`***
+
 ### Compression
 
 * Requires sass and uglify.
@@ -91,8 +93,6 @@ compress them for you per normal if Sprockets supports it and allows us to.
 ***You do not need to modify your `.bowerrc` file, you can optionally just
 add it to your sources list and it will work that way too!  As long as it's in
 your Jekyll folder.***
-
-***You can force digesting with `digest: true` in your `_config.yml`***
 
 ## Tags
 
