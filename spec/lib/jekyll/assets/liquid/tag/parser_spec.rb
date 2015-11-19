@@ -28,6 +28,10 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
     }]))
   end
 
+  def fragment(html)
+    Nokogiri::HTML.fragment(html)
+  end
+
   it "properly parses syntax", :proxies => true do
     input = "hello.jpg lol key:value magick:2x magick:resize:2x2"
     expect(subject.new(input, "img").args).to match({
@@ -42,6 +46,24 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
         "key"=>"value"
       }
     })
+  end
+
+  it "works with loops" do
+    site = stub_jekyll_site
+    input = <<-LIQUID
+      {% assign my_var = "1,2,3" | split: ","  %}
+      {% for n in my_var %}
+        {% img ruby.png id:"{{ n }}" %}
+      {% endfor %}
+    LIQUID
+
+    result = fragment(site.liquid_renderer.file("(file)").parse(input).render( \
+      site.site_payload, :registers => { :site => site })).xpath("img")
+
+    expect(result.size).to(eq(3))
+    expect(result[0].attr("id")).to(eq("1"))
+    expect(result[1].attr("id")).to(eq("2"))
+    expect(result[2].attr("id")).to(eq("3"))
   end
 
   it "processes liquid when asked to" do

@@ -74,7 +74,7 @@ module Jekyll
         #   because of a single asset change.
 
         def render(context)
-          @args.parse_liquid!(context)
+          args = Parser.parse_liquid(@args, context)
           site = context.registers[:site]
           page = context.registers.fetch(:page, {})
           sprockets = site.sprockets
@@ -82,7 +82,7 @@ module Jekyll
 
           asset = find_asset(sprockets)
           add_as_jekyll_dependency(site, sprockets, page, asset)
-          process_tag(sprockets, asset)
+          process_tag(args, sprockets, asset)
         rescue => e
           capture_and_out_error \
             site, e
@@ -98,30 +98,30 @@ module Jekyll
         #
 
         private
-        def process_tag(sprockets, asset)
+        def process_tag(args, sprockets, asset)
           sprockets.used.add(asset) unless @tag == "asset_source"
-          Defaults.set_defaults_for!(@tag, @args ||= {}, asset)
-          build_html(sprockets, asset)
+          Defaults.set_defaults_for!(@tag, args ||= {}, asset)
+          build_html(args, sprockets, asset)
         end
 
         #
 
         private
-        def build_html(sprockets, asset, path = get_path(sprockets, asset))
+        def build_html(args, sprockets, asset, path = get_path(sprockets, asset))
           if @tag == "asset_path"
             return path
 
           elsif @tag == "asset" || @tag == "asset_source"
             return asset.to_s
 
-          elsif @args.has_key?(:data) && @args[:data].has_key?(:uri)
+          elsif args.has_key?(:data) && args[:data].has_key?(:uri)
             return Tags[@tag] % [
-              asset.data_uri, @args.to_html
+              asset.data_uri, Parser.to_html(args)
             ]
 
           else
             return Tags[@tag] % [
-              path, @args.to_html
+              path, Parser.to_html(args)
             ]
           end
         end

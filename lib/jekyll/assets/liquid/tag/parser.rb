@@ -61,17 +61,43 @@ module Jekyll
             set_accept
           end
 
-          #
+          # TODO: In 3.0 this needs to be removed and put on the class,
+          #   but because we need to work around the way that Liquid currently
+          #   works it needs to remain.
 
           def parse_liquid!(context)
-            return @args unless context.is_a?(::Liquid::Context)
-            @args = _parse_liquid(@args, context)
+            @args = self.class.parse_liquid(@args, context)
           end
 
           #
 
+          def self.parse_liquid(hash, context)
+            hash = hash.to_h if hash.is_a?(self)
+            return hash unless context.is_a?(::Liquid::Context)
+            liquid = context.registers[:site].liquid_renderer.file( \
+              "(jekyll:assets)")
+
+            hash.inject({}) do |hash_, (key, val)|
+              val = liquid.parse(val).render(context) if val.is_a?(String)
+              val = parse_liquid(val, context) if val.is_a?(Hash)
+              hash_.update(
+                key => val
+              )
+            end
+          end
+
+          # TODO: In 3.0 this needs to be put on the class, but because
+          #  we need to work around the way that Liquid currently works in
+          #  2.0.1 it needs to stay.
+
           def to_html
-            @args.fetch(:html, {}).map do |key, val|
+            self.class.to_html(@args)
+          end
+
+          #
+
+          def self.to_html(hash)
+            hash.fetch(:html, {}).map do |key, val|
               %Q{ #{key}="#{val}"}
             end. \
             join
@@ -165,24 +191,6 @@ module Jekyll
           private
           def from_shellwords
             Shellwords.shellwords(@raw_args)
-          end
-
-          #
-
-          def _parse_liquid(hash, context)
-            lqd = context.registers[:site].liquid_renderer. \
-              file(raw_args)
-
-            hash.inject({}) do |hsh, (key, val)|
-              if val.is_a?(Hash) || val.is_a?(String)
-                val = val.is_a?(Hash) ? _parse_liquid(val, context) : \
-                  lqd.parse(val).render!(context)
-              end
-
-              hsh.update(
-                key => val
-              )
-            end
           end
         end
       end
