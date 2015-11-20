@@ -68,6 +68,10 @@ that we append your sources instead of replace our resources with yours.  So
 if you add "_assets/folder" then we will append that to our sources and
 both will work.
 
+***NOTE: if you use our `_assets` base folder container as a base folder for
+your sprockets, we will not append our sources, we will only use that
+folder as the sole source (base folder.)***
+
 ### Digesting
 
 * Disable digesting by default in development.

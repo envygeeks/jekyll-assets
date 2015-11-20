@@ -14,4 +14,11 @@ describe "asset sources" do
     expect(results).to include site.in_source_dir("_foo/bar")
     expect(results.size).to eq old_size + 1
   end
+
+  it "allows the user to use our base folder container as a base folder" do
+    stub_asset_config site, "sources" => %W(_assets)
+    results = env.paths.grep(/\A#{Regexp.union(site.in_source_dir)}/)
+    expect(results).to include site.in_source_dir("_assets/")
+    expect(results.size).to eq 1
+  end
 end

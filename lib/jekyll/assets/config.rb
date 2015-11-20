@@ -42,6 +42,7 @@ module Jekyll
       #
 
       def self.merge_sources(jekyll, config)
+        return if config["sources"] && config["sources"].grep(/\A\s*_assets\/?\s*\Z/).size > 0
         config["sources"] = (DefaultSources + (config["sources"] ||= [])).map do |val|
           jekyll.in_source_dir(val)
         end
