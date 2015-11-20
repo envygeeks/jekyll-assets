@@ -13,10 +13,6 @@ Jekyll 3 assets is an asset pipeline using Sprockets 3 to build especially
 for Jekyll 3.  It utilizes new features of both Sprockets and Jekyll to achieve
 a clean and extensible assets platform for Jekyll.
 
-## Having trouble with our documentation?
-
-If you do not understand something in our documentation please feel free to file a ticket and it will be explained and the documentation updated, however... if you have already figured out the problem please feel free to submit a pull request with clarification in the documentation and we'll happily work with you on updating it.
-
 ## Using Jekyll Assets with Jekyll
 
 When you are using a Gemfile and bundler you need to do nothing special to get
@@ -32,7 +28,11 @@ gems:
 
 ## Configuration
 
-A lot of our configuration transforms based on the `JEKYLL_ENV` variable set in your environment.  Such as digesting and whether or not to enable the CDN.  Some of them can be explictly overriden but a few cannot right now.  You should set your `JEKYLL_ENV=development` on your development machine and `JEKYLL_ENV=production` when building to push.
+A lot of our configuration transforms based on the `JEKYLL_ENV` variable
+set in your environment.  Such as digesting and whether or not to enable the
+CDN.  Some of them can be explicitly overridden but a few cannot right now.
+You should set your `JEKYLL_ENV=development` on your development
+machine and `JEKYLL_ENV=production` when building to push.
 
 ```yaml
 assets:
@@ -56,11 +56,21 @@ assets:
     - _assets/fonts
     - _assets/img
     - _assets/js
+  features:
+    automatic_image_size: true | false | default: true
+    automatic_image_alt : true | false | default: true
 ```
 
 ### Sources
 
-The listed resources in the example are all defaults. It should be noted that we append your sources instead of replace our resources with yours.  So if you add "_assets/folder" then we will append that to our sources and both will work.
+The listed resources in the example are all defaults. It should be noted
+that we append your sources instead of replace our resources with yours.  So
+if you add "_assets/folder" then we will append that to our sources and
+both will work.
+
+***NOTE: if you use our `_assets` base folder container as a base folder for
+your sprockets, we will not append our sources, we will only use that
+folder as the sole source (base folder.)***
 
 ### Digesting
 
@@ -252,3 +262,11 @@ that point rather than trying to fight it.***
 They're dead, in the way that they were, use Hooks, they require less
 patching and give more flexibility to us because we can trigger them every
 time we have a new environment not just occasionally.
+
+## Having trouble with our documentation?
+
+If you do not understand something in our documentation please feel
+free to file a ticket and it will be explained and the documentation updated,
+however... if you have already figured out the problem please feel free to
+submit a pull request with clarification in the documentation and we'll
+happily work with you on updating it.

@@ -21,6 +21,11 @@ module Jekyll
         "compress"  => {
           "css"     => false,
           "js"      => false
+        },
+
+        "features" => {
+          "automatic_img_alt"  => true,
+          "automatic_img_size" => true
         }
       }
 
@@ -37,6 +42,7 @@ module Jekyll
       #
 
       def self.merge_sources(jekyll, config)
+        return if config["sources"] && config["sources"].grep(/\A\s*_assets\/?\s*\Z/).size > 0
         config["sources"] = (DefaultSources + (config["sources"] ||= [])).map do |val|
           jekyll.in_source_dir(val)
         end

@@ -5,7 +5,7 @@
 require "rspec/helper"
 require "nokogiri"
 
-describe Jekyll::Assets::Liquid::Tag::Defaults::Tag do
+describe Jekyll::Assets::Liquid::Tag::Defaults::Image do
   subject { described_class }
   before :all do
     @site = stub_jekyll_site
@@ -41,5 +41,18 @@ describe Jekyll::Assets::Liquid::Tag::Defaults::Tag do
   it "sets a default height" do
     expect(stub_tag("img", "ruby.png").attr("height")).to( \
       match(/\A\d+\Z/))
+  end
+
+  it "allows the user to disable width and height" do
+    stub_asset_config "features" => { "automatic_img_size" => false }
+    result = stub_tag("img", "ruby.png")
+    expect(result.attr( "width")).to(be_nil)
+    expect(result.attr("height")).to(be_nil)
+  end
+
+  it "allows the user to disable alt" do
+    stub_asset_config "features" => { "automatic_img_alt" => false }
+    result = stub_tag("img", "ruby.png")
+    expect(result.attr("alt")).to(be_nil)
   end
 end
