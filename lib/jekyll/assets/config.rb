@@ -21,6 +21,11 @@ module Jekyll
         "compress"  => {
           "css"     => false,
           "js"      => false
+        },
+
+        "features" => {
+          "automatic_img_alt"  => true,
+          "automatic_img_size" => true
         }
       }
 
