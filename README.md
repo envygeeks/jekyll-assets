@@ -61,6 +61,12 @@ assets:
     automatic_image_alt : true | false | default: true
 ```
 
+### Cache Folder
+
+If you plan to change the `cache` folder, please make sure to add that
+folder to your `exclude` list in Jekyll or you will generate over and over
+and over again, `.` folders are not ignored by default.
+
 ### Sources
 
 The listed resources in the example are all defaults. It should be noted
