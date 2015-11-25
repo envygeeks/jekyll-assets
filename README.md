@@ -57,8 +57,8 @@ assets:
     - _assets/img
     - _assets/js
   features:
-    automatic_image_size: true | false | default: true
-    automatic_image_alt : true | false | default: true
+    automatic_img_size: true | false | default: true
+    automatic_img_alt : true | false | default: true
 ```
 
 ### Cache Folder
