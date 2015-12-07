@@ -54,53 +54,39 @@ module Jekyll
 
           #
 
-          def initialize(args, tag)
-            @raw_args, @tags = args, tag
-            @tag = tag
-            parse_raw
-            set_accept
-          end
+          def initialize(args, tag, processed: false, raw_args: nil)
+            if processed && raw_args
+              @args = args
+              @raw_args = raw_args
+              @tag = tag
 
-          # TODO: In 3.0 this needs to be removed and put on the class,
-          #   but because we need to work around the way that Liquid currently
-          #   works it needs to remain.
+            elsif processed and !raw_args
+              raise ArgumentError, "You must provide raw_args if you pre-process." \
+                "Please provide the raw args."
 
-          def parse_liquid!(context)
-            @args = self.class.parse_liquid(@args, context)
-          end
-
-          #
-
-          def self.parse_liquid(hash, context)
-            hash = hash.to_h if hash.is_a?(self)
-            return hash unless context.is_a?(::Liquid::Context)
-            liquid = context.registers[:site].liquid_renderer.file( \
-              "(jekyll:assets)")
-
-            hash.inject({}) do |hash_, (key, val)|
-              val = liquid.parse(val).render(context) if val.is_a?(String)
-              val = parse_liquid(val, context) if val.is_a?(Hash)
-              hash_.update(
-                key => val
-              )
+            else
+              @tag = tag
+              @raw_args = args
+              parse_raw
+              set_accept
             end
           end
 
-          # TODO: In 3.0 this needs to be put on the class, but because
-          #  we need to work around the way that Liquid currently works in
-          #  2.0.1 it needs to stay.
-
-          def to_html
-            self.class.to_html(@args)
-          end
-
           #
 
-          def self.to_html(hash)
-            hash.fetch(:html, {}).map do |key, val|
+          def parse_liquid(context)
+            return self unless context.is_a?(Object::Liquid::Context)
+            liquid = context.registers[:site].liquid_renderer.file("(jekyll:assets)")
+            out = parse_hash_liquid(self.to_h, liquid, context)
+            self.class.new(out, @tag, raw_args: @raw_args, \
+              processed: true)
+          end
+
+          def to_html
+            (self[:html] || {}).map do |key, val|
               %Q{ #{key}="#{val}"}
-            end. \
-            join
+            end \
+            .join
           end
 
           #
@@ -121,6 +107,17 @@ module Jekyll
           #
 
           private
+          def parse_hash_liquid(hash_, liquid, context)
+            hash_.each_with_object({}) do |(key, val), hash|
+              val = liquid.parse(val).render(context) if val.is_a?(String)
+              val = parse_hash_liquid(val, liquid, context) if val.is_a?(Hash)
+              hash[key] = val
+            end
+          end
+
+          #
+
+          private
           def parse_raw
             @args = from_shellwords.each_with_index.inject({}) do |hash, (key, index)|
               if index == 0 then hash.store(:file, key)
@@ -128,8 +125,7 @@ module Jekyll
                 parse_col hash, key
 
               else
-                (hash[:html] ||= {})[key] = \
-                  true
+                (hash[:html] ||= {})[key] = true
               end
 
               hash

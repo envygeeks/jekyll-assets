@@ -9,5 +9,10 @@
 
   <body>
     {{ content }}
+    <main>
+      {% for img in site.featured %}
+        {% img '{{ img }}' class:loop-test %}
+      {% endfor %}
+    </main>
   </body>
 </html>

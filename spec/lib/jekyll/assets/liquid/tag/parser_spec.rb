@@ -48,7 +48,7 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
     })
   end
 
-  it "works with loops" do
+  it "works with loops and normal values" do
     site = stub_jekyll_site
     input = <<-LIQUID
       {% assign my_var = "1,2,3" | split: ","  %}
@@ -66,10 +66,21 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
     expect(result[2].attr("id")).to(eq("3"))
   end
 
+  context do
+    before(:each) { site.process }; let(:site) { stub_jekyll_site }
+    it "works with loops and file names" do
+      result = fragment(site.pages.first.output).css("img.loop-test")
+      expect(result.size).to eq 3
+      expect(result[0].attr(:src)).to eq "/assets/ruby1.png"
+      expect(result[1].attr(:src)).to eq "/assets/ruby2.png"
+      expect(result[2].attr(:src)).to eq "/assets/ruby3.png"
+    end
+  end
+
   it "processes liquid when asked to" do
     input = "img.jpg?version='{{ jekyll.version }}' env:'{{ jekyll.environment }}'"
-    result = subject.new(input, "img").parse_liquid!(build_context)
-    expect(result).to(include(:file => "img.jpg?version=#{Jekyll::VERSION}"))
+    result = subject.new(input, "img").parse_liquid(build_context)
+    expect(result.to_h).to(include(:file => "img.jpg?version=#{Jekyll::VERSION}"))
     expect(result[:html]).to(include("env" => Jekyll.env))
   end
 

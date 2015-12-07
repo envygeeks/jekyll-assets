@@ -73,13 +73,13 @@ module Jekyll
         #   because of a single asset change.
 
         def render(context)
-          args = Parser.parse_liquid(@args, context)
+          args = @args.parse_liquid(context)
           site = context.registers[:site]
           page = context.registers.fetch(:page, {})
           sprockets = site.sprockets
           page = page["path"]
 
-          asset = find_asset(sprockets)
+          asset = find_asset(args, sprockets)
           add_as_jekyll_dependency(site, sprockets, page, asset)
           process_tag(args, sprockets, asset)
         rescue => e
@@ -107,20 +107,18 @@ module Jekyll
         private
         def build_html(args, sprockets, asset, path = get_path(sprockets, asset))
           if @tag == "asset_path"
-            return path
+            path
 
           elsif @tag == "asset" || @tag == "asset_source"
-            return asset.to_s
+            asset.to_s
 
           elsif args.has_key?(:data) && args[:data].has_key?(:uri)
-            return Tags[@tag] % [
-              asset.data_uri, Parser.to_html(args)
-            ]
+            format(Tags[@tag], asset.data_uri, \
+              args.to_html)
 
           else
-            return Tags[@tag] % [
-              path, Parser.to_html(args)
-            ]
+            format(Tags[@tag], path, \
+              args.to_html)
           end
         end
 
@@ -146,14 +144,14 @@ module Jekyll
         #
 
         private
-        def find_asset(sprockets)
-          file, _sprockets = @args[:file], @args[:sprockets] ||= {}
+        def find_asset(args, sprockets)
+          file, _sprockets = args[:file], args[:sprockets] ||= {}
           if !(out = sprockets.find_asset(file, _sprockets))
-            raise AssetNotFoundError, @args[:file]
+            raise AssetNotFoundError, args[:file]
           else
             out.liquid_tags << self
             !args.has_proxies?? out : ProxiedAsset.new( \
-              out, @args, sprockets, self)
+              out, args, sprockets, self)
           end
         end
 
