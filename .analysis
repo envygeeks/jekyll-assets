@@ -28,13 +28,12 @@ Starting analysis
 == lib/jekyll/assets/liquid/tag/parser.rb (1 issue) ==
 82: Align the elements of a hash literal if they span more than one line. [rubocop]
 
-== lib/jekyll/assets/liquid/tag/proxies.rb (4 issues) ==
+== lib/jekyll/assets/liquid/tag/proxies.rb (3 issues) ==
 10-20: Assignment Branch Condition size for add_by_class is too high. [16.03/15] [rubocop]
 16: Unnecessary spacing detected. [rubocop]
-77: Place the . on the next line, together with the method name. [rubocop]
 94: Redundant `return` detected. [rubocop]
 
 == lib/jekyll/assets/logger.rb (1 issue) ==
 45: Redundant `RuntimeError` argument can be removed. [rubocop]
 
-Analysis complete! Found 23 issues.
+Analysis complete! Found 22 issues.
