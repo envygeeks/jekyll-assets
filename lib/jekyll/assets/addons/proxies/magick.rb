@@ -9,7 +9,9 @@ try_require "mini_magick" do
       @two-fourths @three-fourths)
 
   Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(args + presets) do
-    Presets, Args = presets, args
+    PRESETS = presets
+    ARGS = args
+
     class DoubleResizeError < RuntimeError
       def initialize
         "Both resize and @*x provided, this is not supported."
@@ -54,14 +56,14 @@ try_require "mini_magick" do
 
     private
     def preset?
-      (@opts.keys - Args.map(&:to_sym)).any?
+      (@opts.keys - ARGS.map(&:to_sym)).any?
     end
 
     #
 
     private
     def magick_quality(img)
-      if @opts.has_key?(:quality)
+      if @opts.key?(:quality)
         then img.quality @opts[:quality]
       end
     end
@@ -70,8 +72,8 @@ try_require "mini_magick" do
 
     private
     def magick_resize(img)
-      raise DoubleResizeError if @opts.has_key?(:resize) && preset?
-      if @opts.has_key?(:resize)
+      raise DoubleResizeError if @opts.key?(:resize) && preset?
+      if @opts.key?(:resize)
         then img.resize @opts[:resize]
       end
     end
@@ -80,7 +82,7 @@ try_require "mini_magick" do
 
     private
     def magick_rotate(img)
-      if @opts.has_key?(:rotate)
+      if @opts.key?(:rotate)
         then img.rotate @opts[:rotate]
       end
     end
@@ -89,7 +91,7 @@ try_require "mini_magick" do
 
     private
     def magick_flip(img)
-      if @opts.has_key?(:flip)
+      if @opts.key?(:flip)
         then img.flip @opts[:flip]
       end
     end
@@ -98,7 +100,7 @@ try_require "mini_magick" do
 
     private
     def magick_crop(img)
-      if @opts.has_key?(:crop)
+      if @opts.key?(:crop)
         then img.crop @opts[:crop]
       end
     end

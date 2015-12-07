@@ -1,4 +1,4 @@
-$:.unshift(File.expand_path("../lib", __FILE__))
+$LOAD_PATH.unshift(File.expand_path("../lib", __FILE__))
 require "jekyll/assets/version"
 
 Gem::Specification.new do |spec|
@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.license = "MIT"
   spec.has_rdoc = false
   spec.require_paths = ["lib"]
-  spec.description =   spec.description   = <<-DESC
+  spec.description = spec.description = <<-DESC
     A Jekyll plugin, that allows you to write javascript/css assets in
     other languages such as CoffeeScript, Sass, Less and ERB, concatenate
     them, respecting dependencies, minify and many more.

@@ -61,10 +61,9 @@ module Jekyll
           #
 
           def digest_path
-            name = asset.logical_path; ext = File.extname(name)
-            "#{File.basename(name, ext)}-#{digest}#{
-              ext
-            }"
+            name = asset.logical_path
+            ext  = File.extname(name)
+            "#{File.basename(name, ext)}-#{digest}#{ext}"
           end
 
           #
@@ -88,10 +87,9 @@ module Jekyll
 
           private
           def cache_file
-            if File.file?(filename)
-              @_cached = true else @_cached = false
-              FileUtils.cp asset.filename, filename
-            end
+            @_cached = File.file?(filename)
+            FileUtils.cp asset.filename, filename unless @_cached
+            @_cached
           end
         end
       end

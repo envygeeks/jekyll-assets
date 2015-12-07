@@ -36,7 +36,7 @@ module Jekyll
         "compress"  => {
           "css"     => true,
           "js"      => true
-        },
+        }
       }).freeze
 
       #
@@ -60,7 +60,7 @@ module Jekyll
       #
 
       def self.merge(new_hash, old_hash = defaults)
-        old_hash.merge(new_hash) do |key, old_val, new_val|
+        old_hash.merge(new_hash) do |_, old_val, new_val|
           old_val.is_a?(Hash) && new_val.is_a?(Hash) ? merge(new_val, old_val) : new_val
         end
       end

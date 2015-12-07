@@ -3,7 +3,7 @@
 # Encoding: utf-8
 
 module Kernel
-  def has_javascript?
+  def javascript?
     require "execjs"
     if block_given?
       yield

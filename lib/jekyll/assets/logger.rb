@@ -5,7 +5,8 @@
 module Jekyll
   module Assets
     class Logger
-      Prefix="Jekyll Assets:"
+      PREFIX = "Jekyll Assets:"
+
       def log
         @_log ||= Jekyll.logger
       end
@@ -14,33 +15,33 @@ module Jekyll
 
       def warn(msg = nil, &block)
         msg = (block_given?? block.call : msg)
-        log.warn(Prefix, msg)
+        log.warn(PREFIX, msg)
       end
 
       # Log Level: 1
 
       def error(msg = nil, &block)
         msg = (block_given?? block.call : msg)
-        log.error(Prefix, msg)
+        log.error(PREFIX, msg)
       end
 
       # Log Level: 2
 
       def info(msg = nil, &block)
         msg = (block_given?? block.call : msg)
-        log.info(Prefix, msg)
+        log.info(PREFIX, msg)
       end
 
       # Log Level: 3
 
       def debug(msg = nil, &block)
         msg = (block_given?? block.call : msg)
-        log.debug(Prefix, msg)
+        log.debug(PREFIX, msg)
       end
 
       #
 
-      def log_level=(*a)
+      def log_level=(*)
         raise RuntimeError, "Please set log levels on Jekyll.logger"
       end
     end

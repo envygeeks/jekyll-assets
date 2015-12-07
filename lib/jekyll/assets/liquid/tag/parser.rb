@@ -23,7 +23,7 @@ module Jekyll
           extend Forwardable
 
           def_delegator :@args, :each
-          def_delegator :@args, :has_key?
+          def_delegator :@args, :key?
           def_delegator :@args, :fetch
           def_delegator :@args, :store
           def_delegator :@args, :to_h
@@ -32,7 +32,7 @@ module Jekyll
 
           #
 
-          Accept = {
+          ACCEPT = {
             "css" => "text/css", "js" => "application/javascript"
           }
 
@@ -60,7 +60,7 @@ module Jekyll
               @raw_args = raw_args
               @tag = tag
 
-            elsif processed and !raw_args
+            elsif processed && !raw_args
               raise ArgumentError, "You must provide raw_args if you pre-process." \
                 "Please provide the raw args."
 
@@ -77,16 +77,15 @@ module Jekyll
           def parse_liquid(context)
             return self unless context.is_a?(Object::Liquid::Context)
             liquid = context.registers[:site].liquid_renderer.file("(jekyll:assets)")
-            out = parse_hash_liquid(self.to_h, liquid, context)
+            out = parse_hash_liquid(to_h, liquid, context)
             self.class.new(out, @tag, raw_args: @raw_args, \
               processed: true)
           end
 
           def to_html
             (self[:html] || {}).map do |key, val|
-              %Q{ #{key}="#{val}"}
-            end \
-            .join
+              %{ #{key}="#{val}"}
+            end.join
           end
 
           #
@@ -100,7 +99,7 @@ module Jekyll
 
           #
 
-          def has_proxies?
+          def proxies?
             proxies.any?
           end
 
@@ -119,7 +118,7 @@ module Jekyll
 
           private
           def parse_raw
-            @args = from_shellwords.each_with_index.inject({}) do |hash, (key, index)|
+            @args = from_shellwords.each_with_index.each_with_object({}) do |(key, index), hash|
               if index == 0 then hash.store(:file, key)
               elsif key =~ /:/ && (key = key.split(/(?<!\\):/))
                 parse_col hash, key
@@ -137,17 +136,17 @@ module Jekyll
           private
           def parse_col(hash, key)
             key.push(key.delete_at(-1).gsub(/\\:/, ":"))
-            if key.size == 3 then as_proxy hash, key
-              elsif key.size == 2 then as_bool_or_html hash, key
-              else raise UnescapedColonError
-            end
+            return as_proxy hash, key if key.size == 3
+            return as_bool_or_html hash, key if key.size == 2
+            raise UnescapedColonError
           end
 
           #
 
           private
           def as_bool_or_html(hash, key)
-            okey = key; key, sub_key = key
+            okey = key
+            key, sub_key = key
             if Proxies.has?(key, @tag, "@#{sub_key}")
               (hash[key.to_sym] ||= {})[sub_key.to_sym] = true
             else
@@ -174,11 +173,11 @@ module Jekyll
 
           private
           def set_accept
-            if Accept.has_key?(@tag) && (!@args.has_key?(:sprockets) || \
-                  !@args[:sprockets].has_key?(:accept))
+            if ACCEPT.key?(@tag) && (!@args.key?(:sprockets) || \
+                  !@args[:sprockets].key?(:accept))
 
               (@args[:sprockets] ||= {})[:accept] = \
-                Accept[@tag]
+                ACCEPT[@tag]
             end
           end
 

@@ -10,7 +10,7 @@ module Jekyll
       class << self
         attr_accessor :past
         def liquid_proxies
-          return Liquid::Tag::Proxies
+          Liquid::Tag::Proxies
         end
       end
 
@@ -25,9 +25,8 @@ module Jekyll
       #
 
       def to_liquid_payload
-        jekyll.sprockets.all_unparsed_assets.inject({}) do |hsh, (key, val)|
-          hsh[key] = Jekyll::Assets::Liquid::Drop.new(val, jekyll)
-        hsh
+        jekyll.sprockets.all_unparsed_assets.each_with_object({}) do |(key, val), hash|
+          hash[key] = Jekyll::Assets::Liquid::Drop.new(val, jekyll)
         end
       end
 
@@ -35,19 +34,19 @@ module Jekyll
 
       def initialize(path, jekyll = nil)
         jekyll, path = path, nil if path.is_a?(Jekyll::Site)
-        @used, @jekyll = Set.new, jekyll
+        @jekyll = jekyll
+        @used = Set.new
 
         path ? super(path) : super()
         Hook.trigger :env, :init do |hook|
-          hook.arity > 0 || 0 > hook.arity ? hook.call(self) : \
-            instance_eval(&hook)
+          hook.arity > 0 || 0 > hook.arity ? hook.call(self) : instance_eval(&hook)
         end
       end
 
       #
 
       def liquid_proxies
-        return self.class.liquid_proxies
+        self.class.liquid_proxies
       end
 
       # Make sure a path falls withint our cache dir.
@@ -76,7 +75,7 @@ module Jekyll
       #
 
       def cdn?
-        !dev? && asset_config.has_key?("cdn") && \
+        !dev? && asset_config.key?("cdn") && \
           asset_config["cdn"]
       end
 
@@ -101,8 +100,8 @@ module Jekyll
       #
 
       def compress?(what)
-        !!asset_config["compress"]. \
-          fetch(what, false)
+        !!asset_config["compress"] \
+          .fetch(what, false)
       end
 
       #
@@ -122,14 +121,15 @@ module Jekyll
       # the baseurl and asset prefix.  All of these can be adjusted.
 
       def prefix_path(path = nil)
-        _baseurl = baseurl
         cdn = asset_config["cdn"]
-        _path = []
+        base_url = baseurl
 
-        _path << _baseurl unless _baseurl.empty?
-        _path << path unless path.nil?
-        cdn? && cdn ? File.join(cdn, *_path).chomp("/") : \
-          File.join(*_path).chomp("/")
+        path_ = []
+        path_ << base_url unless base_url.empty?
+        path_ << path unless path.nil?
+
+        url = cdn && cdn?? File.join(cdn, *path_) : File.join(*path_)
+        url.chomp("/")
       end
 
       #

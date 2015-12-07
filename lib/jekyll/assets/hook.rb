@@ -7,19 +7,18 @@ module Jekyll
     class Hook
       class UnknownHookError < RuntimeError
         def initialize(base: nil, point: nil)
-          return super "Unknown hook  base '#{base}'" if base
-          return super "Unknown hook point '#{point}' given."
+          super "Unknown hook #{base ? "base" : "point"} '#{base || point}'"
         end
       end
 
-      HookAliases = {
+      HOOK_ALIASES = {
         :env => {
           :post_init => :init,
-           :pre_init => :init
+          :pre_init  => :init
         }
       }
 
-      HookPoints = {
+      HOOK_POINTS = {
         :env => [
           :init
         ]
@@ -33,10 +32,10 @@ module Jekyll
       # proc we got and then you can do as you please (such as instance eval)
       # but if you do not give us one then we simply pass the args.
 
-      def self.trigger(base, _point, *args, &block)
+      def self.trigger(base, point_, *args, &block)
         raise ArgumentError, "Do not give args with a block" if args.size > 0 && block_given?
-        if all.has_key?(base) && all[base].has_key?(_point)
-          Set.new.merge(point(base, _point, :early)).merge(point(base, _point)).map do |v|
+        if all.key?(base) && all[base].key?(point_)
+          Set.new.merge(point(base, point_, :early)).merge(point(base, point_)).map do |v|
             block_given?? block.call(v) : v.call(*args)
           end
         end
@@ -44,25 +43,25 @@ module Jekyll
 
       #
 
-      def self.point(base, point, _when = :late)
+      def self.point(base, point, when_ = :late)
         point = all[base][point] ||= {
-           :late => Set.new,
-          :early => Set.new
+          :early => Set.new,
+          :late  => Set.new
         }
 
-        point[_when]
+        point[when_]
       end
 
       #
 
-      def self.register(base, point, _when = :late, &block)
-        raise UnknownHookError.new(base: base) unless HookPoints.has_key?(base)
-        point = HookAliases[base][point] if  HookAliases.fetch(base, {}).has_key?(point)
-        raise UnknownHookError.new(point: point) unless HookPoints[base].include?(point)
+      def self.register(base, point, when_ = :late, &block)
+        raise UnknownHookError, base: base unless HOOK_POINTS.key?(base)
+        point = HOOK_ALIASES[base][point] if HOOK_ALIASES.fetch(base, {}).key?(point)
+        raise UnknownHookError, point: point unless HOOK_POINTS[base].include?(point)
         all[base] ||= {}
 
-        point(base, point, _when). \
-          add(block)
+        point(base, point, when_) \
+          .add(block)
       end
     end
   end

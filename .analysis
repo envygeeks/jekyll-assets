@@ -1,0 +1,40 @@
+Starting analysis
+
+== lib/jekyll/assets/addons/proxies/magick.rb (13 issues) ==
+8: Align the elements of an array literal if they span more than one line. [rubocop]
+9: Align the elements of an array literal if they span more than one line. [rubocop]
+113-124: Cyclomatic complexity for magick_preset_resize is too high. [10/6] [rubocop]
+113-124: Perceived complexity for magick_preset_resize is too high. [10/7] [rubocop]
+113-124: Assignment Branch Condition size for magick_preset_resize is too high. [54.42/15] [rubocop]
+115: Do not use parallel assignment. [rubocop]
+116: Do not use parallel assignment. [rubocop]
+117: Do not use parallel assignment. [rubocop]
+118: Do not use parallel assignment. [rubocop]
+119: Do not use parallel assignment. [rubocop]
+120: Do not use parallel assignment. [rubocop]
+121: Do not use parallel assignment. [rubocop]
+122: Do not use parallel assignment. [rubocop]
+
+== lib/jekyll/assets/env.rb (2 issues) ==
+84-92: Assignment Branch Condition size for baseurl is too high. [17.75/15] [rubocop]
+88: Unnecessary spacing detected. [rubocop]
+
+== lib/jekyll/assets/hook.rb (1 issue) ==
+35-42: Assignment Branch Condition size for trigger is too high. [18.68/15] [rubocop]
+
+== lib/jekyll/assets/liquid/tag.rb (1 issue) ==
+108-123: Assignment Branch Condition size for build_html is too high. [15.81/15] [rubocop]
+
+== lib/jekyll/assets/liquid/tag/parser.rb (1 issue) ==
+82: Align the elements of a hash literal if they span more than one line. [rubocop]
+
+== lib/jekyll/assets/liquid/tag/proxies.rb (4 issues) ==
+10-20: Assignment Branch Condition size for add_by_class is too high. [16.03/15] [rubocop]
+16: Unnecessary spacing detected. [rubocop]
+77: Place the . on the next line, together with the method name. [rubocop]
+94: Redundant `return` detected. [rubocop]
+
+== lib/jekyll/assets/logger.rb (1 issue) ==
+45: Redundant `RuntimeError` argument can be removed. [rubocop]
+
+Analysis complete! Found 23 issues.

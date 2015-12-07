@@ -3,11 +3,7 @@ module Jekyll
     module Addons
       module Processors
         class Liquid < Tilt::Template
-          ProcessingFor = %W(
-            text/css text/sass text/less text/scss
-            text/coffeescript text/javascript
-          )
-
+          PROCESSING_FOR = %W(text/css text/sass text/less text/scss text/coffeescript text/javascript).freeze
           def prepare
             #
           end
@@ -17,12 +13,10 @@ module Jekyll
           # accessing the entirety of your posts and pages, though I don't
           # know why you would want to, and I ain't judging you.
 
-          def evaluate(scope, locals, jekyll = scope.environment.jekyll, &block)
-            jekyll.liquid_renderer.file(@file).parse(data).render!(
-              jekyll.site_payload, :registers => {
-                :site => jekyll
-              }
-            )
+          def evaluate(scope, _, jekyll = scope.environment.jekyll, &_block)
+            jekyll.liquid_renderer.file(@file).parse(data).render!(jekyll.site_payload, :registers => {
+              :site => jekyll
+            })
           end
         end
       end
@@ -31,6 +25,6 @@ module Jekyll
 end
 
 # There might be a few missing, if there is please do let me know.
-Jekyll::Assets::Addons::Processors::Liquid::ProcessingFor.each do |val|
+Jekyll::Assets::Addons::Processors::Liquid::PROCESSING_FOR.each do |val|
   Sprockets.register_preprocessor val, Jekyll::Assets::Addons::Processors::Liquid
 end

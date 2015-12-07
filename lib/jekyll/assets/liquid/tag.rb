@@ -42,9 +42,9 @@ module Jekyll
         #
 
         Tags = {
-          "css" => %Q{<link type="text/css" rel="stylesheet" href="%s"%s>},
-          "js"  => %Q{<script type="text/javascript" src="%s"%s></script>},
-          "img" => %Q{<img src="%s"%s>}
+          "css" => %{<link type="text/css" rel="stylesheet" href="%s"%s>},
+          "js"  => %{<script type="text/javascript" src="%s"%s></script>},
+          "img" => %{<img src="%s"%s>}
         }.freeze
 
         #
@@ -90,7 +90,7 @@ module Jekyll
 
         private
         def from_alias(tag)
-          Alias.has_key?(tag) ? Alias[tag] : tag
+          Alias.key?(tag) ? Alias[tag] : tag
         end
 
         #
@@ -112,7 +112,7 @@ module Jekyll
           elsif @tag == "asset" || @tag == "asset_source"
             asset.to_s
 
-          elsif args.has_key?(:data) && args[:data].has_key?(:uri)
+          elsif args.key?(:data) && args[:data].key?(:uri)
             format(Tags[@tag], asset.data_uri, \
               args.to_html)
 
@@ -126,8 +126,7 @@ module Jekyll
 
         private
         def get_path(sprockets, asset)
-          sprockets.prefix_path(sprockets.digest?? asset.digest_path : \
-            asset.logical_path)
+          sprockets.prefix_path(sprockets.digest?? asset.digest_path : asset.logical_path)
         end
 
         #
@@ -145,12 +144,13 @@ module Jekyll
 
         private
         def find_asset(args, sprockets)
-          file, _sprockets = args[:file], args[:sprockets] ||= {}
-          if !(out = sprockets.find_asset(file, _sprockets))
+          file = args[:file]
+          sprockets_ = args[:sprockets] ||= {}
+          if !(out = sprockets.find_asset(file, sprockets_))
             raise AssetNotFoundError, args[:file]
           else
             out.liquid_tags << self
-            !args.has_proxies?? out : ProxiedAsset.new( \
+            !args.proxies?? out : ProxiedAsset.new( \
               out, args, sprockets, self)
           end
         end
@@ -164,7 +164,7 @@ module Jekyll
         def capture_and_out_error(site, error)
           if error.is_a?(Sass::SyntaxError)
             file = error.sass_filename.gsub(/#{Regexp.escape(site.source)}\//, "")
-            Jekyll.logger.error(%Q{Error in #{file}:#{error.sass_line}  #{error}})
+            Jekyll.logger.error(%{Error in #{file}:#{error.sass_line} #{error}})
           else
             Jekyll.logger.error \
               "", error.to_s

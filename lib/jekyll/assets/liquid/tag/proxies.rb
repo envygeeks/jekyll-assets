@@ -7,18 +7,16 @@ module Jekyll
     module Liquid
       class Tag
         module Proxies
-          def self.add_by_class(_class, name, tag, *args)
-            names = [name, name.to_s, name.to_sym]
-            tags  =  [tag].flatten.map { |v| [v.to_s, v, v.to_sym] }
-            args  = [args].flatten.map { |v| [v.to_s, v, v.to_sym] }
-
+          def self.add_by_class(class_, name, tag, *args)
+            proc_ = proc { |v| [v.to_s, v, v.to_sym] }
             all << {
-              :name => names.uniq,
-              :tags => tags.flatten.uniq,
-              :args => args.flatten.uniq,
-              :class  => _class
+              :name => proc_.call(name).uniq,
+              :args => [args].flatten.map(&proc_).flatten.uniq,
+              :tags => [ tag].flatten.map(&proc_).flatten.uniq,
+              :class  => class_
             }
-          all
+
+            all
           end
 
           #
@@ -32,8 +30,7 @@ module Jekyll
           def self.keys
             all.select { |val| !val[:class].is_a?(Symbol) }.map do |val|
               val[:name]
-            end. \
-            flatten
+            end.flatten
           end
 
           #
@@ -41,8 +38,7 @@ module Jekyll
           def self.base_keys
             all.select { |val| val[:class].is_a?(Symbol) }.map do |val|
               val[:name]
-            end. \
-            flatten
+            end.flatten
           end
 
           #
@@ -54,15 +50,9 @@ module Jekyll
           #
 
           def self.get(name, tag = nil, arg = nil)
-            if name && tag && arg
-              get_by_name_and_tag_and_arg(
-                name, tag, arg
-              )
-
+            if name && tag && arg then get_by_name_and_tag_and_arg(name, tag, arg)
             elsif name && tag
-              get_by_name_and_tag(
-                name, tag
-              )
+              get_by_name_and_tag(name, tag)
 
             else
               all.select do |val|
@@ -75,10 +65,8 @@ module Jekyll
 
           def self.get_by_name_and_tag_and_arg(name, tag, arg)
             all.select do |val|
-              (val[:name].include?(name))   && \
-              (val[:tags].include?(:all)    || \
-                  val[:tags].include?(tag)) && \
-              (val[:args].include?( arg))
+              val[:name].include?(name) && (val[:tags].include?(:all) || val[:tags] \
+                .include?(tag)) && val[:args].include?(arg)
             end
           end
 
@@ -86,9 +74,8 @@ module Jekyll
 
           def self.get_by_name_and_tag(name, tag)
             all.select do |val|
-              (val[:name].include?(name))   &&
-              (val[:tags].include?(:all)    || \
-                  val[:tags].include?(tag))
+              val[:name].include?(name) && (val[:tags].include?(:all) || val[:tags]. \
+                include?(tag))
             end
           end
 
@@ -102,9 +89,9 @@ module Jekyll
 
           private
           def self.generate_class(name, tag, &block)
-            _class = const_set(random_name, Class.new)
-            _class. class_eval(&block)
-            return _class, name, tag
+            class_ = const_set(random_name, Class.new)
+            class_.class_eval(&block)
+            return class_, name, tag
           end
 
           #

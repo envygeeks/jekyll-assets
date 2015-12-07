@@ -8,7 +8,7 @@ module Jekyll
       class Tag
         module Defaults
           class Image
-            def self.is_for?(tag)
+            def self.for?(tag)
               tag == "img" || tag == "image"
             end
 
@@ -16,9 +16,9 @@ module Jekyll
             #   for now it's not enforced to maintain the 2.0 API.
 
             def initialize(args, asset, env = nil)
+              @args = args
               @asset = asset
-              @env   =   env
-              @args  =  args
+              @env = env
             end
 
             #
@@ -34,8 +34,8 @@ module Jekyll
             def set_img_alt
               if !@env || @env.asset_config["features"]["automatic_img_alt"]
                 @args[:html] ||= {}
-                if !@args[:html].has_key?("alt")
-                  then @args[:html]["alt"] = @asset.logical_path
+                unless @args[:html].key?("alt")
+                  @args[:html]["alt"] = @asset.logical_path
                 end
               end
             end

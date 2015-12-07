@@ -4,14 +4,14 @@
 
 require "rspec/helper"
 describe Kernel do
-  context "#has_javascript?" do
+  context "#javascript?" do
     it "runs the block if there is a JavaScript (any) available" do
-      expect(has_javascript? { true }).to eq true
+      expect(javascript? { true }).to eq true
     end
 
     it "logs when it cannot load a JavaScript runtime" do
       expect(Jekyll.logger).to receive(:debug).with(any_args)
-      has_javascript? do
+      javascript? do
         raise ExecJS::RuntimeUnavailable
       end
     end

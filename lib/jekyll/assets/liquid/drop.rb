@@ -44,14 +44,14 @@ module Jekyll
 
         private
         def image?
-          %(image/png image/jpeg image/gif).include?(
+          %W(image/png image/jpeg image/gif).include?(
             asset.content_type
           )
         end
 
         private
         def asset
-          return @asset ||= @jekyll.sprockets.find_asset(@path)
+          @asset ||= @jekyll.sprockets.find_asset(@path)
         end
       end
     end

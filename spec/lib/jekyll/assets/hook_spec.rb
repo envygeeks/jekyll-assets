@@ -6,7 +6,7 @@ require "rspec/helper"
 
 describe Jekyll::Assets::Hook do
   before :each do
-    Jekyll::Assets::Hook::HookPoints.store(:test, [:test])
+    Jekyll::Assets::Hook::HOOK_POINTS.store(:test, [:test])
     Jekyll::Assets::Hook.all.store(:test, {
       :test => { :early => Set.new, :late => Set.new }
     })
