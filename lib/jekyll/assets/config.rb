@@ -9,7 +9,7 @@ module Jekyll
         _assets/css _assets/stylesheets
         _assets/images _assets/img _assets/fonts
         _assets/javascripts _assets/js
-      )
+      ).freeze
 
       Development = {
         "skip_baseurl_with_cdn" => false,
@@ -27,7 +27,7 @@ module Jekyll
           "automatic_img_alt"  => true,
           "automatic_img_size" => true
         }
-      }
+      }.freeze
 
       #
 
@@ -37,15 +37,18 @@ module Jekyll
           "css"     => true,
           "js"      => true
         },
-      })
+      }).freeze
 
       #
 
       def self.merge_sources(jekyll, config)
-        return if config["sources"] && config["sources"].grep(/\A\s*_assets\/?\s*\Z/).size > 0
-        config["sources"] = (DefaultSources + (config["sources"] ||= [])).map do |val|
+        config["sources"] ||= []
+        return if config["sources"].grep(/\A\s*_assets\/?\s*\Z/).size > 0
+        sources = DefaultSources + config["sources"].to_a
+
+        config["sources"] = Set.new(sources.map do |val|
           jekyll.in_source_dir(val)
-        end
+        end)
       end
 
       #
