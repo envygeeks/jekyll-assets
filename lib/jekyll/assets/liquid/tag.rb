@@ -15,8 +15,7 @@ module Jekyll
         attr_reader :args
 
         class << self
-          public \
-            :new
+          public :new
         end
 
         class AssetNotFoundError < StandardError
@@ -38,7 +37,7 @@ module Jekyll
           asset
           css
           js
-        )
+        ).freeze
 
         #
 
@@ -46,7 +45,7 @@ module Jekyll
           "css" => %Q{<link type="text/css" rel="stylesheet" href="%s"%s>},
           "js"  => %Q{<script type="text/javascript" src="%s"%s></script>},
           "img" => %Q{<img src="%s"%s>}
-        }
+        }.freeze
 
         #
 
@@ -55,7 +54,7 @@ module Jekyll
           "stylesheet" => "css",
           "javascript" => "js",
           "style" => "css"
-        }
+        }.freeze
 
         #
 
@@ -84,8 +83,7 @@ module Jekyll
           add_as_jekyll_dependency(site, sprockets, page, asset)
           process_tag(args, sprockets, asset)
         rescue => e
-          capture_and_out_error \
-            site, e
+          capture_and_out_error site, e
         end
 
         #
