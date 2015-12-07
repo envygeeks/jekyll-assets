@@ -74,8 +74,8 @@ module Jekyll
 
           def self.get_by_name_and_tag(name, tag)
             all.select do |val|
-              val[:name].include?(name) && (val[:tags].include?(:all) || val[:tags]. \
-                include?(tag))
+              val[:name].include?(name) && (val[:tags].include?(:all) || val[:tags] \
+                .include?(tag))
             end
           end
 
