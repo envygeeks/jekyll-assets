@@ -7,11 +7,11 @@ describe "Magick Image Proxy" do
   before :all do
     @site  = stub_jekyll_site
     @env   = Jekyll::Assets::Env.new(@site)
-    @asset = @env.find_asset("ubuntu-tv-wikimedia.png")
+    @asset = @env.find_asset("ubuntu.png")
   end
 
   def stub_tag(*args)
-    Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu-tv-wikimedia.png #{args.join(" ")}", []). \
+    Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu.png #{args.join(" ")}", []). \
       render(OpenStruct.new(:registers => { :site => @site }))
   end
 
