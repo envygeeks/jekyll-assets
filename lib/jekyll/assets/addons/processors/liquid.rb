@@ -3,7 +3,8 @@ module Jekyll
     module Addons
       module Processors
         class Liquid < Tilt::Template
-          PROCESSING_FOR = %W(text/css text/sass text/less text/scss text/coffeescript text/javascript).freeze
+          PROCESSING_FOR = %W(text/css text/sass text/less application/javascript
+            text/scss text/coffeescript text/javascript).freeze
           def prepare
             #
           end
