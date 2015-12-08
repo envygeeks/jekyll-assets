@@ -263,12 +263,6 @@ that point rather than trying to fight it.***
 * `magick:one-fourth`, `magick:1/4`
 * `magick:half`, `magick:1/2`
 
-## Plugins where did they go?
-
-They're dead, in the way that they were, use Hooks, they require less
-patching and give more flexibility to us because we can trigger them every
-time we have a new environment not just occasionally.
-
 ## Having trouble with our documentation?
 
 If you do not understand something in our documentation please feel
