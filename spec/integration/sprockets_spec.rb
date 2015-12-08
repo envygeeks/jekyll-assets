@@ -3,7 +3,7 @@
 # Encoding: utf-8
 
 require "rspec/helper"
-describe "Sprockets integration" do
+describe "SPROCKETS INTEGRATION" do
   let( :env) { Jekyll::Assets::Env.new(site) }
   let(:path) { site.in_dest_dir("/assets") }
   let(:site) { stub_jekyll_site }

@@ -6,15 +6,21 @@ require "rspec/helper"
 
 describe Jekyll::Assets::Env do
   let( :env) { Jekyll::Assets::Env.new(site) }
+  before(:each, :process => true) { site.process }
   let(:path) { site.in_dest_dir("/assets") }
   let(:site) { stub_jekyll_site }
-  before :each, :process => true do
-    site.process
-  end
 
   before :all do
     @site = stub_jekyll_site
     @env  = Jekyll::Assets::Env.new(@site)
+  end
+
+  describe "#excludes" do
+    subject { @env.excludes }
+    it { is_expected.to include ".asset-cache" }
+    Jekyll::Assets::Config::DefaultSources.each do |source|
+      it { is_expected.to include source }
+    end
   end
 
   it "adds the current Jekyll instance" do

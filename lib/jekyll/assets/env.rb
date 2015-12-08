@@ -16,6 +16,15 @@ module Jekyll
 
       #
 
+      def excludes
+        excludes = Set.new
+        excludes << strip_path(in_cache_dir)
+        jekyll.sprockets.asset_config["sources"].each { |path| excludes << strip_path(path) }
+        excludes
+      end
+
+      #
+
       def all_unparsed_assets
         @unparsed_assets ||= logical_paths.select do |(_, val)|
           val.start_with?(jekyll.in_source_dir)
@@ -147,6 +156,13 @@ module Jekyll
             obj.write_to path
           end
         end
+      end
+
+      #
+
+      private
+      def strip_path(path)
+        path.sub(jekyll.in_source_dir("/"), "")
       end
 
       #
