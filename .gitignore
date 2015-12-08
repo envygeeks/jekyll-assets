@@ -5,3 +5,4 @@
 /.bundle
 /vendor
 *.gem
+/.analysis
