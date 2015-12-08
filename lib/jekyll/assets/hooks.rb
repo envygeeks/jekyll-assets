@@ -2,10 +2,9 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
-require_relative "hooks/jekyll/initialize"
-require_relative "hooks/jekyll/write_assets"
-require_relative "hooks/jekyll/asset_drops"
-require_relative "hooks/jekyll/ignore"
+require_relative "hooks/jekyll/drops"
+require_relative "hooks/jekyll/setup"
+require_relative "hooks/jekyll/write"
 
 require_relative "hooks/compression"
 require_relative "hooks/configuration"
