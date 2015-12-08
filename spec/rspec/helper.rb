@@ -1,5 +1,5 @@
 require "rspec"
-require "support/simplecov"
+require "support/coverage"
 require "luna/rspec/formatters/checks"
 require "jekyll/assets"
 require "jekyll"

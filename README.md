@@ -1,10 +1,10 @@
 [![](https://travis-ci.org/jekyll/jekyll-assets.png?branch=master)][travis]
-[![](https://coveralls.io/repos/jekyll/jekyll-assets/badge.png?branch=master)][coveralls]
+[![](https://codeclimate.com/github/jekyll/jekyll-assets/badges/coverage.svg)][coverage]
 [![](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)][code-climate] [![](https://gemnasium.com/jekyll/jekyll-assets.svg)][gemnasium]
 
 [gemnasium]: https://gemnasium.com/jekyll/jekyll-assets
 [code-climate]: https://codeclimate.com/github/jekyll/jekyll-assets
-[coveralls]: https://coveralls.io/r/jekyll/jekyll-assets
+[coverage]: https://codeclimate.com/github/jekyll/jekyll-assets/coverage
 [travis]: https://travis-ci.org/jekyll/jekyll-assets
 
 # Jekyll 3 Assets

@@ -3,14 +3,18 @@ gemspec
 
 gem "rake"
 group :development do
-  gem "therubyracer", :platforms => :mri
-  gem "pry"
+  gem "therubyracer", :platforms => :mri, :require => false
+  gem "pry", :require => false
 end
 
-gem "uglifier"
-gem "sprockets-es6", "~> 0.6"
-gem "autoprefixer-rails", "~> 6.0"
-gem "font-awesome-sass", "~> 4.4.0"
-gem "bootstrap-sass", "~> 3.3"
-gem "mini_magick", "~> 4.2"
-gem "compass-core"
+group :test do
+  gem "codeclimate-test-reporter", :require => false
+end
+
+gem "uglifier", :require => false
+gem "sprockets-es6", "~> 0.6", :require => false
+gem "autoprefixer-rails", "~> 6.0", :require => false
+gem "font-awesome-sass", "~> 4.4.0", :require => false
+gem "bootstrap-sass", "~> 3.3", :require => false
+gem "mini_magick", "~> 4.2", :require => false
+gem "compass-core", :require => false

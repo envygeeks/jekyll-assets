@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency("tilt", "~> 2.0")
 
   spec.add_development_dependency("nokogiri", "~> 1.6")
-  spec.add_development_dependency("envygeeks-coveralls", "~> 1.0")
   spec.add_development_dependency("luna-rspec-formatters", "~> 3.3")
   spec.add_development_dependency("rspec", "~> 3.3")
 end

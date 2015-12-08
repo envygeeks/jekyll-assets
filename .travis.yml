@@ -19,3 +19,12 @@ notifications:
 branches:
   only:
   - master
+addons:
+  code_climate:
+    slack:
+    repo_token:
+      secure: "\
+        SprHjZdYxOWHXrnDLKu+tTLI/28dgNlHGH9pUF0NIouu5nhWVizoRt1xK19s+6Rct9h/b8\
+        H9In1ExFom05IcXX4c1JGX1LlGbWRV/BHRwgys+MpWJCLfs8kBigufDdZBmyXubEj2KsjE\
+        WICu+GMg+ZHP0nVTa/FkoF5iAfY6NiE=\
+      "
