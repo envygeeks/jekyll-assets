@@ -3,8 +3,7 @@ module Jekyll
     module Liquid
       class Tag
         module Defaults
-          require_relative "defaults/image"
-
+          autoload :Image, "jekyll/assets/liquid/tag/defaults/image"
           # TODO: In 3.0 env needs to be enforced, right now it's not
           #   because it's maintain 2.0 API.
 

@@ -6,20 +6,13 @@ module Jekyll
   module Assets
     module Liquid
       module Filters
-        ACCEPTABLE_FILTERS = %W(
-          css
-          image
-          asset_path
-          stylesheet
-          javascript
-          style
-          img
-          js
-        )
+        ACCEPTABLE_FILTERS = %W(css image asset_path stylesheet
+          javascript style img js)
 
         ACCEPTABLE_FILTERS.each do |val|
           define_method val do |path, args = ""|
-            Tag.send(:new, val, "#{path} #{args}", "").render(@context)
+            tag = Tag.send(:new, val, "#{path} #{args}", "")
+            tag.render(@context)
           end
         end
       end

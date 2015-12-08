@@ -2,16 +2,14 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
-require "fastimage"
-
 module Jekyll
   module Assets
     module Liquid
       class Tag < ::Liquid::Tag
-        require_relative "tag/proxies"
-        require_relative "tag/proxied_asset"
-        require_relative "tag/defaults"
-        require_relative "tag/parser"
+        autoload :Proxies, "jekyll/assets/liquid/tag/proxies"
+        autoload :ProxiedAsset, "jekyll/assets/liquid/tag/proxied_asset"
+        autoload :Defaults, "jekyll/assets/liquid/tag/defaults"
+        autoload :Parser, "jekyll/assets/liquid/tag/parser"
         attr_reader :args
 
         class << self

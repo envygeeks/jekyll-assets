@@ -2,7 +2,7 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
-require "fastimage"
+autoload :FastImage, "fastimage"
 
 module Jekyll
   module Assets

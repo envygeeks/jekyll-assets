@@ -2,10 +2,10 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
-require_relative "addons/compass"
-require_relative "addons/bootstrap"
-require_relative "addons/autoprefixer"
-require_relative "addons/processors/liquid"
-require_relative "addons/proxies/magick"
-require_relative "addons/font_awesome"
-require_relative "addons/js_es6"
+require "jekyll/assets/addons/compass"
+require "jekyll/assets/addons/bootstrap"
+require "jekyll/assets/addons/autoprefixer"
+require "jekyll/assets/addons/processors/liquid"
+require "jekyll/assets/addons/proxies/magick"
+require "jekyll/assets/addons/font_awesome"
+require "jekyll/assets/addons/js_es6"
