@@ -7,8 +7,5 @@ describe "JEKYLL INTEGRATION" do
   describe "Jekyll#config[exclude]" do
     subject { stub_jekyll_site.config["exclude"] }
     it { is_expected.to include ".asset-cache" }
-    Jekyll::Assets::Config::DefaultSources.each do |source|
-      it { is_expected.to include source }
-    end
   end
 end
