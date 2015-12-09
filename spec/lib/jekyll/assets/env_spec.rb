@@ -18,9 +18,6 @@ describe Jekyll::Assets::Env do
   describe "#excludes" do
     subject { @env.excludes }
     it { is_expected.to include ".asset-cache" }
-    Jekyll::Assets::Config::DefaultSources.each do |source|
-      it { is_expected.to include source }
-    end
   end
 
   it "adds the current Jekyll instance" do

@@ -19,7 +19,6 @@ module Jekyll
       def excludes
         excludes = Set.new
         excludes << strip_path(in_cache_dir)
-        jekyll.sprockets.asset_config["sources"].each { |path| excludes << strip_path(path) }
         excludes
       end
 
