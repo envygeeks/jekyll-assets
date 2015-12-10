@@ -15,18 +15,13 @@ a clean and extensible assets platform for Jekyll.
 
 ## Using Jekyll Assets with Jekyll
 
-Either add  `gem "jekyll-assets"` to your `Gemfile`,  or do
-`gem install jekyll-assets --no-document` and then add `jekyll-assets`
+Add  `gem "jekyll-assets"` to your `Gemfile` and add `jekyll-assets`
 to your `_config.yml` like the following:
 
 ```yaml
 gems:
 - jekyll-assets
 ```
-
-***If you use bundler for Jekyll and it is not globally
-installed you must always use the Gemfile method unless you
-are using bundler to manage global gems***
 
 ## Configuration
 
