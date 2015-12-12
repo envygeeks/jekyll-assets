@@ -2,23 +2,21 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
-autoload :Tilt, "tilt"
+require "tilt"
 require "sprockets"
 require "jekyll"
 
-require "jekyll/assets/patches"
-require "jekyll/assets/version"
-
 module Jekyll
   module Assets
-    autoload :Hook,   "jekyll/assets/hook"
-    autoload :Cached, "jekyll/assets/cached"
-    autoload :Config, "jekyll/assets/config"
-    autoload :Logger, "jekyll/assets/logger"
-    autoload :Liquid, "jekyll/assets/liquid"
-    autoload :Env,    "jekyll/assets/env"
-
-    require "jekyll/assets/hooks"
-    require "jekyll/assets/addons"
+    require_relative "assets/version"
+    require_relative "assets/patches"
+    require_relative "assets/cached"
+    require_relative "assets/config"
+    require_relative "assets/env"
+    require_relative "assets/hook"
+    require_relative "assets/logger"
+    require_relative "assets/hooks"
+    require_relative "assets/liquid"
+    require_relative "assets/addons"
   end
 end
