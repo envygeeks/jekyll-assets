@@ -5,9 +5,9 @@
 module Jekyll
   module Assets
     module Liquid
-      require "jekyll/assets/liquid/tag"
-      require "jekyll/assets/liquid/filters"
-      require "jekyll/assets/liquid/drop"
+      require_relative "liquid/drop"
+      require_relative "liquid/filters"
+      require_relative "liquid/tag"
     end
   end
 end

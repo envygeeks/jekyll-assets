@@ -2,6 +2,9 @@
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
 
+require_relative "proxies"
+require "forwardable"
+
 module Jekyll
   module Assets
     module Liquid
