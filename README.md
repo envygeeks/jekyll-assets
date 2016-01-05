@@ -237,7 +237,6 @@ end
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
 * Image Magick - add "mini_magick"  to your Gemfile, only works with `img`, `image`.
 * Bootstrap - add "bootstrap-sass" to your Gemfile and "@import 'bootstrap'"
-* Compass - add "compass-core" to your Gemfile and "@import 'compass'"
 * Font Awesome - add "font-awesome-sass" to your Gemfile.
 
 ***Please note that some of these (if not all) have trouble with Rhino --
