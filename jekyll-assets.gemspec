@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency("sprockets-helpers", "~> 1.2")
   spec.add_runtime_dependency("fastimage", "~> 1.8")
   spec.add_runtime_dependency("jekyll", "~> 3.0")
-  spec.add_runtime_dependency("tilt", "~> 2.0")
 
   spec.add_development_dependency("nokogiri", "~> 1.6")
   spec.add_development_dependency("luna-rspec-formatters", "~> 3.3")

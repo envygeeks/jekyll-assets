@@ -54,9 +54,21 @@ assets:
     - _assets/img
     - _assets/js
   features:
+    liquid: true | false | default: false
     automatic_img_size: true | false | default: true
     automatic_img_alt : true | false | default: true
 ```
+
+### Liquid Processing with your Jekyll context.
+
+By default (whether `features.liquid` is true or false) we will process
+all files with the extension ".liquid", so if you give us ".scss.liquid"
+we will parse the liquid and then we will parse the SCSS and finally
+output your ".css" file.
+
+When `features.liquid` is set to true, we will process ***ALL*** files
+through Liquid, regardless of whether they have the ".liquid" extension.
+Use this at your own risk.
 
 ### Cache Folder
 

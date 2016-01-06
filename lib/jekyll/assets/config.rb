@@ -25,7 +25,8 @@ module Jekyll
 
         "features" => {
           "automatic_img_alt"  => true,
-          "automatic_img_size" => true
+          "automatic_img_size" => true,
+          "liquid" => false
         }
       }.freeze
 
