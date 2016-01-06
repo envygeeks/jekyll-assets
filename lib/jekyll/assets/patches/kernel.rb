@@ -3,18 +3,6 @@
 # Encoding: utf-8
 
 module Kernel
-  def javascript?
-    require "execjs"
-    if block_given?
-      yield
-    end
-  rescue LoadError, ExecJS::RuntimeUnavailable
-    Jekyll.logger.debug("ExecJS or JS Runtime not available." \
-      " Skipping loading of library.")
-  end
-
-  #
-
   def try_require(file)
     require file
     if block_given?

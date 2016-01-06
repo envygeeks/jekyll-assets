@@ -4,19 +4,6 @@
 
 require "rspec/helper"
 describe Kernel do
-  context "#javascript?" do
-    it "runs the block if there is a JavaScript (any) available" do
-      expect(javascript? { true }).to eq true
-    end
-
-    it "logs when it cannot load a JavaScript runtime" do
-      expect(Jekyll.logger).to receive(:debug).with(any_args)
-      javascript? do
-        raise ExecJS::RuntimeUnavailable
-      end
-    end
-  end
-
   context "#try_require" do
     it "does not raise when the file doesn't exist" do
       result = try_require("if_this_exists_we_are_screwed") { "hello" }
