@@ -5,10 +5,6 @@
 require "sprockets"
 require "jekyll"
 
-module Jekyll
-  Assets = Module.new
-end
-
 require_relative "assets/env"
 require_relative "assets/version"
 require_relative "assets/patches"
@@ -18,9 +14,9 @@ require_relative "assets/hook"
 require_relative "assets/logger"
 require_relative "assets/hooks"
 require_relative "assets/liquid"
-require_relative "addons/bootstrap"
-require_relative "addons/autoprefixer"
-require_relative "addons/font_awesome"
-require_relative "addons/javascript"
-require_relative "processors/liquid"
-require_relative "proxies/magick"
+require_relative "assets/addons/bootstrap"
+require_relative "assets/addons/autoprefixer"
+require_relative "assets/addons/font_awesome"
+require_relative "assets/addons/javascript"
+require_relative "assets/processors/liquid"
+require_relative "assets/proxies/magick"
