@@ -28,6 +28,34 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
     @tag   = Jekyll::Assets::Liquid::Tag.send(:new, "img", "ruby.png test:hello", [])
   end
 
+  context do
+    before do
+      @asset = @env.find_asset("subdir/ubuntu")
+      @tag   = Jekyll::Assets::Liquid::Tag.new(
+        "img", "subdir/ubuntu.png test:hello", []
+      )
+    end
+
+    it "keeps the users sub-folders" do
+      expect(instance.logical_path).to start_with "subdir/"
+    end
+
+    context do
+      before do
+        @proxied_asset = subject.new(@asset, @tag.args, @env, @tag)
+        @tag.render(OpenStruct.new(:registers => { :site => @site }))
+        @env.instance_variable_set(:@used, Set.new([@proxied_asset]))
+        allow(@site).to receive(:sprockets) { @env }
+        @site.process
+      end
+
+      it "writes the sub-folders" do
+        expect(Pathname.new(@site.in_dest_dir("assets", @proxied_asset.digest_path))).to exist
+      end
+    end
+
+  end
+
   it "runs the proxy" do
     @tag.render(OpenStruct.new(:registers => { :site => @site }))
     expect(File.read(Dir.glob(@env.in_cache_dir("ruby-*.png")).first)).to eq "hello"

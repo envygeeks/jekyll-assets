@@ -15,6 +15,7 @@ module Jekyll
           def_delegator :@asset, :liquid_tags
           def_delegator :@asset, :filename, :source_filename
           def_delegator :@asset, :content_type
+          def_delegator :@asset, :write_to
 
           def initialize(asset, args, env, tag)
             @env = env
@@ -63,13 +64,7 @@ module Jekyll
           def digest_path
             name = asset.logical_path
             ext  = File.extname(name)
-            "#{File.basename(name, ext)}-#{digest}#{ext}"
-          end
-
-          #
-
-          def write_to(name)
-            File.binwrite(name, source)
+            "#{name.chomp(ext)}-#{digest}#{ext}"
           end
 
           #
@@ -88,8 +83,12 @@ module Jekyll
           private
           def cache_file
             @_cached = File.file?(filename)
-            FileUtils.cp asset.filename, filename unless @_cached
-            @_cached
+            return @_cached if @_cached
+
+            dir = File.dirname(filename)
+            FileUtils.mkdir_p dir unless dir == env.in_cache_dir
+            FileUtils.cp asset.filename, filename
+            true
           end
         end
       end
