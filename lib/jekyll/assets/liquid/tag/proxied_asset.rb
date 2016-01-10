@@ -15,7 +15,7 @@ module Jekyll
           def_delegator :@asset, :liquid_tags
           def_delegator :@asset, :filename, :source_filename
           def_delegator :@asset, :content_type
-          def_delegator :@asset, :write_to
+          def_delegator :@asset, :mtime
 
           def initialize(asset, args, env, tag)
             @env = env
@@ -31,6 +31,15 @@ module Jekyll
 
           def cached?
             @_cached
+          end
+
+          #
+
+          def write_to(name)
+            FileUtils.mkdir_p File.dirname(name)
+            Sprockets::PathUtils.atomic_write(name) do |f|
+              f.write source
+            end
           end
 
           #
