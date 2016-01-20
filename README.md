@@ -35,7 +35,7 @@ machine and `JEKYLL_ENV=production` when building to push.
 assets:
   compress:
     css: false | true | default - development: false, production: true
-     js: false | true | default - development: false, production: true
+    js: false | true | default - development: false, production: true
   cache: false | directory | default: .asset-cache
   cdn: https://cdn.example.com
   skip_baseurl_with_cdn: false
