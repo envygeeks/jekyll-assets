@@ -24,6 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency("jekyll", "~> 3.0")
 
   spec.add_development_dependency("nokogiri", "~> 1.6")
-  spec.add_development_dependency("luna-rspec-formatters", "~> 3.3")
-  spec.add_development_dependency("rspec", "~> 3.3")
+  spec.add_development_dependency("luna-rspec-formatters", "~> 3.5")
+  spec.add_development_dependency("rspec", "~> 3.4")
 end
