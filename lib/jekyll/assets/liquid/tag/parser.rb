@@ -1,6 +1,8 @@
+# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
+# ----------------------------------------------------------------------------
 
 require_relative "proxies"
 require "forwardable"
@@ -9,6 +11,7 @@ module Jekyll
   module Assets
     module Liquid
 
+      # ----------------------------------------------------------------------
       # Examples:
       #   - {% tag value argument:value %}
       #   - {% tag value "argument:value" %}
@@ -16,6 +19,7 @@ module Jekyll
       #   - {% tag value argument:value\:with\:colon %}
       #   - {% tag value argument:"I can even escape \\: here too!" %}
       #   - {% tag value proxy:key:value %}
+      # ----------------------------------------------------------------------
 
       class Tag
         class Parser
@@ -30,13 +34,13 @@ module Jekyll
           def_delegator :@args, :[]=
           def_delegator :@args, :[]
 
-          #
+          # ------------------------------------------------------------------
 
           ACCEPT = {
             "css" => "text/css", "js" => "application/javascript"
           }
 
-          #
+          # ------------------------------------------------------------------
 
           class UnescapedColonError < StandardError
             def initialize
@@ -44,7 +48,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           class UnknownProxyError < StandardError
             def initialize
@@ -52,7 +56,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           def initialize(args, tag, processed: false, raw_args: nil)
             if processed && raw_args
@@ -72,7 +76,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           def parse_liquid(context)
             return self unless context.is_a?(Object::Liquid::Context)
@@ -82,13 +86,15 @@ module Jekyll
               processed: true)
           end
 
+          # ------------------------------------------------------------------
+
           def to_html
             (self[:html] || {}).map do |key, val|
               %{ #{key}="#{val}"}
             end.join
           end
 
-          #
+          # ------------------------------------------------------------------
 
           def proxies
             keys = (args.keys - Proxies.base_keys - [:file, :html])
@@ -97,13 +103,13 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           def proxies?
             proxies.any?
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def parse_hash_liquid(hash_, liquid, context)
@@ -114,7 +120,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def parse_raw
@@ -131,7 +137,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def parse_col(hash, key)
@@ -141,7 +147,7 @@ module Jekyll
             raise UnescapedColonError
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def as_bool_or_html(hash, key)
@@ -155,7 +161,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def as_proxy(hash, key)
@@ -169,7 +175,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def set_accept
@@ -181,7 +187,7 @@ module Jekyll
             end
           end
 
-          #
+          # ------------------------------------------------------------------
 
           private
           def from_shellwords

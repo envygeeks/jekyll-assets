@@ -1,11 +1,15 @@
+# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
+# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
     class Cached < Sprockets::CachedEnvironment
-      attr_reader :jekyll, :parent
+      attr_reader :jekyll
+      attr_reader :parent
+
       def initialize(env)
         @parent = env
         @jekyll = env.jekyll

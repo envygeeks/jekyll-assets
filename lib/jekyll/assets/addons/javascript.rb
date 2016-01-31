@@ -1,6 +1,8 @@
+# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
+# ----------------------------------------------------------------------------
 
 try_require_if_javascript "sprockets/es6" do
   if ExecJS.runtime.is_a?(ExecJS::RubyRhinoRuntime)

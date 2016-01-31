@@ -6,7 +6,7 @@ module Jekyll
           text/css text/sass text/less application/javascript
           text/scss text/coffeescript text/javascript).freeze
 
-        #
+        # --------------------------------------------------------------------
 
         def self.call(context, jekyll = context[:environment].jekyll)
           if context[:environment].parent.asset_config["features"]["liquid"] || \
@@ -24,7 +24,13 @@ module Jekyll
   end
 end
 
+# ----------------------------------------------------------------------------
 # There might be a few missing, if there is please do let me know.
+# ----------------------------------------------------------------------------
+
 Sprockets.register_engine ".liquid", Jekyll::Assets::Processors::Liquid
-Jekyll::Assets::Processors::Liquid::FOR.each { |val| Sprockets.register_preprocessor val, \
-  Jekyll::Assets::Processors::Liquid }
+Jekyll::Assets::Processors::Liquid::FOR.each do |val|
+  Sprockets.register_preprocessor(
+    val, Jekyll::Assets::Processors::Liquid
+  )
+end

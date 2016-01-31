@@ -1,6 +1,8 @@
+# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
+# ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
   args = %W(resize quality rotate crop flip)
@@ -18,8 +20,10 @@ try_require "mini_magick" do
       end
     end
 
+    # ------------------------------------------------------------------------
     # @see https://github.com/minimagick/minimagick#usage -- All but
     #   the boolean @ options are provided by Minimagick.
+    # ------------------------------------------------------------------------
 
     def initialize(asset, opts, args)
       @path = asset.filename
@@ -28,7 +32,7 @@ try_require "mini_magick" do
       @args = args
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     def process
       img = MiniMagick::Image.open(@path)
@@ -43,7 +47,7 @@ try_require "mini_magick" do
       img.destroy!
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def any_preset?(*keys)
@@ -52,14 +56,14 @@ try_require "mini_magick" do
       end
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def preset?
       (@opts.keys - ARGS.map(&:to_sym)).any?
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def magick_quality(img)
@@ -68,7 +72,7 @@ try_require "mini_magick" do
       end
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def magick_resize(img)
@@ -78,7 +82,7 @@ try_require "mini_magick" do
       end
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def magick_rotate(img)
@@ -87,7 +91,7 @@ try_require "mini_magick" do
       end
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def magick_flip(img)
@@ -96,7 +100,7 @@ try_require "mini_magick" do
       end
     end
 
-    #
+    # ------------------------------------------------------------------------
 
     private
     def magick_crop(img)
@@ -105,9 +109,11 @@ try_require "mini_magick" do
       end
     end
 
+    # ------------------------------------------------------------------------
     # I just want you to know, we don't even care if you do multiple
     # resizes or try to, we don't attempt to even attempt to attempt to care
     # we expect you to be logical and if you aren't we will comply.
+    # ------------------------------------------------------------------------
 
     private
     def magick_preset_resize(img)

@@ -1,6 +1,8 @@
+# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
+# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
@@ -10,6 +12,8 @@ module Jekyll
         _assets/images _assets/img _assets/fonts
         _assets/javascripts _assets/js
       ).freeze
+
+      # ----------------------------------------------------------------------
 
       Development = {
         "skip_baseurl_with_cdn" => false,
@@ -30,7 +34,7 @@ module Jekyll
         }
       }.freeze
 
-      #
+      # ----------------------------------------------------------------------
 
       Production = Development.merge({
         "digest"    => true,
@@ -40,7 +44,7 @@ module Jekyll
         }
       }).freeze
 
-      #
+      # ----------------------------------------------------------------------
 
       def self.merge_sources(jekyll, config)
         config["sources"] ||= []
@@ -52,13 +56,15 @@ module Jekyll
         end)
       end
 
-      #
+      # ----------------------------------------------------------------------
 
       def self.defaults
-        %W(development test).include?(Jekyll.env) ? Development : Production
+        if %W(development test).include?(Jekyll.env)
+          then Development else Production
+        end
       end
 
-      #
+      # ----------------------------------------------------------------------
 
       def self.merge(new_hash, old_hash = defaults)
         old_hash.merge(new_hash) do |_, old_val, new_val|

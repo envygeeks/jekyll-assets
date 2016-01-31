@@ -1,6 +1,8 @@
+# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012-2015 - MIT License
 # Encoding: utf-8
+# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
@@ -12,8 +14,10 @@ module Jekyll
               tag == "img" || tag == "image"
             end
 
+            # ----------------------------------------------------------------
             # TODO: In 3.0 env needs to be enforced if this is not changed,
             #   for now it's not enforced to maintain the 2.0 API.
+            # ----------------------------------------------------------------
 
             def initialize(args, asset, env = nil)
               @args = args
@@ -21,14 +25,16 @@ module Jekyll
               @env = env
             end
 
-            #
+            # ----------------------------------------------------------------
 
             def set!
               set_img_dimensions
               set_img_alt
             end
 
+            # ----------------------------------------------------------------
             # TODO: 3.0 - Remove the `!@env`
+            # ----------------------------------------------------------------
 
             private
             def set_img_alt
@@ -40,7 +46,9 @@ module Jekyll
               end
             end
 
+            # ----------------------------------------------------------------
             # TODO: 3.0 - Remove the `!@env`
+            # ----------------------------------------------------------------
 
             private
             def set_img_dimensions
