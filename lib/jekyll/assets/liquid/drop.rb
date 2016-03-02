@@ -18,7 +18,8 @@ module Jekyll
         end
 
         # --------------------------------------------------------------------
-
+        
+        def_delegator :asset, :digest_path
         def_delegator :asset, :logical_path
         def_delegator :asset, :content_type, :type
         def_delegator :asset, :content_type
