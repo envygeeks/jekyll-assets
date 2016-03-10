@@ -1,6 +1,6 @@
-[![](https://travis-ci.org/jekyll/jekyll-assets.png?branch=master)][travis]
-[![](https://codeclimate.com/github/jekyll/jekyll-assets/badges/coverage.svg)][coverage]
-[![](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)][code-climate] [![](https://gemnasium.com/jekyll/jekyll-assets.svg)][gemnasium]
+[![Build Status](https://travis-ci.org/jekyll/jekyll-assets.svg?branch=master)][travis]
+[![Coverage Status](https://codeclimate.com/github/jekyll/jekyll-assets/badges/coverage.svg)][coverage]
+[![code-climate](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)][code-climate] [![Dependencies Status](https://gemnasium.com/jekyll/jekyll-assets.svg)][gemnasium]
 
 [gemnasium]: https://gemnasium.com/jekyll/jekyll-assets
 [code-climate]: https://codeclimate.com/github/jekyll/jekyll-assets
@@ -10,24 +10,24 @@
 # Jekyll 3 Assets
 
 Jekyll 3 assets is an asset pipeline using Sprockets 3 to build especially
-for Jekyll 3.  It utilizes new features of both Sprockets and Jekyll to achieve
+for Jekyll 3. It utilizes new features of both Sprockets and Jekyll to achieve
 a clean and extensible assets platform for Jekyll.
 
 ## Using Jekyll Assets with Jekyll
 
-Add  `gem "jekyll-assets"` to your `Gemfile` and add `jekyll-assets`
+Add `gem "jekyll-assets"` to your `Gemfile` and add `jekyll-assets`
 to your `_config.yml` like the following:
 
 ```yaml
 gems:
-- jekyll-assets
+  - jekyll-assets
 ```
 
 ## Configuration
 
 A lot of our configuration transforms based on the `JEKYLL_ENV` variable
-set in your environment.  Such as digesting and whether or not to enable the
-CDN.  Some of them can be explicitly overridden but a few cannot right now.
+set in your environment. Such as digesting and whether or not to enable the
+CDN. Some of them can be explicitly overridden but a few cannot right now.
 You should set your `JEKYLL_ENV=development` on your development
 machine and `JEKYLL_ENV=production` when building to push.
 
@@ -59,7 +59,7 @@ assets:
     automatic_img_alt : true | false | default: true
 ```
 
-### Liquid Processing with your Jekyll context.
+### Liquid Processing with your Jekyll context
 
 By default (whether `features.liquid` is true or false) we will process
 all files with the extension ".liquid", so if you give us ".scss.liquid"
@@ -79,8 +79,8 @@ and over again, `.` folders are not ignored by default.
 ### Sources
 
 The listed resources in the example are all defaults. It should be noted
-that we append your sources instead of replace our resources with yours.  So
-if you add "_assets/folder" then we will append that to our sources and
+that we append your sources instead of replace our resources with yours. So
+if you add `_assets/folder` then we will append that to our sources and
 both will work.
 
 ***NOTE: if you use our `_assets` base folder container as a base folder for
@@ -90,7 +90,7 @@ folder as the sole source (base folder.)***
 ### Digesting
 
 * Disable digesting by default in development.
-* Digest by default in production
+* Digest by default in production.
 
 ***You can force digesting with `digest: true` in your `_config.yml`***
 
@@ -100,23 +100,22 @@ folder as the sole source (base folder.)***
 * Disable compression by default in development.
 * Enable by default in production.
 
-
 ### Bower Components
 
 Modify your `.bowerrc` file and add:
 
-```javascript
+```json
 {
   "directory": "_assets/bower"
 }
 ```
 
 And then add `_assets/bower` to your sources list and Sprockets will do the
-the rest for you... you can even `//= require bower_asset.js`.  We will even
+the rest for you... you can even `//= require bower_asset.js`. We will even
 compress them for you per normal if Sprockets supports it and allows us to.
 
 ***You do not need to modify your `.bowerrc` file, you can optionally just
-add it to your sources list and it will work that way too!  As long as it's in
+add it to your sources list and it will work that way too! As long as it's in
 your Jekyll folder.***
 
 ## Tags
@@ -146,7 +145,7 @@ your Jekyll folder.***
 Lets say we have `sprockets` proxies and sprockets allows you to proxy accept,
 if you send `{% img src sprockets:accept:image/gif }` then Sprockets find_asset
 will get `{ :accept => "image/gif" }` but if you try to proxy "unknown" on
-sprockets we will raise a Proxy error.  For more information then look at
+sprockets we will raise a Proxy error. For more information then look at
 `parser_spec.rb` in the spec folder because it literally lays out the ground
 rules for our tags as a specification.
 
@@ -247,7 +246,7 @@ end
 
 * CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
-* Image Magick - add "mini_magick"  to your Gemfile, only works with `img`, `image`.
+* Image Magick - add "mini_magick" to your Gemfile, only works with `img`, `image`.
 * Bootstrap - add "bootstrap-sass" to your Gemfile and "@import 'bootstrap'"
 * Font Awesome - add "font-awesome-sass" to your Gemfile.
 
