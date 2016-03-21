@@ -260,6 +260,7 @@ that point rather than trying to fight it.***
 * `magick:format:<value>`
 * `magick:quality:<value>`
 * `magick:rotate:<value>`
+* `magick:gravity:<value>`
 * `magick:crop:<value>`
 * `magick:flip:<value>`
 * `magick:quadruple`, `magick:4x`
