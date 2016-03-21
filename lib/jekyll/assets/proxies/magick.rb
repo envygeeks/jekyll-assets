@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
-  args = %W(resize quality rotate crop flip)
+  args = %W(resize quality rotate crop flip gravity)
   presets = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
       @two-fourths @three-fourths)
@@ -106,6 +106,15 @@ try_require "mini_magick" do
     def magick_crop(img)
       if @opts.key?(:crop)
         then img.crop @opts[:crop]
+      end
+    end
+    
+    # ------------------------------------------------------------------------
+    
+    private
+    def magick_gravity(img)
+      if @opts.key?(:gravity)
+        then img.gravity @opts[:gravity]
       end
     end
 
