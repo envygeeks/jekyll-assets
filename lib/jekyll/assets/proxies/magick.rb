@@ -36,8 +36,22 @@ try_require "mini_magick" do
 
     def process
       img = MiniMagick::Image.open(@path)
-      private_methods(true).select { |v| v =~ /\Amagick_/ }.each do |method|
-        send(method, img)
+      methods = private_methods(true).select { |v| v =~ /\Amagick_/ }
+      if img.respond_to?(:combine_options)
+        then img.combine_options do |cmd|
+          methods.each do |method|
+            send(
+              method, img, cmd
+            )
+          end
+        end
+
+      else
+        methods.each do |method|
+          send(
+            method, img, img
+          )
+        end
       end
 
       img.write(
@@ -66,55 +80,55 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_quality(img)
+    def magick_quality(img, cmd)
       if @opts.key?(:quality)
-        then img.quality @opts[:quality]
+        then cmd.quality @opts[:quality]
       end
     end
 
     # ------------------------------------------------------------------------
 
     private
-    def magick_resize(img)
+    def magick_resize(img, cmd)
       raise DoubleResizeError if @opts.key?(:resize) && preset?
       if @opts.key?(:resize)
-        then img.resize @opts[:resize]
+        then cmd.resize @opts[:resize]
       end
     end
 
     # ------------------------------------------------------------------------
 
     private
-    def magick_rotate(img)
+    def magick_rotate(img, cmd)
       if @opts.key?(:rotate)
-        then img.rotate @opts[:rotate]
+        then cmd.rotate @opts[:rotate]
       end
     end
 
     # ------------------------------------------------------------------------
 
     private
-    def magick_flip(img)
+    def magick_flip(img, cmd)
       if @opts.key?(:flip)
-        then img.flip @opts[:flip]
+        then cmd.flip @opts[:flip]
       end
     end
 
     # ------------------------------------------------------------------------
 
     private
-    def magick_crop(img)
+    def magick_crop(img, cmd)
       if @opts.key?(:crop)
-        then img.crop @opts[:crop]
+        then cmd.crop @opts[:crop]
       end
     end
-    
+
     # ------------------------------------------------------------------------
-    
+
     private
-    def magick_gravity(img)
+    def magick_gravity(img, cmd)
       if @opts.key?(:gravity)
-        then img.gravity @opts[:gravity]
+        then cmd.gravity @opts[:gravity]
       end
     end
 
@@ -125,7 +139,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_preset_resize(img)
+    def magick_preset_resize(img, cmd)
       return unless preset?
       width, height = img.width * 4, img.height * 4 if any_preset?(:"4x", :quadruple)
       width, height = img.width * 2, img.height * 2 if any_preset?(:"2x", :double)
@@ -135,7 +149,7 @@ try_require "mini_magick" do
       width, height = img.width / 3 * 2, img.height / 3 * 2 if any_preset?(:"2/3", :"two-thirds")
       width, height = img.width / 4 * 2, img.height / 4 * 2 if any_preset?(:"2/4", :"two-fourths")
       width, height = img.width / 4 * 3, img.height / 4 * 3 if any_preset?(:"3/4", :"three-fourths")
-      img.resize "#{width}x#{height}"
+      cmd.resize "#{width}x#{height}"
     end
   end
 end
