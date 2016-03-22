@@ -42,4 +42,19 @@ describe Jekyll::Assets::Processors::Liquid do
        end
     end
   end
+
+  context "when sprockets requires a liquid file" do
+    let(:asset) { env.find_asset("index") }
+    let(:env) { Jekyll::Assets::Env.new(stub_jekyll_site) }
+    let(:source) { asset.to_s }
+
+    it "lets the user use Liquid" do
+      expect(source).not_to match(/\{{2}\s*site\.background_image\s*\}{2}/)
+      expect(source).to match(/background:\s*url\("\/assets\/ruby\.png"\)/)
+    end
+
+    it "provides the right extension" do
+      expect(asset.logical_path).to eq "index.css"
+    end
+  end
 end
