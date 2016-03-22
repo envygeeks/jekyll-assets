@@ -96,7 +96,7 @@ folder as the sole source (base folder.)***
 
 ### Compression
 
-* Requires sass and uglify.
+* Requires sass and uglifier.
 * Disable compression by default in development.
 * Enable by default in production.
 
