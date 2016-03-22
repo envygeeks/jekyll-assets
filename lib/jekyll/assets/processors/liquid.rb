@@ -5,7 +5,7 @@ module Jekyll
         FOR = %W(
           text/css text/sass text/less application/javascript
           text/scss text/coffeescript text/javascript).freeze
-        EXT = %W(.liquid .js.liquid .css.liquid).freeze
+        EXT = %W(.liquid .js.liquid .css.liquid .scss.liquid).freeze
 
         # --------------------------------------------------------------------
 
