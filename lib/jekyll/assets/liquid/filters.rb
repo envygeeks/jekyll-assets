@@ -6,7 +6,7 @@ module Jekyll
   module Assets
     module Liquid
       module Filters
-        ACCEPTABLE_FILTERS = [:css, :img, :asset_path, :stylsheet,
+        ACCEPTABLE_FILTERS = [:css, :img, :asset_path, :stylesheet,
           :javascript, :style, :img, :js]
 
         # --------------------------------------------------------------------
