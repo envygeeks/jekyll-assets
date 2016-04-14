@@ -252,6 +252,7 @@ end
 * Image Magick - add "mini_magick" to your Gemfile, only works with `img`, `image`.
 * Bootstrap - add "bootstrap-sass" to your Gemfile and "@import 'bootstrap'"
 * Font Awesome - add "font-awesome-sass" to your Gemfile.
+* LESS - add "less" to your Gemfile
 
 ***Please note that some of these (if not all) have trouble with Rhino --
 `therubyrhino` so you would probably be best to just use Node.js or io.js at

@@ -19,3 +19,4 @@ gem "autoprefixer-rails", "~> 6.0", :require => false
 gem "font-awesome-sass", "~> 4.4", :require => false
 gem "bootstrap-sass", "~> 3.3", :require => false
 gem "mini_magick", "~> 4.2", :require => false
+gem "less", "~> 2.6.0", :require => false
