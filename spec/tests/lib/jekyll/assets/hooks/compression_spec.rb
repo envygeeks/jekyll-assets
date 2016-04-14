@@ -60,4 +60,33 @@ describe "asset compression" do
     expect(env.compress?("css")).to eq false
     expect(env.compress?("js")).to eq false
   end
+
+  #
+
+  context "configuration" do
+    let :env do
+      Jekyll::Assets::Env.new(stub_jekyll_site("assets" => {
+        "compress" => {
+          "js" => true
+        },
+
+        "external" => {
+          "uglifier" => {
+            "mangle"  => {
+              "toplevel" => true
+            }
+          }
+        }
+      }))
+    end
+
+    # ------------------------------------------------------------------------
+
+    it "should let you configure Uglifier" do
+      expect(Uglifier).to receive(:new).at_least(:once).with(:mangle => { :toplevel => true }).and_call_original
+      expect(env.find_asset("compress.js").to_s).not_to start_with(
+        "var hello="
+      )
+    end
+  end
 end

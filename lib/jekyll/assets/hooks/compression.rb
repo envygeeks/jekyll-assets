@@ -11,7 +11,15 @@ Jekyll::Assets::Hook.register :env, :init do
 
   if compress?("js")
     try_require "uglifier" do
-      self.js_compressor = :uglify
+      if !jekyll.safe && (opts = self.asset_config.fetch("external", {}).fetch("uglifier", nil))
+        self.js_compressor = Uglifier.new(
+          opts.symbolize_keys
+        )
+
+      else
+        self.js_compressor = \
+          :uglify
+      end
     end
   end
 end
