@@ -238,9 +238,12 @@ end
 
 ***Our currently supported helpers are:***
 
+* asset_url
 * asset_path
 * image_path
 * font_path
+* image_url
+* font_url
 
 ## Addons
 
