@@ -9,6 +9,8 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", :require => false
+  gem "rubocop", :github => "bbatsov/rubocop", :branch => :master, :require => false
+  gem "luna-rubocop-formatters", :require => false
 end
 
 gem "uglifier", :require => false
