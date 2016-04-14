@@ -10,6 +10,8 @@ module Jekyll
       attr_reader :jekyll
       attr_reader :parent
 
+      # ----------------------------------------------------------------------
+
       def initialize(env)
         @parent = env
         @jekyll = env.jekyll

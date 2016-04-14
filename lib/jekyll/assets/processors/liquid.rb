@@ -35,6 +35,8 @@ Jekyll::Assets::Processors::Liquid::EXT.each do |ext|
   )
 end
 
+# ----------------------------------------------------------------------------
+
 Jekyll::Assets::Processors::Liquid::FOR.each do |val|
   Sprockets.register_preprocessor(
     val, Jekyll::Assets::Processors::Liquid
