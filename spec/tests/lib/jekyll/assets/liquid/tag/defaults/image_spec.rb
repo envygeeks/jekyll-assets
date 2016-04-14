@@ -42,6 +42,20 @@ describe Jekyll::Assets::Liquid::Tag::Defaults::Image do
 
   #
 
+  def rdim(val)
+    return [
+      val - 2, val + 2
+    ]
+  end
+
+  #
+
+  def dimensions(asset)
+    return FastImage.new(asset).size
+  end
+
+  #
+
   it "adds a default alt attribute to img" do
     expect(stub_tag("img", "ruby.png").attr("alt")).to eq(
       "ruby.png"
@@ -74,6 +88,22 @@ describe Jekyll::Assets::Liquid::Tag::Defaults::Image do
     result = stub_tag("img", "ruby.png")
     expect(result.attr("width")).to be_nil
     expect(result.attr("height")).to be_nil
+  end
+
+  #
+
+  it "allows the user to enable manual retina sizes" do
+    stub_asset_config "features" => {
+      "automatic_img_size" => "2"
+    }
+
+    ogw = dimensions(@env.find_asset("ruby.png").pathname).first
+    ogh = dimensions(@env.find_asset("ruby.png").pathname). last
+    ngw = stub_tag("img", "ruby.png").attr( :width).to_i
+    ngh = stub_tag("img", "ruby.png").attr(:height).to_i
+
+    expect(ngw).to be_between(*rdim(ogw / 2))
+    expect(ngh).to be_between(*rdim(ogh / 2))
   end
 
   #

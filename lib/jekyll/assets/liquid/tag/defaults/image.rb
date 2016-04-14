@@ -52,13 +52,25 @@ module Jekyll
 
             private
             def set_img_dimensions
-              if !@env || @env.asset_config["features"]["automatic_img_size"]
+              resize_image = @env.asset_config["features"]["automatic_img_size"]
+
+              if !@env || resize_image
                 dimensions = FastImage.new(@asset.filename).size
                 return unless dimensions
                 @args[:html] ||= {}
 
-                @args[:html][ "width"] ||= dimensions.first
-                @args[:html]["height"] ||= dimensions. last
+                if resize_image =~ /^\d+$/
+                  width  = (dimensions.first / resize_image.to_f).floor
+                  height = (dimensions. last / resize_image.to_f).floor
+
+                else
+                  width  = dimensions.first
+                  height = dimensions. last
+                end
+
+
+                @args[:html][ "width"] ||= width
+                @args[:html]["height"] ||= height
               end
             end
           end
