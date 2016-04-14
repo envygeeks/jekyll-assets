@@ -52,9 +52,9 @@ module Jekyll
         # --------------------------------------------------------------------
 
         Tags = {
-          "css" => %{<link type="text/css" rel="stylesheet" href="%s"%s>},
-          "js"  => %{<script type="text/javascript" src="%s"%s></script>},
-          "img" => %{<img src="%s"%s>}
+          "css" => %(<link type="text/css" rel="stylesheet" href="%s"%s>),
+          "js"  => %(<script type="text/javascript" src="%s"%s></script>),
+          "img" => %(<img src="%s"%s>)
         }.freeze
 
         # --------------------------------------------------------------------
@@ -154,7 +154,7 @@ module Jekyll
 
         private
         def find_asset(args, sprockets)
-          sprockets_, file = args[:sprockets] ||= {}, args[:file]
+          sprockets_ = args[:sprockets] ||= {}; file = args[:file]
           if !(out = sprockets.find_asset(file, sprockets_))
             raise(
               AssetNotFoundError, args[:file]
@@ -179,9 +179,9 @@ module Jekyll
         def capture_and_out_error(site, error)
           if error.is_a?(Sass::SyntaxError)
             file = error.sass_filename.gsub(/#{Regexp.escape(site.source)}\//, "")
-            Jekyll.logger.error(%{Error in #{file}:#{error.sass_line} #{
+            Jekyll.logger.error(%(Error in #{file}:#{error.sass_line} #{
               error
-            }})
+            }))
 
           else
             Jekyll.logger.error(

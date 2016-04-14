@@ -82,15 +82,17 @@ module Jekyll
             return self unless context.is_a?(Object::Liquid::Context)
             liquid = context.registers[:site].liquid_renderer.file("(jekyll:assets)")
             out = parse_hash_liquid(to_h, liquid, context)
-            self.class.new(out, @tag, raw_args: @raw_args, \
-              processed: true)
+            self.class.new(out, @tag, {
+              :raw_args => @raw_args,
+              :processed => true
+            })
           end
 
           # ------------------------------------------------------------------
 
           def to_html
             (self[:html] || {}).map do |key, val|
-              %{ #{key}="#{val}"}
+              %( #{key}="#{val}")
             end.join
           end
 

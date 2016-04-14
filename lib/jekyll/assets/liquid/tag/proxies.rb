@@ -89,7 +89,7 @@ module Jekyll
 
           # ------------------------------------------------------------------
 
-          private
+          private_class_method
           def self.generate_class(name, tag, &block)
             class_ = const_set(random_name, Class.new)
             class_.class_eval(&block)
@@ -98,7 +98,7 @@ module Jekyll
 
           # ------------------------------------------------------------------
 
-          private
+          private_class_method
           def self.random_name
             (0...12).map { ("a".."z").to_a.values_at(rand(26)) }.join.capitalize
           end
@@ -108,9 +108,9 @@ module Jekyll
           # ------------------------------------------------------------------
 
           add_by_class :internal, :data, :all, ["@uri"]
-          add_by_class :internal, :sprockets, :all, [
-            "accept", "write_to"
-          ]
+          add_by_class :internal, :sprockets, :all, %W(
+            accept write_to
+          )
         end
       end
     end

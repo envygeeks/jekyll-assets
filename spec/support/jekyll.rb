@@ -16,8 +16,7 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def render(context)
-        return self.class.context = \
-          context
+        return self.class.context = context
       end
     end
 
@@ -28,8 +27,8 @@ module Jekyll
 
     def build_context
       site = stub_jekyll_site
-      site.liquid_renderer.file("").parse("{% context_thief %}"). \
-        render!(site.site_payload, :registers => { :site => site })
+      site.liquid_renderer.file("").parse("{% context_thief %}") \
+        .render!(site.site_payload, :registers => { :site => site })
       ContextThief.context
     end
 
@@ -46,7 +45,7 @@ module Jekyll
     # ------------------------------------------------------------------------
 
     def silence_stdout(return_stringio = false)
-      old_stdout, old_stderr = $stdout, $stderr
+      old_stdout = $stdout; old_stderr = $stderr
       $stdout = stdout = StringIO.new
       $stderr = stderr = StringIO.new
       output  = yield
@@ -80,8 +79,8 @@ module Jekyll
     # ------------------------------------------------------------------------
 
     def stub_asset_config(inst, hash = nil)
-      hash, inst = inst, nil if inst.is_a?(Hash)
-      inst = @site || site if !inst
+      (hash = inst; inst = nil) if inst.is_a?(Hash)
+      inst = @site || site unless inst
 
       hash = Jekyll::Assets::Config.merge(hash)
       allow(inst).to receive(:config).and_return(inst.config.merge({
@@ -92,8 +91,8 @@ module Jekyll
     # ------------------------------------------------------------------------
 
     def stub_env_config(inst, hash = nil)
-      hash, inst = inst, nil if inst.is_a?(Hash)
-      inst = @env || env if !inst
+      (hash = inst; inst = nil) if inst.is_a?(Hash)
+      inst = @env || env unless inst
 
       hash = Jekyll::Utils.deep_merge_hashes(inst.asset_config, hash)
       allow(inst).to receive(:asset_config).and_return(hash)
@@ -171,6 +170,13 @@ Liquid::Template.register_tag "context_thief", \
 
 RSpec.configure do |c|
   c.include Jekyll::RSpecHelpers
-  c.before(:all) { Jekyll::RSpecHelpers.cleanup_trash }
-  c.after (:all) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.before :all do
+    Jekyll::RSpecHelpers.cleanup_trash
+  end
+
+  #
+
+  c.after :all do
+    Jekyll::RSpecHelpers.cleanup_trash
+  end
 end

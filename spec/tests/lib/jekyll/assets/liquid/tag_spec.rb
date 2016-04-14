@@ -28,7 +28,7 @@ describe Jekyll::Assets::Liquid::Tag do
   #
 
   def stub_tag(tag, data)
-    payload = "{%% %s %s %%}" % [tag, data]
+    payload = format("{%% %s %s %%}", tag, data)
     fragment(@renderer.file(__FILE__).parse(payload).render!(
       @site.site_payload, @register
     ))
@@ -69,8 +69,8 @@ describe Jekyll::Assets::Liquid::Tag do
   #
 
   it "uses a data uri if asked to" do
-    expect(stub_tag("img", "ruby.png data:uri").attr("src")).to match(
-      %r!\Adata:image\/png;base64,!
+    expect(stub_tag("img", "ruby.png data:uri").attr("src")).to start_with(
+      "data:image/png;base64,"
     )
   end
 
@@ -80,7 +80,7 @@ describe Jekyll::Assets::Liquid::Tag do
     result = stub_tag "js", "bundle"
     expect(result.name).to eq "script"
     expect(result.attr("type")).to eq "text/javascript"
-    expect(result.attr( "src")).to eq "/assets/bundle.js"
+    expect(result.attr("src")).to eq "/assets/bundle.js"
   end
 
   #
@@ -89,7 +89,7 @@ describe Jekyll::Assets::Liquid::Tag do
     result = stub_tag "js", "bundle"
     expect(result.name).to eq "script"
     expect(result.attr("type")).to eq "text/javascript"
-    expect(result.attr( "src")).to eq "/assets/bundle.js"
+    expect(result.attr("src")).to eq "/assets/bundle.js"
   end
 
   #

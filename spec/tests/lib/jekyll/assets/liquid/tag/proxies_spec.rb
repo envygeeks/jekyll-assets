@@ -64,15 +64,17 @@ describe Jekyll::Assets::Liquid::Tag::Proxies do
     #
 
     specify "name, tag" do
-      expect(subject.get(:me, :img ).size).to eq 1
-      expect(subject.get(:me, "img").size).to eq 1
+      expect(subject.get(:me, "img").size).to eq(
+        1
+      )
     end
 
     #
 
     specify "name, tag, arg" do
-      expect(subject.get(:me, :img,  :hellos ).size).to eq 1
-      expect(subject.get(:me, "img", "hellos").size).to eq 1
+      expect(subject.get(:me, "img", "hellos").size).to eq(
+        1
+      )
     end
   end
 end

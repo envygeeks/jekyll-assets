@@ -45,10 +45,10 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def initialize(path, jekyll = nil)
-        jekyll, path = path, nil if path.is_a?(Jekyll::Site)
-        @jekyll = jekyll
-        @used = Set.new
+        (jekyll = path; path = nil) if path.is_a?(Jekyll::Site)
 
+        @used = Set.new
+        @jekyll = jekyll
         path ? super(path) : super()
         Hook.trigger :env, :init do |hook|
           hook.arity > 0 || 0 > hook.arity ? hook.call(self) : instance_eval(&hook)
@@ -98,6 +98,8 @@ module Jekyll
       end
 
       # ----------------------------------------------------------------------
+      # rubocop:disable Style/ExtraSpacing
+      # ----------------------------------------------------------------------
 
       def baseurl
         ary = []
@@ -110,6 +112,8 @@ module Jekyll
         end)
       end
 
+      # ----------------------------------------------------------------------
+      # rubocop:enable Style/ExtraSpacing
       # ----------------------------------------------------------------------
 
       def dev?
@@ -164,7 +168,7 @@ module Jekyll
       def write_all
         past = self.class.past ||= Set.new
         (@used.any?? all_assets : past).each do |obj|
-          if past.add(obj) && path = as_path(obj)
+          if past.add(obj) && (path = as_path(obj))
             obj.write_to path
           end
         end
@@ -186,11 +190,13 @@ module Jekyll
       end
 
       # ----------------------------------------------------------------------
+      # rubocop:disable Lint/NestedMethodDefinition
+      # ----------------------------------------------------------------------
 
       class << self
         def context_patches
-          Proc.new do
-            alias _old_asset_path asset_path
+          proc do
+            alias_method :_old_asset_path, :asset_path
             def asset_path(asset, _ = {})
               rtn = _old_asset_path asset
 
@@ -202,6 +208,10 @@ module Jekyll
           end
         end
       end
+
+      # ----------------------------------------------------------------------
+      # rubocop:enable Lint/NestedMethodDefinition
+      # ----------------------------------------------------------------------
     end
   end
 end

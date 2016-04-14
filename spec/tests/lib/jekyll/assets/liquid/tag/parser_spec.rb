@@ -40,7 +40,7 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
       :tags=>[
         :img,
         "img"
-      ],
+      ]
     }]))
   end
 

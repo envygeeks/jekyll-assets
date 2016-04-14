@@ -28,7 +28,7 @@ describe Jekyll::Assets::Liquid::Tag::Defaults::Image do
   #
 
   def stub_tag(tag, data)
-    payload = "{%% %s %s %%}" % [tag, data]
+    payload = format("{%% %s %s %%}", tag, data)
     fragment(@renderer.file(__FILE__).parse(payload).render!(
       @site.site_payload, @register
     ))
@@ -72,7 +72,7 @@ describe Jekyll::Assets::Liquid::Tag::Defaults::Image do
     }
 
     result = stub_tag("img", "ruby.png")
-    expect(result.attr( "width")).to be_nil
+    expect(result.attr("width")).to be_nil
     expect(result.attr("height")).to be_nil
   end
 

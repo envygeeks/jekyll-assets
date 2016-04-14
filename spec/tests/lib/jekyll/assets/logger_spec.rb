@@ -13,7 +13,7 @@ describe Jekyll::Assets::Logger do
   #
 
   after do
-    Jekyll.logger.log_level =  :info
+    Jekyll.logger.log_level = :info
   end
 
   #
@@ -45,7 +45,7 @@ describe Jekyll::Assets::Logger do
       end
 
       expect(strip_ansi(out.last.empty?? out.first : out.last).strip).to eq(
-        "Jekyll Assets: #{v.to_s}"
+        "Jekyll Assets: #{v}"
       )
     end
   end

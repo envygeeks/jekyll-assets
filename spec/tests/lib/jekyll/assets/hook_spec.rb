@@ -44,7 +44,7 @@ describe Jekyll::Assets::Hook do
   #
 
   it "sends a message to all receivers on a point" do
-    result, tproc = 1, proc { result = 2 }
+    result = 1; tproc = proc { result = 2 }
     Jekyll::Assets::Hook.register(:test, :test, &tproc)
     Jekyll::Assets::Hook. trigger(:test, :test)
     expect(result).to eq 2

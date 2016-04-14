@@ -36,7 +36,7 @@ try_require "mini_magick" do
 
     def process
       img = MiniMagick::Image.open(@path)
-      methods = private_methods(true).select { |v| v =~ /\Amagick_/ }
+      methods = private_methods(true).select { |v| v.to_s.start_with?("magick_") }
       if img.respond_to?(:combine_options)
         then img.combine_options do |cmd|
           methods.each do |method|
@@ -80,7 +80,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_quality(img, cmd)
+    def magick_quality(_, cmd)
       if @opts.key?(:quality)
         then cmd.quality @opts[:quality]
       end
@@ -89,7 +89,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_resize(img, cmd)
+    def magick_resize(_, cmd)
       raise DoubleResizeError if @opts.key?(:resize) && preset?
       if @opts.key?(:resize)
         then cmd.resize @opts[:resize]
@@ -99,7 +99,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_rotate(img, cmd)
+    def magick_rotate(_, cmd)
       if @opts.key?(:rotate)
         then cmd.rotate @opts[:rotate]
       end
@@ -108,7 +108,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_flip(img, cmd)
+    def magick_flip(_, cmd)
       if @opts.key?(:flip)
         then cmd.flip @opts[:flip]
       end
@@ -117,7 +117,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_crop(img, cmd)
+    def magick_crop(_, cmd)
       if @opts.key?(:crop)
         then cmd.crop @opts[:crop]
       end
@@ -126,7 +126,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     private
-    def magick_gravity(img, cmd)
+    def magick_gravity(_, cmd)
       if @opts.key?(:gravity)
         then cmd.gravity @opts[:gravity]
       end
@@ -136,6 +136,11 @@ try_require "mini_magick" do
     # I just want you to know, we don't even care if you do multiple
     # resizes or try to, we don't attempt to even attempt to attempt to care
     # we expect you to be logical and if you aren't we will comply.
+    # ------------------------------------------------------------------------
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Style/ParallelAssignment
+    # rubocop:disable Metrics/AbcSize
     # ------------------------------------------------------------------------
 
     private
@@ -151,5 +156,12 @@ try_require "mini_magick" do
       width, height = img.width / 4 * 3, img.height / 4 * 3 if any_preset?(:"3/4", :"three-fourths")
       cmd.resize "#{width}x#{height}"
     end
+
+    # ------------------------------------------------------------------------
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Style/ParallelAssignment
+    # rubocop:enable Metrics/AbcSize
+    # ------------------------------------------------------------------------
   end
 end

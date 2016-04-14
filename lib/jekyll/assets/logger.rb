@@ -17,42 +17,46 @@ module Jekyll
       # Log Level: 1
       # ----------------------------------------------------------------------
 
-      def warn(msg = nil, &block)
-        msg = (block_given?? block.call : msg)
-        log.warn(PREFIX, msg)
+      def warn(msg = nil)
+        log.warn(PREFIX,
+          block_given?? yield : msg
+        )
       end
 
       # ----------------------------------------------------------------------
       # Log Level: 1
       # ----------------------------------------------------------------------
 
-      def error(msg = nil, &block)
-        msg = (block_given?? block.call : msg)
-        log.error(PREFIX, msg)
+      def error(msg = nil)
+        log.error(PREFIX,
+          block_given?? yield : msg
+        )
       end
 
       # ----------------------------------------------------------------------
       # Log Level: 2
       # ----------------------------------------------------------------------
 
-      def info(msg = nil, &block)
-        msg = (block_given?? block.call : msg)
-        log.info(PREFIX, msg)
+      def info(msg = nil)
+        log.info(PREFIX,
+          block_given?? yield : msg
+        )
       end
 
       # ----------------------------------------------------------------------
       # Log Level: 3
       # ----------------------------------------------------------------------
 
-      def debug(msg = nil, &block)
-        msg = (block_given?? block.call : msg)
-        log.debug(PREFIX, msg)
+      def debug(msg = nil)
+        log.debug(PREFIX,
+          block_given?? yield : msg
+        )
       end
 
       # ----------------------------------------------------------------------
 
       def log_level=(*)
-        raise RuntimeError, "Please set log levels on Jekyll.logger"
+        raise "Please set log levels on Jekyll.logger"
       end
     end
   end

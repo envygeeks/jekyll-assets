@@ -43,7 +43,7 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def self.trigger(base, point_, *args, &block)
-        raise ArgumentError, "Do not give args with a block" if args.size > 0 && block_given?
+        raise ArgumentError, "Do not give args with a block" if !args.empty? && block_given?
         if all.key?(base) && all[base].key?(point_)
           Set.new.merge(point(base, point_, :early)).merge(point(base, point_)).map do |v|
             block_given?? block.call(v) : v.call(*args)

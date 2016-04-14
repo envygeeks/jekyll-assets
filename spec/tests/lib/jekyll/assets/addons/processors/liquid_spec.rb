@@ -100,7 +100,7 @@ describe Jekyll::Assets::Processors::Liquid do
       it "should not process the liquid" do
         expect(source).not_to match(/\{{2}\s*site\.background_image\s*\}{2}/)
         expect(source).to match(/background:\s*url\("\/assets\/ruby\.png"\)/)
-       end
+      end
     end
   end
 

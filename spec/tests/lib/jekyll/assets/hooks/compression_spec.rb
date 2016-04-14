@@ -25,7 +25,7 @@ describe "asset compression" do
     expect(env. js_compressor).to eq Sprockets::UglifierCompressor
     expect(env.css_compressor).to eq Sprockets::SassCompressor
     expect(env.compress?("css")).to eq true
-    expect(env.compress?( "js")).to eq true
+    expect(env.compress?("js")).to eq true
   end
 
   #
@@ -34,7 +34,7 @@ describe "asset compression" do
     expect(env. js_compressor).to be_nil
     expect(env.css_compressor).to be_nil
     expect(env.compress?("css")).to eq false
-    expect(env.compress?( "js")).to eq false
+    expect(env.compress?("js")).to eq false
   end
 
   #
@@ -44,7 +44,7 @@ describe "asset compression" do
     expect(env. js_compressor).to eq Sprockets::UglifierCompressor
     expect(env.css_compressor).to eq Sprockets::SassCompressor
     expect(env.compress?("css")).to eq true
-    expect(env.compress?( "js")).to eq true
+    expect(env.compress?("js")).to eq true
   end
 
   #
@@ -58,6 +58,6 @@ describe "asset compression" do
     expect(env. js_compressor).to be_nil
     expect(env.css_compressor).to be_nil
     expect(env.compress?("css")).to eq false
-    expect(env.compress?( "js")).to eq false
+    expect(env.compress?("js")).to eq false
   end
 end
