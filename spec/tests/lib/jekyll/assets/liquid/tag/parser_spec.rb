@@ -139,6 +139,14 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
 
   #
 
+  it "allows empty arguments" do
+    expect(subject.new("img.jpg alt:''", "img").to_html.strip).to eq(
+      %(alt="")
+    )
+  end
+
+  #
+
   it "does not allocate boolean arguments as proxy values", :proxies => true do
     input = "img.jpg magick:2x:raise"
     expect_it = expect { subject.new(input, "img") }
