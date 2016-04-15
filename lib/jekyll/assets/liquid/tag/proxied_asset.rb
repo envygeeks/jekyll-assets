@@ -69,7 +69,10 @@ module Jekyll
           #
 
           def write_to(name)
-            File.binwrite(name, source)
+            FileUtils.mkdir_p File.dirname(name)
+            Sprockets::PathUtils.atomic_write(name) do |f|
+              f.write source
+            end
           end
 
           #
