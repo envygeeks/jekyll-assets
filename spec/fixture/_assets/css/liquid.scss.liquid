@@ -1,3 +1,5 @@
 .background {
-  background: url("{% asset_path '{{ site.background_image }}' %}")
+  hello: "{{ site.background_image | asset_path }}";
+  background: url("{% asset_path '{{ site.background_image }}' %}");
+  world: "{{ '&' | xml_escape }}"
 }

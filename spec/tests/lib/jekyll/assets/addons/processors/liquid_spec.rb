@@ -30,8 +30,22 @@ describe Jekyll::Assets::Processors::Liquid do
     #
 
     it "lets the user use Liquid" do
-      expect(source).not_to match(/\{{2}\s*site\.background_image\s*\}{2}/)
+      expect(source).not_to match(/background: \{{2} site\.background_image \}{2}/)
       expect(source).to match(/background:\s*url\("\/assets\/ruby\.png"\)/)
+    end
+
+    #
+
+    it "lets the user use filters" do
+      expect(source).not_to match(/hello: \{{2} site\.background_image \}{2}/)
+      expect(source).to match(/hello: "\/assets\/ruby\.png"/)
+    end
+
+    #
+
+    it "lets the user use Jekyll filters" do
+      expect(source).not_to match(/world: \{{2} xml_escape \}{2}/)
+      expect(source).to match(/world: "&amp;"/)
     end
 
     #

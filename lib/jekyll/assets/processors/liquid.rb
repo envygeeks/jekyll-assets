@@ -15,9 +15,11 @@ module Jekyll
 
             payload_ = jekyll.site_payload
             renderer = jekyll.liquid_renderer.file(context[:filename])
-            context[:data] = renderer.parse(context[:data]).render! payload_, :registers => {
-              :site => jekyll
-            }
+            context[:data] = renderer.parse(context[:data]).render! payload_, \
+              :filters => [Jekyll::Filters],
+              :registers => {
+                :site => jekyll
+              }
           end
         end
       end
