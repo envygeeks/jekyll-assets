@@ -21,6 +21,7 @@ module Jekyll
         "prefix"    => "/assets",
         "digest"    => false,
         "assets"    => [],
+        "autowrite" => true,
 
         "compress"  => {
           "css"     => false,

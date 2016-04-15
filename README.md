@@ -41,6 +41,7 @@ assets:
   skip_baseurl_with_cdn: false
   skip_prefix_with_cdn: false
   prefix: "/assets"
+  autowrite: true
   assets:
     - "*.png"
     - "bundle.css"
