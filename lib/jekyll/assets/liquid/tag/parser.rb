@@ -145,7 +145,7 @@ module Jekyll
           def parse_col(hash, key)
             key.push(key.delete_at(-1).gsub(/\\:/, ":"))
             return as_proxy hash, key if key.size == 3
-            return as_bool_or_html hash, key if key.size == 2
+            return as_bool_or_html hash, key if key.size == 2 || key.size == 1
             raise UnescapedColonError
           end
 
