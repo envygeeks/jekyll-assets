@@ -35,4 +35,16 @@ describe Jekyll::Assets::Cached do
       Jekyll::Assets::Env
     )
   end
+
+  #
+
+  it "caches resolved paths" do
+    first = cached.resolve("ruby.png")
+    second = cached.resolve("ruby.png")
+
+    expect(first).to match /assets\/img\/ruby\.png/
+    expect(first).to eq second
+
+    expect(first.object_id).to eq second.object_id
+  end
 end
