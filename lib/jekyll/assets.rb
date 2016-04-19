@@ -6,6 +6,7 @@
 
 require "sprockets"
 require "extras/all"
+require "pathutil"
 require "jekyll"
 
 require_relative "assets/env"

@@ -27,7 +27,7 @@ describe "Magick Image Proxy" do
   #
 
   def get_asset(html)
-    Pathname.new(@env.in_cache_dir(fragment(html).children.first.attr("src").gsub(
+    Pathutil.new(@env.in_cache_dir(fragment(html).children.first.attr("src").gsub(
       /^#{Regexp.escape(@env.asset_config["prefix"])}\//, ""
     )))
   end
@@ -44,7 +44,7 @@ describe "Magick Image Proxy" do
 
   it "allows a user to adjust quality" do
     asset = get_asset(stub_tag("magick:quality:99"))
-    expect(Pathname.new(@asset.filename).size).to(
+    expect(Pathutil.new(@asset.filename).size).to(
       be > asset.size
     )
   end

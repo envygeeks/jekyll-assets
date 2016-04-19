@@ -190,7 +190,7 @@ describe Jekyll::Assets::Env do
   #
 
   it "writes cached assets on a simple refresh", :process => true do
-    path_ = Pathname.new(path)
+    path_ = Pathutil.new(path)
     path_.rmtree
 
     site.sprockets.used.clear
@@ -208,7 +208,7 @@ describe Jekyll::Assets::Env do
     FileUtils.rm(file)
 
     site.sprockets.write_all
-    expect(Pathname.new(file)).to(
+    expect(Pathutil.new(file)).to(
       exist
     )
   end

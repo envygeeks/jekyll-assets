@@ -74,7 +74,7 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
       #
 
       it "writes the sub-folders" do
-        expect(Pathname.new(@site.in_dest_dir("assets", @proxied_asset.digest_path))).to(
+        expect(Pathutil.new(@site.in_dest_dir("assets", @proxied_asset.digest_path))).to(
           exist
         )
       end
@@ -135,7 +135,7 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
   #
 
   it "caches the file inside of the asset cache directory" do
-    expect(Pathname.new(@env.in_cache_dir(instance.logical_path))).to(
+    expect(Pathutil.new(@env.in_cache_dir(instance.logical_path))).to(
       exist
     )
   end

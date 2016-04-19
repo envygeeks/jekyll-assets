@@ -33,7 +33,7 @@ describe "context hook" do
 
     it "should write the asset when write_all is done" do
       env.find_asset "context", :accept => "text/css"; env.write_all
-      expect(Pathname.new(env.jekyll.in_dest_dir).join("assets/context.jpg")).to(
+      expect(Pathutil.new(env.jekyll.in_dest_dir).join("assets/context.jpg")).to(
         exist
       )
     end
