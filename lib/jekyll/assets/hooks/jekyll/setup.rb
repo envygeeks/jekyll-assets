@@ -5,7 +5,11 @@
 # ----------------------------------------------------------------------------
 
 Jekyll::Hooks.register :site, :after_reset do |jekyll|
-  Jekyll::Assets::Env.new(jekyll)
+  Jekyll::Assets::Env.envs ||= {}
+  Jekyll::Assets::Env.envs[jekyll] ||= \
+  Jekyll::Assets::Env.new(
+    jekyll
+  )
 
   excludes = Set.new(jekyll.config["exclude"])
   jekyll.sprockets.excludes.map(&excludes.method(:add))

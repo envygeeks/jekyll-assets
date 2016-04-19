@@ -10,7 +10,7 @@ module Jekyll
       attr_reader :jekyll, :used
 
       class << self
-        attr_accessor :past
+        attr_accessor :past, :envs
         def liquid_proxies
           Liquid::Tag::Proxies
         end
