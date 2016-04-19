@@ -56,4 +56,13 @@ end
 
 # ----------------------------------------------------------------------------
 
-Sprockets.register_engine ".less", Jekyll::Assets::Processors::LESS
+if Gem::Version.new(Sprockets::VERSION) >= Gem::Version.new(4.0)
+  Sprockets.register_mime_type "text/less", :extensions => [".less", ".css.less"]
+  Sprockets.register_transformer("text/less", "test/css",
+    Jekyll::Assets::Processors::LESS
+  )
+else
+  Sprockets.register_engine(
+    ".less", Jekyll::Assets::Processors::LESS
+  )
+end
