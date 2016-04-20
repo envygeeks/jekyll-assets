@@ -7,7 +7,9 @@
 module Sprockets
   class Asset
     def liquid_tags
-      metadata[:liquid_tags] ||= Set.new
+      metadata[:liquid_tags] ||= begin
+        Set.new
+      end
     end
 
     # ------------------------------------------------------------------------
