@@ -7,7 +7,6 @@
 require_relative "hooks/jekyll/drops"
 require_relative "hooks/jekyll/setup"
 require_relative "hooks/jekyll/write"
-require_relative "hooks/context"
 require_relative "hooks/compression"
 require_relative "hooks/config"
 require_relative "hooks/helpers"

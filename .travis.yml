@@ -1,7 +1,14 @@
----
-cache: bundler
 language: ruby
 sudo: false
+
+#
+
+cache:
+  bundler: true
+  directories:
+  - spec/fixtures/.asset-cache
+
+#
 
 rvm:
   - &ruby1 2.3.0
@@ -10,20 +17,28 @@ rvm:
   - &jruby jruby-9.0.5.0
   - &rhead ruby-head
 
+#
+
 matrix:
   fast_finish: true
   allow_failures:
     - rvm: *jruby
     - rvm: *rhead
 
+#
+
 notifications:
   email:
     recipients:
       - jordon@envygeeks.io
 
+#
+
 branches:
   only:
     - master
+
+#
 
 addons:
   code_climate:

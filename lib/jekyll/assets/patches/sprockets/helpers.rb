@@ -10,3 +10,22 @@ Sprockets::Helpers.instance_methods.reject { |v| v=~ /^(path_to_|assets_environm
     %Q(url("#{send(m, *args)}"))
   end
 end
+
+module Sprockets
+  module Helpers
+    alias_method :_old_ap, :asset_path
+
+    def rcache
+      return @resolver_cache ||= {
+        #
+      }
+    end
+
+    def asset_path(asset, h = {})
+      return unless out = _old_ap(asset)
+      path = environment.find_asset(resolve_without_compat(asset))
+      environment.parent.used.add(path)
+    out
+    end
+  end
+end

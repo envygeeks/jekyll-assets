@@ -26,6 +26,16 @@ module Jekyll
       end
 
       # ----------------------------------------------------------------------
+      # Disables GZIP.  You should be using your server to do this and even
+      # if you don't, there are far better and more efficient algorithms out
+      # right now that are in beta.  Try Googling Googles new compression.
+      # ----------------------------------------------------------------------
+
+      def skip_gzip?
+        true
+      end
+
+      # ----------------------------------------------------------------------
 
       def excludes
         excludes = Set.new
@@ -185,19 +195,25 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def manifest
-        return @manifest ||= Sprockets::Manifest.new(self, File.join(
-          in_cache_dir, "manifest.json"
+        return @manifest ||= Manifest.new(self, jekyll.in_dest_dir(
+          asset_config["prefix"]
         ))
       end
 
       # ----------------------------------------------------------------------
+      # Write assets with the manifest if they aren't proxied assets.  If
+      # they are then we go on to write them ourselves.  We don't necessarily
+      # integrate with the manifest that deeply because it's hard.
+      # ----------------------------------------------------------------------
 
       def write_all
-        past = self.class.past ||= Set.new
-        (@used.any?? all_assets : past).each do |obj|
-          if past.add(obj) && (path = as_path(obj))
-            obj.write_to path
-          end
+        assets = all_assets.partition { |v| v.is_a?(Liquid::Tag::ProxiedAsset) }
+        manifest.compile(assets.last.map(&:logical_path))
+
+        assets.first.map do |asset|
+          asset.write_to(jekyll.in_dest_dir(File.join(asset_config["prefix"],
+            digest?? asset.digest_path : asset.logical_path
+          )))
         end
       end
 
@@ -207,38 +223,6 @@ module Jekyll
       def strip_path(path)
         path.sub(jekyll.in_source_dir("/"), "")
       end
-
-      # ----------------------------------------------------------------------
-
-      private
-      def as_path(v)
-        path = digest?? v.digest_path : v.logical_path
-        jekyll.in_dest_dir(File.join(asset_config[ "prefix"], path))
-      end
-
-      # ----------------------------------------------------------------------
-      # rubocop:disable Lint/NestedMethodDefinition
-      # ----------------------------------------------------------------------
-
-      class << self
-        def context_patches
-          proc do
-            alias_method :_old_asset_path, :asset_path
-            def asset_path(asset, _ = {})
-              rtn = _old_asset_path asset
-
-              return unless rtn
-              path = environment.find_asset(resolve(asset))
-              environment.parent.used.add(path)
-              rtn
-            end
-          end
-        end
-      end
-
-      # ----------------------------------------------------------------------
-      # rubocop:enable Lint/NestedMethodDefinition
-      # ----------------------------------------------------------------------
     end
   end
 end
