@@ -47,14 +47,16 @@ module Jekyll
 
       # ----------------------------------------------------------------------
 
-      def self.merge_sources(jekyll, config)
-        config["sources"] ||= []
-        return unless config["sources"].grep(/\A\s*_assets\/?\s*\Z/).empty?
-        sources = DefaultSources + config["sources"].to_a
+      def self.merge_sources(jekyll, config) config["sources"] ||= []
+        if !config["sources"].grep(/\A\s*_assets\/?\s*\Z/).empty?
+          return
 
-        config["sources"] = Set.new(sources.map do |val|
-          jekyll.in_source_dir(val)
-        end)
+        else
+          sources = DefaultSources + config["sources"].to_a
+          config["sources"] = Set.new(sources.map do |val|
+            jekyll.in_source_dir(val)
+          end)
+        end
       end
 
       # ----------------------------------------------------------------------
