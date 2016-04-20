@@ -5,6 +5,7 @@ gem "rake"
 group :development do
   gem "therubyracer", :platforms => :mri, :require => false
   gem "therubyrhino", :platforms => :jruby, :require => false
+  gem "stackprof", :platforms => :mri, :require => false
   gem "pry", :require => false
 end
 

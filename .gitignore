@@ -1,8 +1,9 @@
+/.analysis
 /spec/fixture/.*
 /spec/fixture/_site
+/stackprof.dump
 /Gemfile.lock
 /coverage
 /.bundle
 /vendor
 *.gem
-/.analysis
