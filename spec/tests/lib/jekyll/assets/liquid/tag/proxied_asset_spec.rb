@@ -84,9 +84,10 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
   #
 
   it "runs the proxy" do
-    @tag.render(OpenStruct.new(:registers => { :site => @site }))
-    expect(File.read(Dir.glob(@env.in_cache_dir("ruby-*.png")).first)).to(
-      eq "hello"
+    result = @tag.render(OpenStruct.new(:registers => { :site => @site }))
+    img = fragment(result).css("img").first.attr(:src).gsub(/\A\/assets\//, "")
+    expect(File.read(@env.in_cache_dir(img))).to eq(
+      "hello"
     )
   end
 
