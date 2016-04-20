@@ -5,5 +5,7 @@
 # ----------------------------------------------------------------------------
 
 Jekyll::Assets::Hook.register :env, :init do
-  self.logger = Jekyll::Assets::Logger.new
+  if jekyll.config["verbose"]
+    self.logger = Jekyll::Assets::Logger.new
+  end
 end

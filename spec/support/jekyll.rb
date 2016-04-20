@@ -35,7 +35,9 @@ module Jekyll
     # ------------------------------------------------------------------------
 
     def fragment(html)
-      Nokogiri::HTML.fragment(html)
+      Nokogiri::HTML.fragment(
+        html
+      )
     end
 
     # ------------------------------------------------------------------------
@@ -154,7 +156,7 @@ module Jekyll
     # ------------------------------------------------------------------------
 
     def self.cleanup_trash
-      %W(.asset-cache .jekyll-metadata _site).each do |v|
+      %W(.jekyll-metadata _site).each do |v|
         FileUtils.rm_rf(File.join(File.expand_path(
           "../../fixture", __FILE__
         ), v))
@@ -165,20 +167,26 @@ end
 
 # ----------------------------------------------------------------------------
 
-Liquid::Template.register_tag "context_thief", \
+Liquid::Template.register_tag("context_thief",
   Jekyll::RSpecHelpers::ContextThief
+)
 
 # ----------------------------------------------------------------------------
 
-RSpec.configure do |c|
-  c.include Jekyll::RSpecHelpers
-  c.before :all do
+RSpec.configure do |config|
+  config.include(
+    Jekyll::RSpecHelpers
+  )
+
+  #
+
+  config.after :all do
     Jekyll::RSpecHelpers.cleanup_trash
   end
 
   #
 
-  c.after :all do
+  config.before :all do
     Jekyll::RSpecHelpers.cleanup_trash
   end
 end

@@ -5,7 +5,9 @@
 # ----------------------------------------------------------------------------
 
 Jekyll::Assets::Hook.register :env, :init do
-  cache_dir = asset_config.fetch("cache", ".asset-cache")
+  cache_dir = asset_config.fetch("cache",
+    ".asset-cache"
+  )
 
   if cache_dir
     self.cache = Sprockets::Cache::FileStore.new(

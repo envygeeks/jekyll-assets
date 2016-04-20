@@ -4,7 +4,6 @@
 # Encoding: utf-8
 # ----------------------------------------------------------------------------
 
-require "sprockets/helpers"
 Jekyll::Assets::Hook.register :env, :init do
   Sprockets::Helpers.configure do |config|
     config.manifest = manifest

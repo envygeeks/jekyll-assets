@@ -7,9 +7,9 @@
 require "rspec/helper"
 describe "logger hook" do
   let :env do
-    Jekyll::Assets::Env.new(
-      stub_jekyll_site
-    )
+    Jekyll::Assets::Env.new(stub_jekyll_site.tap do |o|
+      o.config["verbose"] = true
+    end)
   end
 
   #

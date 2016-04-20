@@ -60,7 +60,9 @@ module Jekyll
         @jekyll = jekyll
         path ? super(path) : super()
         Hook.trigger :env, :init do |hook|
-          hook.arity > 0 || 0 > hook.arity ? hook.call(self) : instance_eval(&hook)
+          hook.arity > 0 || 0 > hook.arity ? hook.call(self) : instance_eval(
+            &hook
+          )
         end
       end
 
@@ -75,8 +77,9 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def in_cache_dir(*paths)
-        cache_dir = asset_config["cache"] || ".asset-cache"
-        jekyll.in_source_dir(cache_dir, *paths)
+        jekyll.in_source_dir(asset_config["cache"] || ".asset-cache",
+          *paths
+        )
       end
 
       # ----------------------------------------------------------------------
@@ -84,7 +87,9 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def all_assets
-        Set.new(@used).merge extra_assets
+        Set.new(@used).merge(
+          extra_assets
+        )
       end
 
       # ----------------------------------------------------------------------
@@ -132,8 +137,9 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def compress?(what)
-        !!asset_config["compress"] \
-          .fetch(what, false)
+        !!asset_config["compress"].fetch(
+          what, false
+        )
       end
 
       # ----------------------------------------------------------------------
@@ -145,7 +151,9 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def digest?
-        !!asset_config["digest"]
+        !!asset_config[
+          "digest"
+        ]
       end
 
       # ----------------------------------------------------------------------
