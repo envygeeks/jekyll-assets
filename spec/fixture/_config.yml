@@ -1,3 +1,4 @@
+gems: ["jekyll-assets"]
 background_image: ruby.png
 featured:
 - ruby1.png
