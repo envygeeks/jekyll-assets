@@ -131,33 +131,45 @@ describe Jekyll::Assets::Env do
 
   #
 
-  it "digests by default in production" do
-    allow(Jekyll).to receive(:env).and_return "production"
+  context do
+    before do
+      allow(Jekyll).to receive(:env).and_return(
+        "production"
+      )
+    end
 
-    expect(env.digest?).to be true
-    expect(env.send(:as_path, env.find_asset("bundle.css"))).to(
-      match %r!bundle-([a-zA-Z0-9]+)\.css\Z!
-    )
+    it "digests by default in production" do
+      Jekyll::Assets::Env.new(stub_jekyll_site).digest?
+      expect(env.digest?).to eq(
+        true
+      )
+    end
   end
 
   #
 
-  it "allows a user to disable digesting in production" do
-    allow(Jekyll).to receive(:env).and_return "production"
-    stub_asset_config "digest" => false
+  context do
+    before do
+      stub_asset_config "digest" => false
+      allow(Jekyll).to receive(:env).and_return(
+        "production"
+      )
+    end
 
-    expect(@env.digest?).to be false
-    expect(@env.send(:as_path, @env.find_asset("bundle.css"))).to eq(
-      @site.in_dest_dir(@env.asset_config["prefix"], "bundle.css")
-    )
+    #
+
+    it "allows a user to disable digesting in production" do
+      expect(@env.digest?).to be(
+        false
+      )
+    end
   end
 
   #
 
   it "does not enable digesting by default in development" do
-    expect(@env.digest?).to be false
-    expect(@env.send(:as_path, @env.find_asset("bundle.css"))).to eq(
-      @site.in_dest_dir(@env.asset_config["prefix"], "bundle.css")
+    expect(@env.digest?).to be(
+      false
     )
   end
 
@@ -165,9 +177,8 @@ describe Jekyll::Assets::Env do
 
   it "allows you to enable digesting in development" do
     stub_asset_config "digest" => true
-    expect(@env.digest?).to be true
-    expect(@env.send(:as_path, @env.find_asset("bundle.css"))).to match(
-      %r!bundle-([a-zA-Z0-9]+)\.css\Z!
+    expect(@env.digest?).to be(
+      true
     )
   end
 
