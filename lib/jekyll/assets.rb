@@ -9,6 +9,10 @@ require "extras/all"
 require "pathutil"
 require "jekyll"
 
+Jekyll::Site.send(:attr_accessor,
+  :sprockets
+)
+
 require_relative "assets/env"
 require_relative "assets/version"
 require_relative "assets/patches"
