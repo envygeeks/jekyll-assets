@@ -17,10 +17,11 @@ module Jekyll
 
         # --------------------------------------------------------------------
 
-        def envs
-          return @envs ||= {
-            #
-          }
+        def init(jekyll)
+          new(jekyll)
+          jekyll.sprockets.excludes.map(&jekyll.config["exclude"].method(:<<))
+          jekyll.config["keep_files"] |= jekyll.sprockets.asset_config["prefix"] \
+            .gsub(/\A\//, "").to_a
         end
       end
 
