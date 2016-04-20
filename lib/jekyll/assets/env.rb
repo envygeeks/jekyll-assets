@@ -160,9 +160,17 @@ module Jekyll
       # ----------------------------------------------------------------------
 
       def cached
-        @cached ||= Cached.new(
+        return @cached ||= Cached.new(
           self
         )
+      end
+
+      # ----------------------------------------------------------------------
+
+      def manifest
+        return @manifest ||= Sprockets::Manifest.new(self, File.join(
+          in_cache_dir, "manifest.json"
+        ))
       end
 
       # ----------------------------------------------------------------------
