@@ -1,5 +1,5 @@
 require_relative "addons/less"
 require_relative "addons/bootstrap"
 require_relative "addons/autoprefixer"
-require_relative "addons/font_awesome"
+require_relative "addons/fontawesome"
 require_relative "addons/javascript"
