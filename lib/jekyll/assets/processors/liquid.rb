@@ -10,7 +10,7 @@ module Jekyll
         # --------------------------------------------------------------------
 
         def self.call(context, jekyll = context[:environment].jekyll)
-          if context[:environment].parent.asset_config["features"]["liquid"] || \
+          if context[:environment].parent.asset_config["features"]["liquid"] ||
               File.extname(context[:filename]) == ".liquid"
 
             payload_ = jekyll.site_payload
