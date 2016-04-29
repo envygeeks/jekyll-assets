@@ -4,4 +4,6 @@
 # Encoding: utf-8
 # ----------------------------------------------------------------------------
 
-try_require "bootstrap-sass"
+try_require "bootstrap-sass" do
+  Bootstrap.load!
+end

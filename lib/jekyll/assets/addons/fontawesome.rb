@@ -4,4 +4,6 @@
 # Encoding: utf-8
 # ----------------------------------------------------------------------------
 
-try_require "font-awesome-sass"
+try_require "font-awesome-sass" do
+  FontAwesome::Sass.load!
+end

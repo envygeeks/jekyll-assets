@@ -250,9 +250,9 @@ end
 
 * CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
+* Bootstrap - add "bootstrap-sass" to your Gemfile, and `@import 'boostrap-sprockets'; @import 'bootstrap'`
+* Font Awesome - add "font-awesome-sass" to your Gemfile, and `@import 'font-awesome-sprockets'; @import 'font-awesome'`
 * Image Magick - add "mini_magick" to your Gemfile, only works with `img`, `image`.
-* Bootstrap - add "bootstrap-sass" to your Gemfile and "@import 'bootstrap'"
-* Font Awesome - add "font-awesome-sass" to your Gemfile.
 * LESS - add "less" to your Gemfile
 
 ***Please note that some of these (if not all) have trouble with Rhino --
