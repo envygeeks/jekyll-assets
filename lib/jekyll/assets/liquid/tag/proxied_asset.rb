@@ -35,6 +35,14 @@ module Jekyll
 
           # ------------------------------------------------------------------
 
+          def integrity
+            Sprockets::DigestUtils.integrity_uri(
+              digest
+            )
+          end
+
+          # ------------------------------------------------------------------
+
           def cached?
             @_cached
           end
@@ -63,7 +71,9 @@ module Jekyll
           # ------------------------------------------------------------------
 
           def digest
-            Digest::SHA2.hexdigest(args.proxies.to_s)
+            Digest::SHA2.hexdigest(
+              args.proxies.to_s
+            )
           end
 
           # ------------------------------------------------------------------

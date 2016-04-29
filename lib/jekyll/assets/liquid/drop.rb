@@ -33,6 +33,12 @@ module Jekyll
 
         # --------------------------------------------------------------------
 
+        def integrity
+          return asset.integrity
+        end
+
+        # --------------------------------------------------------------------
+
         def width
           if image?
             dimensions.first
