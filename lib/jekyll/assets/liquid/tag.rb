@@ -154,10 +154,15 @@ module Jekyll
 
         private
         def find_asset(args, sprockets)
-          sprockets_ = args[:sprockets] ||= {}; file = args[:file]
-          if !(out = sprockets.find_asset(file, sprockets_))
+          out = _find_asset(args[:file],
+            args[:sprockets] ||= {}, sprockets
+          )
+
+          if !out
             raise(
-              AssetNotFoundError, args[:file]
+              AssetNotFoundError, args[
+                :file
+              ]
             )
 
           else
@@ -166,6 +171,42 @@ module Jekyll
               out, args, sprockets, self
             )
           end
+        end
+
+        # --------------------------------------------------------------------
+
+        private
+        def _find_asset(file, args, sprockets)
+          if args.empty? then sprockets.manifest.find(file).first
+          elsif args.size == 1 && args.key?(:accept)
+            if File.extname(file) == ""
+              file = file + _ext_for(args[
+                :accept
+              ])
+            end
+
+            sprockets.manifest.find(file).find do |asset|
+              asset.content_type == args[
+                :accept
+              ]
+            end
+          else
+            sprockets.find_asset(
+              file, args
+            )
+          end
+        end
+
+        # --------------------------------------------------------------------
+
+        private
+        def _ext_for(type)
+          out = Sprockets.mime_exts.select do |k, v|
+            v == type
+          end
+
+          out.keys \
+            .first
         end
 
         # --------------------------------------------------------------------
