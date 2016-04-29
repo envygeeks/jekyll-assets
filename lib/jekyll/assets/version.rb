@@ -6,6 +6,6 @@
 
 module Jekyll
   module Assets
-    VERSION="2.2.0.pre.alpha"
+    VERSION="2.2.0"
   end
 end
