@@ -68,7 +68,8 @@ module Jekyll
 
         private
         def asset
-          @asset ||= @jekyll.sprockets.find_asset(@path)
+          @asset ||= @jekyll.sprockets.manifest.find(@path) \
+            .first
         end
       end
     end
