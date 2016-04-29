@@ -15,7 +15,7 @@ describe "Compiling Less" do
   #
 
   it "should compile less files" do
-    matcher = /^body {\n\s+background-image: url\("\/assets\/context.jpg"\);\s+\}/m
+    matcher = /^body {\n\s+background-image: url\(\/assets\/context.jpg\);\s+\}/m
     expect(env.find_asset("less").to_s).to match(
       matcher
     )

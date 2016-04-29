@@ -34,15 +34,13 @@ module Jekyll
         # --------------------------------------------------------------------
 
         def self.patch_tree(tree, context)
-          Sprockets::Helpers.instance_methods.each do |m|
+          Helpers.instance_methods.each do |m|
             tree.functions[m.to_s.tr("_", "-")] = tree.functions[m.to_s] = lambda do |*args|
               args.last.tap do |o|
-                o.update({
-                  :quote => "",
-                  :value => context.send(m, args.last.toCSS().gsub(
-                    /^"|"$/, ""
-                  ))
-                })
+                o[:quote] = ""
+                o[:value] = context.send(m, args.last.toCSS().gsub(
+                  /^"|"$/, ""
+                ))
 
                 if m.to_s.end_with?("_path")
                   o[:value] = o[:value].inspect

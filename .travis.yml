@@ -1,12 +1,6 @@
 language: ruby
+cache: bundler
 sudo: false
-
-#
-
-cache:
-  bundler: true
-  directories:
-  - spec/fixtures/.asset-cache
 
 #
 
