@@ -19,12 +19,12 @@ module Jekyll
           end
         end
       end
+
+      #
+
+      ::Liquid::Template.register_filter(
+        Filters
+      )
     end
   end
 end
-
-# ----------------------------------------------------------------------------
-# Register it with Liquid, good luck from here.
-# ----------------------------------------------------------------------------
-
-Liquid::Template.register_filter(Jekyll::Assets::Liquid::Filters)
