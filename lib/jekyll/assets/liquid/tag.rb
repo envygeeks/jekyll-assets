@@ -115,7 +115,7 @@ module Jekyll
 
         private
         def process_tag(args, sprockets, asset)
-          sprockets.used.add(asset) unless @tag == "asset_source"
+          sprockets.manifest.add(asset) unless @tag == "asset_source"
           Defaults.set_defaults_for!(@tag, args ||= {}, asset, sprockets)
           build_html(args, sprockets, asset)
         end

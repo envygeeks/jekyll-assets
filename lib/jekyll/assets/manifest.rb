@@ -1,18 +1,40 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
-
-    # ------------------------------------------------------------------------
-    # This is a wholesale rip of Sprockets::Manifest, we only adjust it to
-    # care about whether or not we want to digest, we don't always digest.
-    # ------------------------------------------------------------------------
-
     class Manifest < Sprockets::Manifest
+      extend Forwardable::Extended
+      rb_delegate :add, {
+        :to => :used
+      }
+
+      # --
+      # The assets to be compiled.
+      # @return [Set]
+      # --
+      def used
+        @assets ||= Set.new
+      end
+
+      # --
+      # All the assets, plus the used.
+      # @return [Set]
+      # --
+      def all
+        @assets | (files.map do |_, v|
+          find(v[
+            "logical_path"
+          ]).first
+        end)
+      end
+
+      # --
+      # This is a wholesale rip of Sprockets::Manifest#compkle, we only
+      # adjust it to care about whether or not we want to digest, we don't
+      # always digest in development.
+      # --
       def compile(*args)
         unless environment
           raise(

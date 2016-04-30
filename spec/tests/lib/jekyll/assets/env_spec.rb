@@ -67,15 +67,6 @@ describe Jekyll::Assets::Env do
 
   #
 
-  it "creates a new used set for assets that have been used" do
-    expect(@env.used).to be_kind_of Set
-    expect(@env.used).to(
-      be_empty
-    )
-  end
-
-  #
-
   it "returns a path with the CDN and prefix in production" do
     allow(Jekyll).to receive(:env).and_return "production"
     stub_asset_config "cdn" => "//localhost"
@@ -204,7 +195,7 @@ describe Jekyll::Assets::Env do
     path_ = Pathutil.new(path)
     path_.rmtree
 
-    site.sprockets.used.clear
+    site.sprockets.manifest.assets.clear
     site.sprockets.write_all
     expect(path_).to(exist)
     expect(path_.children).not_to(

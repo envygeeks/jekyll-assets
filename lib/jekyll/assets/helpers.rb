@@ -15,7 +15,7 @@ module Jekyll
         asset = manifest.find(path).first
 
         if asset
-          parent.used.add(asset)
+          manifest.add(asset)
           parent.prefix_path(
             parent.digest?? asset.digest_path : asset.logical_path
           )
