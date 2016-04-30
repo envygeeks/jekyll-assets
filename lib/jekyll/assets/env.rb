@@ -265,10 +265,6 @@ module Jekyll
       # integrate with the manifest that deeply because it's hard.
       # --
       def write_all
-        require "pry"
-        Pry.output = STDOUT
-        binding.pry
-
         assets = manifest.all.partition { |v| v.is_a?(Liquid::Tag::ProxiedAsset) }
         manifest.compile(assets.last.map(
           &:logical_path
