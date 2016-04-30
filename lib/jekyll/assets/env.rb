@@ -120,6 +120,13 @@ module Jekyll
             &hook
           )
         end
+
+        # Make sure that we add all the extra assets.
+        extra_assets.each do |asset|
+          manifest.add(
+            asset
+          )
+        end
       end
 
       # --
@@ -158,7 +165,7 @@ module Jekyll
       def extra_assets
         assets = asset_config["assets"] ||= []
         each_logical_path(*assets).map do |v|
-          find_asset v
+          manifest.find(v).first
         end
       end
 
