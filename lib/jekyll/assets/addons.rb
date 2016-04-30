@@ -1,5 +1,0 @@
-require_relative "addons/bootstrap"
-require_relative "addons/autoprefixer"
-require_relative "addons/fontawesome"
-require_relative "addons/javascript"
-require_relative "addons/less"
