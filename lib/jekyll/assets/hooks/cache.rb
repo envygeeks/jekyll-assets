@@ -3,21 +3,21 @@
 # Encoding: utf-8
 
 Jekyll::Assets::Hook.register :env, :init do
-  cache_dir = asset_config.fetch("cache", ".asset-cache")
-  cache_typ = asset_config.fetch("cache_type",
+  cache = asset_config.fetch("cache", ".asset-cache")
+  type  = asset_config.fetch("cache_type",
     "filesystem"
   )
 
-  if cache_dir != false && cache_typ != "memory"
+  if cache != false && type != "memory"
     self.cache = begin
       Sprockets::Cache::FileStore.new(
         jekyll.in_source_dir(
-          cache_dir
+          cache
         )
       )
     end
 
-  elsif cache_typ == "memory"
+  elsif cache && type == "memory"
     self.cache = begin
       Sprockets::Cache::MemoryStore.new
     end
