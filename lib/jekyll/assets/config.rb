@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
@@ -13,9 +11,10 @@ module Jekyll
         _assets/javascripts _assets/js
       ).freeze
 
-      # ----------------------------------------------------------------------
+      # --
 
       Development = {
+        "cache_type" => "filesystem",
         "skip_baseurl_with_cdn" => false,
         "skip_prefix_with_cdn"  => false,
         "prefix"    => "/assets",
@@ -35,7 +34,7 @@ module Jekyll
         }
       }.freeze
 
-      # ----------------------------------------------------------------------
+      # --
 
       Production = Development.merge({
         "digest"    => true,
@@ -45,8 +44,10 @@ module Jekyll
         }
       }).freeze
 
-      # ----------------------------------------------------------------------
-
+      # --
+      # @param [Jekyll::Site] jekyll The jekyll instance.
+      # Merge our sources with Jekyll's sources.
+      # --
       def self.merge_sources(jekyll, config) config["sources"] ||= []
         if !config["sources"].grep(/\A\s*_assets\/?\s*\Z/).empty?
           return
@@ -59,7 +60,7 @@ module Jekyll
         end
       end
 
-      # ----------------------------------------------------------------------
+      # --
 
       def self.defaults
         if %W(development test).include?(Jekyll.env)
@@ -67,7 +68,7 @@ module Jekyll
         end
       end
 
-      # ----------------------------------------------------------------------
+      # --
 
       def self.merge(new_hash, old_hash = defaults)
         old_hash.merge(new_hash) do |_, old_val, new_val|

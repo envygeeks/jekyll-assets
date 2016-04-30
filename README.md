@@ -36,16 +36,26 @@ assets:
   compress:
     css: false | true | default - development: false, production: true
     js: false | true | default - development: false, production: true
+
+  #
+
+  autowrite: true
   cache: false | directory | default: .asset-cache
+  cache_type: memory | filesystem | default: filesystem
   cdn: https://cdn.example.com
   skip_baseurl_with_cdn: false
   skip_prefix_with_cdn: false
   prefix: "/assets"
-  autowrite: true
+  digest: true
+
+  #
+
   assets:
     - "*.png"
     - "bundle.css"
-  digest: true
+
+  #
+
   sources:
     - _assets/css
     - _assets/images
@@ -54,6 +64,9 @@ assets:
     - _assets/fonts
     - _assets/img
     - _assets/js
+
+  #
+
   features:
     liquid: true | false | default: false
     automatic_img_size: true | false | n(fixnum): 2,4,6,8 | default: true
