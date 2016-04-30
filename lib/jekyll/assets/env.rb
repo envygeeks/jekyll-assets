@@ -121,7 +121,7 @@ module Jekyll
           )
         end
 
-        # Make sure that we add all the extra assets.
+        # Make sure that we add extras.
         extra_assets.each do |asset|
           manifest.add(
             asset
