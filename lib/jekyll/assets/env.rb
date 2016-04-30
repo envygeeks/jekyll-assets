@@ -208,7 +208,8 @@ module Jekyll
 
       def write_all
         assets = all_assets.partition { |v| v.is_a?(Liquid::Tag::ProxiedAsset) }
-        manifest.compile(assets.last.map(&:logical_path))
+        writeable_assets = assets.last.map(&:dependencies).push(assets.last).reduce(&:|)
+        manifest.compile(writeable_assets.map(&:logical_path))
 
         assets.first.map do |asset|
           asset.write_to(jekyll.in_dest_dir(File.join(asset_config["prefix"],
