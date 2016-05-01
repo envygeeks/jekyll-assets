@@ -236,6 +236,14 @@ filter by way of filter arguments, take the following example:
 {{ src | img : "magick:2x magick:quality:92" }}
 ```
 
+### Jekyll Assets Multi
+
+Jekyll Assets has a special called `jekyll_asset_multi` which is meant to be used for things like the header, where it would be nice to be able to include multiple assets at once.  You can use it like so:
+
+```liquid
+{{ 'css:bundle.css "js:bundle.js async:true"' | jekyll_asset_multi }}
+```
+
 ## Hooks
 
 * `:env => [:init]`

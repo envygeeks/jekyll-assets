@@ -11,12 +11,31 @@ module Jekyll
         ACCEPTABLE_FILTERS = [:css, :img, :asset_path, :stylesheet,
           :javascript, :style, :img, :js]
 
-        # --------------------------------------------------------------------
-
+        # --
+        # The base filters.
+        # --
         ACCEPTABLE_FILTERS.each do |val|
           define_method val do |path, args = ""|
-            Tag.send(:new, val, "#{path} #{args}", "").render(@context)
+            Tag.send(:new, val, "#{path} #{args}", "").render(
+              @context
+            )
           end
+        end
+
+        # --
+        # Include multiple assets.
+        # @return [Strings]
+        # --
+        def jekyll_asset_multi(assets)
+          Shellwords.shellsplit(assets).map { |s| s.split(":", 2) }.map do |tag, arguments|
+            Tag.send(:new, tag, arguments, "").render(
+              @context
+            )
+          end \
+
+          .join(
+            "\n"
+          )
         end
       end
 
