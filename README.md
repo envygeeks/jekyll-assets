@@ -69,6 +69,7 @@ assets:
 
   features:
     liquid: true | false | default: false
+    integrity: true | false | default: false
     automatic_img_size: true | false | n(fixnum): 2,4,6,8 | default: true
     automatic_img_alt : true | false | default: true
 ```

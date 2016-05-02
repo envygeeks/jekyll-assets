@@ -52,9 +52,9 @@ module Jekyll
         # --------------------------------------------------------------------
 
         Tags = {
-          "css" => %(<link type="text/css" rel="stylesheet" href="%s" integrity="%s"%s>),
-          "js"  => %(<script type="text/javascript" src="%s" integrity="%s"%s></script>),
-          "img" => %(<img src="%s" integrity="%s"%s>)
+          "css" => %(<link type="text/css" rel="stylesheet" href="%s"%s>),
+          "js"  => %(<script type="text/javascript" src="%s"%s></script>),
+          "img" => %(<img src="%s"%s>)
         }.freeze
 
         # --------------------------------------------------------------------
@@ -127,7 +127,7 @@ module Jekyll
           return path if @tag == "asset_path"
           return asset.to_s if @tag == "asset" || @tag == "asset_source"
           data = args.key?(:data) && args[:data].key?(:uri) ? asset.data_uri : path
-          format(Tags[@tag], data, asset.integrity, args.to_html)
+          format(Tags[@tag], data, args.to_html)
         end
 
         # --------------------------------------------------------------------

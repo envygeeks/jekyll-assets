@@ -28,6 +28,7 @@ module Jekyll
         },
 
         "features" => {
+          "integrity" => false,
           "automatic_img_alt"  => true,
           "automatic_img_size" => true,
           "liquid" => false
