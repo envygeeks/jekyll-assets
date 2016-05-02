@@ -15,7 +15,7 @@ module Jekyll
       # @return [Set]
       # --
       def used
-        @assets ||= Set.new
+        return @used ||= Set.new
       end
 
       # --
@@ -23,7 +23,7 @@ module Jekyll
       # @return [Set]
       # --
       def all
-        @assets | (files.map do |_, v|
+        used | (files.map do |_, v|
           find(v[
             "logical_path"
           ]).first
