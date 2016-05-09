@@ -272,8 +272,24 @@ module Jekyll
       # integrate with the manifest that deeply because it's hard.
       # --
       def write_all
-        assets = manifest.all.partition { |v| v.is_a?(Liquid::Tag::ProxiedAsset) }
-        manifest.compile(assets.last.map(
+        assets = manifest.all.to_a.compact
+        if assets.size != manifest.all.size
+          Jekyll.logger.error "", "Asset inconsitency, expected "
+            "#{manifest.all.size}, can only write #{
+              assets.size
+            }"
+        end
+
+        assets = manifest.all.group_by do |v|
+          v.is_a?(
+            Liquid::Tag::ProxiedAsset
+          )
+        end
+
+        # These are assets that aren't proxied, they returned fals when
+        # they were asked if they belonged to a proxy.
+
+        manifest.compile(assets[false].map(
           &:logical_path
         ))
 
@@ -282,7 +298,7 @@ module Jekyll
         # caching, so we always write them individually since they will
         # never actually show up inside of the manifest.
 
-        assets.first.map do |asset|
+        assets[true].map do |asset|
           asset.write_to(jekyll.in_dest_dir(File.join(asset_config["prefix"],
             digest?? asset.digest_path : asset.logical_path
           )))
