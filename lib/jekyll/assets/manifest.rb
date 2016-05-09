@@ -87,14 +87,17 @@ module Jekyll
             )
           end
 
-          if File.exist?(target)
-            logger.debug(
-              "Skipping #{target}, already exists"
-            )
-          else
+          # --
+
+          if !environment.digest? || !File.exist?(target)
             logger.info "Writing #{target}"
             write_file = Concurrent::Future.execute { asset.write_to target }
             concurrent_writers << write_file
+
+          else
+            logger.debug(
+              "Skipping #{target}, already exists"
+            )
           end
 
           # --
