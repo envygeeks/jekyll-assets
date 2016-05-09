@@ -42,9 +42,13 @@ module Jekyll
           )
         end
 
+        # --
+
         filenames = []
         concurrent_compressors = []
         concurrent_writers = []
+
+        # --
 
         find(*args) do |asset|
           files[asset.digest_path] = {
@@ -55,14 +59,22 @@ module Jekyll
             "size" => asset.bytesize
           }
 
+          # --
+
           assets[asset.logical_path] = asset.digest_path
           alias_logical_path = self.class.compute_alias_logical_path(
             asset.logical_path
           )
 
+          # --
+
           if alias_logical_path
             assets[alias_logical_path] = asset.digest_path
           end
+
+          # Unlike upstream, we allow users to disble digesting, this is
+          # where we actually and truthfully only diverge from upstream in
+          # that we disable or enable the digested or logical path.
 
           target = \
           if environment.digest?
@@ -85,12 +97,18 @@ module Jekyll
             concurrent_writers << write_file
           end
 
+          # --
+
           filenames << asset.filename
           next if environment.skip_gzip?
           gzip = Utils::Gzip.new(asset)
           next if gzip.cannot_compress?(
             environment.mime_types
           )
+
+          # This is technically ignored usptream, we don't allow our
+          # assets to write `.tar.gz` files by default, however, we leave
+          # this here just incase someobody overrides that method.
 
           if File.exist?("#{target}.gz")
             logger.debug(
@@ -107,10 +125,14 @@ module Jekyll
           end
         end
 
+        # --
+
         concurrent_writers.each(&:wait!)
         concurrent_compressors.each(
           &:wait!
         )
+
+        # --
 
         save
         filenames
