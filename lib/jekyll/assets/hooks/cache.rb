@@ -21,5 +21,9 @@ Jekyll::Assets::Hook.register :env, :init do
     self.cache = begin
       Sprockets::Cache::MemoryStore.new
     end
+
+  else
+    Jekyll.logger.info "", "Caching disabled however, " \
+      "if you use proxies it could still possibly be created."
   end
 end

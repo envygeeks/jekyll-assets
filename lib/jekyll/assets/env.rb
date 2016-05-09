@@ -298,6 +298,11 @@ module Jekyll
         # caching, so we always write them individually since they will
         # never actually show up inside of the manifest.
 
+        unless assets[true].empty?
+          Pathutil.new(in_cache_dir)
+            .mkdir_p
+        end
+
         assets[true].map do |asset|
           asset.write_to(jekyll.in_dest_dir(File.join(asset_config["prefix"],
             digest?? asset.digest_path : asset.logical_path
