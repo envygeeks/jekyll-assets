@@ -15,7 +15,7 @@ describe "font-awesome" do
   #
 
   it "makes font-awesome available" do
-    expect(env.find_asset("font-awesome").to_s).to match(
+    expect(env.find_asset("fa").to_s).to match(
       %r!fa-.+:before\s+{!
     )
   end
