@@ -92,7 +92,7 @@ module Jekyll
 
           def to_html
             (self[:html] || {}).map do |key, val|
-              %( #{key}="#{val}")
+              val == true || val == "true" ? key.to_s : %( #{key}="#{val}")
             end.join
           end
 
