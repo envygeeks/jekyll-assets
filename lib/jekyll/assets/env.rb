@@ -315,7 +315,9 @@ module Jekyll
       # --
       private
       def strip_path(path)
-        path.sub(jekyll.in_source_dir("/"), "")
+        path.sub(jekyll.in_source_dir("/"),
+          ""
+        )
       end
     end
   end
