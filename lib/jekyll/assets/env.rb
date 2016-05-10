@@ -298,7 +298,7 @@ module Jekyll
         # caching, so we always write them individually since they will
         # never actually show up inside of the manifest.
 
-        unless assets[true].empty?
+        unless assets.key?(true) && assets[true].empty?
           Pathutil.new(in_cache_dir)
             .mkdir_p
         end
