@@ -37,9 +37,15 @@ module Jekyll
             # @return [nil]
             # --
             def set_integrity
+              digest = Sprockets::DigestUtils.integrity_uri(
+                Digest::SHA384.digest(
+                  @asset.to_s
+                )
+              )
+
               @args.args[:html] ||= {}
               if @env.asset_config["features"]["integrity"]
-                @args.args[:html]["integrity"] = @asset.integrity
+                @args.args[:html]["integrity"] = digest
                 @args.args[:html]["crossorigin"] = "anonymous" \
                   unless @args.args[:html]["crossorigin"]
               end
