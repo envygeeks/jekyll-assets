@@ -289,9 +289,11 @@ module Jekyll
         # These are assets that aren't proxied, they returned fals when
         # they were asked if they belonged to a proxy.
 
-        manifest.compile(assets[false].map(
-          &:logical_path
-        ))
+        if assets.key?(false)
+          manifest.compile(assets[false].map(
+            &:logical_path
+          ))
+        end
 
         # Proxied assets will not compile the normal way since they are
         # always considered uniq when used, and they supply their own inline
