@@ -16,7 +16,7 @@ describe "css auto-prefixing" do
 
   it "prefixes css" do
     result = env.find_asset("prefix.css").to_s
-    expect(result).to match %r!-webkit-order:\s+1!
-    expect(result).to match %r!-ms-flex-order:\s+1!
+    expect(result).to match %r!-webkit-(?:order|box-ordinal-group):!
+    expect(result).to match %r!-ms-flex-order:!
   end
 end
