@@ -43,7 +43,6 @@ module Jekyll
           )
 
           jekyll.sprockets.excludes.map(&jekyll.config["exclude"].method(:<<))
-          jekyll.config["keep_files"] |= jekyll.sprockets.asset_config["prefix"].gsub(/\A\//, "").to_a
           jekyll.config["exclude"].uniq!
         end
       end
