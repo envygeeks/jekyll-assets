@@ -147,6 +147,23 @@ describe Jekyll::Assets::Liquid::Tag::Parser do
 
   #
 
+  it "separates attributes with leading spaces" do
+    expect(subject.new("app.js defer", "js").to_html).to eq(
+      " defer"
+    )
+    expect(subject.new("app.js id:1", "js").to_html).to eq(
+      %( id="1")
+    )
+    expect(subject.new("app.js defer id:1", "js").to_html).to eq(
+      %( defer id="1")
+    )
+    expect(subject.new("app.js id:1 defer", "js").to_html).to eq(
+      %( id="1" defer)
+    )
+  end
+
+  #
+
   it "does not allocate boolean arguments as proxy values", :proxies => true do
     input = "img.jpg magick:2x:raise"
     expect_it = expect { subject.new(input, "img") }
