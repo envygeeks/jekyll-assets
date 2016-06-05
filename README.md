@@ -283,6 +283,9 @@ end
 
 ### Image Magick Proxy arguments:
 
+**NOTE: You'll need the `mini_magick` gem installed for these to work**
+To install `mini_magick`, add `gem "mini_magick"` to your `Gemfile`
+
 * `magick:resize:<value>`
 * `magick:format:<value>`
 * `magick:quality:<value>`
