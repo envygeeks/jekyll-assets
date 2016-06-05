@@ -270,6 +270,19 @@ Jekyll::Assets::Hook.register :env, :init do
 end
 ```
 
+For example, if you would like to manage javascript assets via [rails-assets.org](https://rails-assets.org), create the following Hook in your site's _plugins folder to add rails-assets gem paths to your load path:
+
+```ruby
+# _plugins/rails_assets.rb
+require 'jekyll-assets'
+
+Jekyll::Assets::Hook.register :env, :init do
+  RailsAssets.load_paths.each do |path|
+    append_path path
+  end
+end
+```
+
 ## Sass Helpers
 
 ***Our currently supported helpers are:***
