@@ -279,8 +279,10 @@ If you would like to manage javascript assets via [rails-assets.org](https://rai
 require 'jekyll-assets'
 
 Jekyll::Assets::Hook.register :env, :init do
-  RailsAssets.load_paths.each do |path|
-    append_path path
+  if defined? RailsAssets
+    RailsAssets.load_paths.each do |path|
+      append_path path
+    end
   end
 end
 ```
