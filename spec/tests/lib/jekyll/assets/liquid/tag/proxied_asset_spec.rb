@@ -36,6 +36,18 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
       end
     end
 
+    @env.liquid_proxies.add :mime, :img, "@hello" do
+      def initialize(asset, opts, args)
+        @opts  = opts
+        @asset = asset
+        @args = args
+      end
+
+      def process
+        @asset.content_type = 'text/plain'
+      end
+    end
+
     @asset = @env.find_asset("ruby.png")
     @tag   = Jekyll::Assets::Liquid::Tag.send(
       :new, "img", "ruby.png test:hello", []
@@ -43,6 +55,30 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
   end
 
   #
+
+  describe "content type mutation" do
+    def create_asset
+      subject.new(@asset, @tag.args, @env, @tag)
+    end
+
+    before do
+      @tag = Jekyll::Assets::Liquid::Tag.send(
+        :new, "img", "ruby.png mime:hello test:hello", []
+      )
+
+      @proxied_asset = create_asset
+      @cached_asset = create_asset
+    end
+
+    it "caches and finds the asset" do
+      expect(@cached_asset.cached?).to be(true)
+      expect(@cached_asset.filename).to eq(@proxied_asset.filename)
+    end
+
+    it "mutates the content type" do
+      expect(@cached_asset.content_type).to eq(@proxied_asset.content_type)
+    end
+  end
 
   context do
     before do

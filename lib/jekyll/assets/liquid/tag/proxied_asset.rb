@@ -86,7 +86,7 @@ module Jekyll
           def content_type=(type)
             return if @content_type == type
 
-            @path = @path.sub_ext(".#{_ext_for(type)}")
+            @path = @path.sub_ext(_ext_for(type))
             @content_type = type
           end
 
