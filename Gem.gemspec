@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
     them, respecting dependencies, minify and many more.
   DESC
 
-  spec.add_runtime_dependency("sprockets", "~> 3.3")
+  spec.add_runtime_dependency("sprockets", "~> 3.3", "< 3.7")
   spec.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
   spec.add_runtime_dependency("jekyll", ">= 3.0", "~> 3.1")
   spec.add_runtime_dependency("pathutil", ">= 0.8")
