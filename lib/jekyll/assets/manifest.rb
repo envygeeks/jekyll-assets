@@ -24,10 +24,8 @@ module Jekyll
       # --
       def all
         used | (files.map do |_, v|
-          find(v[
-            "logical_path"
-          ]).first
-        end)
+          find(v["logical_path"]).first if v
+        end).compact
       end
 
       # --

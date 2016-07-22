@@ -273,10 +273,16 @@ module Jekyll
       def write_all
         assets = manifest.all.to_a.compact
         if assets.size != manifest.all.size
-          Jekyll.logger.error "", "Asset inconsistency, expected " +
-            "#{manifest.all.size}, can only write #{
-              assets.size
-            }"
+          begin
+            Jekyll.logger.error "", "Asset inconsistency, expected " +
+              "#{manifest.all.size}, can only write #{
+                assets.size
+              }"
+          rescue
+            # When a serious error happens in the upstream manifest.
+            Jekyll.logger.error "", "Asset inconsistency, unable to " \
+              "determine the problem, please clear your cache."
+          end
         end
 
         assets = manifest.all.group_by do |v|
