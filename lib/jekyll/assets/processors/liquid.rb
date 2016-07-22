@@ -32,9 +32,9 @@ end
 # ----------------------------------------------------------------------------
 
 Jekyll::Assets::Processors::Liquid::EXT.each do |ext|
-  Sprockets.register_engine(
-    ext, Jekyll::Assets::Processors::Liquid
-  )
+  Sprockets.register_engine(ext, Jekyll::Assets::Processors::Liquid, {
+    :silence_deprecation => true
+  })
 end
 
 # ----------------------------------------------------------------------------
