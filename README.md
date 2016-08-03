@@ -118,7 +118,7 @@ folder as the sole source (base folder.)***
 ## Addons
 
 * CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
-* ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile.
+* ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile — any `.es6` files (e.g. `main.js.es6`) will be transpiled
 * Bootstrap - add "bootstrap-sass" to your Gemfile, and `@import 'boostrap-sprockets'; @import 'bootstrap'`
 * Font Awesome - add "font-awesome-sass" to your Gemfile, and `@import 'font-awesome-sprockets'; @import 'font-awesome'`
 * Image Magick - add "mini_magick" to your Gemfile, only works with `img`, `image`.
