@@ -117,7 +117,16 @@ folder as the sole source (base folder.)***
 
 ## Addons
 
-* CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile.
+* CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile and configure target browsers in `_config.yml`:
+
+    ```yml
+    assets:
+      autoprefixer:
+        browsers:
+          - "last 2 versions"
+          - "IE > 9"
+    ```
+    
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile — any `.es6` files (e.g. `main.js.es6`) will be transpiled
 * Bootstrap - add "bootstrap-sass" to your Gemfile, and `@import 'boostrap-sprockets'; @import 'bootstrap'`
 * Font Awesome - add "font-awesome-sass" to your Gemfile, and `@import 'font-awesome-sprockets'; @import 'font-awesome'`
