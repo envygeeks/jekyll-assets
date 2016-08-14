@@ -23,7 +23,7 @@ Jekyll::Assets::Hook.register :env, :init do
     end
 
   else
-    Jekyll.logger.info "", "Caching is disabled by configuration. " \
+    Jekyll.logger.info "", "Asset caching is disabled by configuration. " \
       "However, if you're using proxies, a cache might still be created."
   end
 end
