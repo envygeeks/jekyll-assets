@@ -59,6 +59,33 @@ describe "Magick Image Proxy" do
 
   #
 
+  context "modified files formats" do
+    def create_asset
+      tag = Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu.png magick:format:jpg", [])
+      Jekyll::Assets::Liquid::Tag::ProxiedAsset.new(@asset, tag.args, @env, tag)
+    end
+
+    before :all do
+      @proxied_asset = create_asset
+      @filename = @proxied_asset.filename
+      @image = as_magick(@filename)
+    end
+
+    it "allows the user to change the file extension" do
+      expect(@filename.extname).to eq(
+        '.jpg'
+      )
+    end
+
+    it "allows the user to change the MIME type" do
+      expect(@image.info(:mime_type)).to eq(
+        'image/jpeg'
+      )
+    end
+  end
+
+  #
+
   context "boolean resizes" do
     def dimensions(asset)
       return FastImage.new(asset).size

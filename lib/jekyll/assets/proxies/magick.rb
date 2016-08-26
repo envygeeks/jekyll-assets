@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
-  args = %W(resize quality rotate crop flip gravity)
+  args = %W(resize quality rotate crop flip format gravity)
   presets = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
       @two-fourths @three-fourths)
@@ -26,7 +26,6 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     def initialize(asset, opts, args)
-      @path = asset.filename
       @opts = opts
       @asset = asset
       @args = args
@@ -35,7 +34,7 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     def process
-      img = MiniMagick::Image.open(@path)
+      img = MiniMagick::Image.open(@asset.filename)
       methods = private_methods(true).select { |v| v.to_s.start_with?("magick_") }
       if img.respond_to?(:combine_options)
         then img.combine_options do |cmd|
@@ -55,7 +54,7 @@ try_require "mini_magick" do
       end
 
       img.write(
-        @path
+        @asset.filename
       )
     ensure
       img.destroy!
@@ -114,6 +113,15 @@ try_require "mini_magick" do
       end
     end
 
+    # ------------------------------------------------------------------------
+
+    private
+    def magick_format(img, _)
+      if @opts.key?(:format)
+        img.format @opts[:format]
+        @asset.content_type = img.mime_type
+      end
+    end
     # ------------------------------------------------------------------------
 
     private
