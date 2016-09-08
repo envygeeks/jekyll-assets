@@ -23,52 +23,6 @@ gems:
   - jekyll-assets
 ```
 
-### Generating CSS with Jekyll Assets
-
-The following section shows how to get started generating CSS using Jekyll
-Assets. It applies to a newly generated Jekyll site, however this should help
-anyone who has a Jekyll site. It should also be applicable for other types of
-assets.
-
-#### Create the `_assets/css` directory
-
-The default [Jekyll Assets configuration](#configuration) expects to find all the assets in directories under `_assets`. Create a directory for the CSS:
-
-```bash
-$ mkdir -p _assets/css
-```
-
-#### Move the CSS files to the new `_assets/css` directory
-
-Jekyll comes with a `css` directory containing a `main.css` file and then a
-`_sass` directory with a few Sass imports. Move all of that to the
-`_assets/css` directory.
-
-```bash
-$ mv css/main.css _assets/css
-$ mv _sass/* _assets/css
-```
-
-#### Remove Jekyll front matter
-
-Jekyll includes some empty
-[front matter](https://jekyllrb.com/docs/frontmatter/) in `main.css`. Remove
-that as Sprockets will not understand it.
-
-#### Update the layout
-
-The layout will no longer be pointing to the correct `main.css` file. Jekyll
-Assets supplies [liquid tags](#tags) to generate the correct HTML for these
-assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
-
-```liquid
-{% css main %}
-```
-
-Start up your local Jekyll server and if everything is correct, your site will
-be serving CSS via Sprockets. Read on for more information on how to customize
-your Jekyll Assets setup.
-
 ## Configuration
 
 A lot of our configuration transforms based on the `JEKYLL_ENV` variable
@@ -160,6 +114,52 @@ folder as the sole source (base folder.)***
 * Requires sass and uglifier.
 * Disable compression by default in development.
 * Enable by default in production.
+
+## Generating CSS with Jekyll Assets (Moving from Standard Jekyll SCSS)
+
+The following section shows how to get started generating CSS using Jekyll
+Assets. It applies to a newly generated Jekyll site, however this should help
+anyone who has a Jekyll site. It should also be applicable for other types of
+assets.
+
+### Create the `_assets/css` directory
+
+The default [Jekyll Assets configuration](#configuration) expects to find all the assets in directories under `_assets`. Create a directory for the CSS:
+
+```bash
+$ mkdir -p _assets/css
+```
+
+### Move the CSS files to the new `_assets/css` directory
+
+Jekyll comes with a `css` directory containing a `main.css` file and then a
+`_sass` directory with a few Sass imports. Move all of that to the
+`_assets/css` directory.
+
+```bash
+$ mv css/main.css _assets/css
+$ mv _sass/* _assets/css
+```
+
+### Remove Jekyll front matter
+
+Jekyll includes some empty
+[front matter](https://jekyllrb.com/docs/frontmatter/) in `main.css`. Remove
+that as Sprockets will not understand it.
+
+### Update the layout
+
+The layout will no longer be pointing to the correct `main.css` file. Jekyll
+Assets supplies [liquid tags](#tags) to generate the correct HTML for these
+assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
+
+```liquid
+{% css main %}
+```
+
+Start up your local Jekyll server and if everything is correct, your site will
+be serving CSS via Sprockets. Read on for more information on how to customize
+your Jekyll Assets setup.
 
 ## Addons
 
