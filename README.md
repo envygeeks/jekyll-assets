@@ -324,6 +324,7 @@ Jekyll::Assets::Hook.register :env, :init do
   # Your Work
 end
 ```
+
 ## Combining Multiple Scripts / Stylesheets
 
 To minimize the number of HTTP requests, combine stylesheets and scripts into one file.
