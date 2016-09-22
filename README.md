@@ -349,7 +349,7 @@ Include the `main` stylesheet in your HTML: `{% css main %}`.
 
 ### JavaScript
 
-Use `#= require` to import component scripts into one file. More from [#241](https://github.com/jekyll/jekyll-assets/issues/241).
+Use `//= require` to import and bundle component scripts into one file. More from [#241](https://github.com/jekyll/jekyll-assets/issues/241).
 
 Given a list of files in `_assets/js`:
 
@@ -359,7 +359,7 @@ Given a list of files in `_assets/js`:
 ...have this in your `main.js`:
 
 ```js
-#= require jquery
+//= require jquery
 // ...
 ```
 
