@@ -325,6 +325,46 @@ Jekyll::Assets::Hook.register :env, :init do
 end
 ```
 
+## Combining Multiple Scripts / Stylesheets
+
+To minimize the number of HTTP requests, combine stylesheets and scripts into one file.
+
+### SCSS
+
+Use the `@import` statement. Given a list of files in `_assets/css`:
+
+- `main.scss`
+- `_responsive.scss`
+- `_fonts.scss`
+
+...have this in your `main.scss`:
+
+```scss
+@import 'responsive'
+@import 'fonts'
+// ...
+```
+
+Include the `main` stylesheet in your HTML: `{% css main %}`.
+
+### JavaScript
+
+Use `#= require` to import component scripts into one file. More from [#241](https://github.com/jekyll/jekyll-assets/issues/241).
+
+Given a list of files in `_assets/js`:
+
+- `main.js`
+- `jquery.js`
+
+...have this in your `main.js`:
+
+```js
+#= require jquery
+// ...
+```
+
+Include the `main` script in your HTML: `{% js main %}`.
+
 ## Sass Helpers
 
 ***Our currently supported helpers are:***
