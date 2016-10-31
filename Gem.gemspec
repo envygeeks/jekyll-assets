@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency("jekyll", ">= 3.0", "~> 3.1")
   spec.add_runtime_dependency("pathutil", ">= 0.8")
   spec.add_runtime_dependency("extras", "~> 0.1")
+  spec.add_runtime_dependency("concurrent-ruby", "~> 1.0")
 
   spec.add_development_dependency("nokogiri", "~> 1.6")
   spec.add_development_dependency("luna-rspec-formatters", "~> 3.5")

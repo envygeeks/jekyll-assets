@@ -2,6 +2,8 @@
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
 
+require 'concurrent/future'
+
 module Jekyll
   module Assets
     class Manifest < Sprockets::Manifest
