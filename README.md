@@ -284,6 +284,7 @@ The current list of available accessors:
 * `basename`
 * `width`
 * `height`
+* `digest_path`
 
 If you would like more, please feel free to add a pull request, at this
 time we will reject all pull requests that wish to add any digested paths as
