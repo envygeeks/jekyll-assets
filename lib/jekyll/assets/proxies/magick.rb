@@ -9,10 +9,10 @@ try_require "mini_magick" do
   presets = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
       @two-fourths @three-fourths)
+  ARGS=args
+  PRESETS=presets
 
-  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(args + presets) do
-    PRESETS = presets
-    ARGS = args
+  class JekyllAssetsMiniMagic
 
     class DoubleResizeError < RuntimeError
       def initialize
@@ -171,5 +171,32 @@ try_require "mini_magick" do
     # rubocop:enable Style/ParallelAssignment
     # rubocop:enable Metrics/AbcSize
     # ------------------------------------------------------------------------
+
+  end
+
+  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(args + presets) do
+    def initialize(asset, opts, args)
+      @miniMagick = JekyllAssetsMiniMagic.new(asset, opts, args)
+    end
+
+    # ------------------------------------------------------------------------
+
+    def process
+      @miniMagick.process
+    end
+    
+  end
+
+  Jekyll::Assets::Env.liquid_proxies.add :magick, :asset_path, *(args + presets) do
+    def initialize(asset, opts, args)
+      @miniMagick = JekyllAssetsMiniMagic.new(asset, opts, args)
+    end
+
+    # ------------------------------------------------------------------------
+
+    def process
+      @miniMagick.process
+    end
+    
   end
 end
