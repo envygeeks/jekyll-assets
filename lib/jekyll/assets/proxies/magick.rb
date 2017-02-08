@@ -5,14 +5,12 @@
 # ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
-  args = %W(resize quality rotate crop flip format gravity)
-  presets = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
+  ARGS = %W(resize quality rotate crop flip format gravity).freeze
+  PRESETS = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
-      @two-fourths @three-fourths)
+      @two-fourths @three-fourths).freeze
 
-  Jekyll::Assets::Env.liquid_proxies.add :magick, :img, *(args + presets) do
-    PRESETS = presets
-    ARGS = args
+  class JekyllAssetsMiniMagic
 
     class DoubleResizeError < RuntimeError
       def initialize
@@ -171,5 +169,19 @@ try_require "mini_magick" do
     # rubocop:enable Style/ParallelAssignment
     # rubocop:enable Metrics/AbcSize
     # ------------------------------------------------------------------------
+
+  end
+
+  Jekyll::Assets::Env.liquid_proxies.add :magick, [:img, :asset_path], *(ARGS + PRESETS) do
+    def initialize(asset, opts, args)
+      @miniMagick = JekyllAssetsMiniMagic.new(asset, opts, args)
+    end
+
+    # ------------------------------------------------------------------------
+
+    def process
+      @miniMagick.process
+    end
+
   end
 end
