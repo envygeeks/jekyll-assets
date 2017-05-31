@@ -341,8 +341,8 @@ Use the `@import` statement. Given a list of files in `_assets/css`:
 ...have this in your `main.scss`:
 
 ```scss
-@import 'responsive'
-@import 'fonts'
+@import 'responsive';
+@import 'fonts';
 // ...
 ```
 
