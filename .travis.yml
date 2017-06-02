@@ -42,3 +42,5 @@ addons:
         H9In1ExFom05IcXX4c1JGX1LlGbWRV/BHRwgys+MpWJCLfs8kBigufDdZBmyXubEj2KsjE\
         WICu+GMg+ZHP0nVTa/FkoF5iAfY6NiE=\
       "
+after_success:
+  - bundle exec codeclimate-test-reporter
