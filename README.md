@@ -172,7 +172,7 @@ your Jekyll Assets setup.
           - "last 2 versions"
           - "IE > 9"
     ```
-    
+
 * ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile — any `.es6` files (e.g. `main.js.es6`) will be transpiled
 * Bootstrap - add "bootstrap-sass" to your Gemfile, and `@import 'bootstrap-sprockets'; @import 'bootstrap'`
 * Font Awesome - add "font-awesome-sass" to your Gemfile, and `@import 'font-awesome-sprockets'; @import 'font-awesome'`
@@ -381,6 +381,9 @@ Include the `main` script in your HTML: `{% js main %}`.
 
 **NOTE: You'll need the `mini_magick` gem installed for these to work**
 To install `mini_magick`, add `gem "mini_magick"` to your `Gemfile`
+
+See the [MiniMagick docs](https://github.com/minimagick/minimagick#usage)
+to get an idea what `<value>` can be.
 
 * `magick:resize:<value>`
 * `magick:format:<value>`
