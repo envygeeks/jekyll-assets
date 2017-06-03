@@ -5,9 +5,10 @@ sudo: false
 #
 
 rvm:
-  - &ruby1 2.3.0
-  - &ruby2 2.2.4
-  - &ruby3 2.1.8
+  - &ruby24 2.4
+  - &ruby23 2.3
+  - &ruby22 2.2.4
+  - &ruby21 2.1.8
   - &jruby jruby-9.1.2.0
   - &rhead ruby-head
 
@@ -42,3 +43,5 @@ addons:
         H9In1ExFom05IcXX4c1JGX1LlGbWRV/BHRwgys+MpWJCLfs8kBigufDdZBmyXubEj2KsjE\
         WICu+GMg+ZHP0nVTa/FkoF5iAfY6NiE=\
       "
+after_success:
+  - bundle exec codeclimate-test-reporter

@@ -70,7 +70,9 @@ assets:
   features:
     liquid: true | false | default: false
     integrity: true | false | default: false
+    # This will add height and width attributes for an img tag.
     automatic_img_size: true | false | n(fixnum): 2,4,6,8 | default: true
+    # This will add the digest path as an alt attribute for an img tag.
     automatic_img_alt : true | false | default: true
 ```
 
@@ -341,8 +343,8 @@ Use the `@import` statement. Given a list of files in `_assets/css`:
 ...have this in your `main.scss`:
 
 ```scss
-@import 'responsive'
-@import 'fonts'
+@import 'responsive';
+@import 'fonts';
 // ...
 ```
 
