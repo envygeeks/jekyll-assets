@@ -70,7 +70,9 @@ assets:
   features:
     liquid: true | false | default: false
     integrity: true | false | default: false
+    # This will add height and width attributes for an img tag.
     automatic_img_size: true | false | n(fixnum): 2,4,6,8 | default: true
+    # This will add the digest path as an alt attribute for an img tag.
     automatic_img_alt : true | false | default: true
 ```
 
