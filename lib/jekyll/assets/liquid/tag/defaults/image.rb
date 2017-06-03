@@ -55,7 +55,7 @@ module Jekyll
               resize_image = @env.asset_config["features"]["automatic_img_size"]
 
               if !@env || resize_image
-                dimensions = FastImage.new(@asset.filename).size
+                dimensions = FastImage.size(@asset.filename.to_s)
                 return unless dimensions
                 @args[:html] ||= {}
 
