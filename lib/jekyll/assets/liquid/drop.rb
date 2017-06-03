@@ -57,7 +57,7 @@ module Jekyll
 
         def dimensions
           if image?
-            @dimensions ||= FastImage.new(asset.filename).size
+            @dimensions ||= FastImage.size(asset.filename.to_s)
           end
         end
 
