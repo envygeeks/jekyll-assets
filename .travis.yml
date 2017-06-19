@@ -3,6 +3,10 @@ cache:
   bundler: true
   directories:
     - vendor/bundle
+env:
+  matrix:
+    - JEKYLL_VERSION="~> 3.4"
+    - JEKYLL_VERSION="<= 3.2"
 rvm:
   - &ruby24 2.4
   - &ruby23 2.3

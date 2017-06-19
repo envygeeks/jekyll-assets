@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 require "rspec/helper"
 describe Jekyll::Assets::Liquid::Filters do
@@ -14,24 +12,31 @@ describe Jekyll::Assets::Liquid::Filters do
     Renderer.new site
   end
 
-  #
+  context do
+    tests = [
+      %w(js bundle),
+      %w(img ruby.png),
+      %w(javascript bundle),
+      %w(asset_path bundle.css),
+      %w(stylesheet bundle),
+      %w(image ruby.png),
+      %w(style bundle),
+      %w(css bundle)
+    ]
 
-  [
-    %w(img ruby.png), %w(image ruby.png),
-    %w(js bundle),    %w(javascript bundle),
-    %w(css bundle),   %w(stylesheet bundle),
-    %w(style bundle), %w(asset_path bundle.css)
-  ].each do |name, *args|
-    context "#{name} filter" do
-      subject do
-        renderer.filter(name, *args)
-      end
+    tests.each do |name, *args|
+      context "#{name} filter" do
+        subject do
+          renderer.filter(name, *args)
+        end
 
-      it "matches the #{name} tag" do
-        is_expected.to eq renderer.tag(name, *args)
+        it "matches the #{name} tag" do
+          is_expected.to eq renderer.tag(name, *args)
+        end
       end
     end
   end
+
 
   class Renderer
     include Jekyll::Assets::Liquid::Filters
@@ -39,7 +44,9 @@ describe Jekyll::Assets::Liquid::Filters do
     def initialize(site)
       @site = site
       @sprockets = Jekyll::Assets::Env.new(@site)
-      @context = Liquid::Context.new({}, {}, { :site => @site, :sprockets => @sprockets })
+      @context = Liquid::Context.new({}, {}, {
+        :site => @site, :sprockets => @sprockets
+      })
     end
 
     def filter(name, *args)
@@ -47,7 +54,10 @@ describe Jekyll::Assets::Liquid::Filters do
     end
 
     def tag(name, *args)
-      Jekyll::Assets::Liquid::Tag.send(:new, name, *args, []).render(@context)
+      context = Jekyll::Assets::Liquid::ParseContext.new
+      Jekyll::Assets::Liquid::Tag.send(:new, name, *args, context).render(
+        @context
+      )
     end
   end
 

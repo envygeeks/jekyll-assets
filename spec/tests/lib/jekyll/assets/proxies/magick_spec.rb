@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 require "rspec/helper"
 describe "Magick Image Proxy" do
@@ -17,7 +15,8 @@ describe "Magick Image Proxy" do
   #
 
   def stub_tag(*args)
-    Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu.png #{args.join(" ")}", Liquid::ParseContext.new).render(
+    context = Jekyll::Assets::Liquid::ParseContext.new
+    Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu.png #{args.join(" ")}", context).render(
       OpenStruct.new(:registers => {
         :site => @site
       })
@@ -61,7 +60,8 @@ describe "Magick Image Proxy" do
 
   context "modified files formats" do
     def create_asset
-      tag = Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu.png magick:format:jpg", Liquid::ParseContext.new)
+      context = Jekyll::Assets::Liquid::ParseContext.new
+      tag = Jekyll::Assets::Liquid::Tag.send(:new, "img", "ubuntu.png magick:format:jpg", context)
       Jekyll::Assets::Liquid::Tag::ProxiedAsset.new(@asset, tag.args, @env, tag)
     end
 
