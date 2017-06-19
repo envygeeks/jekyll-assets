@@ -50,7 +50,7 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
 
     @asset = @env.find_asset("ruby.png")
     @tag   = Jekyll::Assets::Liquid::Tag.send(
-      :new, "img", "ruby.png test:hello", []
+      :new, "img", "ruby.png test:hello", Liquid::ParseContext.new
     )
   end
 
@@ -63,7 +63,7 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
 
     before do
       @tag = Jekyll::Assets::Liquid::Tag.send(
-        :new, "img", "ruby.png mime:hello test:hello", []
+        :new, "img", "ruby.png mime:hello test:hello", Liquid::ParseContext.new
       )
 
       @proxied_asset = create_asset
@@ -84,7 +84,7 @@ describe Jekyll::Assets::Liquid::Tag::ProxiedAsset do
     before do
       @asset = @env.find_asset("subdir/ubuntu")
       @tag   = Jekyll::Assets::Liquid::Tag.new(
-        "img", "subdir/ubuntu.png test:hello", []
+        "img", "subdir/ubuntu.png test:hello", Liquid::ParseContext.new
       )
     end
 
