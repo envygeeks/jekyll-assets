@@ -1,4 +1,5 @@
 /.analysis
+/.asset-cache
 /spec/fixture/.*
 /spec/fixture/_site
 /stackprof.dump
