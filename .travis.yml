@@ -1,9 +1,8 @@
 language: ruby
-cache: bundler
-sudo: false
-
-#
-
+cache:
+  bundler: true
+  directories:
+    - vendor/bundle
 rvm:
   - &ruby24 2.4
   - &ruby23 2.3
@@ -11,30 +10,18 @@ rvm:
   - &ruby21 2.1.8
   - &jruby jruby-9.1.2.0
   - &rhead ruby-head
-
-#
-
 matrix:
   fast_finish: true
   allow_failures:
     - rvm: *jruby
     - rvm: *rhead
-
-#
-
 notifications:
   email:
     recipients:
       - jordon@envygeeks.io
-
-#
-
 branches:
   only:
     - master
-
-#
-
 addons:
   code_climate:
     repo_token:
