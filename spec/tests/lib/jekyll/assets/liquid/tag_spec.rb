@@ -52,7 +52,7 @@ describe Jekyll::Assets::Liquid::Tag do
   #
 
   it "works with alias tags" do
-    expect(subject.send(:new, "image", "ruby.png", []) \
+    expect(subject.send(:new, "image", "ruby.png", Liquid::ParseContext.new) \
       .instance_variable_get(:@tag)).to(
         eq "img"
       )
