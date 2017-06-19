@@ -111,6 +111,12 @@ module Jekyll
         path ? super(path) : super()
         @jekyll = jekyll
 
+        # Analagous to Jekyll::Site @source and @destination paths
+        @cache_path = asset_config.fetch("cache", ".asset-cache")
+        if File.exist?(cache_path_in_source_dir = jekyll.in_source_dir(@cache_path))
+          @cache_path = cache_path_in_source_dir
+        end
+
         # XXX: In 3.0, we need to drop anything to do with instance eval,
         #   and imply pass the instance, this will make our code cleaner.
 
@@ -142,9 +148,9 @@ module Jekyll
       # @return [Pathname/Pathutil]
       # --
       def in_cache_dir(*paths)
-        jekyll.in_source_dir(asset_config["cache"] || ".asset-cache",
-          *paths
-        )
+        paths.reduce(@cache_path) do |base, path|
+          Jekyll.sanitized_path(base, path)
+        end
       end
 
       # --

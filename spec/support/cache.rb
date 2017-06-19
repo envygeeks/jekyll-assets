@@ -4,7 +4,7 @@
 
 RSpec.configure do |config|
   config.before :all do
-    Pathutil.new("../../fixture/.asset-cache").expand_path(__FILE__)
+    Pathutil.new("../../.asset-cache").expand_path(__FILE__)
       .rm_rf
   end
 end
