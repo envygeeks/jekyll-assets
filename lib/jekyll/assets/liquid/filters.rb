@@ -28,7 +28,7 @@ module Jekyll
         # --
         def jekyll_asset_multi(assets)
           return Shellwords.shellsplit(assets).map { |s| s.split(":", 2) }.map do |tag, arguments|
-            Tag.send(:new, tag, arguments, "").render(
+            Tag.send(:new, tag, arguments, ParseContext.new).render(
               @context
             )
           end \
