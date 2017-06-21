@@ -7,16 +7,17 @@
 [coverage]: https://codeclimate.com/github/jekyll/jekyll-assets/coverage
 [travis]: https://travis-ci.org/jekyll/jekyll-assets
 
-# Jekyll 3 Assets
+# Jekyll Assets
 
-Jekyll 3 assets is an asset pipeline using Sprockets 3 to build especially
-for Jekyll 3. It utilizes new features of both Sprockets and Jekyll to achieve
-a clean and extensible assets platform for Jekyll.
+Jekyll assets is an asset pipeline using Sprockets 3 to build specifically for Jekyll. It utilizes new features of both Sprockets and Jekyll to try and achieve a clean and extensible assets platform.
 
 ## Using Jekyll Assets with Jekyll
 
-Add `gem "jekyll-assets"` to your `Gemfile` and add `jekyll-assets`
-to your `_config.yml` like the following:
+```ruby
+group :plugins do
+  gem "jekyll-assets"
+end
+```
 
 ```yaml
 gems:
@@ -25,20 +26,11 @@ gems:
 
 ## Configuration
 
-A lot of our configuration transforms based on the `JEKYLL_ENV` variable
-set in your environment. Such as digesting and whether or not to enable the
-CDN. Some of them can be explicitly overridden but a few cannot right now.
-You should set your `JEKYLL_ENV=development` on your development
-machine and `JEKYLL_ENV=production` when building to push.
-
 ```yaml
 assets:
   compress:
     css: false | true | default - development: false, production: true
     js: false | true | default - development: false, production: true
-
-  #
-
   autowrite: true
   cache: false | directory | default: .asset-cache
   cache_type: memory | filesystem | default: filesystem
@@ -47,15 +39,9 @@ assets:
   skip_prefix_with_cdn: false
   prefix: "/assets"
   digest: true
-
-  #
-
   assets:
     - "*.png"
     - "bundle.css"
-
-  #
-
   sources:
     - _assets/css
     - _assets/images
@@ -64,9 +50,6 @@ assets:
     - _assets/fonts
     - _assets/img
     - _assets/js
-
-  #
-
   features:
     liquid: true | false | default: false
     integrity: true | false | default: false
@@ -78,31 +61,23 @@ assets:
 
 ### Liquid Processing with your Jekyll context
 
-By default (whether `features.liquid` is true or false) we will process
-all files with the extension ".liquid", so if you give us ".scss.liquid"
+By default (whether `features.liquid` is `true` or `false`) we will process
+all files with the extension `.liquid`, so if you give us `.scss.liquid`
 we will parse the liquid and then we will parse the SCSS and finally
-output your ".css" file.
-
-When `features.liquid` is set to true, we will process ***ALL*** files
-through Liquid, regardless of whether they have the ".liquid" extension.
-Use this at your own risk.
+output your `.css` file. When `features.liquid` is set to `true`, we will process ***ALL*** files through Liquid, regardless of whether they have the `.liquid` extension. ***Use this at your own risk. As it can lead to some bugs, some bad output, and even some ugly edge cases... especially with things like Handlebars.***
 
 ### Cache Folder
 
 If you plan to change the `cache` folder, please make sure to add that
-folder to your `exclude` list in Jekyll or you will generate over and over
-and over again, `.` folders are not ignored by default.
+folder to your `exclude` list in Jekyll, or you will generate over and over
+and over again, `.` folders are not ignored by default as of Jekyll 3.x, so you should take heed of ignoring your own folders.
 
 ### Sources
 
 The listed resources in the example are all defaults. It should be noted
 that we append your sources instead of replace our resources with yours. So
 if you add `_assets/folder` then we will append that to our sources and
-both will work.
-
-***NOTE: if you use our `_assets` base folder container as a base folder for
-your sprockets, we will not append our sources, we will only use that
-folder as the sole source (base folder.)***
+both will work. ***NOTE: if you use our `_assets` base folder container as a base folder for your Sprockets, we will not append our sources, we will only use that folder as the sole source (base folder.)***
 
 ### Digesting
 
@@ -117,55 +92,52 @@ folder as the sole source (base folder.)***
 * Disable compression by default in development.
 * Enable by default in production.
 
-## Generating CSS with Jekyll Assets (Moving from Standard Jekyll SCSS)
+## Generating CSS with Jekyll Assets
 
 The following section shows how to get started generating CSS using Jekyll
-Assets. It applies to a newly generated Jekyll site, however this should help
-anyone who has a Jekyll site. It should also be applicable for other types of
-assets.
+Assets. It applies to a newly generated Jekyll site, however this should helpanyone who has a Jekyll site. It should also be applicable for other types of assets.
 
 ### Create the `_assets/css` directory
 
 The default [Jekyll Assets configuration](#configuration) expects to find all the assets in directories under `_assets`. Create a directory for the CSS:
 
 ```bash
-$ mkdir -p _assets/css
+mkdir -p _assets/css
 ```
 
 ### Move the CSS files to the new `_assets/css` directory
 
-Jekyll comes with a `css` directory containing a `main.css` file and then a
-`_sass` directory with a few Sass imports. Move all of that to the
-`_assets/css` directory.
+Jekyll comes with a `css` directory containing a `main.css` file and then a `_sass` directory with a few Sass imports. Move all of that to the `_assets/css` directory.
 
 ```bash
-$ mv css/main.css _assets/css
-$ mv _sass/* _assets/css
+mv css/main.css _assets/css
+mv _sass/* _assets/css
 ```
 
 ### Remove Jekyll front matter
 
-Jekyll includes some empty
-[front matter](https://jekyllrb.com/docs/frontmatter/) in `main.css`. Remove
-that as Sprockets will not understand it.
+Jekyll includes some empty [front matter](https://jekyllrb.com/docs/frontmatter/) in `main.css`. Remove that as Sprockets will not understand it.
 
 ### Update the layout
 
-The layout will no longer be pointing to the correct `main.css` file. Jekyll
-Assets supplies [liquid tags](#tags) to generate the correct HTML for these
-assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
+The layout will no longer be pointing to the correct `main.css` file. Jekyll Assets supplies [liquid tags](#tags) to generate the correct HTML for these assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
 
 ```liquid
 {% css main %}
 ```
 
-Start up your local Jekyll server and if everything is correct, your site will
-be serving CSS via Sprockets. Read on for more information on how to customize
-your Jekyll Assets setup.
+Start up your local Jekyll server and if everything is correct, your site will be serving CSS via Sprockets. Read on for more information on how to customize your Jekyll Assets setup.
 
 ## Addons
 
-* CSS Auto Prefixer - add "autoprefixer-rails" to your Gemfile and configure target browsers in `_config.yml`:
+* Font Awesome `gem "font-awesome-sass"`
+
+  ```scss
+    @import 'font-awesome-sprockets'
+    @import 'font-awesome'
+  ```
+
+* CSS Auto-Prefixing `gem "autoprefixer-rails"`
 
     ```yml
     assets:
@@ -175,17 +147,18 @@ your Jekyll Assets setup.
           - "IE > 9"
     ```
 
-* ES6 Transpiler (through Babel) - add "sprockets-es6" to your Gemfile — any `.es6` files (e.g. `main.js.es6`) will be transpiled
-* Bootstrap - add "bootstrap-sass" to your Gemfile, and `@import 'bootstrap-sprockets'; @import 'bootstrap'`
-* Font Awesome - add "font-awesome-sass" to your Gemfile, and `@import 'font-awesome-sprockets'; @import 'font-awesome'`
-* Image Magick - add "mini_magick" to your Gemfile, only works with `img`, `image`.
-* LESS - add "less" to your Gemfile
+* Bootstrap `gem "bootstrap-sass"`
 
-***Please note that some of these (if not all) have trouble with Rhino --
-`therubyrhino` so you would probably be best to just use Node.js or io.js at
-that point rather than trying to fight it.***
+  ```scss
+    @import 'bootstrap-sprockets'
+    @import 'bootstrap'
+  ```
 
-## Bower Components
+* ES6 `gem "sprockets-es6"`
+* Image Magick `gem "mini_magick"`
+* LESS `gem "less"`
+
+## Bower
 
 Modify your `.bowerrc` file and add:
 
