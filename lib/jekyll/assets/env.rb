@@ -111,8 +111,8 @@ module Jekyll
         path ? super(path) : super()
         @jekyll = jekyll
 
-        # Analagous to Jekyll::Site @source and @destination paths
-        @cache_path = asset_config.fetch("cache", ".asset-cache")
+        # TODO: In Jekyll-Assets 3 this should be fixed up to be a method.
+        @cache_path = asset_config.fetch("cache", ".asset-cache") || ".asset-cache"
         if File.exist?(cache_path_in_source_dir = jekyll.in_source_dir(@cache_path))
           @cache_path = cache_path_in_source_dir
         end
