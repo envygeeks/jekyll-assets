@@ -24,7 +24,19 @@ module Jekyll
           # ------------------------------------------------------------------
 
           def self.add(name, tag, *args, &block)
-            add_by_class(*generate_class(name, tag, &block), *args)
+            if tag.is_a?(Array)
+              return tag.each do |v|
+                klass = generate_class(name, v, &block)
+                asset_by_class(*klass,
+                  *args
+                )
+              end
+            end
+
+            klass = generate_class(name, tag, &block)
+            add_by_class(*klass,
+              *args
+            )
           end
 
           # ------------------------------------------------------------------
