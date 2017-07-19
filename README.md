@@ -26,6 +26,8 @@ gems:
 
 ## Configuration
 
+The configuration file is the same as Jekyll's, which is _config.yml. Use the special key "assets":
+
 ```yaml
 assets:
   compress:
@@ -265,6 +267,18 @@ If you would like more, please feel free to add a pull request, at this
 time we will reject all pull requests that wish to add any digested paths as
 those are dynamically created when a proxy is ran so we can never predict
 it reliably unless we proxy and that would be a performance problem.
+
+### Dynamically loading assets
+
+Using Liquid Drop `assets`, you can check whether an asset is present.
+
+```liquid
+{% if assets[page.image] %}
+  {% img '{{ page.image }}' %}
+{% else %}
+  {% img 'default.jpg' %}
+{% endif %}
+```
 
 ## ERB Support
 
