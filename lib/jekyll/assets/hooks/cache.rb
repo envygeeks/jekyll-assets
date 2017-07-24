@@ -9,18 +9,10 @@ Jekyll::Assets::Hook.register :env, :init do
   )
 
   if cache != false && type != "memory"
-    self.cache = begin
-      Sprockets::Cache::FileStore.new(
-        jekyll.in_source_dir(
-          cache
-        )
-      )
-    end
+    self.cache = Sprockets::Cache::FileStore.new(cache_path)
 
   elsif cache && type == "memory"
-    self.cache = begin
-      Sprockets::Cache::MemoryStore.new
-    end
+    self.cache = Sprockets::Cache::MemoryStore.new
 
   else
     Jekyll.logger.info "", "Asset caching is disabled by configuration. " \
