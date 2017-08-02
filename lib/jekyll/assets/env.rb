@@ -6,6 +6,7 @@ module Jekyll
   module Assets
     class Env < Sprockets::Environment
       attr_accessor :jekyll
+      attr_reader :cache_path
 
       class << self
 
@@ -148,7 +149,7 @@ module Jekyll
       # @return [Pathname/Pathutil]
       # --
       def in_cache_dir(*paths)
-        paths.reduce(@cache_path) do |base, path|
+        paths.reduce(cache_path) do |base, path|
           Jekyll.sanitized_path(base, path)
         end
       end
