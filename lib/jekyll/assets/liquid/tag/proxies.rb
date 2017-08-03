@@ -27,7 +27,7 @@ module Jekyll
             if tag.is_a?(Array)
               return tag.each do |v|
                 klass = generate_class(name, v, &block)
-                asset_by_class(*klass,
+                add_by_class(*klass,
                   *args
                 )
               end
