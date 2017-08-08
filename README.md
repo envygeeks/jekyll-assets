@@ -233,7 +233,7 @@ An example of using Liquid in your SCSS:
 
 ```scss
 .bg {
-  background: url(asset_path("{{ site.background_image }}"));
+  background: url(asset_path(asset_logical_name));
 }
 ```
 
