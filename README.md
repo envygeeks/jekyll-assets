@@ -1,11 +1,12 @@
-[![Build Status](https://travis-ci.org/jekyll/jekyll-assets.svg?branch=master)][travis]
-[![Coverage Status](https://codeclimate.com/github/jekyll/jekyll-assets/badges/coverage.svg)][coverage]
-[![code-climate](https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg)][code-climate] [![Dependencies Status](https://gemnasium.com/jekyll/jekyll-assets.svg)][gemnasium]
-
-[gemnasium]: https://gemnasium.com/jekyll/jekyll-assets
-[code-climate]: https://codeclimate.com/github/jekyll/jekyll-assets
-[coverage]: https://codeclimate.com/github/jekyll/jekyll-assets/coverage
-[travis]: https://travis-ci.org/jekyll/jekyll-assets
+<p align=center>
+  <a href=https://goo.gl/BhrgjW>
+    <img src=https://envygeeks.io/badges/paypal-large_1.png alt=Donate>
+  </a>
+  <br>
+  <a href=https://travis-ci.org/jekyll/jekyll-assets>
+    <img src="https://travis-ci.org/jekyll/jekyll-assets.svg?branch=master" alt=Status>
+  </a>
+</p>
 
 # Jekyll Assets
 
