@@ -109,7 +109,7 @@ module Jekyll
     # configuration with our merges and stub the configuration pieces.
     # --
     def stub_jekyll_site(opts = {})
-      path = File.expand_path("../../fixture", __FILE__)
+      path = File.expand_path("../fixture", __dir__)
       Jekyll::RSpecHelpers.cleanup_trash
 
       silence_stdout do
@@ -135,7 +135,7 @@ module Jekyll
     # to pull, so beware of that when testing.
     # --
     def get_stubbed_file(file)
-      path = File.expand_path("../../fixture/_site", __FILE__)
+      path = File.expand_path("../fixture/_site", __dir__)
       File.read(File.join(path, file))
     end
 
@@ -147,7 +147,7 @@ module Jekyll
     def self.cleanup_trash
       %W(.jekyll-metadata _site).each do |v|
         FileUtils.rm_rf(File.join(File.expand_path(
-          "../../fixture", __FILE__
+          "../fixture", __dir__
         ), v))
       end
     end
