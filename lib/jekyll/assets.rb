@@ -9,12 +9,11 @@ require "jekyll"
 
 requires = [ :liquid,
   :patches, "", :hooks, :addons,
-  :proxies, :processors
-]
+  :proxies, :processors]
 
 requires.each do |part|
-  Pathutil.new(File.expand_path("../", __FILE__)).join("assets", part.to_s)
-    .glob("{*,**/*}.rb").map(&method(
+  Pathutil.new(__dir__).join('assets', part.to_s)
+    .glob('{*,**/*}.rb').map(&method(
       :require
-    ))
+))
 end
