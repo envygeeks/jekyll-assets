@@ -5,8 +5,8 @@
 # ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
-  ARGS = %W(resize quality rotate crop flip format gravity).freeze
-  PRESETS = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
+  MINI_MAGICK_ARGS = %W(resize quality rotate crop flip format gravity).freeze
+  MINI_MAGICK_PRESETS = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
       @two-fourths @three-fourths).freeze
 
@@ -24,8 +24,8 @@ try_require "mini_magick" do
     # ------------------------------------------------------------------------
 
     def initialize(asset, opts, args)
-      @opts = opts
       @asset = asset
+      @opts = opts
       @args = args
     end
 
@@ -71,7 +71,7 @@ try_require "mini_magick" do
 
     private
     def preset?
-      (@opts.keys - ARGS.map(&:to_sym)).any?
+      (@opts.keys - MINI_MAGICK_ARGS.map(&:to_sym)).any?
     end
 
     # ------------------------------------------------------------------------
@@ -172,7 +172,7 @@ try_require "mini_magick" do
 
   end
 
-  Jekyll::Assets::Env.liquid_proxies.add :magick, [:img, :asset_path], *(ARGS + PRESETS) do
+  Jekyll::Assets::Env.liquid_proxies.add :magick, [:img, :asset_path], *(MINI_MAGICK_ARGS + MINI_MAGICK_PRESETS) do
     def initialize(asset, opts, args)
       @miniMagick = JekyllAssetsMiniMagic.new(asset, opts, args)
     end
