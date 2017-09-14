@@ -15,13 +15,15 @@ Jekyll assets is an asset pipeline using Sprockets 3 to build specifically for J
 ## Using Jekyll Assets with Jekyll
 
 ```ruby
-group :plugins do
+# Gemfile
+group :jekyll_plugins do
   gem "jekyll-assets"
 end
 ```
 
 ```yaml
-gems:
+# _config.yml
+plugins:
   - jekyll-assets
 ```
 
