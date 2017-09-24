@@ -10,7 +10,6 @@ group :development do
 end
 
 group :test do
-  gem "luna-rubocop-formatters", :require => false
   gem "codeclimate-test-reporter", :require => false
   gem "rubocop", :require => false
 end
