@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
-  ARGS = %W(resize quality rotate crop flip format gravity).freeze
+  ARGS = %W(resize quality rotate crop flip format gravity strip).freeze
   PRESETS = %W(@2x @4x @1/2 @1/3 @2/3 @1/4 @2/4 @3/4
     @double @quadruple @half @one-third @two-thirds @one-fourth
       @two-fourths @three-fourths).freeze
@@ -138,6 +138,13 @@ try_require "mini_magick" do
       end
     end
 
+    # ------------------------------------------------------------------------
+    
+    private
+    def magick_strip(_, cmd)
+    	cmd.strip
+    end
+      
     # ------------------------------------------------------------------------
     # I just want you to know, we don't even care if you do multiple
     # resizes or try to, we don't attempt to even attempt to attempt to care
