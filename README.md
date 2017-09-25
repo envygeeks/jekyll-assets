@@ -161,6 +161,24 @@ Start up your local Jekyll server and if everything is correct, your site will b
 
 * ES6 `gem "sprockets-es6"`
 * Image Magick `gem "mini_magick"`
+* ImageOptim `gem "image_optim"`
+
+  ```yml
+  assets:
+    image_optim:
+      default:
+        verbose: true
+      zero_png:
+        advpng:
+          level: 0
+        optipng:
+          level: 0
+        pngout:
+          strategy: 4
+  ```
+
+  Check the [ImageOptim docs](https://github.com/toy/image_optim#configuration) to get idea about configuration options.
+
 * LESS `gem "less"`
 
 ## Bower
@@ -391,6 +409,16 @@ to get an idea what `<value>` can be.
 * `magick:two-thirds`, `magick:2/3`
 * `magick:one-fourth`, `magick:1/4`
 * `magick:half`, `magick:1/2`
+
+### ImageOptim Proxy arguments:
+
+**NOTE: You'll need the `image_optim` gem installed for these to work**
+To install `image_optim`, add `gem "image_optim"` to your `Gemfile`
+
+See the [ImageOptim docs](https://github.com/toy/image_optim#gem-installation) to ensure proper dependencies installation.
+
+* `image_optim:default` same as `image_optim:preset:default`
+* `image_optim:preset:<name>`
 
 ## Having trouble with our documentation?
 

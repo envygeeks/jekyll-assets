@@ -10,7 +10,6 @@ group :development do
 end
 
 group :test do
-  gem "luna-rubocop-formatters", :require => false
   gem "codeclimate-test-reporter", :require => false
   gem "rubocop", :require => false
 end
@@ -22,4 +21,6 @@ gem "jekyll", "#{ENV["JEKYLL_VERSION"]}" if ENV["JEKYLL_VERSION"]
 gem "font-awesome-sass", "~> 4.4", :require => false
 gem "bootstrap-sass", "~> 3.3", :require => false
 gem "mini_magick", "~> 4.2", :require => false
+gem "image_optim", "~> 0.25", :require => false
+gem "image_optim_pack", "~> 0.5", :require => false
 gem "less", "~> 2.6.0", :require => false
