@@ -7,13 +7,7 @@ require "extras/all"
 require "pathutil"
 require "jekyll"
 
-requires = [ :liquid,
-  :patches, "", :hooks, :addons,
-  :proxies, :processors]
-
-requires.each do |part|
-  Pathutil.new(__dir__).join('assets', part.to_s)
-    .glob('{*,**/*}.rb').map(&method(
-      :require
-))
+[:liquid, :patches, "", :hooks, :addons, :proxies, :processors].each do |v|
+  Pathutil.new(__dir__).join('assets', v.to_s).glob('{*,**/*}.rb')
+    .map(&method(:require))
 end

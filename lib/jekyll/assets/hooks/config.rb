@@ -4,7 +4,5 @@
 
 Jekyll::Assets::Hook.register :env, :init, :early do
   jekyll.config["assets"] = Jekyll::Assets::Config.merge(asset_config)
-  Jekyll::Assets::Config.merge_sources(
-    jekyll, asset_config
-  )
+  Jekyll::Assets::Config.merge_sources(jekyll, asset_config)
 end

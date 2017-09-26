@@ -62,8 +62,8 @@ module Jekyll
               @tag = tag
 
             elsif processed && !raw_args
-              raise ArgumentError, "You must provide raw_args if you pre-process." \
-                "Please provide the raw args."
+              raise ArgumentError, "You must provide raw_args if you " \
+                "pre-process. Please provide the raw args."
 
             else
               @tag = tag
@@ -77,8 +77,9 @@ module Jekyll
 
           def parse_liquid(context)
             return self unless context.is_a?(Object::Liquid::Context)
-            liquid = context.registers[:site].liquid_renderer.file("(jekyll:assets)")
+            liquid = context.registers[:site].liquid_renderer.file("(assets)")
             out = parse_hash_liquid(to_h, liquid, context)
+
             self.class.new(out, @tag, {
               :raw_args => @raw_args,
               :processed => true
@@ -123,7 +124,8 @@ module Jekyll
 
           private
           def parse_raw
-            @args = from_shellwords.each_with_index.each_with_object({}) do |(key, index), hash|
+            @args = from_shellwords.each_with_index.
+            each_with_object({}) do |(key, index), hash|
               if index == 0 then hash.store(:file, key)
               elsif key =~ /:/ && (key = key.split(/(?<!\\):/))
                 parse_col hash, key
@@ -155,8 +157,7 @@ module Jekyll
             if Proxies.has?(key, @tag, "@#{sub_key}")
               (hash[key.to_sym] ||= {})[sub_key.to_sym] = true
             else
-              (hash[:html] ||= {})[key] = \
-                okey[1]
+              (hash[:html] ||= {})[key] = okey[1]
             end
           end
 
@@ -166,8 +167,7 @@ module Jekyll
           def as_proxy(hash, key)
             key, sub_key, val = key
             if Proxies.has?(key, @tag, sub_key)
-              (hash[key.to_sym] ||= {})[sub_key.to_sym] = \
-                val
+              (hash[key.to_sym] ||= {})[sub_key.to_sym] = val
 
             elsif Proxies.has?(key)
               raise UnknownProxyError
@@ -181,8 +181,7 @@ module Jekyll
             if ACCEPT.key?(@tag) && (!@args.key?(:sprockets) || \
                   !@args[:sprockets].key?(:accept))
 
-              (@args[:sprockets] ||= {})[:accept] = \
-                ACCEPT[@tag]
+              (@args[:sprockets] ||= {})[:accept] = ACCEPT[@tag]
             end
           end
 

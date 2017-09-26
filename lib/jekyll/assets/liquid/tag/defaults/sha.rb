@@ -38,10 +38,7 @@ module Jekyll
             # --
             def set_integrity
               digest = Sprockets::DigestUtils.integrity_uri(
-                Digest::SHA384.digest(
-                  @asset.to_s
-                )
-              )
+                Digest::SHA384.digest(@asset.to_s))
 
               @args.args[:html] ||= {}
               if @env.asset_config["features"]["integrity"]

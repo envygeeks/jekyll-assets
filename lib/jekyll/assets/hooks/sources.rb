@@ -5,7 +5,7 @@
 Jekyll::Assets::Hook.register :env, :init do
   asset_config["sources"] ||= []
 
-  asset_config["sources"].each do |path|
-    append_path jekyll.in_source_dir(path)
+  asset_config["sources"].each do |v|
+    append_path jekyll.in_source_dir(v)
   end
 end

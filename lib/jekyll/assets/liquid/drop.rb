@@ -63,17 +63,14 @@ module Jekyll
 
         private
         def image?
-          %W(image/png image/jpeg image/gif).include?(
-            asset.content_type
-          )
+          %W(image/png image/jpeg image/gif).include?(asset.content_type)
         end
 
         # --
 
         private
         def asset
-          @asset ||= @jekyll.sprockets.manifest.find(@path) \
-            .first
+          @asset ||= @jekyll.sprockets.manifest.find(@path).first
         end
       end
     end

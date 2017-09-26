@@ -3,11 +3,9 @@
 # Encoding: utf-8
 
 Jekyll::Assets::Hook.register :env, :init, :early do
-  self.config = hash_reassoc(config, :engines) do |hash|
-    hash.delete(
-      ".erb"
-    )
-
-    hash
-  end
+  self.config =
+    hash_reassoc config, :engines do |o|
+      o.delete(".erb")
+      o
+    end
 end

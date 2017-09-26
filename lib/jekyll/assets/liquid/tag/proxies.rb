@@ -25,31 +25,27 @@ module Jekyll
             if tag.is_a?(Array)
               return tag.each do |v|
                 klass = generate_class(name, v, &block)
-                add_by_class(*klass,
-                  *args
-                )
+                add_by_class(*klass, *args)
               end
             end
 
             klass = generate_class(name, tag, &block)
-            add_by_class(*klass,
-              *args
-            )
+            add_by_class(*klass, *args)
           end
 
           # --
 
           def self.keys
-            all.select { |val| !val[:class].is_a?(Symbol) }.map do |val|
-              val[:name]
+            all.select { |val| !val[:class].is_a?(Symbol) }.map do |v|
+              v[:name]
             end.flatten
           end
 
           # --
 
           def self.base_keys
-            all.select { |val| val[:class].is_a?(Symbol) }.map do |val|
-              val[:name]
+            all.select { |val| val[:class].is_a?(Symbol) }.map do |v|
+              v[:name]
             end.flatten
           end
 
@@ -118,9 +114,7 @@ module Jekyll
           # --
 
           add_by_class :internal, :data, :all, ["@uri"]
-          add_by_class :internal, :sprockets, :all, %W(
-            accept write_to
-          )
+          add_by_class :internal, :sprockets, :all, %W(accept write_to)
         end
       end
     end

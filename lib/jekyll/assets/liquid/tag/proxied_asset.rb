@@ -37,9 +37,7 @@ module Jekyll
           # --
 
           def integrity
-            Sprockets::DigestUtils.integrity_uri(
-              digest
-            )
+            Sprockets::DigestUtils.integrity_uri(digest)
           end
 
           # --
@@ -66,24 +64,19 @@ module Jekyll
           # --
 
           def filename
-            Pathutil.new(
-              env.in_cache_dir(digest_path)
-            )
+            Pathutil.new(env.in_cache_dir(digest_path))
           end
 
           # --
 
           def digest
-            Digest::SHA2.hexdigest(
-              args.proxies.to_s
-            )
+            Digest::SHA2.hexdigest(args.proxies.to_s)
           end
 
           # --
 
           def content_type=(type)
             return if @content_type == type
-
             @path = @path.sub_ext(_ext_for(type))
             @content_type = type
           end
@@ -107,9 +100,7 @@ module Jekyll
 
           private
           def _mime_for(ext)
-            Sprockets.mime_exts[
-              ext
-            ]
+            Sprockets.mime_exts[ext]
           end
 
           # --
@@ -139,6 +130,7 @@ module Jekyll
           def find_cached
             glob = filename.dirname.glob(filename.basename.sub_ext('.*'))
             @_cached = filename.dirname.directory? && !glob.first.nil?
+
             if @_cached
               self.content_type = _mime_for(File.extname(glob.first))
             end

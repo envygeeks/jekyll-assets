@@ -14,9 +14,8 @@ module Jekyll
         # --
         ACCEPTABLE_FILTERS.each do |val|
           define_method val do |path, args = ""|
-            Tag.send(:new, val, "#{path} #{args}", ParseContext.new).render(
-              @context
-            )
+            Tag.send(:new, val, "#{path} #{args}", ParseContext.new)
+              .render(@context)
           end
         end
 

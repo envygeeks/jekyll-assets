@@ -36,6 +36,7 @@ module Jekyll
             def set_img_alt
               if !@env || @env.asset_config["features"]["automatic_img_alt"]
                 @args[:html] ||= {}
+
                 unless @args[:html].key?("alt")
                   @args[:html]["alt"] = @asset.logical_path
                 end

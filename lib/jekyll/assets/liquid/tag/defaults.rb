@@ -16,8 +16,8 @@ module Jekyll
           # --
           module_function
           def set_defaults_for!(tag, args, asset, env = nil)
-            constants.select { |const| const_get(const).for?(tag) }.each do |const|
-              const_get(const).new(args, asset, env).set!
+            constants.select { |o| const_get(o).for?(tag) }.each do |v|
+              const_get(v).new(args, asset, env).set!
             end
           end
         end

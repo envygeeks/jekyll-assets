@@ -3,7 +3,5 @@
 # Encoding: utf-8
 
 Jekyll::Hooks.register :site, :after_reset do |jekyll|
-  Jekyll::Assets::Env.init(
-    jekyll
-  )
+  Jekyll::Assets::Env.init(jekyll)
 end
