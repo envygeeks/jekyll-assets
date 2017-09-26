@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 module Kernel
   def try_require(file)
@@ -14,7 +12,7 @@ module Kernel
     return nil
   end
 
-  # --------------------------------------------------------------------------
+  # --
 
   def try_require_if_javascript(file)
     ["execjs", file].map(&method(:require))

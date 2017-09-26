@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 require "forwardable"
 
@@ -11,18 +9,18 @@ module Jekyll
     module Liquid
       class Tag
         class ProxiedAsset
+          attr_reader :content_type
           attr_reader :args, :asset, :env
           extend Forwardable
 
-          # ------------------------------------------------------------------
+          # --
 
-          attr_reader :content_type
 
           def_delegator :@asset, :liquid_tags
           def_delegator :@asset, :source_filename
           def_delegator :@asset, :mtime
 
-          # ------------------------------------------------------------------
+          # --
 
           def initialize(asset, args, env, tag)
             @env = env
@@ -36,7 +34,7 @@ module Jekyll
             proxy_file
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def integrity
             Sprockets::DigestUtils.integrity_uri(
@@ -44,13 +42,13 @@ module Jekyll
             )
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def cached?
             @_cached
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def write_to(name)
             FileUtils.mkdir_p File.dirname(name)
@@ -59,13 +57,13 @@ module Jekyll
             end
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def source
             filename.binread
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def filename
             Pathutil.new(
@@ -73,7 +71,7 @@ module Jekyll
             )
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def digest
             Digest::SHA2.hexdigest(
@@ -81,7 +79,7 @@ module Jekyll
             )
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def content_type=(type)
             return if @content_type == type
@@ -90,23 +88,22 @@ module Jekyll
             @content_type = type
           end
 
-          # ------------------------------------------------------------------
+          # --
           # We always digest a proxied asset so it's uniq based on what
           # proxies you give us, it would be ignorant to treat it otherwise,
           # we also make sure they are URL safe by digesting the args.
-          # ------------------------------------------------------------------
-
+          # --
           def logical_path
             digest_path
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           def digest_path
             "#{@path.sub_ext ""}-#{digest}#{@path.extname}"
           end
 
-          # --------------------------------------------------------------------
+          # --
 
           private
           def _mime_for(ext)
@@ -115,14 +112,14 @@ module Jekyll
             ]
           end
 
-          # --------------------------------------------------------------------
+          # --
 
           private
           def _ext_for(type)
             Sprockets.mime_types[type][:extensions].first
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           private
           def proxy_file
@@ -136,7 +133,7 @@ module Jekyll
             end
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           private
           def find_cached
@@ -149,7 +146,7 @@ module Jekyll
             @_cached
           end
 
-          # ------------------------------------------------------------------
+          # --
 
           private
           def cache_file

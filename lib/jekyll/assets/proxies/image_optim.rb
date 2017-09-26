@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2017 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 try_require "image_optim" do
   IMAGE_OPTIM_ARGS = %W(preset).freeze
@@ -16,7 +14,7 @@ try_require "image_optim" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     class PresetAlreadySpecifiedError < RuntimeError
       def initialize
@@ -24,7 +22,7 @@ try_require "image_optim" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     class MultiplePredefinedPresetsSpecifiedError < RuntimeError
       def initialize
@@ -32,7 +30,7 @@ try_require "image_optim" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     def initialize(asset, opts, args)
       @asset = asset
@@ -40,7 +38,7 @@ try_require "image_optim" do
       @args = args
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     def process
       asset_config = @asset.env.asset_config || {}
@@ -70,11 +68,10 @@ try_require "image_optim" do
       @imageOptim = JekyllAssetsImageOptim.new(asset, opts, args)
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     def process
       @imageOptim.process
     end
-
   end
 end

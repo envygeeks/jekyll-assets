@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 require "fastimage"
 
@@ -16,13 +14,13 @@ module Jekyll
         require_relative "tag/parser"
         attr_reader :args
 
-        # --------------------------------------------------------------------
+        # --
 
         class << self
           public :new
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         class AssetNotFoundError < StandardError
           def initialize(asset)
@@ -30,9 +28,9 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
         # Tags that we allow our users to use.
-        # --------------------------------------------------------------------
+        # --
 
         AcceptableTags = %W(
           img
@@ -47,9 +45,9 @@ module Jekyll
           js
         ).freeze
 
-        # --------------------------------------------------------------------
+        # --
         # The HTML version of every tag that we accept.
-        # --------------------------------------------------------------------
+        # --
 
         Tags = {
           "css" => %(<link type="text/css" rel="stylesheet" href="%s"%s>),
@@ -57,9 +55,9 @@ module Jekyll
           "img" => %(<img src="%s"%s>)
         }.freeze
 
-        # --------------------------------------------------------------------
+        # --
         # Allows us to normalize tags so we can simplify logic.
-        # --------------------------------------------------------------------
+        # --
 
         Alias = {
           "image" => "img",
@@ -68,7 +66,7 @@ module Jekyll
           "style" => "css"
         }.freeze
 
-        # --------------------------------------------------------------------
+        # --
 
         def initialize(tag, args, tokens)
           tag = tag.to_s
@@ -79,13 +77,13 @@ module Jekyll
           super
         end
 
-        # --------------------------------------------------------------------
+        # --
         # NOTE: We only attach to the regenerator if you are using digested
         #   assets, otherwise we forego any association with it so that we keep
         #   your builds ultra fast, this is ideal in dev.  Disable digests and
         #   let us process independent so the entire site isn't regenerated
         #   because of a single asset change.
-        # --------------------------------------------------------------------
+        # --
 
         def render(context)
           site = context.registers[:site]
@@ -104,14 +102,14 @@ module Jekyll
           )
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def from_alias(tag)
           Alias.key?(tag) ? Alias[tag] : tag
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def process_tag(args, sprockets, asset)
@@ -120,7 +118,7 @@ module Jekyll
           build_html(args, sprockets, asset)
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def build_html(args, sprockets, asset, path = get_path(sprockets, asset))
@@ -130,7 +128,7 @@ module Jekyll
           format(Tags[@tag], data, args.to_html)
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def get_path(sprockets, asset)
@@ -139,7 +137,7 @@ module Jekyll
           )
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def add_as_jekyll_dependency(site, sprockets, page, asset)
@@ -150,7 +148,7 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def find_asset(args, sprockets)
@@ -173,7 +171,7 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def _find_asset(file, args, sprockets)
@@ -197,7 +195,7 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def _ext_for(type)
@@ -209,12 +207,12 @@ module Jekyll
             .first
         end
 
-        # --------------------------------------------------------------------
+        # --
         # There is no guarantee that Jekyll will pass on the error for some
         # reason (unless you are just booting up) so we capture that error and
         # always output it, it can lead to some double errors but I would
         # rather there be a double error than no error.
-        # --------------------------------------------------------------------
+        # --
 
         private
         def capture_and_out_error(site, error)

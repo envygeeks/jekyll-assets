@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2016 - MIT License
+# Encoding: utf-8
+
 module Jekyll
   module Assets
     module Processors
@@ -7,7 +11,7 @@ module Jekyll
           text/scss text/coffeescript text/javascript).freeze
         EXT = %W(.liquid .js.liquid .css.liquid .scss.liquid).freeze
 
-        # --------------------------------------------------------------------
+        # --
 
         def self.call(context, jekyll = context[:environment].jekyll)
           if context[:environment].parent.asset_config["features"]["liquid"] ||

@@ -15,7 +15,7 @@ module Jekyll
           @asset = nil
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         def_delegator :asset, :digest_path
         def_delegator :asset, :logical_path
@@ -23,19 +23,19 @@ module Jekyll
         def_delegator :asset, :content_type
         def_delegator :asset, :filename
 
-        # --------------------------------------------------------------------
+        # --
 
         def basename
           File.basename(@path)
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         def integrity
           return asset.integrity
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         def width
           if image?
@@ -43,7 +43,7 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         def height
           if image?
@@ -51,7 +51,7 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         def dimensions
           if image?
@@ -59,7 +59,7 @@ module Jekyll
           end
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def image?
@@ -68,7 +68,7 @@ module Jekyll
           )
         end
 
-        # --------------------------------------------------------------------
+        # --
 
         private
         def asset

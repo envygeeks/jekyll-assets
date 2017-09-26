@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2016 - MIT License
+# Encoding: utf-8
+
 module JekyllAssetsPatchesJekyllCleaner
   def obsolete_files
     super.delete_if do |v|

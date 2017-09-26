@@ -1,12 +1,16 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2016 - MIT License
+# Encoding: utf-8
+
 try_require_if_javascript "less" do
   module Jekyll
     module Assets
       module Processors
         class LESS
 
-          # --------------------------------------------------------------------
+          # --
           # Setup and pull out the context and update the data, shipping it.
-          # --------------------------------------------------------------------
+          # --
 
           def self.call(input)
             data = input[:data]; paths = [input[:load_path]]
@@ -24,13 +28,13 @@ try_require_if_javascript "less" do
             })
           end
 
-          # --------------------------------------------------------------------
+          # --
           # Add the sprockets helpers into the Less environment so people can
           # use assets from within Less... as they see fit.
-          # --------------------------------------------------------------------
+          # --
           # We also make sure to disable their quotes so that we can quote
           # ourselves if we need to, otherwise we simply just take the values.
-          # --------------------------------------------------------------------
+          # --
 
           def self.patch_tree(tree, context)
             Helpers.instance_methods.each do |m|
@@ -53,7 +57,7 @@ try_require_if_javascript "less" do
     end
   end
 
-  # ----------------------------------------------------------------------------
+  # --
 
   if Gem::Version.new(Sprockets::VERSION) >= Gem::Version.new(4.0)
     Sprockets.register_mime_type "text/less", :extensions => [".less", ".css.less"]

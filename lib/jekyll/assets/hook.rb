@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
@@ -13,7 +11,7 @@ module Jekyll
         end
       end
 
-      # ----------------------------------------------------------------------
+      # --
 
       HOOK_ALIASES = {
         :env => {
@@ -22,7 +20,7 @@ module Jekyll
         }
       }
 
-      # ----------------------------------------------------------------------
+      # --
 
       HOOK_POINTS = {
         :env => [
@@ -30,17 +28,17 @@ module Jekyll
         ]
       }
 
-      # ----------------------------------------------------------------------
+      # --
 
       def self.all
         @_all ||= {}
       end
 
-      # ----------------------------------------------------------------------
+      # --
       # Trigger a hook, giving an optional block where we pass you the,
       # proc we got and then you can do as you please (such as instance eval)
       # but if you do not give us one then we simply pass the args.
-      # ----------------------------------------------------------------------
+      # --
 
       def self.trigger(base, point_, *args, &block)
         raise ArgumentError, "Do not give args with a block" if !args.empty? && block_given?
@@ -51,7 +49,7 @@ module Jekyll
         end
       end
 
-      # ----------------------------------------------------------------------
+      # --
 
       def self.point(base, point, when_ = :late)
         point = all[base][point] ||= {
@@ -62,7 +60,7 @@ module Jekyll
         point[when_]
       end
 
-      # ----------------------------------------------------------------------
+      # --
 
       def self.register(base, point, when_ = :late, &block)
         raise UnknownHookError, base: base unless HOOK_POINTS.key?(base)

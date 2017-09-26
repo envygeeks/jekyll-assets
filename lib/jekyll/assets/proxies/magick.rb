@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 try_require "mini_magick" do
   MINI_MAGICK_ARGS = %W(resize quality rotate crop flip format gravity strip).freeze
@@ -18,10 +16,10 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
     # @see https://github.com/minimagick/minimagick#usage -- All but
     #   the boolean @ options are provided by Minimagick.
-    # ------------------------------------------------------------------------
+    # --
 
     def initialize(asset, opts, args)
       @asset = asset
@@ -29,7 +27,7 @@ try_require "mini_magick" do
       @args = args
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     def process
       img = MiniMagick::Image.open(@asset.filename)
@@ -58,7 +56,7 @@ try_require "mini_magick" do
       img.destroy!
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def any_preset?(*keys)
@@ -67,14 +65,14 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def preset?
       (@opts.keys - MINI_MAGICK_ARGS.map(&:to_sym)).any?
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_quality(_, cmd)
@@ -83,7 +81,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_resize(_, cmd)
@@ -93,7 +91,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_rotate(_, cmd)
@@ -102,7 +100,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_flip(_, cmd)
@@ -111,7 +109,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_format(img, _)
@@ -120,7 +118,8 @@ try_require "mini_magick" do
         @asset.content_type = img.mime_type
       end
     end
-    # ------------------------------------------------------------------------
+
+    # --
 
     private
     def magick_crop(_, cmd)
@@ -129,7 +128,7 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_gravity(_, cmd)
@@ -138,23 +137,23 @@ try_require "mini_magick" do
       end
     end
 
-    # ------------------------------------------------------------------------
-    
+    # --
+
     private
     def magick_strip(_, cmd)
     	cmd.strip
     end
-      
-    # ------------------------------------------------------------------------
+
+    # --
     # I just want you to know, we don't even care if you do multiple
     # resizes or try to, we don't attempt to even attempt to attempt to care
     # we expect you to be logical and if you aren't we will comply.
-    # ------------------------------------------------------------------------
+    # --
     # rubocop:disable Metrics/PerceivedComplexity
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Style/ParallelAssignment
     # rubocop:disable Metrics/AbcSize
-    # ------------------------------------------------------------------------
+    # --
 
     private
     def magick_preset_resize(img, cmd)
@@ -170,13 +169,12 @@ try_require "mini_magick" do
       cmd.resize "#{width}x#{height}"
     end
 
-    # ------------------------------------------------------------------------
+    # --
     # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Style/ParallelAssignment
     # rubocop:enable Metrics/AbcSize
-    # ------------------------------------------------------------------------
-
+    # --
   end
 
   Jekyll::Assets::Env.liquid_proxies.add :magick, [:img, :asset_path], *(MINI_MAGICK_ARGS + MINI_MAGICK_PRESETS) do
@@ -184,11 +182,10 @@ try_require "mini_magick" do
       @miniMagick = JekyllAssetsMiniMagic.new(asset, opts, args)
     end
 
-    # ------------------------------------------------------------------------
+    # --
 
     def process
       @miniMagick.process
     end
-
   end
 end

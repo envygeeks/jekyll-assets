@@ -1,8 +1,6 @@
-# ----------------------------------------------------------------------------
 # Frozen-string-literal: true
 # Copyright: 2012 - 2016 - MIT License
 # Encoding: utf-8
-# ----------------------------------------------------------------------------
 
 module Jekyll
   module Assets
@@ -68,6 +66,7 @@ module Jekyll
       end
 
       # --
+
       def log_level=(*)
         raise "Please set log levels on Jekyll.logger"
       end
