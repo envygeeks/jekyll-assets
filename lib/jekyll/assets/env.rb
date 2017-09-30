@@ -215,14 +215,17 @@ module Jekyll
       # @return [Pathname,Pathutil,String]
       # --
       def prefix_path(path = nil)
-        cdn = asset_config["cdn"]["url"]
-        base_url = baseurl
-
         path_ = []
-        path_ << base_url unless base_url.empty?
-        path_ << path unless path.nil?
 
-        url = cdn && cdn?? File.join(cdn, *path_) : File.join(*path_)
+        path_ << baseurl unless baseurl.empty?
+        unless path.nil?
+          path_ << path
+        end
+
+        url = asset_config["cdn"]["url"] && cdn??
+          File.join(asset_config["cdn"]["url"], *path_) :
+          File.join(*path_)
+
         url.chomp("/")
       end
 
