@@ -23,7 +23,7 @@ end
 
 ```yaml
 # _config.yml
-plugins:
+plugins_dir:
   - jekyll-assets
 ```
 
