@@ -185,13 +185,15 @@ module Jekyll
       # are writing our own assets.
       # --
       def baseurl
-        ary = []
-        s1, s2 = asset_config["cdn"].values_at("baseurl", "prefix")
-        ary << jekyll.config["baseurl"] unless cdn? && !s1
-        ary <<  asset_config[ "prefix"] unless cdn? && !s2
-        File.join(*ary.delete_if do |val|
-          val.nil? || val.empty?
-        end)
+        @baseurl ||= begin
+          ary = []
+          s1, s2 = asset_config["cdn"].values_at("baseurl", "prefix")
+          ary << jekyll.config["baseurl"] unless cdn? && !s1
+          ary <<  asset_config[ "prefix"] unless cdn? && !s2
+          File.join(*ary.delete_if do |val|
+            val.nil? || val.empty?
+          end)
+        end
       end
 
       # --
