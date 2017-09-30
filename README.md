@@ -16,10 +16,10 @@ Jekyll assets is an asset pipeline using Sprockets 3 to build specifically for J
 
 ```ruby
 # Gemfile
-group :jekyll_plugins do
-  gem "jekyll-assets"
-end
+gem "jekyll-assets", group: :jekyll_plugins
 ```
+
+Or
 
 ```yaml
 # _config.yml
@@ -34,11 +34,13 @@ The configuration file is the same as Jekyll's, which is _config.yml. Use the sp
 ```yaml
 assets:
   compress:
-    css: false | true | default - development: false, production: true
-    js: false | true | default - development: false, production: true
+    css: false|true| default - development:false, production:true
+     js: false|true| default - development:false, production:true
   autowrite: true
-  cache: false | directory | default: .asset-cache
-  cache_type: memory | filesystem | default: filesystem
+  cache:
+    type: file|memory
+    path: .jekyll-cache/assets
+    enabled: true
   cdn: https://cdn.example.com
   skip_baseurl_with_cdn: false
   skip_prefix_with_cdn: false
@@ -159,8 +161,7 @@ Start up your local Jekyll server and if everything is correct, your site will b
     @import 'bootstrap'
   ```
 
-* ES6 `gem "sprockets-es6"`
-* Image Magick `gem "mini_magick"`
+* ImageMagick `gem "mini_magick"`
 * ImageOptim `gem "image_optim"`
 
   ```yml

@@ -5,14 +5,8 @@
 module Jekyll
   module Assets
     module Liquid
-      if defined?(::Liquid::ParseContext)
-        class ParseContext < ::Liquid::ParseContext
-          #
-        end
-      else
-        class ParseContext < Array
-          #
-        end
+      class ParseContext < ::Liquid::ParseContext
+        #
       end
     end
   end

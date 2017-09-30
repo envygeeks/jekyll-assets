@@ -11,25 +11,24 @@ module Jekyll
       }
 
       # --
+      # @param [Hash] opts, the opts.
       # @param [String] path the path you wish to resolve.
       # Find the path to the asset.
       # --
       def asset_path(path, opts = {})
-        return path if Pathname.new(path).absolute?
+        return path if Pathutil.new(path).absolute?
         asset = manifest.find(path).first
 
         if asset
-          manifest.add(asset)
-          parent.prefix_path(
-            parent.digest?? asset.digest_path : asset.logical_path
-          )
-        else
-          path
+          manifest.compile(path)
+          path = asset.digest_path
+          parent.prefix_path(path)
         end
       end
 
       # --
-      # @param [String] path the path you wish to resolve.
+      # @param [Hash] opts the opts
+      # @param [String] path the path you wish to resolve
       # Pull the asset path and wrap it in url().
       # --
       def asset_url(path, opts = {})

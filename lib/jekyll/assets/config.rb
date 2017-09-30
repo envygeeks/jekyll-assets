@@ -12,41 +12,51 @@ module Jekyll
       ).freeze
 
       # --
-
       Development = {
-        "cache_type" => "file",
-        "skip_baseurl_with_cdn" => false,
-        "skip_prefix_with_cdn"  => false,
-        "prefix"    => "/assets",
+        "liquid"    => false,
         "digest"    => false,
-        "assets"    => [],
+        "prefix"    => "/assets",
+        "integrity" => false,
         "autowrite" => true,
+        "sources"   => [],
+        "assets"    => [],
 
-        "compress"  => {
-          "css"     => false,
-          "js"      => false
+        "img" => {
+          "dimensions" => true,
+          "alt"        => true,
         },
 
-        "features" => {
-          "integrity" => false,
-          "automatic_img_alt"  => true,
-          "automatic_img_size" => true,
-          "liquid" => false
-        }
+        "cdn" => {
+          "baseurl" => false,
+          "prefix"  => false,
+        },
+
+        "cache" => {
+          "enabled" => true,
+          "path"    => ".jekyll-cache/assets",
+          "type"    => "file",
+        },
+
+        "compress" => {
+          "css" => false,
+          "js"  => false,
+        },
+
+        "image_optim" => {}
       }.freeze
 
       # --
-
       Production = Development.merge({
-        "digest"    => true,
-        "compress"  => {
-          "css"     => true,
-          "js"      => true
+        "digest"   => true,
+        "compress" => {
+          "css" => true,
+          "js"  => true
         }
       }).freeze
 
       # --
       # @param [Jekyll::Site] jekyll The jekyll instance.
+      # @param [Hash<{}>] config the configuration to alter.
       # Merge our sources with Jekyll's sources.
       # --
       def self.merge_sources(jekyll, config) config["sources"] ||= []
@@ -62,18 +72,21 @@ module Jekyll
       end
 
       # --
-
+      # @note normally you wouldn't be using the defaults but
+      #   they exist so that if you have something that should
+      #   not be customizable in `#safe?` then you can refer
+      #   to the defaults we prefer, or that you prefer if
+      #   you add your defaults to the configuration.
+      # --
       def self.defaults
-        if %W(development test).include?(Jekyll.env)
-          then Development else Production
-        end
+        %W(development test).include?(Jekyll.env) ? Development : Production
       end
 
       # --
-
       def self.merge(new_hash, old_hash = defaults)
         old_hash.merge(new_hash) do |_, old_val, new_val|
-          old_val.is_a?(Hash) && new_val.is_a?(Hash) ? merge(new_val, old_val) : new_val
+          old_val.is_a?(Hash) && new_val.is_a?(Hash) ?
+            merge(new_val, old_val) : new_val
         end
       end
     end

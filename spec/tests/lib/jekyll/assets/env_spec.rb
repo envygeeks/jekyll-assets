@@ -4,212 +4,167 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Env do
-  let :env do
-    Jekyll::Assets::Env.new(
-      site
-    )
-  end
+  let(:env) { Jekyll::Assets::Env.new(site) }
+  before(:each, :process => true) { site.process }
+  let(:path) { site.in_dest_dir("/assets") }
+  let(:site) { stub_jekyll_site }
+  subject { env }
 
   #
 
-  before :each, :process => true do
-    site.process
-  end
-
-  #
-
-  let :path do
-    site.in_dest_dir(
-      "/assets"
-    )
-  end
-
-  #
-
-  let :site do
-    stub_jekyll_site
-  end
-
-  #
-
-  before :all do
-    @site = stub_jekyll_site
-    @env  = Jekyll::Assets::Env.new(
-      @site
-    )
-  end
-
-  #
-
-  describe "#excludes" do
-    subject do
-      @env.excludes
+  describe "#asset_config" do
+    it "should merge defaults into user config" do
+      stub_asset_config({ "hello" => "world" })
+      expect(env.asset_config["hello"]).
+        to(eq("world"))
     end
 
     #
 
-    it do
-      is_expected.to include(
-        ".asset-cache"
-      )
+    it "should merge sources" do
+      stub_asset_config({ "sources" => [ "hello" ]})
+      expect(env.asset_config["sources"].grep(/\/hello$/).size).to(
+        eq(1))
     end
   end
 
   #
 
-  it "adds the current Jekyll instance" do
-    expect(@env.jekyll).to eq(
-      @site
-    )
-  end
-
-  #
-
-  it "returns a path with the CDN and prefix in production" do
-    allow(Jekyll).to receive(:env).and_return "production"
-    stub_asset_config "cdn" => "//localhost"
-    expect(@env.prefix_path).to eq(
-      "//localhost/assets"
-    )
-  end
-
-  #
-
-  it "skips the prefix in production if skip_prefix_with_cdn => true" do
-    stub_asset_config "skip_prefix_with_cdn" => true, "cdn" => "//localhost"
-    expect(@env.prefix_path).to eq(
-      "/assets"
-    )
-  end
-
-  #
-
-  it "does not use a cdn in development mode" do
-    expect(@env.prefix_path).to eq(
-      "/assets"
-    )
-  end
-
-  #
-
-  it "uses Jekylls baseurl when prefixing the url" do
-    @env.jekyll.config["baseurl"] = "/hello"
-    expect(@env.prefix_path).to eq "/hello/assets"
-    @env.jekyll.config["baseurl"] = ""
-  end
-
-  #
-
-  it "skips the baseurl on a cdn if asked to" do
-    allow(Jekyll).to receive(:env).and_return "production"
-    stub_asset_config site, "skip_baseurl_with_cdn" => true, "cdn" => "//localhost"
-    env.jekyll.config["baseurl"] = "/hello"
-    expect(env.prefix_path).to eq(
-      "//localhost/assets"
-    )
-  end
-
-  #
-
-  it "allows the user to set a relative path" do
-    stub_asset_config site, "prefix" => "assets"
-    expect(env.prefix_path).to eq(
-      "assets"
-    )
-  end
-
-  #
-
-  context do
-    before do
-      allow(Jekyll).to receive(:env).and_return(
-        "production"
-      )
-    end
-
-    it "digests by default in production" do
-      Jekyll::Assets::Env.new(stub_jekyll_site).digest?
-      expect(env.digest?).to eq(
-        true
-      )
+  describe "#manifest" do
+    it "should put the path in Jekyll's dest dir" do
+      expect(env.manifest.path).to(start_with(env.jekyll.source))
     end
   end
 
   #
 
-  context do
-    before do
-      stub_asset_config "digest" => false
-      allow(Jekyll).to receive(:env).and_return(
-        "production"
-      )
+  describe "#prefix_path" do
+    context "with !cdn.url" do
+      context "with dev? = true" do
+        it "should not try to add the cdn" do
+          stub_asset_config({ "cdn" => { "url" => "hello.com" }})
+          allow(env).to(receive(:dev?).
+            and_return(true))
+
+          expect(env.prefix_path).to(eq("/assets"))
+        end
+      end
+
+      #
+
+      context "with dev? = true" do
+        it "should add the cnd.url" do
+          stub_asset_config({ "cdn" => { "url" => "hello.com" }})
+          allow(env).to(receive(:dev?).
+            and_return(false))
+
+          expect(env.prefix_path).to(eq("hello.com"))
+        end
+      end
+    end
+  end
+
+  #
+
+  describe "#to_liquid_payload" do
+    it "should build a list of liquid drops" do
+      expect(env.to_liquid_payload).to(be_a(Hash))
+      env.to_liquid_payload.each do |_, v|
+        expect(v).to(be_a(Jekyll::Assets::Liquid::Drop))
+      end
+    end
+  end
+
+  #
+
+  describe "#extra_assets" do
+    it "should compile those extra assets" do
+      stub_asset_config("assets" => ["ubuntu.png"])
+      env.extra_assets
+
+      asset = env.manifest.find("ubuntu.png").first
+      expect(Pathutil.new(env.in_dest_dir(asset.digest_path
+        ))).to(exist)
+    end
+  end
+
+  #
+
+  describe "baseurl" do
+    shared_examples :baseurl_tests do
+      it "adds baseurl" do
+        stub_jekyll_config({
+          "baseurl" => "hello"
+        })
+
+        expect(env.baseurl).to(eq("hello/assets"))
+      end
+
+      #
+
+      it "adds prefix" do
+        allow(env).to(receive(:cdn?).and_return(false))
+        stub_asset_config({
+          "cdn" => {
+            "prefix" => true,
+          }
+        })
+
+        expect(env.baseurl).to(eq("/assets"))
+      end
     end
 
     #
 
-    it "allows a user to disable digesting in production" do
-      expect(@env.digest?).to be(
-        false
-      )
+    context "when cdn is false" do
+      it_behaves_like :baseurl_tests do
+        before :each do
+          allow(env).to(receive(:cdn?).and_return(false))
+        end
+      end
     end
-  end
 
-  #
+    #
 
-  it "does not enable digesting by default in development" do
-    expect(@env.digest?).to be(
-      false
-    )
-  end
+    context "when cdn is true" do
+      it_behaves_like :baseurl_tests do
+        before :each do
+          allow(env).to(receive(:cdn?).and_return(false))
+        end
+      end
+    end
 
-  #
+    #
 
-  it "allows you to enable digesting in development" do
-    stub_asset_config "digest" => true
-    expect(@env.digest?).to be(
-      true
-    )
-  end
+    context "when cdn is true" do
+      context "when cdn.prefix is false" do
+        it "should not prefix" do
+          allow(env).to(receive(:cdn?).and_return(true))
+          stub_asset_config({
+            "cdn" => {
+              "prefix" => false
+            }
+          })
 
-  #
+          expect(env.baseurl).to(eq(""))
+        end
+      end
 
-  it "overrides the default object cache" do
-    expect(@env.cached).to be_kind_of(
-      Jekyll::Assets::Cached
-    )
-  end
+      #
 
-  #
+      context "when cdn.baseurl is false" do
+        it "should not baseurl" do
+          allow(env).to(receive(:cdn?).and_return(true))
+          stub_jekyll_config("baseurl" => "hello")
+          stub_asset_config({
+            "cdn" => {
+              "baseurl" => false
+            }
+          })
 
-  it "writes the assets the user requests it to write", :process => true do
-    expect(Dir[File.join(path, "*")]).not_to(
-      be_empty
-    )
-  end
-
-  #
-
-  it "writes cached assets on a simple refresh", :process => true do
-    path_ = Pathutil.new(path)
-    path_.rmtree
-
-    site.sprockets.manifest.assets.clear
-    site.sprockets.write_all
-    expect(path_).to(exist)
-    expect(path_.children).not_to(
-      be_empty
-    )
-  end
-
-  #
-
-  it "writes missing assets even when cached", :process => true do
-    file = Dir[File.join(path, "*")][0]
-    FileUtils.rm(file)
-
-    site.sprockets.write_all
-    expect(Pathutil.new(file)).to(
-      exist
-    )
+          expect(env.baseurl).to(eq(""))
+        end
+      end
+    end
   end
 end

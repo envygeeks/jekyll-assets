@@ -4,7 +4,6 @@
 
 RSpec.configure do |config|
   config.before :all do
-    Pathutil.new("../.asset-cache").expand_path(__dir__)
-      .rm_rf
+    Pathutil.new("../.jekyll-cache").expand_path(__dir__).rm_rf
   end
 end

@@ -15,8 +15,8 @@ group :test do
 end
 
 gem "uglifier", :require => false
-gem "sprockets-es6", "~> 0.6", :require => false
 gem "autoprefixer-rails", "~> 7.0", :require => false
+gem "sprockets", "#{ENV["SPROCKETS_VERSION"] || "~> 4.0.beta"}"
 gem "jekyll", "#{ENV["JEKYLL_VERSION"]}" if ENV["JEKYLL_VERSION"]
 gem "font-awesome-sass", "~> 4.4", :require => false
 gem "bootstrap-sass", "~> 3.3", :require => false
@@ -24,3 +24,4 @@ gem "mini_magick", "~> 4.2", :require => false
 gem "image_optim", "~> 0.25", :require => false
 gem "image_optim_pack", "~> 0.5", :require => false
 gem "less", "~> 2.6.0", :require => false
+gem "babel-transpiler", :require => false

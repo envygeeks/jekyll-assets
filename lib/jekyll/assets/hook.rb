@@ -16,7 +16,7 @@ module Jekyll
       HOOK_ALIASES = {
         :env => {
           :post_init => :init,
-          :pre_init  => :init
+           :pre_init => :init
         }
       }
 
@@ -35,11 +35,12 @@ module Jekyll
       end
 
       # --
-      # Trigger a hook, giving an optional block where we pass you the,
-      # proc we got and then you can do as you please (such as instance eval)
-      # but if you do not give us one then we simply pass the args.
+      # trigger allows you to trigger a hook, giving an
+      # optional block where we pass you the, proc we got and
+      # then you can do as you please (such as instance eval)
+      # but if you do not give us one then we simply pass.
+      # @return [nil]
       # --
-
       def self.trigger(base, point_, *args, &block)
         raise ArgumentError, "Do not give args with a block" if !args.empty? && block_given?
         if all.key?(base) && all[base].key?(point_)

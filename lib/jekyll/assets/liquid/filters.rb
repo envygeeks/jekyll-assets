@@ -6,13 +6,13 @@ module Jekyll
   module Assets
     module Liquid
       module Filters
-        ACCEPTABLE_FILTERS = [:css, :img, :asset_path, :stylesheet,
+        FILTERS = [:css, :img, :asset_path, :stylesheet,
           :javascript, :style, :image, :js]
 
         # --
         # The base filters.
         # --
-        ACCEPTABLE_FILTERS.each do |val|
+        FILTERS.each do |val|
           define_method val do |path, args = ""|
             Tag.send(:new, val, "#{path} #{args}", ParseContext.new)
               .render(@context)
@@ -20,27 +20,19 @@ module Jekyll
         end
 
         # --
-        # Include multiple assets.
+        # jekyll_asset_multi allos you to include multiple assets.
         # @return [Strings]
         # --
         def jekyll_asset_multi(assets)
-          return Shellwords.shellsplit(assets).map { |s| s.split(":", 2) }.map do |tag, arguments|
-            Tag.send(:new, tag, arguments, ParseContext.new).render(
-              @context
-            )
-          end \
-
-          .join(
-            "\n"
-          )
+          Shellwords.shellsplit(assets).map { |s| s.split(":", 2) }.map do |t, a|
+            tag = Tag.send(:new, t, a, ParseContext.new)
+            tag.render(@context)
+          end.join("\n")
         end
       end
 
-      #
-
-      ::Liquid::Template.register_filter(
-        Filters
-      )
     end
   end
 end
+
+Liquid::Template.register_filter(Jekyll::Assets::Liquid::Filters)

@@ -5,25 +5,28 @@
 module Jekyll
   module Assets
     class Cached < Sprockets::CachedEnvironment
-      attr_reader :jekyll, :parent
+      extend Forwardable::Extended
+      attr_reader :uncached
+
+      rb_delegate :manifest, to: :uncached
+      rb_delegate :asset_config, to: :uncached
+      rb_delegate :jekyll, to: :uncached
 
       # --
       # @param [Env] env the environment
       # Initialize a new instance
       # --
       def initialize(env)
-        @parent = env
-        @jekyll = env.jekyll
-        @resolve_cache = {}
-        super env
-      end
+        super
 
-
-      # --
-      # Resolve an asset.
-      # --
-      def resolve(*args)
-        @resolve_cache[args] ||= super
+        # --
+        # Normally you shouldn't be using uncached to do
+        #   something, but we provide it so that we can get
+        #   access to things like `asset_config`, `manifest`,
+        #   and `Jekyll` itself. Though `manifest` is used
+        #   via the `find_asset` anyways.
+        # --
+        @uncached = env
       end
     end
   end
