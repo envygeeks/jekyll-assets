@@ -74,6 +74,8 @@ describe Jekyll::Assets::Env do
         end
       end
 
+      #
+
       context "and when cdn.baseurl = false" do
         it "doesn't add baseurl" do
           env.instance_variable_set(:@baseurl, nil)
