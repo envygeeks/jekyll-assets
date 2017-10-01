@@ -6,15 +6,13 @@ cache:
     - vendor/bundle
 env:
   matrix:
-    - JEKYLL_VERSION="~> 3.4"
-    - JEKYLL_VERSION="<= 3.2"
+    - JEKYLL_VERSION="~> 3.6"
+    - JEKYLL_VERSION="<= 3.5"
 rvm:
   - &ruby24 2.4
   - &ruby23 2.3
-  - &ruby22 2.2
-  - &ruby21 2.1
-  - &jruby jruby-9.1.2.0
   - &rhead ruby-head
+  - &jruby jruby
 matrix:
   fast_finish: true
   allow_failures:
