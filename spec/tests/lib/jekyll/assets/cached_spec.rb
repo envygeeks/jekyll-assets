@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2017 - MIT License
+# Encoding: utf-8
+
 require "rspec/helper"
 describe Jekyll::Assets::Cached do
   let(:env) { Jekyll::Assets::Env.new(site) }

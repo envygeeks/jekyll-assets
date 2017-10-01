@@ -4,29 +4,11 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Env do
-  let(:env) { Jekyll::Assets::Env.new(site) }
+  let(:env) { Jekyll::Assets::Env.new(jekyll) }
   before(:each, :process => true) { site.process }
   let(:path) { site.in_dest_dir("/assets") }
-  let(:site) { stub_jekyll_site }
+  let(:jekyll) { stub_jekyll_site }
   subject { env }
-
-  #
-
-  describe "#asset_config" do
-    it "should merge defaults into user config" do
-      stub_asset_config({ "hello" => "world" })
-      expect(env.asset_config["hello"]).
-        to(eq("world"))
-    end
-
-    #
-
-    it "should merge sources" do
-      stub_asset_config({ "sources" => [ "hello" ]})
-      expect(env.asset_config["sources"].grep(/\/hello$/).size).to(
-        eq(1))
-    end
-  end
 
   #
 
@@ -51,9 +33,13 @@ describe Jekyll::Assets::Env do
 
   describe "#extra_assets" do
     it "should compile those extra assets" do
-      stub_asset_config("assets" => ["ubuntu.png"])
-      env.extra_assets
+      stub_asset_config({
+        :precompile => [
+          "ubuntu.png"
+        ]
+      })
 
+      env.extra_assets
       asset = env.manifest.find("ubuntu.png").first
       expect(Pathutil.new(env.in_dest_dir(asset.digest_path
         ))).to(exist)
@@ -67,9 +53,9 @@ describe Jekyll::Assets::Env do
       context "and when cdn.baseurl = true" do
         it "should add baseurl" do
           env.instance_variable_set(:@baseurl, nil)
-          stub_asset_config("cdn" => { "baseurl" => true })
+          stub_asset_config(:cdn => { baseurl: true })
           allow(env).to(receive(:cdn?).and_return(true))
-          stub_jekyll_config("baseurl" => "hello")
+          stub_jekyll_config(baseurl: "hello")
           expect(env.baseurl).to(eq("hello"))
         end
       end
@@ -80,8 +66,8 @@ describe Jekyll::Assets::Env do
         it "doesn't add baseurl" do
           env.instance_variable_set(:@baseurl, nil)
           allow(env).to(receive(:cdn?).and_return(true))
-          stub_asset_config("cdn" => { "baseurl" => false })
-          stub_jekyll_config("baseurl" => "hello")
+          stub_asset_config(cdn: { baseurl: false })
+          stub_jekyll_config(baseurl: "hello")
           expect(env.baseurl).to(eq(""))
         end
       end
@@ -90,9 +76,9 @@ describe Jekyll::Assets::Env do
 
       context "and when cdn.prefix = true" do
         it "should add the prefix" do
-          env.instance_variable_set(:@baseurl, nil)
-          stub_env_config("cdn" => { "prefix" => true })
+          stub_asset_config(cdn: { prefix: true })
           allow(env).to(receive(:cdn?).and_return(true))
+          env.instance_variable_set(:@baseurl, nil)
           expect(env.baseurl).to(eq("/assets"))
         end
       end
@@ -101,9 +87,9 @@ describe Jekyll::Assets::Env do
 
       context "and when cdn.prefix = false" do
         it "doesn't add prefix" do
-          env.instance_variable_set(:@baseurl, nil)
-          stub_env_config("cdn" => { "prefix" => false })
+          stub_asset_config(cdn: { prefix: false })
           allow(env).to(receive(:cdn?).and_return(true))
+          env.instance_variable_set(:@baseurl, nil)
           expect(env.baseurl).to(eq(""))
         end
       end
@@ -114,7 +100,7 @@ describe Jekyll::Assets::Env do
 
   describe "#prefix_path" do
     it "should add the baseurl" do
-      stub_jekyll_config("baseurl" => "hello")
+      stub_jekyll_config(baseurl: "hello")
       expect(env.prefix_path).to(
         eq("hello/assets"))
     end
@@ -124,9 +110,9 @@ describe Jekyll::Assets::Env do
     context "cdn? = true" do
       it "should add the cdn url" do
         stub_asset_config({
-          "cdn" => {
-            "url" => "hello.world",
-            "prefix" => true
+          cdn: {
+            url: "hello.world",
+            prefix: true,
           }
         })
 

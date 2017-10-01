@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   DESC
 
   spec.add_runtime_dependency("rack", "~> 1.6")
+  spec.add_runtime_dependency("activesupport", "~> 5.0")
   spec.add_runtime_dependency("concurrent-ruby", "~> 1.0")
   spec.add_runtime_dependency("sprockets", ">= 3.3", "< 4.1")
   spec.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")

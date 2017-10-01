@@ -23,10 +23,10 @@ module Jekyll
     # indirectly.
     # --
     def build_context
-      site = stub_jekyll_site
-      site.liquid_renderer.file("").parse("{% context_thief %}") \
-        .render!(site.site_payload, :registers => {
-          :site => site
+      jekyll = stub_jekyll_site
+      jekyll.liquid_renderer.file("").parse("{% context_thief %}") \
+        .render!(jekyll.site_payload, :registers => {
+          :site => jekyll
         })
 
       ContextThief.context
@@ -79,8 +79,9 @@ module Jekyll
     # creating a clean state each run.
     # --
     def stub_jekyll_config(hash)
-      hash = Jekyll::Utils.deep_merge_hashes(site.config, hash)
-      allow(site).to(receive(:config).
+      hash = hash.deep_stringify_keys
+      hash = Jekyll::Utils.deep_merge_hashes(jekyll.config, hash)
+      allow(jekyll).to(receive(:config).
         and_return(hash))
     end
 
@@ -91,18 +92,8 @@ module Jekyll
     # and have it reset afterwards.
     # --
     def stub_asset_config(hash)
-      hash = Jekyll::Assets::Config.merge(hash)
-      env.instance_variable_set(:@asset_config, nil)
-      allow(site).to(receive(:config).and_return(site.config.merge({
-        "assets" => hash
-      })))
-    end
-
-    # --
-    def stub_env_config(hash)
-      hash = Jekyll::Utils.deep_merge_hashes(env.asset_config, hash)
-      allow(env).to(receive(:asset_config).
-        and_return(hash))
+      allow(env).to(receive(:asset_config).and_return(
+        env.asset_config.deep_merge(hash)))
     end
 
     # --

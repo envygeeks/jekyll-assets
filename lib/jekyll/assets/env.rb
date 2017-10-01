@@ -7,12 +7,12 @@ module Jekyll
     class Env < Sprockets::Environment
 
       extend Forwardable::Extended
-      rb_delegate :test?, to: :Jekyll, bool: true
-      rb_delegate :digest, to: :asset_config, type: :hash, bool: true
-      rb_delegate :cache?, to: :"asset_config[\"cache\"]", type: :hash, key: "enabled"
-      rb_delegate :cache_path, to: :"asset_config[\"cache\"]", type: :hash, key: "path", wrap: :in_source_dir
-      rb_delegate :safe?, to: :asset_config, type: :hash, key: "safe"
       rb_delegate :dev?, to: :Jekyll, bool: true
+      rb_delegate :digest, to: :asset_config, type: :hash, bool: true
+      rb_delegate :cache?, to: :"asset_config[:cache]", type: :hash, key: :enabled
+      rb_delegate :cache_path, to: :"asset_config[:cache]", type: :hash, key: :path, wrap: :in_source_dir
+      rb_delegate :production?, to: :jekyll
+      rb_delegate :safe?, to: :jekyll
       attr_accessor :jekyll
 
       # --
@@ -66,7 +66,7 @@ module Jekyll
       # --
       def cache
         @cache ||= begin
-          cache, type = asset_config["cache"].values_at("enabled", "type")
+          cache, type = asset_config[:cache].values_at(:enabled, :type)
           out = Sprockets::Cache::MemoryStore.new if cache && type == "memory"
           out = Sprockets::Cache::FileStore.new(cache_path) if cache && type == "file"
           out = Sprockets::Cache::NullStore.new if !cache
@@ -83,10 +83,8 @@ module Jekyll
       # --
       def asset_config
         @asset_config ||= begin
-          @jekyll.config["assets"] ||= {}
-          @jekyll.config["assets"] = Config.merge(@jekyll.config["assets"])
-          Config.merge_sources(@jekyll, @jekyll.config["assets"])
-          @jekyll.config["assets"]
+          user = jekyll.config["assets"] ||= {}
+          Config.new(user)
         end
       end
 
@@ -161,7 +159,7 @@ module Jekyll
       # @return [nil]
       # --
       def extra_assets
-        assets = asset_config["assets"] ||= []
+        assets = asset_config[:precompile]
         assets = assets.map do |v|
           manifest.compile(v)
         end
@@ -174,8 +172,8 @@ module Jekyll
       # @return [true, false]
       # --
       def cdn?
-        !dev? && asset_config["cdn"].key?("url") &&
-              asset_config["cdn"]["url"]
+        !dev? && asset_config[:cdn].key?(:url) &&
+              asset_config[:cdn][:url]
       end
 
       # --
@@ -187,9 +185,9 @@ module Jekyll
       def baseurl
         @baseurl ||= begin
           ary = []
-          s1, s2 = asset_config["cdn"].values_at("baseurl", "prefix")
+          s1, s2 = asset_config[:cdn].values_at(:baseurl, :prefix)
           ary << jekyll.config["baseurl"] unless cdn? && !s1
-          ary <<  asset_config[ "prefix"] unless cdn? && !s2
+          ary <<  asset_config[:prefix  ] unless cdn? && !s2
           File.join(*ary.delete_if do |val|
             val.nil? || val.empty?
           end)
@@ -203,7 +201,7 @@ module Jekyll
       # CSS and the like, it's out of our control.
       # @return [true, false]
       def compress?(what)
-        !!asset_config["compress"][what]
+        !!asset_config[:compress][what]
       end
 
       # --
@@ -222,8 +220,8 @@ module Jekyll
           path_ << path
         end
 
-        url = asset_config["cdn"]["url"] && cdn??
-          File.join(asset_config["cdn"]["url"], *path_) :
+        url = asset_config[:cdn][:url] && cdn??
+          File.join(asset_config[:cdn][:url], *path_) :
           File.join(*path_)
 
         url.chomp("/")
