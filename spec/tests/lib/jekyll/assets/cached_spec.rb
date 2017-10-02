@@ -17,7 +17,7 @@ describe Jekyll::Assets::Cached do
 
   describe "#uncached" do
     it "should be the environment" do
-      expect(env.cached.uncached).to(eq(env))
+      expect(subject.cached.uncached).to(eq(subject))
     end
   end
 end
