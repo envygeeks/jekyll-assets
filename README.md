@@ -100,10 +100,13 @@ Start up your local Jekyll server and if everything is correct, your site will b
 
 ## Default Plugins
 ### Font Awesome
+#### Installation
 
 ```ruby
 gem "font-awesome-sass"
 ```
+
+#### Usage
 
 ```scss
 @import "font-awesome-sprockets"
@@ -111,10 +114,13 @@ gem "font-awesome-sass"
 ```
 
 ### CSS Auto-Prefixing
+#### Installation
 
 ```ruby
 gem "autoprefixer-rails"
 ```
+
+#### Config
 
 ```yml
 assets:
@@ -124,19 +130,31 @@ assets:
     - "IE > 9"
 ```
 
-### Bootstrap `gem "bootstrap-sass"`
+### Bootstrap
+#### Installation
+
+```ruby
+gem "bootstrap-sass"
+```
+
+#### Usage
 
 ```scss
 @import 'bootstrap-sprockets'
 @import 'bootstrap'
 ```
 
-### ImageMagick `gem "mini_magick"`
+### ImageMagick
+#### Installation
+
+```ruby
+gem "mini_magick"
+```
+
+#### Tag Args
 
 See the [MiniMagick docs](https://github.com/minimagick/minimagick#usage)
 to get an idea what `<value>` can be.
-
-#### Tag Arguments
 
 * `magick:resize=<value>`
 * `magick:format=<value>`
@@ -153,7 +171,16 @@ to get an idea what `<value>` can be.
 * `@magick:one-fourth`, `@magick:1/4`
 * `@magick:half`, `@magick:1/2`
 
-### ImageOptim `gem "image_optim"`
+### ImageOptim
+#### Installation
+
+```ruby
+gem "image_optim"
+```
+
+#### Config
+
+  Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options.
 
 ```yml
 assets:
@@ -171,22 +198,32 @@ assets:
             strategy: 4
 ```
 
-  Check the [ImageOptim docs](https://github.com/toy/image_optim#configuration) to get idea about configuration options.
-* Less `gem "less"`
+#### Tag Args
+
+* `image_optim:preset:<name>`
+* `image_optim:preset:default`
+* `image_optim:default`
+
+### Less
+#### Installation
+
+```ruby
+gem "less"
+```
 
 ## Tags
 
-* image, img
-* javascript, js
-* stylesheet, css, style
-* asset, asset_source
-* asset_path
+* `image`, `img`
+* `javascript`, `js`
+* `stylesheet`, `css`, `style`
+* `asset`, `asset_source`
+* `asset_path`
 
 ### Tag Example:
 
 ```liquid
-{% img src magick=2x alt='This is my alt' %}
-{% img src magick=2x alt='This is my alt' %}
+{% img src @magick:2x alt='This is my alt' %}
+{% img src @magick:2x alt='This is my alt' %}
 ```
 
 ### What do the colons mean?
@@ -216,7 +253,7 @@ An example of using Liquid in your SCSS:
 You have full access to your entire Jekyll context from any liquid
 processing we do, so you can do whatever you like and be as dynamic as you like, including full loops and conditional Liquid based CSS since we pre-process your text files.
 
-## Getting a list of your assets and basic info from Liquid
+## Accessing Asset Info
 
 We provide all *your* assets as a hash of Liquid Drops so you can get basic info that we wish you to have access to without having to prepare the class.
 
@@ -229,7 +266,7 @@ We provide all *your* assets as a hash of Liquid Drops so you can get basic info
 The current list of available accessors:
 
 * `logical_path`
-* `content_type` -> `type`
+* `content_type`
 * `filename`
 * `basename`
 * `width`
@@ -239,27 +276,27 @@ The current list of available accessors:
 If you would like more, please feel free to add a pull request, at this
 time we will reject all pull requests that wish to add any digested paths as those are dynamically created when a proxy is ran so we can never predict it reliably unless we proxy and that would be a performance problem.
 
-### Dynamically loading assets
+## Tips
+### Dynamic Assets
 
 Using Liquid Drop `assets`, you can check whether an asset is present.
 
 ```liquid
-{% if assets[page.image] %}
-  {% img '{{ page.image }}' %}
+{% if assets[page.image] %}{% img '{{ page.image }}' %}
 {% else %}
-  {% img 'default.jpg' %}
+  {% img default.jpg %}
 {% endif %}
 ```
 
 ## Filters
 
-There is a full suite of filters, actually, any tag and any proxy can be a filter by way of filter arguments, take the following example:
+Any tag can be a filter
 
 ```liquid
-{{ src | img : "@magick:2x magick:quality:92" }}
+{{ src | img:"@magick:2x magick:quality:92" }}
 ```
 
-### Jekyll Assets Multi
+### Multi
 
 Jekyll Assets has a special called `jekyll_asset_multi` which is meant to be used for things like the header, where it would be nice to be able to include multiple assets at once.  You can use it like so:
 
@@ -269,76 +306,15 @@ Jekyll Assets has a special called `jekyll_asset_multi` which is meant to be use
 
 ## Hooks
 
-* `:env => [:init]`
+* `:env` => `:init`
 
-You can register and trigger hooks like so:
+You can register like so:
 
 ```ruby
 Jekyll::Assets::Hook.register :env, :init do
   # Your Work
 end
 ```
-
-## Combining Multiple Scripts / Stylesheets
-
-To minimize the number of HTTP requests, combine stylesheets and scripts into one file.
-
-### SCSS
-
-Use the `@import` statement, or the `//= require`, or `//= require_tree`. Given a list of files in `_assets/css`:
-
-- `main.scss`
-- `_responsive.scss`
-- `_fonts.scss`
-
-...have this in your `main.scss`:
-
-```scss
-@import 'responsive';
-@import 'fonts';
-// ...
-```
-
-Include the `main` stylesheet in your HTML: `{% css main %}`.
-
-### JavaScript
-
-Use `//= require` to import and bundle component scripts into one file.
-
-Given a list of files in `_assets/js`:
-
-- `main.js`
-- `jquery.js`
-
-...have this in your `main.js`:
-
-```js
-//= require jquery
-// ...
-```
-
-Include the `main` script in your HTML: `{% js main %}`.
-
-## Sass Helpers
-
-***Our currently supported helpers are:***
-
-* asset_url
-* asset_path
-* image_path
-* font_path
-* image_url
-* font_url
-
-### ImageOptim Proxy arguments:
-
-**NOTE: You'll need the `image_optim` gem installed for these to work**
-To install `image_optim`, add `gem "image_optim"` to your `Gemfile`
-
-See the [ImageOptim docs](https://github.com/toy/image_optim#gem-installation) to ensure proper dependencies installation.
-
-* `image_optim:default` same as `image_optim:preset:default`
-* `image_optim:preset:<name>`
 
 ## Having trouble with our documentation?
 
