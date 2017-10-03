@@ -5,25 +5,62 @@
 module Jekyll
   module Assets
     module Helpers
-      extend Forwardable::Extended
-      rb_delegate :manifest, {
-        :to => :parent
+      class AssetNotFound < StandardError
+        def initialize(path)
+          super "unable to find #{path}"
+        end
+      end
+
+      #
+
+      MIMES = {
+        font: %w(
+          application/font-woff2
+          application/x-font-opentype
+          application/vnd.ms-fontobject
+          application/x-font-ttf
+          application/font-woff
+        ),
+
+        img: %w(
+          image/bmp
+          image/gif
+          image/tiff
+          image/svg+xml
+          image/x-icon
+          image/webp
+          image/jpeg
+          image/png
+        )
       }
 
       # --
-      # @param [Hash] opts, the opts.
+      # asset_path will find the path to the asset.
       # @param [String] path the path you wish to resolve.
-      # Find the path to the asset.
+      # @param [Hash] opts, the opts.
       # --
-      def asset_path(path, opts = {})
-        return path if Pathutil.new(path).absolute?
-        asset = manifest.find(path).first
+      def asset_path(path, mimes: nil)
+        asset = nil
 
-        if asset
-          manifest.compile(path)
-          path = asset.digest_path
-          parent.prefix_path(path)
+        if mimes && !mimes.empty?
+          search = mimes.clone
+          while asset.nil? && !search.empty?
+            asset = env.find_asset(path, {
+              accept: search.pop
+            })
+          end
+        else
+          asset = env.manifest.find(path)
+          asset = asset.first
         end
+
+        if !asset
+          raise AssetNotFound, path
+        end
+
+        env.manifest.compile(path)
+        env.uncached.prefix_path(asset.
+          digest_path)
       end
 
       # --
@@ -31,37 +68,28 @@ module Jekyll
       # @param [String] path the path you wish to resolve
       # Pull the asset path and wrap it in url().
       # --
-      def asset_url(path, opts = {})
-        "url(#{asset_path(
-          path, opts
-        )})"
+      def asset_url(path, **kwd)
+        return "url(#{
+          asset_path(path, **kwd)
+        })"
       end
 
       # --
-      # Get access to the actual asset environment.
-      # @return [Jekyll::Assets::Env]
+      # Creates:
+      # - font_url
+      # - image_url
+      # - img_url
+      #
+      # - font_path
+      # - image_path
+      # - img_path
       # --
-      def parent
-        environment.is_a?(Cached) ? environment.parent : environment
-      end
+      %W(font img).each do |k|
+        mimes = MIMES[k.to_sym]
 
-      # --
-      # Creates font_url, font_path, image_path, image_url,
-      # img_path, and img_url for your pleasure.
-      # --
-      %W(font image img).each do |key|
-        define_method "#{key}_path" do |*args|
-          asset_path(
-            *args
-          )
-        end
-
-        #
-
-        define_method "#{key}_url" do |*args|
-          asset_url(
-            *args
-          )
+        define_method("#{k}_path") { |*a| asset_path(*a, mimes: mimes) }
+        define_method "#{k}_url" do  |*a|
+          asset_url(*a, mimes: mimes)
         end
       end
     end
@@ -73,5 +101,6 @@ end
 module Sprockets
   class Context
     prepend Jekyll::Assets::Helpers
+    alias_method :env, :environment
   end
 end
