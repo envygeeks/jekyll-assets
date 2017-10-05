@@ -37,7 +37,7 @@ module Jekyll
         # --
         module_function
         def set_defaults(tag, args:, **kwd)
-          Default.inherited.select { |o| o.for?(tag) }.each do |v|
+          Default.inherited.select { |o| o.for?(tag) }.each do |o|
             o.new(args, **kwd).run
           end
         end
@@ -103,14 +103,14 @@ module Jekyll
         # @return [nil]
         # --
         def run
-          jekyll.logger.debug "#{self.class.name} has no dynamic " \
+          @env.logger.debug "#{self.class.name} has no dynamic " \
             "defaults skipping."
         end
 
         # --
-        def initialize(args, asset:, jekyll:, env:)
+        def initialize(args, asset:, env:)
           @asset = asset
-          @jekyll = jekyll
+          @jekyll = env.jekyll
           @args = args
           @env = env
         end
