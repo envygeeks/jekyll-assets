@@ -4,7 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Config do
-  let(:site) { stub_jekyll_site }
   subject do
     described_class
   end
