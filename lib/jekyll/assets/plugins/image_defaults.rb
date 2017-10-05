@@ -6,7 +6,10 @@ module Jekyll
   module Assets
     module Plugins
       class ImageDefaults < Jekyll::Assets::Liquid::Tag::Default
-        FOR = %w(img image)
+        tags :img, :image
+        defaults({
+          hello: "world"
+        })
 
         # --
         # run runs the default we wish to set.
