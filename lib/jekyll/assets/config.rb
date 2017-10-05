@@ -25,18 +25,13 @@ module Jekyll
           prefix: false,
         },
 
-        cache: {
-          enabled: true,
-          path: ".jekyll-cache/assets",
-          type: "file",
-        },
-
-        compress: {
-          css: false,
-          js: false,
-        },
-
         plugins: {
+          caching: {
+            enabled: true,
+            path: ".jekyll-cache/assets",
+            type: "file",
+          },
+
           img: {
             optim: {
               #
@@ -45,6 +40,19 @@ module Jekyll
             defaults: {
               dimensions: true,
               alt: true,
+            }
+          },
+
+          compression: {
+            js: {
+              enabled: false,
+              opts: {
+                #
+              }
+            },
+
+            css: {
+              enabled: true,
             }
           }
         },

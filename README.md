@@ -33,10 +33,6 @@ The configuration file is the same as Jekyll's, which is `_config.yml`. Except w
 assets:
   prefix: "/assets"
   autowrite: true
-  cache:
-    path: .jekyll-cache/assets
-    type: file|memory|false|null|nil
-    enabled: true
   cdn:
     baseurl: true|false
     url: https://cdn.example.com
@@ -52,6 +48,10 @@ assets:
   - _assets/img
   - _assets/js
   plugins:
+    caching:
+      path: .jekyll-cache/assets
+      type: file|memory|false|null|nil
+      enabled: true
     compression:
       css: false
        js: false
