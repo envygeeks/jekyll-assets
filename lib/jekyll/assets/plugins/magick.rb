@@ -164,21 +164,21 @@ module Jekyll
   end
 end
 
-try_require "mini_magick" do
-  klass = Jekyll::Assets::Proxies::MiniMagick
-  args = klass::PRESETS + klass::ARGS
-  reg = [
-    :img, :asset_path
-  ]
-
-  Jekyll::Assets::Liquid::Tag::Proxies.add :magick, reg, *args do
-    def initialize(asset, opts, args)
-      @magick = klass.new(asset, opts, args)
-    end
-
-    # --
-    def process
-      @magick.process
-    end
-  end
-end
+# try_require "mini_magick" do
+#   klass = Jekyll::Assets::Proxies::MiniMagick
+#   args = klass::PRESETS + klass::ARGS
+#   reg = [
+#     :img, :asset_path
+#   ]
+#
+#   Jekyll::Assets::Liquid::Tag::Proxies.add :magick, reg, *args do
+#     def initialize(asset, opts, args)
+#       @magick = klass.new(asset, opts, args)
+#     end
+#
+#     # --
+#     def process
+#       @magick.process
+#     end
+#   end
+# end

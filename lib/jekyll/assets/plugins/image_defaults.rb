@@ -5,7 +5,7 @@
 module Jekyll
   module Assets
     module Plugins
-      class ImageDefaults < Jekyll::Assets::Liquid::Tag::Default
+      class ImageDefaults < Jekyll::Assets::Liquid::Default
         tags :img, :image
         defaults({
           hello: "world"

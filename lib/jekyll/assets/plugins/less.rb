@@ -54,9 +54,9 @@ module Jekyll
   end
 end
 
-try_require_if_javascript "less" do
-  Sprockets.register_transformer("text/less", "test/css", Jekyll::Assets::Processors::LESS)
-  Sprockets.register_mime_type("text/less", :extensions => [
-    ".less", ".css.less"
-  ])
-end
+# try_require_if_javascript "less" do
+#   Sprockets.register_transformer("text/less", "test/css", Jekyll::Assets::Processors::LESS)
+#   Sprockets.register_mime_type("text/less", :extensions => [
+#     ".less", ".css.less"
+#   ])
+# end

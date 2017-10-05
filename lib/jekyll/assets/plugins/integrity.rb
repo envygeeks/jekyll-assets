@@ -5,8 +5,8 @@
 module Jekyll
   module Assets
     module Plugins
-      class IntegrityDefault < Jekyll::Assets::Liquid::Tag::Default
-        FOR = %w(css javascript js)
+      class IntegrityDefault < Liquid::Default
+        tags :css, :javascript, :js, :img, :image
 
         # --
         # run runs the default we wish to set.

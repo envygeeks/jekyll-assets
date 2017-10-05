@@ -43,6 +43,6 @@ end
 # end
 
 # --
-Jekyll::Assets::Processors::Liquid::FOR.each do |v|
-  Sprockets.register_preprocessor(v, Jekyll::Assets::Processors::Liquid)
-end
+# Jekyll::Assets::Processors::Liquid::FOR.each do |v|
+#   Sprockets.register_preprocessor(v, Jekyll::Assets::Processors::Liquid)
+# end
