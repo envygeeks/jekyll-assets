@@ -6,32 +6,57 @@ module Jekyll
   module Assets
     class Hook
       class UnknownHookError < RuntimeError
-        def initialize(base: nil, point: nil)
-          super "Unknown hook #{base ? "base" : "point"} '#{base || point}'"
+        def initialize(point)
+          super "Unknown hook point `#{point}'"
         end
       end
 
       # --
-
-      HOOK_ALIASES = {
-        :env => {
-          :post_init => :init,
-           :pre_init => :init
+      POINTS = {
+        env: {
+          init: {
+            1 => [],
+            2 => [],
+            3 => [],
+          }
         }
       }
 
       # --
+      # add_point allows you to add a hook point to our hooks.
+      # @param [Array<Symbol>] *point the point path.
+      # --
+      def self.add_point(*point)
+        raise ArgumentError, "only give 2 points" if point.count > 2
 
-      HOOK_POINTS = {
-        :env => [
-          :init
-        ]
-      }
+        POINTS[point[0]] ||= {}
+        POINTS[point[0]][point[1]] ||= {
+          #
+        }
+
+        1.upto(3).each do |i|
+          POINTS[point[0]][point[1]][i] ||= [
+            #
+          ]
+        end
+
+        POINTS
+      end
+
 
       # --
+      # @param [Array<Symbol>] *point the point path.
+      # get_point will try and retrieve (or create and/loop)
+      # the point you request, and then fetch it's priority for
+      # you to run when you are ready.
+      # --
+      def self.get_point(*point)
+        check_point(*point)
 
-      def self.all
-        @_all ||= {}
+        POINTS[point[0]][point[1]].
+        each_with_object([]) do |(_, v), a|
+          a |= v
+        end
       end
 
       # --
@@ -41,36 +66,30 @@ module Jekyll
       # but if you do not give us one then we simply pass.
       # @return [nil]
       # --
-      def self.trigger(base, point_, *args, &block)
-        raise ArgumentError, "Do not give args with a block" if !args.empty? && block_given?
-        if all.key?(base) && all[base].key?(point_)
-          Set.new.merge(point(base, point_, :early)).merge(point(base, point_)).map do |v|
-            block_given?? block.call(v) : v.call(*args)
-          end
+      def self.trigger(*point, &block)
+        get_point(*point).map do |v|
+          block.call(v)
         end
       end
 
       # --
+      def self.register(*point, priority: 3, &block)
+        raise ArgumentError, "priority must be between 1 and 3" if priority > 3
 
-      def self.point(base, point, when_ = :late)
-        point = all[base][point] ||= {
-          :early => Set.new,
-          :late  => Set.new
-        }
-
-        point[when_]
+        check_point(*point)
+        out = POINTS[point[0]]
+        out = out[point[1]]
+        out = out[priority]
+        out << block
       end
 
       # --
-
-      def self.register(base, point, when_ = :late, &block)
-        raise UnknownHookError, base: base unless HOOK_POINTS.key?(base)
-        point = HOOK_ALIASES[base][point] if HOOK_ALIASES.fetch(base, {}).key?(point)
-        raise UnknownHookError, point: point unless HOOK_POINTS[base].include?(point)
-        all[base] ||= {}
-
-        point(base, point, when_) \
-          .add(block)
+      private
+      def self.check_point(*point)
+        raise ArgumentError, "only give 2 points" if point.count > 2
+        unless POINTS.key?(point[0]) && POINTS[point[0]].key?(point[1])
+          raise ArgumentError, "Unknown hook #{point}"
+        end
       end
     end
   end
