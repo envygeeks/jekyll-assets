@@ -3,16 +3,16 @@
 # Encoding: utf-8
 
 Jekyll::Assets::Hook.register :env, :init do
-  if compress?("css")
+  opts = asset_config[:plugins][:compression]
+
+  if opts[:css][:enabled]
     @css_compressor = :sass
   end
 
-  if compress?("js")
+  if opts[:js][:enabled]
     try_require "uglifier" do
-      opts = opts = asset_config.fetch("external", {}).fetch("uglifier", nil)
-      @js_compressor = !jekyll.safe && opts ?
-        Uglifier.new(opts.symbolize_keys) :
-          :uglify
+      @js_compressor = !jekyll.safe ? Uglifier.new(
+        opts[:js][:opts]) : :uglify
     end
   end
 end
