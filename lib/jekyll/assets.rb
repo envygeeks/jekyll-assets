@@ -9,12 +9,15 @@ require "pathutil"
 require "jekyll"
 
 # --
+require "jekyll/assets/patches/obsolete_files"
+require "jekyll/assets/patches/sprockets_data_uri"
+require "jekyll/assets/patches/sprockets"
+require "jekyll/assets/patches/kernel"
+
+# --
 require "jekyll/assets/version"
-require "jekyll/assets/jekyll/site"
-require "jekyll/assets/jekyll/drops"
-require "jekyll/assets/jekyll/setup"
-require "jekyll/assets/jekyll/site"
-require "jekyll/assets/kernel"
+require "jekyll/assets/hooks/drops"
+require "jekyll/assets/hooks/setup"
 require "jekyll/assets/hook"
 require "jekyll/assets/cached"
 require "jekyll/assets/helpers"
