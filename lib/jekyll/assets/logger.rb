@@ -5,70 +5,51 @@
 module Jekyll
   module Assets
     class Logger
-      PREFIX = "Jekyll Assets:"
-
-      class << self
-
-        # --
-        # @param [String] msg the message you wish to send out.
-        # Deprecate a method and warn the user about it.
-        # --
-        def deprecate(msg, instance)
-          filepath = caller[1].split(/\.rb:/).first + ".rb"
-          filepath = Pathutil.new(filepath).relative_path_from(instance.in_source_dir)
-          Jekyll.logger.error("", format("%s: %s", msg.red, filepath))
-          yield if block_given?
-        end
-      end
+      PREFIX = "Assets: "
 
       # --
-      # @return [Jekyll:Logger]
-      # The logger.
+      # logger allows you to delegate to this class without
+      # having to create a whole new method.
+      # @return [Logger]
       # --
-      def log
-        return @log ||= Jekyll.logger
+      def logger
+        self
       end
 
       # --
       # Log Level: 1
       # --
-      def warn(msg = nil)
-        log.warn(PREFIX,
-          block_given?? yield : msg
-        )
+      def self.warn(msg = nil)
+        msg = yield if block_given?
+        Jekyll.logger.warn \
+          PREFIX, msg
       end
 
       # --
       # Log Level: 1
       # --
-      def error(msg = nil)
-        log.error(PREFIX,
-          block_given?? yield : msg
-        )
+      def self.error(msg = nil)
+        msg = yield if block_given?
+        Jekyll.logger.error \
+          PREFIX, msg
       end
 
       # --
       # Log Level: 2
       # --
-      def info(msg = nil)
-        log.info(PREFIX,
-          block_given?? yield : msg
-        )
+      def self.info(msg = nil)
+        msg = yield if block_given?
+        Jekyll.logger.info \
+          PREFIX, msg
       end
 
       # --
       # Log Level: 3
       # --
-      def debug(msg = nil)
-        log.debug(PREFIX,
-          block_given?? yield : msg
-        )
-      end
-
-      # --
-
-      def log_level=(*)
-        raise "Please set log levels on Jekyll.logger"
+      def self.debug(msg = nil)
+        msg = yield if block_given?
+        Jekyll.logger.debug \
+          PREFIX, msg
       end
     end
   end

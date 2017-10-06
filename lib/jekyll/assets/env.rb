@@ -7,6 +7,7 @@ module Jekyll
     class Env < Sprockets::Environment
 
       extend Forwardable::Extended
+      rb_delegate :logger, to: :Logger
       rb_delegate :dev?, to: :Jekyll, bool: true
       rb_delegate :digest, to: :asset_config, type: :hash, bool: true
       rb_delegate :cache?, to: :"asset_config[:cache]", type: :hash, key: :enabled
@@ -50,14 +51,6 @@ module Jekyll
 
           paths
         end
-      end
-
-      # --
-      # logger sets up the logger instance.
-      # @note this is a runner.
-      # --
-      def Logger
-        @logger ||= Jekyll::Assets::Logger.new
       end
 
       # --
