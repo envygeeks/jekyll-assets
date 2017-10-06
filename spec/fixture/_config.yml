@@ -1,6 +1,13 @@
-gems: ["jekyll-assets"]
-background_image: ruby.png
-featured:
-- ruby1.png
-- ruby2.png
-- ruby3.png
+defaults:
+- scope:
+    type: pages
+    path: ""
+  values:
+    layout: default
+    type: page
+- scope:
+    type: posts
+    path: ""
+  values:
+    layout: default
+    type: post
