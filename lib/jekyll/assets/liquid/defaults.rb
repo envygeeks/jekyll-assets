@@ -14,9 +14,8 @@ module Jekyll
         # --
         # @param tag [String] the tag you are working with.
         # @param jekyll [Jekyll::Site] the Jekyll instance (w/ Sprockets).
-        # Defaults that aren't dynamic can can be quickly
-        #   set within the tag parser itself, without the
-        #   need of another value.
+        # Defaults that aren't dynamic can can be quickly set within the tag
+        # parser itself, without the need of another value.
         # --
         module_function
         def get_defaults(tag)
@@ -28,12 +27,11 @@ module Jekyll
         end
 
         # --
+        # @param args [Hash] the current arguments hash.
         # @param tag [String] the tag you are working with.
         # @param jekyll [Jekyll::Site] the Jekyll instance (w/ Sprockets.)
-        # @param args [Hash] the current arguments hash.
-        # Set dynamic defaults.  These are defaults that
-        #   might require some value that is set after parsing
-        #   is done, like default alts and stuff.
+        # set_defaults sets dynamic defaults.  These are defaults that might
+        # require some value that is set after parsing is done.
         # --
         module_function
         def set_defaults(tag, args:, **kwd)
@@ -46,8 +44,8 @@ module Jekyll
       # --
       # @abstract you are meant to inherit this class.
       # Provides a base class for any defaults you have, this
-      # way you don't have to do everything just to get some defaults
-      # for your stuff.
+      # way you don't have to do everything just to get some
+      # defaults for your stuff.
       # --
       class Default
         def self.inherited(kls = nil)

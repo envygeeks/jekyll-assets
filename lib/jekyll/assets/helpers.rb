@@ -5,14 +5,6 @@
 module Jekyll
   module Assets
     module Helpers
-      class AssetNotFound < StandardError
-        def initialize(path)
-          super "unable to find #{path}"
-        end
-      end
-
-      #
-
       MIMES = {
         font: %w(
           application/font-woff2
@@ -55,7 +47,7 @@ module Jekyll
         end
 
         if !asset
-          raise AssetNotFound, path
+          raise Errors::AssetNotFound, path
         end
 
         env.manifest.compile(path)
