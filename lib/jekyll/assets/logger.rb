@@ -12,7 +12,7 @@ module Jekyll
       # having to create a whole new method.
       # @return [Logger]
       # --
-      def logger
+      def self.logger
         self
       end
 
