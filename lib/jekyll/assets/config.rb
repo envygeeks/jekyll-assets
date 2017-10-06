@@ -60,9 +60,6 @@ module Jekyll
         sources: %W(
           _assets/css
           _assets/fonts
-          _assets/stylesheets
-          _assets/javascripts
-          _assets/images
           _assets/img
           _assets/js
         )
