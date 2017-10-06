@@ -126,7 +126,9 @@ module Jekyll
         each_file.each_with_object({}) do |k, h|
           path = strip_path(k)
           h.update({
-            path => Liquid::Drop.new(path, jekyll)
+            path => Liquid::Drop.new(path, {
+              jekyll: jekyll
+            })
           })
         end
       end

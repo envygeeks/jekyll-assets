@@ -9,19 +9,20 @@ module Jekyll
     module Liquid
       class Drop < ::Liquid::Drop
         extend Forwardable::Extended
-        CONTENT_TYPE = %W(
+        CONTENT_TYPES = %W(
           image/png
+          image/svg+xml
           image/jpeg
           image/gif
         )
 
         # --
-        # @return [Jekyll::Assets::Liquid::Drop]
+        # initialize creates a new instance
         # @param [Jekyll::Site] jekyll the Jekyll instance.
         # @param [String] path the path to the asset.
-        # initialize creates a new instance
+        # @return [Drop]
         # --
-        def initialize(path, jekyll)
+        def initialize(path, jekyll: )
           @path = path
           @jekyll = jekyll
           @asset = nil
@@ -29,56 +30,27 @@ module Jekyll
 
         # --
 
+        rb_delegate :width,        to: :dimensions, type: :hash
+        rb_delegate :height,       to: :dimensions, type: :hash
+        rb_delegate :basename,     to: :File, args: :@path
         rb_delegate :digest_path,  to: :asset
         rb_delegate :logical_path, to: :asset
         rb_delegate :content_type, to: :asset
+        rb_delegate :integrity,    to: :asset
         rb_delegate :filename,     to: :asset
-        rb_delegate :type,         to: :asset, \
-          alias_of: :type
-
-        # --
-        # basename gives you the directory of the path.
-        # @return [String]
-        # --
-        def basename
-          File.basename(@path)
-        end
-
-        # --
-        # integrity returns the files integrity string.
-        # @return [String]
-        # --
-        def integrity
-          return asset.integrity
-        end
-
-        # --
-        # width returns an image width.
-        # @return [Integer]
-        # --
-        def width
-          if image?
-            dimensions.first
-          end
-        end
-
-        # --
-        # height returns an image height.
-        # @return [Integer]
-        # --
-        def height
-          if image?
-            dimensions.last
-          end
-        end
 
         # --
         # dimensions gives you the width and height.
         # @return [Array<Integer>]
         # --
         def dimensions
-          if image?
-            @dimensions ||= FastImage.size(asset.filename.to_s)
+          @dimensions ||= begin
+            img = img?? FastImage.size(asset.filename.to_s) : []
+
+            {
+              width:  img.first,
+              height: img.last,
+            }
           end
         end
 
@@ -87,7 +59,7 @@ module Jekyll
         # @return [true, false]
         # --
         private
-        def image?
+        def img?
           if asset.content_type
             CONTENT_TYPES.include?(asset.content_type)
           end
@@ -100,10 +72,12 @@ module Jekyll
         private
         def asset
           @asset ||= begin
-            found = @jekyll.sprockets.manifest.find(@path)
-            if found
-              then found.first
+            out = @jekyll.sprockets.manifest.find(@path).first
+            unless out
+              raise Errors::AssetNotFound, @path
             end
+
+            out
           end
         end
       end
