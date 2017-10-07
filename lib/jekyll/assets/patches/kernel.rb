@@ -17,7 +17,7 @@ module Kernel
       yield
     end
   rescue LoadError
-    Jekyll.logger.info "Assets: ", "Unable to load "
+    Jekyll.logger.debug "Assets: ", "Unable to load " \
       "optional file `#{file}' - SKIPPING"
   end
 
@@ -32,7 +32,7 @@ module Kernel
       yield
     end
   rescue LoadError, ExecJS::RuntimeUnavailable
-    Jekyll.logger.debug "Assets: ", "JavaScript unavailable "
+    Jekyll.logger.debug "Assets: ", "JavaScript unavailable " \
       "for optional file `#{file}' - SKIPPING"
   end
 end
