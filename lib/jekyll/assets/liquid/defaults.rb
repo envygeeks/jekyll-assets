@@ -89,13 +89,14 @@ module Jekyll
 
         # --
         # @note override at your own risk.
-        # @todo this needs to be changed to do that.
         # run is a method that to run your set_* methods.
         # @return [nil]
         # --
         def run
-          @env.logger.debug "#{self.class.name} has no dynamic " \
-            "defaults skipping."
+          methods = (self.class.instance_methods - Object.instance_methods)
+          methods.grep(/^set_/).each do |v|
+            send(v)
+          end
         end
 
         # --
