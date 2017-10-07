@@ -12,6 +12,14 @@ module Jekyll
         })
 
         # --
+        # set_src sets the source path.
+        # @return [nil]
+        # --
+        def set_src
+          @args[:src] = @env.prefix_path(@asset.digest_path)
+        end
+
+        # --
         # set_integrity sets integrity, and origin.
         # @note override with {% js crossorigin="" %}
         # @return [nil]

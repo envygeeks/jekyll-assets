@@ -9,6 +9,14 @@ module Jekyll
         tags :img
 
         # --
+        # set_src sets the source path.
+        # @return [nil]
+        # --
+        def set_src
+          @args[:src] = @env.prefix_path(@asset.digest_path)
+        end
+
+        # --
         # @note override with {% img alt="" %}
         # set_alt provides the `alt=""` atttribute
         # @return [nil]
