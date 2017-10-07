@@ -11,10 +11,8 @@ module Jekyll
       end
 
       # --
+      # find_all will find all the proxies.
       # @param [String] for_ the tag to search for
-      # find_all will find all the proxies that support the
-      # current tag, and then run said proxy, passing on temp_path
-      # so that proxies can be chained.
       # @return [Array]
       # --
       def find_all(for_)
@@ -25,9 +23,7 @@ module Jekyll
 
       # --
       # @param [Proxy<>] proxies, the proxies to run
-      # run will run all the proxies you ship us with the
-      # arguments you give us.  Except for temp_path, we will
-      # wrap in temp_path on your behalf.
+      # run will run all the proxies you ship arguments.
       # @return [nil]
       # --
       def run(proxies, asset:, args:)
@@ -38,9 +34,8 @@ module Jekyll
       end
 
       # --
-      # temp_path creates a tempfile so that you can copy
-      # data to it, without having to work inside of the users
-      # working directory and causing trouble.
+      # @note this is literally temporary.
+      # temp_path creates a tempfile to store data in.
       # @return [Pathutil]
       # --
       def temp_path

@@ -30,6 +30,7 @@ module Jekyll
       # asset_path will find the path to the asset.
       # @param [String] path the path you wish to resolve.
       # @param [Hash] opts, the opts.
+      # @return [String]
       # --
       def asset_path(path, mimes: nil)
         asset = nil
@@ -59,6 +60,7 @@ module Jekyll
       # @param [Hash] opts the opts
       # @param [String] path the path you wish to resolve
       # Pull the asset path and wrap it in url().
+      # @return [String]
       # --
       def asset_url(path, **kwd)
         return "url(#{
@@ -69,12 +71,9 @@ module Jekyll
       # --
       # Creates:
       # - font_url
-      # - image_url
-      # - img_url
-      #
       # - font_path
-      # - image_path
       # - img_path
+      # - img_url
       # --
       %W(font img).each do |k|
         mimes = MIMES[k.to_sym]

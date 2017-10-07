@@ -14,8 +14,8 @@ module Jekyll
         # --
         # @param tag [String] the tag you are working with.
         # @param jekyll [Jekyll::Site] the Jekyll instance (w/ Sprockets).
-        # Defaults that aren't dynamic can can be quickly set within the tag
-        # parser itself, without the need of another value.
+        # get_defaults will return defaults that aren't dynamic.
+        # @return [HashWithInifferentAccess]
         # --
         module_function
         def get_defaults(tag)
@@ -28,10 +28,10 @@ module Jekyll
 
         # --
         # @param args [Hash] the current arguments hash.
-        # @param tag [String] the tag you are working with.
         # @param jekyll [Jekyll::Site] the Jekyll instance (w/ Sprockets.)
-        # set_defaults sets dynamic defaults.  These are defaults that might
-        # require some value that is set after parsing is done.
+        # @param tag [String] the tag you are working with.
+        # set_defaults sets all your dynamic defaults.
+        # @return [HashWithIndifferentAcces]
         # --
         module_function
         def set_defaults(tag, args:, **kwd)
@@ -43,9 +43,9 @@ module Jekyll
 
       # --
       # @abstract you are meant to inherit this class.
-      # Provides a base class for any defaults you have, this
-      # way you don't have to do everything just to get some
-      # defaults for your stuff.
+      # Provides a base class for any defaults you have.
+      # @note MyDefaults < Default
+      # @return [nil]
       # --
       class Default
         def self.inherited(kls = nil)
@@ -56,9 +56,7 @@ module Jekyll
 
         # --
         # @param [Array<String,Symbol>] tags the tags.
-        # defaults_for allows you to set the tags that
-        # you wish to be working with/on when you are ready
-        # to set the defaults.
+        # defaults_for allows you to set the name of the tags to work on.
         # @return [nil]
         # --
         def self.tags(*tags)
@@ -71,9 +69,7 @@ module Jekyll
 
         # --
         # @param [Hash] hash the defaults.
-        # static_defaults allows you to set (or get) the
-        # defauts for the current defaults.  These are static
-        # stuff, that can be quickly set.
+        # defaults allows you to set the static defaults.
         # @return [Hash]
         # --
         def self.defaults(hash = nil)
@@ -84,9 +80,7 @@ module Jekyll
 
         # --
         # @param [String,Symbol] tag the tag.
-        # for? allows us to check and see if this
-        # default will be supporting the current tag and
-        # should therefore be ran.
+        # for? allows us to check and see if this supports a tag.
         # @return [true, false]
         # --
         def self.for?(tag)
@@ -94,10 +88,9 @@ module Jekyll
         end
 
         # --
-        # run is a method that is used when non-static
-        # defaults are needed.  You don't need to supply
-        # this method if you do not need this type of
-        # default for your application.
+        # @note override at your own risk.
+        # @todo this needs to be changed to do that.
+        # run is a method that to run your set_* methods.
         # @return [nil]
         # --
         def run

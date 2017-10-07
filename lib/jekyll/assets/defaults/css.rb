@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2017 - MIT License
+# Encoding: utf-8
+
 module Jekyll
   module Assets
     module Plugins
@@ -7,6 +11,10 @@ module Jekyll
           type: "text/css"
         })
 
+        # --
+        # set_integrity sets integrity, and origin.
+        # @note override with {% css crossorigin="" %}
+        # @return [nil]
         # --
         def set_integrity
           @args[:integrity] = @asset.integrity

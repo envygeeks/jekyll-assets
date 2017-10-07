@@ -9,9 +9,8 @@ module Jekyll
         tags :img
 
         # --
-        # alt provides the `alt=""` atttribute for your
-        # images, by default it's simply just the logical
-        # path of your image.  That's it.
+        # @note override with {% img alt="" %}
+        # set_alt provides the `alt=""` atttribute
         # @return [nil]
         # --
         def set_alt
@@ -21,9 +20,8 @@ module Jekyll
         end
 
         # --
-        # dimensions provides a default dimension for your
-        # images, we use `FastImage` to get this done at a quick
-        # pace without having to do expensive tasks.
+        # set_dimensions provides a default dimensions.
+        # @note override with {% img width="" height="" %}
         # @return [nil]
         # --
         def set_dimensions
@@ -31,6 +29,10 @@ module Jekyll
             size(@asset.filename.to_s)
         end
 
+        # --
+        # set_integrity sets integrity, and origin.
+        # @note override with {% img crossorigin="" %}
+        # @return [nil]
         # --
         def set_integrity
           @args[:integrity] = @asset.integrity

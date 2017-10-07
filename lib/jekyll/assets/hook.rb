@@ -23,8 +23,9 @@ module Jekyll
       }
 
       # --
-      # add_point allows you to add a hook point to our hooks.
       # @param [Array<Symbol>] *point the point path.
+      # add_point allows you to add a hook point to our hooks.
+      # @return [Hash]
       # --
       def self.add_point(*point)
         raise ArgumentError, "only give 2 points" if point.count > 2
@@ -46,9 +47,8 @@ module Jekyll
 
       # --
       # @param [Array<Symbol>] *point the point path.
-      # get_point will try and retrieve (or create and/loop)
-      # the point you request, and then fetch it's priority for
-      # you to run when you are ready.
+      # get_point will try and retrieve (or create and/loop).
+      # @return [Array<Proc>]
       # --
       def self.get_point(*point)
         check_point(*point)
@@ -60,10 +60,8 @@ module Jekyll
       end
 
       # --
-      # trigger allows you to trigger a hook, giving an
-      # optional block where we pass you the, proc we got and
-      # then you can do as you please (such as instance eval)
-      # but if you do not give us one then we simply pass.
+      # @param [Array<>] *point the point.
+      # trigger allows you to trigger a hook
       # @return [nil]
       # --
       def self.trigger(*point, &block)

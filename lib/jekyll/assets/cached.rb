@@ -13,8 +13,9 @@ module Jekyll
       rb_delegate :jekyll, to: :uncached
 
       # --
-      # @param [Env] env the environment
       # Initialize a new instance
+      # @param [Env] env the environment
+      # @return [Cached]
       # --
       def initialize(env)
         super

@@ -9,7 +9,6 @@ module Jekyll
 
       # --
       # logger allows you to delegate to this class without
-      # having to create a whole new method.
       # @return [Logger]
       # --
       def self.logger

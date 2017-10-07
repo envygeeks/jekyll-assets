@@ -7,9 +7,7 @@ module Kernel
 
   # --
   # @param [String] file the file to require
-  # try_require will try to require a file and if it's
-  # unable to, it will just let you carry on.  This is very
-  # useful when you want to check for a dependency.
+  # try_require will try to require a file or skip.
   # @return [nil]
   # --
   def try_require(file)
@@ -19,17 +17,13 @@ module Kernel
       yield
     end
   rescue LoadError
-    Jekyll.logger.info "Assets: ", "Unable to load optional file " \
-      "`#{file}' - SKIPPING"
+    Jekyll.logger.info "Assets: ", "Unable to load "
+      "optional file `#{file}' - SKIPPING"
   end
 
   # --
   # @param [String] file the file to require
-  # try_require_if_javascript will only require a file
-  # if we can find a valid JavaScript engine, that way we don't
-  # try and load something like less if we don't have the
-  # capability to run it, Jekyll Assets has optional
-  # engines that you can run.
+  # try_require_if_javascript will only require if there is JS.
   # @return [nil]
   # --
   def try_require_if_javascript(file)
@@ -38,7 +32,7 @@ module Kernel
       yield
     end
   rescue LoadError, ExecJS::RuntimeUnavailable
-    Jekyll.logger.debug "Assets: ", "JavaScript unavailable for optional " \
-      "file `#{file}' - SKIPPING"
+    Jekyll.logger.debug "Assets: ", "JavaScript unavailable "
+      "for optional file `#{file}' - SKIPPING"
   end
 end

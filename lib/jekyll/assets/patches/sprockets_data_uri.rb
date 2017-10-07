@@ -8,14 +8,13 @@ module Jekyll
       module SprocketsDataURI
 
         # --
-        # data_uri allows you to extract the data URI on
-        # instead of a path when working with an asset.
+        # @note this could be removed.
+        # data_uri allows you to extract the data URI.
         # @return [String]
         # --
         def data_uri
           "data:#{content_type};base64,#{Rack::Utils.escape(
-            Base64.encode64(to_s)
-          )}"
+            Base64.encode64(to_s))}"
         end
       end
     end

@@ -75,10 +75,8 @@ module Jekyll
       }).freeze
 
       # --
-      # @param [Hash] config the Jekyll#Site.configuration
-      # intitialize creates a new HashWithIndifferentAccess so
-      # that you can access the configuration without the
-      # need to worry about `String` vs `Symbol`
+      # @param [Hash] config the configuration
+      # intitialize creates a new HashWithIndifferentAccess
       # @return [Config]
       # --
       def initialize(config)
@@ -90,9 +88,8 @@ module Jekyll
       end
 
       # --
-      # defaults provides the configuration defaults, his exists
-      # so that plugins can get hold of the preferred defaults in the
-      # even of being thrown into SafeMode.
+      # @note this is for safemode usage.
+      # defaults provides the configuration defaults
       # @return [Hash]
       # --
       def defaults

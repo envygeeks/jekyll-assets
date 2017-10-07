@@ -8,14 +8,14 @@ module Jekyll
       module ObsoleteFiles
 
         # --
-        # obsolete_files patches Jekyll's obsolete_files so
-        # that we can prevent our assets from being deleted when
-        # it does it's own cleanup.
+        # @note we don't want our files removed.
+        # obsolete_files patches Jekyll's obsolete_files
         # @return [Array]
         # --
         def obsolete_files
           super.reject do |v|
-            v.start_with?(site.in_dest_dir(site.sprockets.prefix_path))
+            v.start_with?(site.in_dest_dir(site.sprockets.
+              prefix_path))
           end
         end
       end
