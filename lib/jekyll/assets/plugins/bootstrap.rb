@@ -3,6 +3,3 @@
 # Encoding: utf-8
 
 try_require "bootstrap"
-try_require "bootstrap-sass" do
-  Bootstrap.load!
-end
