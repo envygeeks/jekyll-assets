@@ -31,15 +31,15 @@ describe Jekyll::Assets::Env do
 
   #
 
-  describe "#extra_assets" do
+  describe "#precompile!" do
     it "should compile those extra assets" do
       stub_asset_config({
-        :precompile => [
+        precompile: [
           "ubuntu.png"
         ]
       })
 
-      env.extra_assets
+      env.send(:precompile!)
       asset = env.manifest.find("ubuntu.png").first
       expect(Pathutil.new(env.in_dest_dir(asset.digest_path
         ))).to(exist)
