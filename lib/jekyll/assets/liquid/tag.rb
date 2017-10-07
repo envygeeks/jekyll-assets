@@ -26,21 +26,25 @@ module Jekyll
         # --
         TAGS = [
           :img,
-          :asset_path,
-          :asset,
           :css,
           :js,
         ]
 
         # --
-        def initialize(tag, args, tokens)
-          @parser = ::Liquid::Tag::Parser.new(args)
+        HTML = {
+          css: :link,
+          js:  :script,
+          img: :img,
+        }
 
+        # --
+        def initialize(tag, args, tokens)
+
+          @tag = tag.to_sym
+          @args = ::Liquid::Tag::Parser.new(args)
+          @args.deep_merge!(Defaults.get_defaults(tag).deep_symbolize_keys)
+          @name = @args[:argv1]
           @tokens = tokens
-          @args = HashWithIndifferentAccess.new(@parser.args)
-          @args = @args.deep_merge(Defaults.get_defaults(tag))
-          @original_args = args
-          @tag = tag
 
           super
         end
@@ -48,12 +52,32 @@ module Jekyll
         # --
         def render(context)
           sprockets = context.registers[:site].sprockets
-          asset = sprockets.manifest.find(@args[:argv1]).first
-          sprockets.manifest.compile(@args[:argv1]) if asset
+          asset = sprockets.manifest.find(@name).first
 
-          require"pry"
-          Pry.output = STDOUT
-          binding.pry
+          if asset
+            sprockets.manifest.compile(@name)
+            doc = Nokogiri::HTML::DocumentFragment.parse("")
+            Defaults.set_defaults(@tag, {
+              asset: asset,
+              env: sprockets,
+              args: @args,
+            })
+
+            path = sprockets.prefix_path(asset.digest_path)
+            return path if @args[:path] == true # Don't interfere.
+            Nokogiri::HTML::Builder.with(doc) do |d|
+              d.send(HTML[@tag], @args.to_html({
+                hash: true
+              }))
+            end
+
+            doc.to_html
+          else
+            sprockets.logger.error "unable to find: #{@name} -- SKIPPING"
+            if sprockets.asset_config[:strict]
+              raise Errors::AssetNotFound, @name
+            end
+          end
         end
       end
     end
