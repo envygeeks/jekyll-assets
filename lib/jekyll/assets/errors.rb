@@ -5,7 +5,7 @@
 module Jekyll
   module Assets
     module Errors
-      class AssetNotFount < StandardError
+      class AssetNotFound < StandardError
         def initialize(path)
           super "unable to find the asset #{path}"
         end

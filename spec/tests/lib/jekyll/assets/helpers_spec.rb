@@ -27,7 +27,7 @@ describe Jekyll::Assets::Helpers do
   describe "#asset_path" do
     it "should raise when an asset cannot be found" do
       expect { subject.asset_path("unknown") }.to(raise_error(
-        described_class::AssetNotFound))
+        Jekyll::Assets::Errors::AssetNotFound))
     end
 
     it "should return a path" do
