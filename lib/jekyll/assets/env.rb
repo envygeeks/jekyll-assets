@@ -11,7 +11,7 @@ module Jekyll
       rb_delegate :logger, to: :"Jekyll::Assets::Logger"
       rb_delegate :digest, to: :asset_config, type: :hash, bool: true
       rb_delegate :cache?, to: :"asset_config[:cache]", type: :hash, key: :enabled
-      rb_delegate :cache_path, to: :"asset_config[:cache]", type: :hash, key: :path, wrap: :in_source_dir
+      rb_delegate :cache_path, to: :"asset_config[:plugins][:caching]", type: :hash, key: :path, wrap: :in_source_dir
       rb_delegate :production?, to: :jekyll
       rb_delegate :safe?, to: :jekyll
       attr_accessor :jekyll
