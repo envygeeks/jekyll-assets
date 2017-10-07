@@ -279,7 +279,7 @@ module Jekyll
       # --
       private
       def disable_erb!
-        if jekyll.safe?
+        if jekyll.safe
           @config = hash_reassoc @config, :registered_transformers do |o|
             o.delete_if do |v|
               v.proc == Sprockets::ERBProcessor
