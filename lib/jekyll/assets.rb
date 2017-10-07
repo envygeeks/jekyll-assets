@@ -19,5 +19,5 @@ def require_all(*globs)
   end }
 end
 
-require_all "patches/*", "*", "liquid/*",
-    "hooks/*", "plugins/*"
+require_all "patches/*", "*", "liquid/*", "hooks/*",
+        "plugins/*", "defaults/*"
