@@ -31,6 +31,7 @@ module Jekyll
         logger
         manifest
         enable_compression!
+        disable_erb!
         asset_config
         sources!
         cache
@@ -269,6 +270,22 @@ module Jekyll
         end
 
         nil
+      end
+
+      # --
+      # disable_erb! disables erb if you are in safe mode.
+      # @note this is necessary to keep security for Github.
+      # @return [nil]
+      # --
+      private
+      def disable_erb!
+        if jekyll.safe?
+          @config = hash_reassoc @config, :registered_transformers do |o|
+            o.delete_if do |v|
+              v.proc == Sprockets::ERBProcessor
+            end
+          end
+        end
       end
     end
   end
