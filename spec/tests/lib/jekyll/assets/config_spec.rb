@@ -4,10 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Config do
-  subject do
-    described_class
-  end
-
   it "should merge configurations" do
     val = subject.new({ :hello => :world })
     expect(val.values_at(:hello, :autowrite)).to(eq([

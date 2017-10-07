@@ -160,6 +160,18 @@ module Jekyll
       end
     end
   end
+
+  module Declarations
+    extend RSpec::SharedContext
+
+    let(:sprockets) { env }
+    subject { described_class }
+    let(:env) { Jekyll::Assets::Env.new(jekyll) }
+    before(:each, :render  => true) { site.reset; site.process; site.render }
+    before(:each, :process => true) { site.process }
+    let(:site) { stub_jekyll_site }
+    let(:jekyll) { site }
+  end
 end
 
 # --
@@ -169,8 +181,9 @@ Liquid::Template.register_tag("context_thief",
 
 # --
 
-RSpec.configure do |config|
-  config.after (:all) { Jekyll::RSpecHelpers.cleanup_trash }
-  config.before(:all) { Jekyll::RSpecHelpers.cleanup_trash }
-  config.include(Jekyll::RSpecHelpers)
+RSpec.configure do |c|
+  c.after (:all) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.before(:all) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.include Jekyll::RSpecHelpers
+  c.include Jekyll::Declarations
 end

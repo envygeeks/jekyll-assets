@@ -4,12 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Logger do
-  subject do
-    described_class
-  end
-
-  #
-
   it { respond_to :info }
   it { respond_to :error }
   it { respond_to :debug }

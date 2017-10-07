@@ -4,9 +4,11 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Liquid::Drop do
-  let(:env) { Jekyll::Assets::Env.new(jekyll) }
-  subject { described_class.new("ubuntu.png", jekyll: jekyll) }
-  let(:jekyll) { stub_jekyll_site }
+  subject do
+    described_class.new("ubuntu.png", {
+      jekyll: jekyll
+    })
+  end
 
   #
 

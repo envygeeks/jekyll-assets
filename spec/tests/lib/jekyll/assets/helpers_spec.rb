@@ -4,10 +4,10 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Helpers do
-  let(:env) { Jekyll::Assets::Env.new(jekyll) }
-  let(:asset) { env.manifest.find("bundle.css").first }
   let(:path) { jekyll.in_dest_dir("/assets") }
-  let(:jekyll) { stub_jekyll_site }
+  let(:asset) do
+    env.manifest.find("bundle.css").first
+  end
 
   #
 

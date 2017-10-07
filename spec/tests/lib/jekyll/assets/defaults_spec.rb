@@ -4,10 +4,9 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Liquid::Defaults do
-  let(:env) { Jekyll::Assets::Env.new(jekyll) }
-  let(:asset) { env.manifest.find("ubuntu.png").first }
-  let(:jekyll) { stub_jekyll_site }
-  subject { described_class }
+  let(:asset) do
+    env.manifest.find("ubuntu.png").first
+  end
 
   # --
   class SpecDefaultsTestClass1 < Jekyll::Assets::Liquid::Default

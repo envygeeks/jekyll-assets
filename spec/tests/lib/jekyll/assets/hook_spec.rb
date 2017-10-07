@@ -4,12 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Hook do
-  subject do
-    described_class
-  end
-
-  #
-
   it "should store hooks on POINTS" do
     expect(subject::POINTS).to(be_a(Hash))
   end

@@ -4,11 +4,10 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Env do
-  let(:env) { Jekyll::Assets::Env.new(jekyll) }
-  before(:each, :process => true) { site.process }
-  let(:path) { site.in_dest_dir("/assets") }
-  let(:jekyll) { stub_jekyll_site }
   subject { env }
+  let(:path) do
+    site.in_dest_dir("/assets")
+  end
 
   #
 
