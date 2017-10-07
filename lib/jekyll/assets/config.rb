@@ -10,11 +10,12 @@ module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
       DEVELOPMENT = {
-        liquid: false,
-        digest: false,
         prefix: "/assets",
+        strict: false,
+        digest: false,
         integrity: false,
         autowrite: true,
+        liquid: false,
 
         precompile: [
           #
