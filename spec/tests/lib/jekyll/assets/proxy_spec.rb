@@ -14,6 +14,15 @@ module Jekyll
           nil
         end
       end
+
+      #
+
+      class ProxyTest2 < Proxy
+        proxy_info tags: :test, key: :test
+        def process
+          nil
+        end
+      end
     end
   end
 end
@@ -42,6 +51,21 @@ describe Jekyll::Assets::Proxies do
     subject.run_proxies(:test, {
       args: args, env: env, asset: asset
     })
+  end
+
+  #
+
+  it "should return an asset" do
+    out = subject.run_proxies(:test, {
+      args: args,
+      asset: asset,
+      env: env,
+    })
+
+    expect(out).to(be_a(Sprockets::Asset))
+    expect(out.filename).to(eq(Pathutil.new(env.
+      in_cache_dir(subject::DIR)).children.
+        first.to_s))
   end
 
   #

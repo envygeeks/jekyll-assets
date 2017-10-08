@@ -7,6 +7,13 @@ module Jekyll
     module Proxies
       DIR = "proxied"
 
+      class ProxyDeleted < StandardError
+        def initialize(obj)
+          super "#{obj.to_s} violated a contract and " \
+            "deleted your proxy file"
+        end
+      end
+
       # --
       # @param args [Hash] the current arguments hash.
       # @param jekyll [Jekyll::Site] the Jekyll instance (w/ Sprockets.)
@@ -18,9 +25,20 @@ module Jekyll
       def run_proxies(tag, args:, asset:, env:)
         file = copy_asset(asset, env: env, args: args)
 
-        Proxy.inherited.select { |o| o.for?(tag, args) }.each do |o|
-          o.new(file, args: args, asset: asset, env: env).process
+        env.cache.fetch(file.basename.sub_ext("").to_s) do
+          Proxy.inherited.select { |o| o.for?(tag, args) }.each do |o|
+            o.new(file, args: args, asset: asset, env: env).process
+            if !file.exist?
+              raise ProxyDeleted, o
+            end
+          end
+
+          true
         end
+
+        name = file.basename.to_s
+        env.manifest.find(name).
+          first
       end
 
       # --
