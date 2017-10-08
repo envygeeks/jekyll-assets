@@ -3,29 +3,38 @@
 # Encoding: utf-8
 
 require "rspec/helper"
+
+# --
+module Jekyll
+  module Assets
+    module Plugins
+      class DefaultsTest1 < Liquid::Default
+        tags :test
+        defaults({
+          :hello => :world
+        })
+      end
+
+      # --
+      class DefaultsTest2 < Liquid::Default
+        tags :test
+        defaults({
+          :world => :hello
+        })
+
+        def run
+          @args[:hello] = :world
+        end
+      end
+    end
+  end
+end
+
+#
+
 describe Jekyll::Assets::Liquid::Defaults do
   let :asset do
     env.manifest.find("ubuntu.png").first
-  end
-
-  # --
-  class SpecDefaultsTestClass1 < Jekyll::Assets::Liquid::Default
-    tags :test
-    defaults({
-      :hello => :world
-    })
-  end
-
-  # --
-  class SpecDefaultsTestClass2 < Jekyll::Assets::Liquid::Default
-    tags :test
-    defaults({
-      :world => :hello
-    })
-
-    def run
-      @args[:hello] = :world
-    end
   end
 
   #
