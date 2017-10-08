@@ -51,7 +51,9 @@ module Jekyll
       def sources!
         @sources ||= begin
           asset_config["sources"].each do |v|
-            append_path jekyll.in_source_dir(v)
+            unless paths.include?(jekyll.in_source_dir(v))
+              append_path jekyll.in_source_dir(v)
+            end
           end
 
           paths
