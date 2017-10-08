@@ -55,7 +55,7 @@ module Jekyll
 
         POINTS[point[0]][point[1]].
         each_with_object([]) do |(_, v), a|
-          a |= v
+          a.push(*v)
         end
       end
 
