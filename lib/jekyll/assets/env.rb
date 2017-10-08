@@ -10,8 +10,8 @@ module Jekyll
       rb_delegate :dev?, to: :Jekyll, bool: true
       rb_delegate :logger, to: :"Jekyll::Assets::Logger"
       rb_delegate :digest, to: :asset_config, type: :hash, bool: true
+      rb_delegate :cache_path, to: :"asset_config[:caching]", type: :hash, key: :path, wrap: :in_source_dir
       rb_delegate :cache?, to: :"asset_config[:cache]", type: :hash, key: :enabled
-      rb_delegate :cache_path, to: :"asset_config[:plugins][:caching]", type: :hash, key: :path, wrap: :in_source_dir
       rb_delegate :production?, to: :jekyll
       rb_delegate :safe?, to: :jekyll
       attr_accessor :jekyll
@@ -25,8 +25,9 @@ module Jekyll
       def initialize(jekyll = nil)
         super()
 
-        jekyll.sprockets = self
         @jekyll = jekyll
+        jekyll.sprockets = self
+        @cache = nil
 
         logger
         manifest
@@ -66,11 +67,11 @@ module Jekyll
       # --
       def cache
         @cache ||= begin
-          cache, type = asset_config[:cache].values_at(:enabled, :type)
+          cache, type = asset_config[:caching].values_at(:enabled, :type)
           out = Sprockets::Cache::MemoryStore.new if cache && type == "memory"
           out = Sprockets::Cache::FileStore.new(cache_path) if cache && type == "file"
           out = Sprockets::Cache::NullStore.new if !cache
-        out
+          Sprockets::Cache.new(out, Logger)
         end
       end
 

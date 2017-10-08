@@ -17,6 +17,12 @@ module Jekyll
         autowrite: true,
         liquid: false,
 
+        caching: {
+          enabled: true,
+          path: ".jekyll-cache/assets",
+          type: "file",
+        },
+
         precompile: [
           #
         ],
@@ -27,21 +33,10 @@ module Jekyll
         },
 
         plugins: {
-          caching: {
-            enabled: true,
-            path: ".jekyll-cache/assets",
-            type: "file",
-          },
-
           img: {
             optim: {
               #
             },
-
-            defaults: {
-              dimensions: true,
-              alt: true,
-            }
           },
 
           compression: {
