@@ -51,20 +51,21 @@ module Jekyll
 
         # --
         def render(context)
-          sprockets = context.registers[:site].sprockets
-          asset = sprockets.manifest.find(@name).first
+          env = context.registers[:site].sprockets
+          asset = env.manifest.find(@name).first
 
           if asset
-            sprockets.manifest.compile(@name)
-            doc = Nokogiri::HTML::DocumentFragment.parse("")
-            Defaults.set_defaults(@tag, {
-              asset: asset,
-              env: sprockets,
-              args: @args,
-            })
+            return asset.to_s if @args[:source]
+            if @args[:"data-uri"]
+              return asset.data_uri
+            end
 
-            path = sprockets.prefix_path(asset.digest_path)
-            return path if @args[:path] == true # Don't interfere.
+            env.manifest.compile(@name)
+            doc = Nokogiri::HTML::DocumentFragment.parse("")
+            Defaults.set_defaults(@tag, asset: asset, env: env, args: @args)
+            path = env.prefix_path(asset.digest_path)
+            return path if @args[:path] == true
+
             Nokogiri::HTML::Builder.with(doc) do |d|
               d.send(HTML[@tag], @args.to_html({
                 hash: true
@@ -73,8 +74,8 @@ module Jekyll
 
             doc.to_html
           else
-            sprockets.logger.error "unable to find: #{@name} -- SKIPPING"
-            if sprockets.asset_config[:strict]
+            env.logger.error "unable to find: #{@name} -- SKIPPING"
+            if env.asset_config[:strict]
               raise Errors::AssetNotFound, @name
             end
           end
