@@ -5,55 +5,18 @@
 module Jekyll
   module Assets
     module Helpers
-      MIMES = {
-        font: %w(
-          application/font-woff2
-          application/x-font-opentype
-          application/vnd.ms-fontobject
-          application/x-font-ttf
-          application/font-woff
-        ),
-
-        img: %w(
-          image/bmp
-          image/gif
-          image/tiff
-          image/svg+xml
-          image/x-icon
-          image/webp
-          image/jpeg
-          image/png
-        )
-      }
 
       # --
       # asset_path will find the path to the asset.
+      # @todo this needs to be using `asset` once tag is changed.
       # @param [String] path the path you wish to resolve.
       # @param [Hash] opts, the opts.
       # @return [String]
       # --
-      def asset_path(path, mimes: nil)
-        asset = nil
-
-        if mimes && !mimes.empty?
-          search = mimes.clone
-          while asset.nil? && !search.empty?
-            asset = env.find_asset(path, {
-              accept: search.pop
-            })
-          end
-        else
-          asset = env.manifest.find(path)
-          asset = asset.first
-        end
-
-        if !asset
-          raise Errors::AssetNotFound, path
-        end
-
-        env.manifest.compile(path)
-        env.uncached.prefix_path(asset.
-          digest_path)
+      def asset_path(path, opts = {})
+        Liquid::Tag.new("img", "#{path} @path",
+          Liquid::ParseContext.new).
+            render(context)
       end
 
       # --
@@ -69,19 +32,12 @@ module Jekyll
       end
 
       # --
-      # Creates:
-      # - font_url
-      # - font_path
-      # - img_path
-      # - img_url
-      # --
-      %W(font img).each do |k|
-        mimes = MIMES[k.to_sym]
-
-        define_method("#{k}_path") { |*a| asset_path(*a, mimes: mimes) }
-        define_method "#{k}_url" do  |*a|
-          asset_url(*a, mimes: mimes)
-        end
+      private
+      def context
+        @struct ||= Struct.new(:registers)
+        @struct.new({
+          :site => env.jekyll
+        })
       end
     end
   end
