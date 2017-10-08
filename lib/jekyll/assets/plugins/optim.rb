@@ -6,7 +6,8 @@ module Jekyll
   module Assets
     module Plugins
       class ImageOptimProxy < Proxy
-        proxy_info key: :optim, tags: :img
+        type %r!^image\/[a-zA-Z]+$!
+        args_key :optim
 
         # --
         class MultiplePredefinedPresetsSpecified < RuntimeError

@@ -8,7 +8,8 @@ module Jekyll
   module Assets
     module Plugins
       class MiniMagick < Proxy
-        proxy_info key: :magick, tags: :img
+        type %r!^image\/[a-zA-Z]+$!
+        args_key :magick
 
         # --
         def process

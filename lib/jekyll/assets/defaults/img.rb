@@ -6,7 +6,7 @@ module Jekyll
   module Assets
     module Plugins
       class ImgDefaults < Jekyll::Assets::Liquid::Default
-        tags :img
+        type %r!^image\/[a-zA-Z]+$!
 
         # --
         # set_src sets the source path.

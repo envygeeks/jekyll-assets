@@ -6,8 +6,8 @@ module Jekyll
   module Assets
     module Plugins
       class CSSDefaults < Liquid::Default
-        tags :css
-        defaults({
+        type "text/css"
+        static_defaults({
           type: "text/css"
         })
 

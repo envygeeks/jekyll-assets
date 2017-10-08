@@ -6,8 +6,8 @@ module Jekyll
   module Assets
     module Plugins
       class JSDefaults < Liquid::Default
-        tags :js
-        defaults({
+        type "text/javascript"
+        static_defaults({
           type: "text/javascript"
         })
 
