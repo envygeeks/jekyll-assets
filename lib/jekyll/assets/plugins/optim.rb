@@ -5,29 +5,29 @@
 module Jekyll
   module Assets
     module Plugins
-      class ImageOptimProxy < Jekyll::Assets::Proxy
-        FOR = %w(img image asset_path)
+      class ImageOptimProxy < Proxy
+        proxy_info key: :optim, tags: :img
 
         # --
-        class UnknownPreset < RuntimeError
-          def initialize(preset_name)
-            "Unknown image_optim preset '#{preset_name}'"
+        class MultiplePredefinedPresetsSpecified < RuntimeError
+          def initialize
+            super "Specifying multiple pre-defined presets at " \
+              "the same time is not supported"
           end
         end
 
         # --
         class PresetAlreadySpecified < RuntimeError
           def initialize
-            "Specifying pre-defined preset and preset-by-name at the " \
-              "same time is not supported"
+            super "Specifying pre-defined preset and preset-by-name " \
+              "at the same time is not supported"
           end
         end
 
         # --
-        class MultiplePredefinedPresetsSpecified < RuntimeError
-          def initialize
-            "Specifying multiple pre-defined presets at " \
-              "the same time is not supported"
+        class UnknownPreset < RuntimeError
+          def initialize(name)
+            super "Unknown image_optim preset `#{name}'"
           end
         end
 

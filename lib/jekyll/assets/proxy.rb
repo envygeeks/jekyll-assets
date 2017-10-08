@@ -4,63 +4,119 @@
 
 module Jekyll
   module Assets
-    class Proxy
-      def self.inherited(kls)
-        @subs ||= []
-        @subs << kls
-      end
+    module Proxies
+      DIR = "proxied"
 
       # --
-      # find_all will find all the proxies.
-      # @param [String] for_ the tag to search for
-      # @return [Array]
+      # @param args [Hash] the current arguments hash.
+      # @param jekyll [Jekyll::Site] the Jekyll instance (w/ Sprockets.)
+      # @param tag [String] the tag you are working with.
+      # run_proxies runs all your proxy plugins.
+      # @return [Nil]
       # --
-      def find_all(for_)
-        @subs.select do |v|
-          v::FOR.include?(for_)
+      module_function
+      def run_proxies(tag, args:, asset:, env:)
+        file = copy_asset(asset, env: env, args: args)
+
+        Proxy.inherited.select { |o| o.for?(tag, args) }.each do |o|
+          o.new(file, args: args, asset: asset, env: env).process
         end
       end
 
       # --
-      # @param [Proxy<>] proxies, the proxies to run
-      # run will run all the proxies you ship arguments.
-      # @return [nil]
-      # --
-      def run(proxies, asset:, args:)
-        file = temp_path
-        proxies.each do |v|
-          v.new(asset, args: args, temp_path: file)
-        end
-      end
-
-      # --
-      # @note this is literally temporary.
-      # temp_path creates a tempfile to store data in.
+      # @private
+      # @param [Sprockets::Asset] asset the asset.
+      # @param [Jekyll::Assets::Env] env the environment.
+      # copy_asset copies an asset to a temporary directory to be worked on.
+      # @note the path you are working in is in the asset path.
+      # @note this is replicatable.
       # @return [Pathutil]
       # --
-      def temp_path
-        Pathutil.tmpfile.tap do |f|
-          f.rm
-        end
+      module_function
+      def copy_asset(asset, env:, args:)
+        path = env.in_cache_dir(DIR)
+        name = Digest::SHA256.hexdigest(args.instance_variable_get(:@raw))
+        file = Pathutil.new(path).join(name).sub_ext(File.extname(args[:argv1]))
+        file.dirname.mkdir_p unless file.dirname.exist?
+        Pathutil.new(asset.filename).cp(file)
+
+        file
+      end
+    end
+
+    #
+
+    class Proxy
+      attr_reader :file
+
+      def self.inherited(kls = nil)
+        return @inherited ||= [] if kls.nil?
+        (@inherited ||= []) \
+          << kls
       end
 
       # --
-      def initialize(asset, args:, temp_path: self.temp_path)
-        @args = args
-        @env = asset.env
-        @jekyll = asset.env.jekyll
-        @temp_path = temp_path
-        @asset = asset
-      end
-
+      # @param [Symbol] key the @args key to accept.
+      # @param [Array,Symbol] tags the tags you wish to work on.
+      # proxy_info wraps around `tags` and `key` to set in one method.
+      # @note this is the perferred internal method.
+      # @return [nil]
       # --
-      def copy_asset
-        unless @temp_path.exist?
-          Pathutil.new(@asset.filepath).cp(@temp_path)
+      def self.proxy_info(tags:, key:)
+        unless tags.is_a?(Array)
+          tags = [
+            tags
+          ]
         end
 
+        key(*key)
+        tags(*tags)
         nil
       end
+
+      # --
+      # @param [Array<String,Symbol>] tags the tags.
+      # defaults_for allows you to set the name of the tags to work on.
+      # @return [nil]
+      # --
+      def self.tags(*tags)
+        return @tags ||= [] if tags.empty?
+
+        @tags ||= []
+        tags = tags.map(&:to_sym)
+        @tags  |= tags
+      end
+
+      # --
+      # @param [Array<String,Symbol>] tags the tags.
+      # defaults_for allows you to set the name of the tags to work on.
+      # @return [nil]
+      # --
+      def self.key(key = nil)
+        key ? (@key = key) : @key
+      end
+
+      # --
+      # @param [String,Symbol] tag the tag.
+      # for? allows us to check and see if this supports a tag.
+      # @return [true, false]
+      # --
+      def self.for?(tag, args)
+        args.key?(key) && tags.include?(tag.to_sym)
+      end
+
+      # --
+      def initialize(file, args:, asset:, env:)
+        @args = args
+        @asset = asset
+        @jekyll = env.jekyll
+        @file = file
+        @env = env
+      end
+    end
+
+    Hook.register :env, :init, priority: 1 do
+      append_path(in_cache_dir("proxied"))
     end
   end
 end
