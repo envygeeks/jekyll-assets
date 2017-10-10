@@ -27,17 +27,21 @@ module Jekyll
 
       def render(context)
         env = context.registers[:site].sprockets
-        asset = env.manifest.find(@name).first
+        o_asset = env.manifest.find(@name).first
 
-        if asset
-          type = asset.content_type
-          Default.set(@args, {
-            type: type,
-            asset: asset,
-            env: env
-          })
+        if o_asset
+          type = o_asset.content_type
+          Default.set(@args, type: type, asset: o_asset, env: env)
+          asset = Proxy.proxy(o_asset, type: type, args: @args, env: env)
+          if asset.content_type != o_asset.content_type
+            Defaults.set(@args, {
+              type: type,
+              asset: asset,
+              env: env,
+            })
+          end
 
-          env.manifest.compile(@name)
+          env.manifest.compile(asset.filename)
           return asset.data_uri if @args[:"data-uri"]
           return env.prefix_path(asset.digest_path) if @args[:path]
           return asset.to_s if @args[:source]
