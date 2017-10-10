@@ -41,7 +41,7 @@ module Jekyll
 
           compression: {
             js: {
-              enabled: false,
+              enabled: true,
               opts: {
                 #
               }
