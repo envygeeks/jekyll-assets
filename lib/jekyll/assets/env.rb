@@ -39,8 +39,7 @@ module Jekyll
 
         precompile!
         Hook.trigger :env, :init do |hook|
-          hook.arity > 0 || 0 > hook.arity ? hook.call(self) :
-            instance_eval(&hook)
+          instance_eval(&hook)
         end
       end
 
