@@ -30,73 +30,172 @@ gem "jekyll-assets", {
 The configuration file is the same as Jekyll's, which is `_config.yml`. Except we use the special key "assets" inside of that file.
 
 ```yaml
-assets:
-  prefix: "/assets"
-  autowrite: true
-  cdn:
-    baseurl: true|false
-    url: https://cdn.example.com
-    prefix: true|false
-  precompile:
-  - "bundle.css"
-  sources:
-  - _assets/css
-  - _assets/images
-  - _assets/javascripts
-  - _assets/stylesheets
-  - _assets/fonts
-  - _assets/img
-  - _assets/js
-  plugins:
-    caching:
-      path: .jekyll-cache/assets
-      type: file|memory|false|null|nil
+liquid: false
+prefix: "/assets"
+integrity: false
+autowrite: true
+digest: false
+strict: false
+caching:
+  enabled: true
+  path: ".jekyll-cache/assets"
+  type: file
+precompile: []
+cdn:
+  baseurl: false
+  prefix: false
+plugins:
+  img:
+    optim: {}
+  compression:
+    js:
+      enabled: false
+      opts: {}
+    css:
       enabled: true
-    compression:
-      css: false
-       js: false
-    img:
-      defaults:
-        dimensions: true|false
-        alt: true|false
-      optim:
-        #
+sources:
+- _assets/css
+- _assets/fonts
+- _assets/img
+- _assets/js
+- _assets/css
+- _assets/fonts
+- _assets/img
+- _assets/js
 ```
 
-## Tutorials
-### From Jekyll to Jekyll Assets
-
-The following section shows how to get started with the generation of CSS, using Jekyll Assets. It applies to a newly generated Jekyll site (`jekyll new`,) however this should help anyone who has a Jekyll site. It should also be applicable for other types of assets.
-
-#### Create the `_assets/{css,js,img,font}` directories
-
-The default [Jekyll Assets configuration](#configuration) expects to find all the assets in directories under `_assets`. Create a directory for the CSS:
-
-```bash
-mkdir -p _assets/css
-mkdir -p _assets/font
-mkdir -p _assets/img
-mkdir -p _assets/js
-```
-
-#### Move your CSS files
-
-Jekyll comes with a `css` directory containing a `main.css` file and then a `_sass` directory with a few SASS imports. Move all of that to the `_assets/css` directory.
-
-```bash
-mv css/main.css _assets/css
-mv _sass/* _assets/css
-```
-
-#### Update the layout
-
-The layout will no longer be pointing to the correct `main.css` file. Jekyll Assets supplies [liquid tags](#tags) to generate the correct HTML for these assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
+## Tag
+### Usage
 
 ```liquid
-{% css main.css %}
+{% asset src @magick:2x alt='This is my alt' %}
+{% asset src @magick:2x alt='This is my alt' %}
 ```
 
-Start up your local Jekyll server and if everything is correct, your site will be serving CSS via Sprockets. Read on for more information on how to customize your Jekyll Assets setup.
+### Arguments
+
+Our tags will take any number of arguments, and convert them to HTML, and even attach them to your output if the HTML processor you use accepts that kind of data.  ***This applies to anything but hashes, and arrays.*** So adding say, a class, or id, is as easy as doing `id="val"` inside of your tag arguments.
+
+#### Builtin
+
+| Arg | Description |
+|---|---|
+| `@path` | Return just the path |
+| `@data-uri` | Return a data URI instead of HTML |
+| `@source` | Return the source |
+
+***Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)***
+
+## Liquid
+
+We support liquid arguments for tag values (but not tag keys), and we also support Liquid pre-processing (with your Jekyll context) sass/less/css files if they end with `.liquid`.
+
+### Usage
+
+```liquid
+{% img '{{ image_path }}' %}
+{% img '{{ image_path }}' proxy:key='{{ value }}' %}
+{% img {{\ image_path\ }} %}
+```
+
+```scss
+.bg {
+  background: url(asset_path("{{ site.background_image }}"));
+}
+```
+
+You have full access to your entire Jekyll context from any liquid
+processing we do, so you can do whatever you like and be as dynamic as you like, including full loops and conditional Liquid based CSS since we pre-process your text files.
+
+## List
+
+We provide all *your* assets as a hash of Liquid Drops so you can get basic info that we wish you to have access to without having to prepare the class.
+
+```liquid
+{{ assets["bundle.css"].content_type }} => "text/css"
+{{ assets["images.jpg"].width  }} => 62
+{{ assets["images.jpg"].height }} => 62
+```
+
+The current list of available accessors:
+
+| Method | Description |
+|---|---|
+| `logical_path` | The filename |
+| `content_type` | The RFC content type |
+| `height` | The asset height ***(if available)*** |
+| `filename` | The full path to the assets actual file |
+| `width` | The asset width ***(if available)*** |
+| `digest_path` | The prefixed path |
+
+### Looping
+
+```liquid
+{% for k,v in assets %}
+  {{ k }}
+{% endfor %}
+```
+
+### Dynamic
+
+Using Liquid Drop `assets`, you can check whether an asset is present.
+
+```liquid
+{% if assets[page.image] %}{% img '{{ page.image }}' %}
+{% else %}
+  {% img default.jpg %}
+{% endif %}
+```
+
+## Filter
+
+```liquid
+{{ src | asset:"@magick:2x magick:quality:92" }}
+```
+
+## Hooks
+
+| Point | Name | Instance | Args |
+|---|---|---|
+| `:env` | `:init` | ✔ | |
+| `:config` | `:pre` | ✗ | Config{} |
+
+### Usage
+
+```ruby
+Jekyll::Assets::Hook.register :env, :init do
+  append_path "myPluginsCustomPath"
+end
+```
+
+```ruby
+Jekyll::Assets::Hook.register :config, :pre do |c|
+  c.deep_merge!({
+    plugins: {
+      my_plugin: {
+        opt: true
+      }
+    }
+  })
+end
+```
+
+#### Plugin Hooks
+
+Your plugin can also register it's own hooks on our Hook system, so that you can trigger hooks around your stuff as well, this is useful for extensive plugins that want more power.
+
+##### Usage
+
+```ruby
+Jekyll::Assets::Hook.add_point(:plugin, :hook)
+```
+
+```ruby
+Jekyll::Assets::Hook.trigger(:plugin, :hook)  { |v| v.call(:arg) }
+Jekyll::Assets::Hook.trigger(:plugin, :hook) do |v|
+  instance_eval(&v)
+end
+```
 
 ## Default Plugins
 ### Font Awesome
@@ -140,7 +239,6 @@ gem "bootstrap-sass"
 #### Usage
 
 ```scss
-@import 'bootstrap-sprockets'
 @import 'bootstrap'
 ```
 
@@ -156,20 +254,17 @@ gem "mini_magick"
 See the [MiniMagick docs](https://github.com/minimagick/minimagick#usage)
 to get an idea what `<value>` can be.
 
-* `magick:resize=<value>`
-* `magick:format=<value>`
-* `magick:quality=<value>`
-* `magick:rotate=<value>`
-* `magick:gravity=<value>`
-* `magick:crop=<value>`
-* `magick:flip=<value>`
-* `@magick:quadruple`, `@magick:4x`
-* `@magick:one-third`, `@magick:1/3`
-* `@magick:three-fourths`, `@magick:3/4`
-* `@magick:two-fourths`, `@magick:2/4`
-* `@magick:two-thirds`, `@magick:2/3`
-* `@magick:one-fourth`, `@magick:1/4`
-* `@magick:half`, `@magick:1/2`
+| Name | Accepts Value |
+|---| --- |
+| `magick:resize` | ✔ |
+| `magick:format` | ✔ |
+| `magick:quality` | ✔ |
+| `magick:rotate` | ✔ |
+| `magick:gravity` | ✔ |
+| `magick:crop` | ✔ |
+| `magick:flip` | ✔ |
+| `@magick:2x` | ✗ |
+| `@magick:1/2` | ✗ |
 
 ### ImageOptim
 #### Installation
@@ -200,121 +295,54 @@ assets:
 
 #### Tag Args
 
-* `image_optim:preset:<name>`
-* `image_optim:preset:default`
-* `image_optim:default`
+| Name | Accepts Value |
+|---| --- |
+| `image_optim:preset` | ✔ |
 
-### Less
-#### Installation
+## Tutorials
+### Jekyll to Jekyll Assets
 
-```ruby
-gem "less"
+The following section shows how to get started with the generation of CSS, using Jekyll Assets. It applies to a newly generated Jekyll site (`jekyll new`,) however this should help anyone who has a Jekyll site. It should also be applicable for other types of assets.
+
+#### Create
+
+The default [Jekyll Assets configuration](#configuration) expects to find all the assets in directories under `_assets`. Create a directory for the CSS:
+
+```bash
+mkdir -p _assets/css
+mkdir -p _assets/font
+mkdir -p _assets/img
+mkdir -p _assets/js
 ```
 
-## Tags
+#### Move
 
-* `image`, `img`
-* `javascript`, `js`
-* `stylesheet`, `css`, `style`
-* `asset`, `asset_source`
-* `asset_path`
+Jekyll comes with a `css` directory containing a `main.css` file and then a `_sass` directory with a few SASS imports. Move all of that to the `_assets/css` directory.
 
-### Tag Example:
+```bash
+mv css/main.css _assets/css
+mv _sass/* _assets/css
+```
+
+#### Update
+
+The layout will no longer be pointing to the correct `main.css` file. Jekyll Assets supplies [liquid tags](#tags) to generate the correct HTML for these assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
 
 ```liquid
-{% img src @magick:2x alt='This is my alt' %}
-{% img src @magick:2x alt='This is my alt' %}
+{% asset main.css %}
 ```
 
-### What do the colons mean?
+Start up your local Jekyll server and if everything is correct, your site will be serving CSS via Sprockets. Read on for more information on how to customize your Jekyll Assets setup.
 
-Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)
+### Building Your Own Plugins
+#### Global Instance Vars
 
-## Liquid Variables
-
-We support liquid arguments for tag values (but not tag keys), and we also support Liquid pre-processing (with your Jekyll context) sass/less/css files you need do nothing special for the preprocessing an entire file, it's always done.
-
-An example of using Liquid in your tags:
-
-```liquid
-{% img '{{ image_path }}' %}
-{% img '{{ image_path }}' proxy:key='{{ value }}' %}
-{% img {{\ image_path\ }} %}
-```
-
-An example of using Liquid in your SCSS:
-
-```scss
-.bg {
-  background: url(asset_path("{{ site.background_image }}"));
-}
-```
-
-You have full access to your entire Jekyll context from any liquid
-processing we do, so you can do whatever you like and be as dynamic as you like, including full loops and conditional Liquid based CSS since we pre-process your text files.
-
-## Accessing Asset Info
-
-We provide all *your* assets as a hash of Liquid Drops so you can get basic info that we wish you to have access to without having to prepare the class.
-
-```liquid
-{{ assets["bundle.css"].content_type }} => "text/css"
-{{ assets["images.jpg"].width  }} => 62
-{{ assets["images.jpg"].height }} => 62
-```
-
-The current list of available accessors:
-
-* `logical_path`
-* `content_type`
-* `filename`
-* `basename`
-* `width`
-* `height`
-* `digest_path`
-
-If you would like more, please feel free to add a pull request, at this
-time we will reject all pull requests that wish to add any digested paths as those are dynamically created when a proxy is ran so we can never predict it reliably unless we proxy and that would be a performance problem.
-
-## Tips
-### Dynamic Assets
-
-Using Liquid Drop `assets`, you can check whether an asset is present.
-
-```liquid
-{% if assets[page.image] %}{% img '{{ page.image }}' %}
-{% else %}
-  {% img default.jpg %}
-{% endif %}
-```
-
-## Filters
-
-Any tag can be a filter
-
-```liquid
-{{ src | img:"@magick:2x magick:quality:92" }}
-```
-
-### Multi
-
-Jekyll Assets has a special called `jekyll_asset_multi` which is meant to be used for things like the header, where it would be nice to be able to include multiple assets at once.  You can use it like so:
-
-```liquid
-{{ '"css bundle.css" "js bundle.js async=true"' | jekyll_asset_multi }}
-```
-
-## Hooks
-
-* `:env` => `:init`
-
-You can register like so:
-
-```ruby
-Jekyll::Assets::Hook.register :env, :init do
-  # Your Work
-end
-```
+| Name | Class |
+|---|---|
+| `@env` | `Jekyll::Assets::Env` |
+| `@args` | `Liquid::Tag::Parser{}` |
+| `@jekyll` | `Jekyll::Site` |
+| `@asset` | `Sprockets::Asset` |
 
 ## Having trouble with our documentation?
 
