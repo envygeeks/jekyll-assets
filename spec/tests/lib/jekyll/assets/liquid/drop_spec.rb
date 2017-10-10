@@ -5,12 +5,10 @@
 require "rspec/helper"
 describe Jekyll::Assets::Liquid::Drop do
   subject do
-    described_class.new("ubuntu.png", {
+    described_class.new("img.png", {
       jekyll: jekyll
     })
   end
-
-  #
 
   it { respond_to :height }
   it { respond_to :basename }
@@ -20,8 +18,6 @@ describe Jekyll::Assets::Liquid::Drop do
   it { respond_to :integrity }
   it { respond_to :filename }
   it { respond_to :width }
-
-  #
 
   describe "#dimensions" do
     it "should return a hash" do

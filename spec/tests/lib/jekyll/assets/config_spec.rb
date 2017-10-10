@@ -4,20 +4,19 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Config do
-  it "should merge configurations" do
-    val = subject.new({ :hello => :world })
-    expect(val.values_at(:hello, :autowrite)).to(eq([
-      :world, subject::DEVELOPMENT[
-        :autowrite
-      ]
-    ]))
+  context do
+    let(:val) { subject.new(hello: :world) }
+    it "should merge configurations" do
+      expect(val.values_at(:hello, :autowrite)).to(eq([
+        :world, subject::DEVELOPMENT[:autowrite]
+      ]))
+    end
   end
 
-  #
-
-  it "should merge sources" do
-    val = subject.new({ :sources => [ "hello" ]})
-    expect(val[:sources].grep(/hello/).size).
-      to(eq(1))
+  context do
+    let(:val) { subject.new(sources: ["hello"]) }
+    it "should merge sources" do
+      expect(val[:sources].grep(/hello/).size).to(eq(1))
+    end
   end
 end

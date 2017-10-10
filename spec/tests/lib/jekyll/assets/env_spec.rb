@@ -9,15 +9,11 @@ describe Jekyll::Assets::Env do
     site.in_dest_dir("/assets")
   end
 
-  #
-
   describe "#manifest" do
     it "should put the path in Jekyll's dest dir" do
       expect(env.manifest.path).to(start_with(env.jekyll.source))
     end
   end
-
-  #
 
   describe "#to_liquid_payload" do
     it "should build a list of liquid drops" do
@@ -28,104 +24,130 @@ describe Jekyll::Assets::Env do
     end
   end
 
-  #
-
   describe "#precompile!" do
-    it "should compile those extra assets" do
+    before do
       stub_asset_config({
         precompile: [
-          "ubuntu.png"
+          "img.png"
         ]
       })
 
       env.send(:precompile!)
-      asset = env.manifest.find("ubuntu.png").first
-      expect(Pathutil.new(env.in_dest_dir(asset.digest_path
-        ))).to(exist)
+    end
+
+    let(:asset) { env.manifest.find("img.png").first }
+    it "should compile those extra assets" do
+      expect(Pathutil.new(env.in_dest_dir(asset.digest_path))).to(exist)
     end
   end
-
-  #
 
   describe "#baseurl" do
     context "when cdn? = true" do
       context "and when cdn.baseurl = true" do
-        it "should add baseurl" do
+        before do
           env.instance_variable_set(:@baseurl, nil)
-          stub_asset_config(:cdn => { baseurl: true })
+          stub_asset_config({
+            cdn: {
+              baseurl: true
+            }
+          })
+
           allow(env).to(receive(:cdn?).and_return(true))
-          stub_jekyll_config(baseurl: "hello")
+          stub_jekyll_config({
+            baseurl: "hello"
+          })
+        end
+
+        it "should add baseurl" do
           expect(env.baseurl).to(eq("hello"))
         end
       end
 
-      #
-
       context "and when cdn.baseurl = false" do
-        it "doesn't add baseurl" do
+        before do
           env.instance_variable_set(:@baseurl, nil)
+          stub_asset_config({
+            cdn: {
+              baseurl: false
+            }
+          })
+
           allow(env).to(receive(:cdn?).and_return(true))
-          stub_asset_config(cdn: { baseurl: false })
-          stub_jekyll_config(baseurl: "hello")
+          stub_jekyll_config({
+            baseurl: "hello"
+          })
+        end
+
+        it "doesn't add baseurl" do
           expect(env.baseurl).to(eq(""))
         end
       end
 
-      #
-
       context "and when cdn.prefix = true" do
-        it "should add the prefix" do
-          stub_asset_config(cdn: { prefix: true })
+        before do
           allow(env).to(receive(:cdn?).and_return(true))
           env.instance_variable_set(:@baseurl, nil)
+          stub_asset_config({
+            cdn: {
+              prefix: true
+            }
+          })
+        end
+
+        it "should add the prefix" do
           expect(env.baseurl).to(eq("/assets"))
         end
       end
 
-      #
-
       context "and when cdn.prefix = false" do
-        it "doesn't add prefix" do
-          stub_asset_config(cdn: { prefix: false })
+        before do
           allow(env).to(receive(:cdn?).and_return(true))
           env.instance_variable_set(:@baseurl, nil)
+          stub_asset_config({
+            cdn: {
+              prefix: false
+            }
+          })
+        end
+
+        it "doesn't add prefix" do
           expect(env.baseurl).to(eq(""))
         end
       end
     end
   end
 
-  #
-
   describe "#prefix_path" do
-    it "should add the baseurl" do
-      stub_jekyll_config(baseurl: "hello")
-      expect(env.prefix_path).to(
-        eq("hello/assets"))
+    context do
+      before do
+        stub_jekyll_config({
+          baseurl: "hello"
+        })
+      end
+
+      it "should add the baseurl" do
+        expect(env.prefix_path).to(eq("hello/assets"))
+      end
     end
 
-    #
-
     context "cdn? = true" do
-      it "should add the cdn url" do
+      before do
+        allow(env).to(receive(:cdn?).and_return(true))
         stub_asset_config({
           cdn: {
             url: "hello.world",
             prefix: true,
           }
         })
+      end
 
-        allow(env).to(receive(:cdn?).and_return(true))
-        expect(env.prefix_path).to(eq(
-          "hello.world/assets"))
+      it "should add the cdn url" do
+        expect(env.prefix_path).to(eq("hello.world/assets"))
       end
     end
 
-    #
-
     it "should add paths" do
-      expect(env.prefix_path("hello.world")).to(
-        eq("/assets/hello.world"))
+      expect(env.prefix_path("hello.world")).to(eq("/assets/hello.world"))
     end
   end
 end

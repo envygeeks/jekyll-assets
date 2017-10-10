@@ -17,8 +17,6 @@ module Jekyll
         end
       end
 
-      #
-
       class ProxyTest2 < Proxy
         args_key :test
         types :test
@@ -31,33 +29,22 @@ module Jekyll
   end
 end
 
-#
-
 describe Jekyll::Assets::Proxies do
+  let(:asset) { env.manifest.find(args[:argv1]).first }
+  let(:klass) { Jekyll::Assets::Plugins::ProxyTest1 }
   let :args do
-    args = "ubuntu.png @test:2x"
-    Liquid::Tag::Parser.
-      new(args)
+    Liquid::Tag::Parser.new("img.png @test:2x")
   end
-
-  #
-
-  let :asset do
-    env.manifest.find(args[:argv1]).first
-  end
-
-  #
 
   it "should call the proxy" do
-    klass = Jekyll::Assets::Plugins::ProxyTest1
     expect_any_instance_of(klass).to(receive(:process))
     expect(klass).to(receive(:new).and_call_original)
     subject.run_proxies(:test, {
-      args: args, env: env, asset: asset
+      args: args,
+      asset: asset,
+      env: env,
     })
   end
-
-  #
 
   it "should return an asset" do
     out = subject.run_proxies(:test, {
@@ -67,19 +54,24 @@ describe Jekyll::Assets::Proxies do
     })
 
     expect(out).to(be_a(Sprockets::Asset))
-    expect(out.filename).to(eq(Pathutil.new(env.
-      in_cache_dir(subject::DIR)).children.
-        first.to_s))
+    path = Pathutil.new(env.in_cache_dir(subject::DIR)).children
+    expect(out.filename).to(eq(path.first.to_s))
   end
 
-  #
+  context do
+    before do
+      subject.run_proxies(:test, {
+        args: args,
+        asset: asset,
+        env: env,
+      })
+    end
 
-  it "should copy the asset" do
-    subject.run_proxies(:test, args: args, env: env, asset: asset)
-    dir = Pathutil.new(env.in_cache_dir(subject::DIR))
-    expect(dir.children.size).to(eq(1))
-
-    expect(dir.children.first.binread).to(eq(Pathutil.
-      new(asset.filename).binread))
+    let(:dir) { Pathutil.new(env.in_cache_dir(subject::DIR)) }
+    it "should copy the asset" do
+      expect(dir.children.size).to(eq(1))
+      expect(dir.children.first.binread).to(eq(Pathutil.
+        new(asset.filename).binread))
+    end
   end
 end

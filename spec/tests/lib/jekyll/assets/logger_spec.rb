@@ -9,8 +9,6 @@ describe Jekyll::Assets::Logger do
   it { respond_to :debug }
   it { respond_to :warn }
 
-  #
-
   [:info, :error, :debug, :warn].each do |k|
     describe "##{k}" do
       it "should accept a block" do

@@ -53,7 +53,7 @@ module Jekyll
       class Default < Extensible
         def self.static(hash = nil)
           return @static ||= {} if hash.nil?
-          hash = hash.with_indifferent_access
+          @static = hash.with_indifferent_access
         end
 
         def run
