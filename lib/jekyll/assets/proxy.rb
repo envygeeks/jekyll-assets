@@ -19,6 +19,14 @@ module Jekyll
 
       module_function
       def run_proxies(type, args:, asset:, env:)
+        proxies = Proxy.inherited.select do |o|
+          o.for?({
+            type: type,
+            args: args,
+          })
+        end
+
+        return asset if proxies.empty?
         file = copy_asset(asset, {
           args: args,
            env: env,
@@ -26,13 +34,6 @@ module Jekyll
 
         cache = file.basename.sub_ext("").to_s
         env.cache.fetch(cache) do
-          proxies = Proxy.inherited.select do |o|
-            o.for?({
-              type: type,
-              args: args,
-            })
-          end
-
           proxies.each do |o|
             obj = o.new(file, {
                args: args,
@@ -49,6 +50,7 @@ module Jekyll
           true
         end
 
+        # Pull the asset from the proxied.
         out = env.manifest.find(file.basename.to_s)
         out.first
       end
