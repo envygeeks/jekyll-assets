@@ -6,10 +6,8 @@ module Jekyll
   module Assets
     module Plugins
       class JSDefaults < Liquid::Default
-        types "text/javascript"
-        static({
-          type: "text/javascript"
-        })
+        types "application/javascript", "text/javascript"
+        static type: "text/javascript"
 
         def set_src
           src = @asset.digest_path

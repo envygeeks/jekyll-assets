@@ -6,10 +6,8 @@ module Jekyll
   module Assets
     module Plugins
       class CSSDefaults < Liquid::Default
+        static type: "text/css"
         types "text/css"
-        static({
-          type: "text/css"
-        })
 
         def set_href
           @args[:href] = @env.prefix_path(@asset.digest_path)

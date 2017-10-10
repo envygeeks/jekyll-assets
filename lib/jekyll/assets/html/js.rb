@@ -6,7 +6,8 @@ module Jekyll
   module Assets
     class HTML
       class JS < HTML
-        types "text/javascript"
+        types "application/javascript",
+          "text/javascript"
 
         def run
           doc = Nokogiri::HTML::DocumentFragment.parse("")
