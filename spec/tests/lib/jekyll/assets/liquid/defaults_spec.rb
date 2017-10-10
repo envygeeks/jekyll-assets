@@ -9,17 +9,17 @@ module Jekyll
   module Assets
     module Plugins
       class DefaultsTest1 < Liquid::Default
-        tags :test
-        defaults({
-          :hello => :world
+        types :test
+        static({
+          hello: :world
         })
       end
 
       # --
       class DefaultsTest2 < Liquid::Default
-        tags :test
-        defaults({
-          :world => :hello
+        types :test
+        static({
+          world: :hello
         })
 
         def run
@@ -35,6 +35,13 @@ end
 describe Jekyll::Assets::Liquid::Defaults do
   let :asset do
     env.manifest.find("ubuntu.png").first
+  end
+
+  #
+
+  before :each do
+    allow(asset).to(receive(:content_type).
+      and_return(:test))
   end
 
   #

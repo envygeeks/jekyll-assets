@@ -13,66 +13,43 @@ module Jekyll
   module Assets
     module Liquid
       class Tag < ::Liquid::Tag
-
-        # --
-        # Liquid doesn't like to make it's new method public
-        # so we go back and make it public so that we can ship
-        # this tag from within filters.
-        # --
         class << self
           public :new
         end
 
-        # --
-        TAGS = [
-          :img,
-          :css,
-          :js,
-        ]
-
-        # --
-        HTML = {
-          css: :link,
-          js:  :script,
-          img: :img,
-        }
-
-        # --
         def initialize(tag, args, tokens)
-
           @tag = tag.to_sym
           @args = ::Liquid::Tag::Parser.new(args)
-          @args.deep_merge!(Defaults.get_defaults(tag).deep_symbolize_keys)
           @name = @args[:argv1]
           @tokens = tokens
 
           super
         end
 
-        # --
         def render(context)
           env = context.registers[:site].sprockets
           asset = env.manifest.find(@name).first
 
           if asset
-            return asset.to_s if @args[:source]
-            if @args[:"data-uri"]
-              return asset.data_uri
-            end
+            type = asset.content_type
+            Defaults.set(@args, {
+              type: type,
+              asset: asset,
+              env: env
+            })
 
             env.manifest.compile(@name)
-            doc = Nokogiri::HTML::DocumentFragment.parse("")
-            Defaults.set_defaults(@tag, asset: asset, env: env, args: @args)
-            path = env.prefix_path(asset.digest_path)
-            return path if @args[:path] == true
+            return asset.data_uri if @args[:"data-uri"]
+            return env.prefix_path(asset.digest_path) if @args[:path]
+            return asset.to_s if @args[:source]
+            type = asset.content_type
 
-            Nokogiri::HTML::Builder.with(doc) do |d|
-              d.send(HTML[@tag], @args.to_html({
-                hash: true
-              }))
-            end
-
-            doc.to_html
+            HTML.build({
+              type: type,
+              asset: asset,
+              args: @args,
+              env: env
+            })
           else
             env.logger.error "unable to find: #{@name} -- SKIPPING"
             if env.asset_config[:strict]
@@ -87,6 +64,4 @@ end
 
 # --
 
-Jekyll::Assets::Liquid::Tag::TAGS.each do |v|
-  Liquid::Template.register_tag v, Jekyll::Assets::Liquid::Tag
-end
+Liquid::Template.register_tag "asset", Jekyll::Assets::Liquid::Tag

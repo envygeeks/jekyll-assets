@@ -5,47 +5,34 @@
 module Jekyll
   module Assets
     module Plugins
-      class ImgDefaults < Jekyll::Assets::Liquid::Default
-        type %r!^image\/[a-zA-Z]+$!
+      class ImgDefaults < Liquid::Default
+        types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
+          "image/bmp", "image/gif", "image/png"
 
-        # --
-        # set_src sets the source path.
-        # @return [nil]
-        # --
         def set_src
-          @args[:src] = @env.prefix_path(@asset.digest_path)
+          src = @asset.digest_path
+          src = @env.prefix_path(src)
+          @args[:src] = src
         end
 
-        # --
-        # @note override with {% img alt="" %}
-        # set_alt provides the `alt=""` atttribute
-        # @return [nil]
-        # --
         def set_alt
-          unless @args.key?(:alt)
-            @args[:alt] = File.basename(@asset.logical_path)
-          end
+          return if @args.key?(:alt)
+          alt = @asset.logical_path
+          alt = File.basename(alt)
+          @args[:alt] = alt
         end
 
-        # --
-        # set_dimensions provides a default dimensions.
-        # @note override with {% img width="" height="" %}
-        # @return [nil]
-        # --
         def set_dimensions
-          @args[:width], @args[:height] = FastImage.
-            size(@asset.filename.to_s)
+          return if @args.key?(:width) || @args.key?(:height)
+          img = FastImage.size(@asset.filename.to_s)
+          @args[:width], @args[:height] = img
         end
 
-        # --
-        # set_integrity sets integrity, and origin.
-        # @note override with {% img crossorigin="" %}
-        # @return [nil]
-        # --
         def set_integrity
           @args[:integrity] = @asset.integrity
-          @args[:crossorigin] = "anonymous" \
-            unless @args[:crossorigin]
+          unless @args.key?(:crossorigin)
+            @args[:crossorigin] = "anonymous"
+          end
         end
       end
     end

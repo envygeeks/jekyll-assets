@@ -1,2 +1,1 @@
-//= require ./strict
-//= require ./transpile
+//= require ./require

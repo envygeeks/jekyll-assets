@@ -18,7 +18,7 @@ describe Jekyll::Assets::Liquid::Tag do
 
   #
 
-  Jekyll::Assets::Liquid::Tag::TAGS.each do |k|
+  [:asset, :css, :js, :img].each do |k|
     context k.to_s, :render => true do
       let :page do
         jekyll.pages.find do |v|
@@ -29,6 +29,9 @@ describe Jekyll::Assets::Liquid::Tag do
       #
 
       it "should render" do
+        require"pry"
+        Pry.output = STDOUT
+        binding.pry
         expect(page.to_s.strip).
           not_to(be_empty)
       end

@@ -6,7 +6,7 @@ module Jekyll
   module Assets
     module Plugins
       class ImageOptimProxy < Proxy
-        type %r!^image\/[a-zA-Z]+$!
+        types %r!^image\/[a-zA-Z]+$!
         args_key :optim
 
         # --

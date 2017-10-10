@@ -8,7 +8,7 @@ module Jekyll
   module Assets
     module Plugins
       class MiniMagick < Proxy
-        type %r!^image\/[a-zA-Z]+$!
+        types %r!^image\/[a-zA-Z]+$!
         args_key :magick
 
         # --

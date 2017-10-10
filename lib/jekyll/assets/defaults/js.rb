@@ -6,28 +6,22 @@ module Jekyll
   module Assets
     module Plugins
       class JSDefaults < Liquid::Default
-        type "text/javascript"
-        static_defaults({
+        types "text/javascript"
+        static({
           type: "text/javascript"
         })
 
-        # --
-        # set_src sets the source path.
-        # @return [nil]
-        # --
         def set_src
-          @args[:src] = @env.prefix_path(@asset.digest_path)
+          src = @asset.digest_path
+          src = @env.prefix_path(src)
+          @args[:src] = src
         end
 
-        # --
-        # set_integrity sets integrity, and origin.
-        # @note override with {% js crossorigin="" %}
-        # @return [nil]
-        # --
         def set_integrity
           @args[:integrity] = @asset.integrity
-          @args[:crossorigin] = "anonymous" \
-            unless @args[:crossorigin]
+          unless @args.key?(:crossorigin)
+            @args[:crossorigin] = "anonymous"
+          end
         end
       end
     end

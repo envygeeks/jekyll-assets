@@ -9,7 +9,9 @@ module Jekyll
   module Assets
     module Plugins
       class ProxyTest1 < Proxy
-        proxy_info tags: :test, key: :test
+        args_key :test
+        types :test
+
         def process
           nil
         end
@@ -18,7 +20,9 @@ module Jekyll
       #
 
       class ProxyTest2 < Proxy
-        proxy_info tags: :test, key: :test
+        args_key :test
+        types :test
+
         def process
           nil
         end
