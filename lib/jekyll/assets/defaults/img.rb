@@ -4,8 +4,8 @@
 
 module Jekyll
   module Assets
-    module Plugins
-      class ImgDefaults < Default
+    class Default
+      class Img < Default
         types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
           "image/bmp", "image/gif", "image/png"
 

@@ -4,8 +4,8 @@
 
 module Jekyll
   module Assets
-    module Plugins
-      class JSDefaults < Default
+    class Default
+      class JS < Default
         types "application/javascript", "text/javascript"
         static type: "text/javascript"
 

@@ -4,8 +4,8 @@
 
 module Jekyll
   module Assets
-    module Plugins
-      class CSSDefaults < Default
+    class Default
+      class CSS < Default
         static type: "text/css"
         types "text/css"
 

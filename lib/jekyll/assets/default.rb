@@ -9,9 +9,8 @@ require_relative "extensible"
 
 module Jekyll
   module Assets
-    module Defaults
-      module_function
-      def get(type:, args:)
+    class Default < Extensible
+      def self.get(type:, args:)
         rtn = Default.inherited.select do |o|
           o.for?({
             type: type,
@@ -25,8 +24,7 @@ module Jekyll
         end
       end
 
-      module_function
-      def set(args, type:, asset:, env:)
+      def self.set(args, type:, asset:, env:)
         rtn = get({
           type: type,
           args: args,
@@ -47,9 +45,7 @@ module Jekyll
           }).run
         end
       end
-    end
 
-    class Default < Extensible
       def self.static(hash = nil)
         return @static ||= {} if hash.nil?
         @static = hash.with_indifferent_access

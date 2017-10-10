@@ -31,7 +31,7 @@ module Jekyll
 
         if asset
           type = asset.content_type
-          Defaults.set(@args, {
+          Default.set(@args, {
             type: type,
             asset: asset,
             env: env
