@@ -6,19 +6,19 @@ require_relative "extensible"
 
 module Jekyll
   module Assets
-    module Proxies
+    class Proxy < Extensible
+      attr_reader :file
       DIG = Digest::SHA256
       DIR = "proxied"
 
-      class ProxyDeleted < StandardError
+      class Deleted < StandardError
         def initialize(obj)
           super "#{obj.to_s} violated a contract and " \
             "deleted your proxy file"
         end
       end
 
-      module_function
-      def run_proxies(type, args:, asset:, env:)
+      def self.proxy(asset, type:, args:, env:)
         proxies = Proxy.inherited.select do |o|
           o.for?({
             type: type,
@@ -27,7 +27,7 @@ module Jekyll
         end
 
         return asset if proxies.empty?
-        file = copy_asset(asset, {
+        file = copy(asset, {
           args: args,
            env: env,
         })
@@ -43,7 +43,7 @@ module Jekyll
 
             obj.process
             if !file.exist?
-              raise ProxyDeleted, o
+              raise Deleted, o
             end
           end
 
@@ -55,8 +55,7 @@ module Jekyll
         out.first
       end
 
-      module_function
-      def copy_asset(asset, env:, args:)
+      def self.copy(asset, env:, args:)
         raw = args.instance_variable_get(:@raw)
         key = DIG.hexdigest(raw)
 
@@ -68,10 +67,6 @@ module Jekyll
 
         out
       end
-    end
-
-    class Proxy < Extensible
-      attr_reader :file
 
       def self.args_key(key = nil)
         unless key.nil?
@@ -81,22 +76,18 @@ module Jekyll
         @key
       end
 
-      def initialize(file, args:, asset:, env:)
-        @args = args
-        @asset = asset
-        @jekyll = env.jekyll
+      def initialize(file, **kwd)
+        super(**kwd)
         @file = file
-        @env = env
       end
 
       def self.also_for?(type:, args:)
         args.key?(args_key)
       end
     end
-
-    Hook.register :env, :init do
-      dir = in_cache_dir(Proxies::DIR)
-      append_path(dir)
-    end
   end
+end
+
+Jekyll::Assets::Hook.register :env, :init do
+  append_path(in_cache_dir(Jekyll::Assets::Proxy::DIR))
 end

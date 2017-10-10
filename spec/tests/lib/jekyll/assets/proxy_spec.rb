@@ -29,7 +29,7 @@ module Jekyll
   end
 end
 
-describe Jekyll::Assets::Proxies do
+describe Jekyll::Assets::Proxy do
   let(:asset) { env.manifest.find(args[:argv1]).first }
   let(:klass) { Jekyll::Assets::Plugins::ProxyTest1 }
   let :args do
@@ -39,17 +39,17 @@ describe Jekyll::Assets::Proxies do
   it "should call the proxy" do
     expect_any_instance_of(klass).to(receive(:process))
     expect(klass).to(receive(:new).and_call_original)
-    subject.run_proxies(:test, {
+    subject.proxy(asset, {
       args: args,
-      asset: asset,
+      type: :test,
       env: env,
     })
   end
 
   it "should return an asset" do
-    out = subject.run_proxies(:test, {
+    out = subject.proxy(asset, {
       args: args,
-      asset: asset,
+      type: :test,
       env: env,
     })
 
@@ -60,9 +60,9 @@ describe Jekyll::Assets::Proxies do
 
   context do
     before do
-      subject.run_proxies(:test, {
+      subject.proxy(asset, {
         args: args,
-        asset: asset,
+        type: :test,
         env: env,
       })
     end
