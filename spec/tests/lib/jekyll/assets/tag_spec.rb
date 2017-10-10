@@ -3,7 +3,7 @@
 # Encoding: utf-8
 
 require "rspec/helper"
-describe Jekyll::Assets::Liquid::Tag do
+describe Jekyll::Assets::Tag do
   context do
     it "should log errors" do
       expect(env.logger).to(receive(:error))

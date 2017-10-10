@@ -3,7 +3,7 @@
 # Encoding: utf-8
 
 require "rspec/helper"
-describe Jekyll::Assets::Liquid::Drop do
+describe Jekyll::Assets::Drop do
   subject do
     described_class.new("img.png", {
       jekyll: jekyll

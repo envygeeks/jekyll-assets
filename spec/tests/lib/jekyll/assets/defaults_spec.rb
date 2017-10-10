@@ -8,12 +8,12 @@ require "rspec/helper"
 module Jekyll
   module Assets
     module Plugins
-      class DefaultsTest1 < Liquid::Default
+      class DefaultsTest1 < Default
         static hello: :world
         types :test
       end
 
-      class DefaultsTest2 < Liquid::Default
+      class DefaultsTest2 < Default
         static world: :hello
         types :test
 
@@ -27,7 +27,7 @@ module Jekyll
   end
 end
 
-describe Jekyll::Assets::Liquid::Defaults do
+describe Jekyll::Assets::Defaults do
   before { allow(asset).to(receive(:content_type).and_return(:test)) }
   let :asset do
     env.manifest.find("img.png").first

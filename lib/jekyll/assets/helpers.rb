@@ -14,9 +14,7 @@ module Jekyll
       # @return [String]
       # --
       def asset_path(path, opts = {})
-        Liquid::Tag.new("img", "#{path} @path",
-          Liquid::ParseContext.new).
-            render(context)
+        Tag.new("img", "#{path} @path", ParseContext.new).render(context)
       end
 
       # --

@@ -1,4 +1,4 @@
-# Frozen-string-literal: true
+  # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
@@ -123,12 +123,12 @@ module Jekyll
       # @return [Hash]
       # --
       def to_liquid_payload
-        require "jekyll/assets/liquid/drop"
+        require "jekyll/assets/drop"
 
         each_file.each_with_object({}) do |k, h|
           path = strip_path(k)
           h.update({
-            path => Liquid::Drop.new(path, {
+            path => Drop.new(path, {
               jekyll: jekyll
             })
           })

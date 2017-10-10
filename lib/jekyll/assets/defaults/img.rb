@@ -5,7 +5,7 @@
 module Jekyll
   module Assets
     module Plugins
-      class ImgDefaults < Liquid::Default
+      class ImgDefaults < Default
         types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
           "image/bmp", "image/gif", "image/png"
 

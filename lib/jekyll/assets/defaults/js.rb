@@ -5,7 +5,7 @@
 module Jekyll
   module Assets
     module Plugins
-      class JSDefaults < Liquid::Default
+      class JSDefaults < Default
         types "application/javascript", "text/javascript"
         static type: "text/javascript"
 

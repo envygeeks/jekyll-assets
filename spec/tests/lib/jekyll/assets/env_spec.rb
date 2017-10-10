@@ -19,7 +19,7 @@ describe Jekyll::Assets::Env do
     it "should build a list of liquid drops" do
       expect(env.to_liquid_payload).to(be_a(Hash))
       env.to_liquid_payload.each do |_, v|
-        expect(v).to(be_a(Jekyll::Assets::Liquid::Drop))
+        expect(v).to(be_a(Jekyll::Assets::Drop))
       end
     end
   end
