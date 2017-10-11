@@ -4,7 +4,7 @@
 
 module Jekyll
   module Assets
-    class ParseContext < Liquid::ParseContext
+    class Context < Liquid::ParseContext
       #
     end
   end

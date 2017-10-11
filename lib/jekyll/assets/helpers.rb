@@ -14,7 +14,7 @@ module Jekyll
       # @return [String]
       # --
       def asset_path(path, opts = {})
-        Tag.new("img", "#{path} @path", ParseContext.new).render(context)
+        Tag.new("img", "#{path} @path", Context.new).render(context)
       end
 
       # --
