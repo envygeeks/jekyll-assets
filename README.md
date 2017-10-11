@@ -262,6 +262,7 @@ to get an idea what `<value>` can be.
 
 | Name | Accepts Value |
 |---| --- |
+| `magick:compress` | ✔ |
 | `magick:resize` | ✔ |
 | `magick:format` | ✔ |
 | `magick:quality` | ✔ |

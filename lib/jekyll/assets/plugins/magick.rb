@@ -33,6 +33,13 @@ try_require "mini_magick" do
           end
 
           private
+          def magick_compress(_, cmd)
+            if @args[:magick].key?(:compress)
+              cmd.compress @args[:magick][:compress]
+            end
+          end
+
+          private
           def magick_quality(_, cmd)
             if @args[:magick].key?(:quality)
               cmd.quality @args[:magick][:quality]
