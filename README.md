@@ -133,7 +133,6 @@ The current list of available accessors:
 
 | Method | Description |
 |---|---|
-| `logical_path` | The filename |
 | `content_type` | The RFC content type |
 | `height` | The asset height ***(if available)*** |
 | `filename` | The full path to the assets actual file |
