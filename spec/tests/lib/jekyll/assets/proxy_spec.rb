@@ -69,7 +69,7 @@ describe Jekyll::Assets::Proxy do
 
     let(:dir) { Pathutil.new(env.in_cache_dir(subject::DIR)) }
     it "should copy the asset" do
-      expect(dir.children.size).to(eq(1))
+      expect(dir.children.size).to be >= 1
       expect(dir.children.first.binread).to(eq(Pathutil.
         new(asset.filename).binread))
     end
