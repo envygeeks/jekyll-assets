@@ -72,8 +72,11 @@ end
 # --
 
 RSpec.configure do |c|
-  c.after (:suite) { Jekyll::RSpecHelpers.cleanup_trash }
-  c.before(:suite) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.after (:suite) {  Jekyll::RSpecHelpers.cleanup_trash }
+  c.before(:suite) do Jekyll::RSpecHelpers.cleanup_trash
+    Jekyll::RSpecHelpers.stub_jekyll_site
+  end
+
   c.include Jekyll::RSpecHelpers
   c.include Jekyll::Declarations
   c.extend  Jekyll::RSpecHelpers
