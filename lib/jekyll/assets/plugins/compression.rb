@@ -17,3 +17,22 @@ Jekyll::Assets::Hook.register :env, :init do
     end
   end
 end
+
+Jekyll::Assets::Hook.register :config, :pre do |c|
+  c.deep_merge!({
+    plugins: {
+      compression: {
+        js: {
+          enabled: true,
+          opts: {
+            #
+          }
+        },
+
+        css: {
+          enabled: true,
+        }
+      }
+    }
+  })
+end

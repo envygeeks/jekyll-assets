@@ -32,21 +32,6 @@ module Jekyll
           prefix: false,
         },
 
-        plugins: {
-          compression: {
-            js: {
-              enabled: true,
-              opts: {
-                #
-              }
-            },
-
-            css: {
-              enabled: true,
-            }
-          }
-        },
-
         sources: %W(
           _assets/css
           _assets/fonts
