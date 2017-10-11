@@ -269,8 +269,8 @@ to get an idea what `<value>` can be.
 | `magick:gravity` | ✔ |
 | `magick:crop` | ✔ |
 | `magick:flip` | ✔ |
-| `@magick:2x` | ✗ |
-| `@magick:1/2` | ✗ |
+| `@magick:double` | ✗ |
+| `@magick:half` | ✗ |
 
 ### ImageOptim
 #### Installation
@@ -302,8 +302,10 @@ assets:
 #### Tag Args
 
 | Name | Accepts Value |
-|---| --- |
-| `image_optim:preset` | ✔ |
+|---|---|---|
+| `@image_optim:preset`<sup>*</sup> | ✗ |
+
+<sup>\*</sup>***Where `preset` is the name of the preset.***
 
 ## Tutorials
 ### Jekyll to Jekyll Assets
