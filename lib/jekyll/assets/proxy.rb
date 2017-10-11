@@ -50,9 +50,7 @@ module Jekyll
           true
         end
 
-        # Pull the asset from the proxied.
-        out = env.manifest.find(file.basename.to_s)
-        out.first
+        env.manifest.find(file).first
       end
 
       def self.copy(asset, env:, args:)
