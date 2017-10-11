@@ -88,7 +88,7 @@ Our tags will take any number of arguments, and convert them to HTML, and even a
 
 ## Liquid
 
-We support liquid arguments for tag values (but not tag keys), and we also support Liquid pre-processing (with your Jekyll context) sass/less/css files if they end with `.liquid`.
+We support liquid arguments for tag values (but not tag keys), and we also support Liquid pre-processing (with your Jekyll context) of most files if they end with `.liquid`.  This will also give you access to our filters as well as their filters, and Jekyll's filters.
 
 ### Usage
 
@@ -98,6 +98,8 @@ We support liquid arguments for tag values (but not tag keys), and we also suppo
 {% img {{\ image_path\ }} %}
 ```
 
+#### `.liquid`
+
 ```scss
 .bg {
   background: url(asset_path("{{ site.background_image }}"));
@@ -106,6 +108,10 @@ We support liquid arguments for tag values (but not tag keys), and we also suppo
 
 You have full access to your entire Jekyll context from any liquid
 processing we do, so you can do whatever you like and be as dynamic as you like, including full loops and conditional Liquid based CSS since we pre-process your text files.
+
+##### Importing
+
+In order to import your Liquid pre-processed assets inside of Liquid or JS you should use a Sprockets `//require=`, Sprockets does not integrate that deeply into JavaScript and SASS to allow you to `@import` and pre-process.
 
 ## List
 

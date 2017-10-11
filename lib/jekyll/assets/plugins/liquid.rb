@@ -4,7 +4,7 @@
 
 module Jekyll
   module Assets
-    module Processors
+    module Plugins
       class Liquid
         EXT = %W(.liquid .js.liquid .css.liquid .scss.liquid).freeze
         FOR = %W(text/css text/sass text/less application/javascript
@@ -14,35 +14,23 @@ module Jekyll
 
         def self.call(context)
           file = Pathutil.new(context[:filename])
-          config = context[:environment].asset_config
           jekyll = context[:environment].jekyll
 
-          if config["features"]["liquid"] || file.extname == ".liquid"
-            payload_ = jekyll.site_payload
-            renderer = jekyll.liquid_renderer.file(file)
-            context[:data] = renderer.parse(context[:data]).render!(payload_, {
-              :filters => [Jekyll::Filters],
-              :registers => {
-                :site => jekyll
-              }
-            })
-          end
+          payload_ = jekyll.site_payload
+          renderer = jekyll.liquid_renderer.file(file)
+          context[:data] = renderer.parse(context[:data]).render!(payload_, {
+            :filters => [Jekyll::Filters, Jekyll::Assets::Filters],
+            :registers => {
+              :site => jekyll
+            }
+          })
         end
       end
     end
   end
 end
 
-# --
-# There might be a few missing, if there is please do let me know.
-# --
-# Jekyll::Assets::Processors::Liquid::EXT.each do |ext|
-#   Sprockets.register_engine(ext, Jekyll::Assets::Processors::Liquid, {
-#     :silence_deprecation => true
-#   })
-# end
-
-# --
-# Jekyll::Assets::Processors::Liquid::FOR.each do |v|
-#   Sprockets.register_preprocessor(v, Jekyll::Assets::Processors::Liquid)
-# end
+# This is super huge, but what can you do? They do it different than I do.
+Sprockets.register_transformer_suffix(%w(application/ecmascript-6
+application/javascript text/coffeescript text/css text/sass text/scss),
+'application/\2+liquid', '.liquid', Jekyll::Assets::Plugins::Liquid)
