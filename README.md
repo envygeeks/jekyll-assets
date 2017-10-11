@@ -302,7 +302,7 @@ assets:
 #### Tag Args
 
 | Name | Accepts Value |
-|---|---|---|
+|---|---|
 | `@image_optim:preset`<sup>*</sup> | ✗ |
 
 <sup>\*</sup>***Where `preset` is the name of the preset.***
