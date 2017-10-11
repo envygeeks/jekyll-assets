@@ -55,7 +55,7 @@ describe Jekyll::Assets::Proxy do
 
     expect(out).to(be_a(Sprockets::Asset))
     path = Pathutil.new(env.in_cache_dir(subject::DIR)).children
-    expect(out.filename).to(include(path.first.to_s))
+    expect(path).to(include(out.filename))
   end
 
   context do
