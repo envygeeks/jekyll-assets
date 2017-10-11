@@ -8,15 +8,12 @@ module Jekyll
   module Assets
     class Drop < Liquid::Drop
       extend Forwardable::Extended
-      CONTENT_TYPES = %W(
-        image/png
-        image/svg+xml
-        image/jpeg
-        image/gif
-      )
+      IMG = %W("image/webp", "image/jpeg", "image/jpeg", "image/tiff",
+        "image/bmp", "image/gif", "image/png")
 
       def initialize(path, jekyll: )
         @path = path
+        @sprockets = jekyll.sprockets
         @jekyll = jekyll
         @asset = nil
       end
@@ -24,11 +21,13 @@ module Jekyll
       rb_delegate :width,        to: :dimensions, type: :hash
       rb_delegate :height,       to: :dimensions, type: :hash
       rb_delegate :basename,     to: :File, args: :@path
-      rb_delegate :digest_path,  to: :asset
-      rb_delegate :logical_path, to: :asset
       rb_delegate :content_type, to: :asset
       rb_delegate :integrity,    to: :asset
       rb_delegate :filename,     to: :asset
+
+      def digest_path
+        @sprockets.prefix_path(asset.digest_path)
+      end
 
       def dimensions
         @dimensions ||= begin
@@ -44,14 +43,14 @@ module Jekyll
       private
       def img?
         if asset.content_type
-          CONTENT_TYPES.include?(asset.content_type)
+          IMG.include?(asset.content_type)
         end
       end
 
       private
       def asset
         @asset ||= begin
-          @jekyll.sprockets.find_asset!(@path)
+          @sprockets.find_asset!(@path)
         end
       end
     end
