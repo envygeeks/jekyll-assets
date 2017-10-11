@@ -9,7 +9,7 @@ describe Jekyll::Assets::Tag do
       expect(env.logger).to(receive(:error))
     end
 
-    after :each do
+    after do
       jekyll.reset
       jekyll.process
       jekyll.render
