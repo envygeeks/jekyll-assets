@@ -13,9 +13,12 @@ module Jekyll
         # @return [Array]
         # --
         def obsolete_files
+          sprockets, manifest = site.sprockets, site.sprockets.manifest
+          reject = manifest.files.keys.map{|v|sprockets.in_dest_dir(v)}
           super.reject do |v|
-            v.start_with?(site.in_dest_dir(site.sprockets.
-              prefix_path))
+            v == manifest.filename || \
+            v == sprockets.in_dest_dir || \
+            reject.include?(v)
           end
         end
       end
