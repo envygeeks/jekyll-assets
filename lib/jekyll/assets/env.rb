@@ -64,7 +64,10 @@ module Jekyll
 
       def to_liquid_payload
         each_file.each_with_object({}) do |k, h|
-          path = strip_path(k)
+          path = strip_paths(k)
+          next if File.basename(path).start_with?("_") ||
+                  File. dirname(path).start_with?("_")
+
           h.update({
             path => Drop.new(path, {
               jekyll: jekyll
@@ -180,6 +183,15 @@ module Jekyll
           end
 
           paths
+        end
+      end
+
+      private
+      def strip_paths(path)
+        paths.map do |v|
+          if path.start_with?(v)
+            return path.sub(v + "/", "")
+          end
         end
       end
     end
