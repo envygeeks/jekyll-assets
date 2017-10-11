@@ -6,6 +6,6 @@ require "rspec/helper"
 describe "Plugins/Bootstrap" do
   let(:asset) { env.manifest.find("plugins/botstrap.css").first }
   it "should require bootstrap" do
-    expect(asset.to_s).to(match(/getbootstrap\.com/))
+    expect(asset.to_s).to(match(/^html\{/))
   end
 end
