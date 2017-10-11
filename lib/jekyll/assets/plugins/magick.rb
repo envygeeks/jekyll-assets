@@ -2,96 +2,96 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
-require "mini_magick"
+try_require "mini_magick" do
+  module Jekyll
+    module Assets
+      module Plugins
+        class MiniMagick < Proxy
+          types %r!^image\/[a-zA-Z]+$!
+          args_key :magick
 
-module Jekyll
-  module Assets
-    module Plugins
-      class MiniMagick < Proxy
-        types %r!^image\/[a-zA-Z]+$!
-        args_key :magick
+          def process
+            img = ::MiniMagick::Image.open(@file)
+            img.combine_options do |c|
+              runners.each do |m|
+                send(m, img, c)
+              end
+            end
 
-        def process
-          img = ::MiniMagick::Image.open(@file)
-          img.combine_options do |c|
-            runners.each do |m|
-              send(m, img, c)
+            img.write(@file)
+            @file
+          ensure
+            unless !img
+              img.destroy!
             end
           end
 
-          img.write(@file)
-          @file
-        ensure
-          unless !img
-            img.destroy!
+          def runners
+            private_methods(true).select do |v|
+              v =~ /^magick_/
+            end
           end
-        end
 
-        def runners
-          private_methods(true).select do |v|
-            v =~ /^magick_/
+          private
+          def magick_quality(_, cmd)
+            if @args[:magick].key?(:quality)
+              cmd.quality @args[:magick][:quality]
+            end
           end
-        end
 
-        private
-        def magick_quality(_, cmd)
-          if @args[:magick].key?(:quality)
-            cmd.quality @args[:magick][:quality]
+          private
+          def magick_resize(_, cmd)
+            if @args[:magick].key?(:resize)
+              cmd.resize @args[:magick][:resize]
+            end
           end
-        end
 
-        private
-        def magick_resize(_, cmd)
-          if @args[:magick].key?(:resize)
-            cmd.resize @args[:magick][:resize]
+          private
+          def magick_rotate(_, cmd)
+            if @args[:magick].key?(:rotate)
+              cmd.rotate @args[:magick][:rotate]
+            end
           end
-        end
 
-        private
-        def magick_rotate(_, cmd)
-          if @args[:magick].key?(:rotate)
-            cmd.rotate @args[:magick][:rotate]
+          private
+          def magick_flip(_, cmd)
+            if @args[:magick].key?(:flip)
+              cmd.flip @args[:magick][:flip]
+            end
           end
-        end
 
-        private
-        def magick_flip(_, cmd)
-          if @args[:magick].key?(:flip)
-            cmd.flip @args[:magick][:flip]
+          private
+          def magick_format(img, _)
+            if @args[:magick].key?(:format)
+              img.format @args[:magick][:format]
+            end
           end
-        end
 
-        private
-        def magick_format(img, _)
-          if @args[:magick].key?(:format)
-            img.format @args[:magick][:format]
+          private
+          def magick_crop(_, cmd)
+            if @args[:magick].key?(:crop)
+              cmd.crop @args[:magick][:crop]
+            end
           end
-        end
 
-        private
-        def magick_crop(_, cmd)
-          if @args[:magick].key?(:crop)
-            cmd.crop @args[:magick][:crop]
+          private
+          def magick_gravity(_, cmd)
+            if @args[:magick].key?(:gravity)
+              cmd.gravity @args[:magick][:gravity]
+            end
           end
-        end
 
-        private
-        def magick_gravity(_, cmd)
-          if @args[:magick].key?(:gravity)
-            cmd.gravity @args[:magick][:gravity]
+          private
+          def magick_strip(_, cmd)
+            cmd.strip
           end
-        end
 
-        private
-        def magick_strip(_, cmd)
-          cmd.strip
-        end
-
-        private
-        def magick_preset_resize(img, cmd)
-          width,height = img.width*2,img.height*2 if @args[:magick].key?(:double)
-          width,height = img.width/2,img.height/2 if @args[:magick].key?(:half)
-          cmd.resize "#{width}x#{height}"
+          private
+          def magick_preset_resize(img, cmd)
+            width,height = img.width*2,img.height*2 if @args[:magick].key?(:double)
+            width,height = img.width/2,img.height/2 if @args[:magick].key?(:half)
+            cmd.resize "#{width}x#{height}"
+          end
         end
       end
     end
