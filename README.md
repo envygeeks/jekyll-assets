@@ -162,7 +162,7 @@ Using Liquid Drop `assets`, you can check whether an asset is present.
 ## Hooks
 
 | Point | Name | Instance | Args |
-|---|---|---|
+|---|---|---|---|
 | `:env` | `:init` | ✔ | ✗ |
 | `:config` | `:pre` | ✗ | `Config{}` |
 
