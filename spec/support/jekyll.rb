@@ -36,7 +36,7 @@ module Jekyll
     end
 
     def self.cleanup_trash
-      %W(.jekyll-metadata _site .jekyll-cache .asset-cache).each do |v|
+      %W(.jekyll-metadata _site .jekyll-cache).each do |v|
         FileUtils.rm_rf(File.join(fixture, v))
       end
     end
@@ -64,7 +64,6 @@ module Jekyll
     let(:sprockets) { env }
     subject { described_class }
     let(:env) { Jekyll::Assets::Env.new(jekyll) }
-    before(:each, render: true) { site.reset; site.process; site.render }
     let(:site) { stub_jekyll_site }
     let(:jekyll) { site }
   end
@@ -73,8 +72,8 @@ end
 # --
 
 RSpec.configure do |c|
-  c.after (:all) { Jekyll::RSpecHelpers.cleanup_trash }
-  c.before(:all) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.after (:suite) { Jekyll::RSpecHelpers.cleanup_trash }
+  c.before(:suite) { Jekyll::RSpecHelpers.cleanup_trash }
   c.include Jekyll::RSpecHelpers
   c.include Jekyll::Declarations
   c.extend  Jekyll::RSpecHelpers

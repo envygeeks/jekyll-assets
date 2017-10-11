@@ -11,7 +11,6 @@ module Jekyll
         types %r!^image\/[a-zA-Z]+$!
         args_key :magick
 
-        # --
         def process
           img = ::MiniMagick::Image.open(@file)
           img.combine_options do |c|
@@ -28,14 +27,12 @@ module Jekyll
           end
         end
 
-        # --
         def runners
           private_methods(true).select do |v|
             v =~ /^magick_/
           end
         end
 
-        # --
         private
         def magick_quality(_, cmd)
           if @args[:magick].key?(:quality)
@@ -43,7 +40,6 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_resize(_, cmd)
           if @args[:magick].key?(:resize)
@@ -51,7 +47,6 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_rotate(_, cmd)
           if @args[:magick].key?(:rotate)
@@ -59,7 +54,6 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_flip(_, cmd)
           if @args[:magick].key?(:flip)
@@ -67,7 +61,6 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_format(img, _)
           if @args[:magick].key?(:format)
@@ -75,7 +68,6 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_crop(_, cmd)
           if @args[:magick].key?(:crop)
@@ -83,7 +75,6 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_gravity(_, cmd)
           if @args[:magick].key?(:gravity)
@@ -91,19 +82,15 @@ module Jekyll
           end
         end
 
-        # --
         private
         def magick_strip(_, cmd)
           cmd.strip
         end
 
-        # --
         private
         def magick_preset_resize(img, cmd)
-          width,height = img.width*2,img.height*2 if @args[:magick].key?(:"2x")
-          width,height = img.width/2,img.height/2 if @args[:magick].
-            key?(:"1/2")
-
+          width,height = img.width*2,img.height*2 if @args[:magick].key?(:double)
+          width,height = img.width/2,img.height/2 if @args[:magick].key?(:half)
           cmd.resize "#{width}x#{height}"
         end
       end

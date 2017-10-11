@@ -29,17 +29,11 @@ module Jekyll
         env = context.registers[:site].sprockets
         o_asset = env.manifest.find(@name).first
 
+
         if o_asset
           type = o_asset.content_type
-          Default.set(@args, type: type, asset: o_asset, env: env)
           asset = Proxy.proxy(o_asset, type: type, args: @args, env: env)
-          if asset.content_type != o_asset.content_type
-            Defaults.set(@args, {
-              type: type,
-              asset: asset,
-              env: env,
-            })
-          end
+          Default.set(@args, type: type, asset: asset, env: env)
 
           env.manifest.compile(asset.filename)
           return asset.data_uri if @args[:"data-uri"]
