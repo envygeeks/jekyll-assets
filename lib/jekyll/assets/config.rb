@@ -40,7 +40,6 @@ module Jekyll
         )
       }.freeze
 
-      # --
       PRODUCTION = DEVELOPMENT.deep_merge({
         digest: true,
         compress: {
@@ -49,11 +48,6 @@ module Jekyll
         }
       }).freeze
 
-      # --
-      # @param [Hash] config the configuration
-      # intitialize creates a new HashWithIndifferentAccess
-      # @return [Config]
-      # --
       def initialize(config)
         super(defaults)
         Hook.trigger :config, :pre do |h|
@@ -67,11 +61,6 @@ module Jekyll
           s1 + s2
       end
 
-      # --
-      # @note this is for safemode usage.
-      # defaults provides the configuration defaults
-      # @return [Hash]
-      # --
       def defaults
         if Jekyll.env == "production"
           return PRODUCTION

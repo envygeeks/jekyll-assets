@@ -7,44 +7,28 @@ module Jekyll
     class Logger
       PREFIX = "Assets: "
 
-      # --
-      # logger allows you to delegate to this class without
-      # @return [Logger]
-      # --
       def self.logger
         self
       end
 
-      # --
-      # Log Level: 1
-      # --
       def self.warn(msg = nil)
         msg = yield if block_given?
         Jekyll.logger.warn \
           PREFIX, msg
       end
 
-      # --
-      # Log Level: 1
-      # --
       def self.error(msg = nil)
         msg = yield if block_given?
         Jekyll.logger.error \
           PREFIX, msg
       end
 
-      # --
-      # Log Level: 2
-      # --
       def self.info(msg = nil)
         msg = yield if block_given?
         Jekyll.logger.info \
           PREFIX, msg
       end
 
-      # --
-      # Log Level: 3
-      # --
       def self.debug(msg = nil)
         msg = yield if block_given?
         Jekyll.logger.debug \

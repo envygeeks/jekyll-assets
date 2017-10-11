@@ -15,19 +15,11 @@ module Jekyll
         image/gif
       )
 
-      # --
-      # initialize creates a new instance
-      # @param [Jekyll::Site] jekyll the Jekyll instance.
-      # @param [String] path the path to the asset.
-      # @return [Drop]
-      # --
       def initialize(path, jekyll: )
         @path = path
         @jekyll = jekyll
         @asset = nil
       end
-
-      # --
 
       rb_delegate :width,        to: :dimensions, type: :hash
       rb_delegate :height,       to: :dimensions, type: :hash
@@ -38,10 +30,6 @@ module Jekyll
       rb_delegate :integrity,    to: :asset
       rb_delegate :filename,     to: :asset
 
-      # --
-      # dimensions gives you the width and height.
-      # @return [Array<Integer>]
-      # --
       def dimensions
         @dimensions ||= begin
           img = img?? FastImage.size(asset.filename.to_s) : []
@@ -53,10 +41,6 @@ module Jekyll
         end
       end
 
-      # --
-      # image? lets you know if the current asset is an image.
-      # @return [true, false]
-      # --
       private
       def img?
         if asset.content_type
@@ -64,10 +48,6 @@ module Jekyll
         end
       end
 
-      # --
-      # asset returns the asset based on the path.
-      # @return [Sprockets::Asset]
-      # --
       private
       def asset
         @asset ||= begin

@@ -4,12 +4,6 @@
 
 module Jekyll
   module Assets
-
-    # --
-    # Provides a namespace for all your non-hook plugins
-    # to place themselves so that people who are inspecting
-    # an searching for stuff can find it all easily.
-    # --
     module Plugins
       #
     end

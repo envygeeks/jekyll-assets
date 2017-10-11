@@ -2,6 +2,8 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require_relative "drop"
+
 module Jekyll
   module Assets
     class Env < Sprockets::Environment
@@ -16,12 +18,6 @@ module Jekyll
       rb_delegate :safe?, to: :jekyll
       attr_accessor :jekyll
 
-      # --
-      # @param [Jekyll::Site] jekyll the Jekyll instances.
-      # @param [<Anything>] path This is passed upstream, we don't care.
-      # initialize creates a new instance of this class.
-      # @return [Env] the environment.
-      # --
       def initialize(jekyll = nil)
         super()
 
@@ -31,10 +27,10 @@ module Jekyll
 
         logger
         manifest
-        enable_compression!
-        disable_erb!
         asset_config
-        sources!
+        enable_compression!
+        setup_sources!
+        disable_erb!
         cache
 
         precompile!
@@ -43,27 +39,6 @@ module Jekyll
         end
       end
 
-      # --
-      # @note this is a runner.
-      # sources sets up the users sources.
-      # @return [Array<>]
-      # --
-      def sources!
-        @sources ||= begin
-          asset_config["sources"].each do |v|
-            unless paths.include?(jekyll.in_source_dir(v))
-              append_path jekyll.in_source_dir(v)
-            end
-          end
-
-          paths
-        end
-      end
-
-      # --
-      # cache sets up the cache for the user.
-      # @return [Sprockets::Cache]
-      # --
       def cache
         @cache ||= begin
           cache, type = asset_config[:caching].values_at(:enabled, :type)
@@ -74,11 +49,6 @@ module Jekyll
         end
       end
 
-      # --
-      # asset_config returns the users configuration.
-      # @note from the `assets` key in `_config.yml` of Jekyll.
-      # @return [Hash] the configuration.
-      # --
       def asset_config
         @asset_config ||= begin
           user = jekyll.config["assets"] ||= {}
@@ -86,44 +56,13 @@ module Jekyll
         end
       end
 
-      # --
-      # @note this is mostly used for caching.
-      # manifest returns a manifest for you to quickly find assets.
-      # @return [Sprockets::Manifest]
       def manifest
         @manifest ||= begin
           Sprockets::Manifest.new(self, in_dest_dir)
         end
       end
 
-      # --
-      # skip_gzip? tells Sprockets to skip Gzipping files.
-      # @note this might not work in Sprockets 4.x it needs testing.
-      # @return [TrueClass] skip it.
-      # --
-      def skip_gzip?
-        true
-      end
-
-      # --
-      # @note this is used in a Jekyll hook.
-      # excludes builds a list of excludes we ship to Jekyll.
-      # @return [Set]
-      # --
-      def excludes
-        excludes = Set.new
-        excludes << strip_path(in_cache_dir)
-        excludes
-      end
-
-      # --
-      # @see Liquid::Drop for more information.
-      # to_liquid_payload converts this your assets `Drop`s
-      # @return [Hash]
-      # --
       def to_liquid_payload
-        require "jekyll/assets/drop"
-
         each_file.each_with_object({}) do |k, h|
           path = strip_path(k)
           h.update({
@@ -134,41 +73,21 @@ module Jekyll
         end
       end
 
-      # --
-      # in_cache_dir makes a path land inside the cache.
-      # @param [<String>] *paths the paths you wish to land.
-      # @return [Pathutil]
-      # --
       def in_cache_dir(*paths)
         paths.reduce(cache_path.to_path) do |b, p|
           Jekyll.sanitized_path(b, p)
         end
       end
 
-      # --
-      # @param [<String>] *paths the paths you wish to land.
-      # in_dest_dir makes a path to land inside of the write path
-      # @return [Pathutil]
-      # --
       def in_dest_dir(*paths)
         jekyll.in_dest_dir(prefix_path, *paths)
       end
 
-      # --
-      # @note this is only used internally.
-      # cdn? tells us whether we should be using a or not.
-      # @return [true, false]
-      # --
       def cdn?
         !dev? && asset_config[:cdn].key?(:url) &&
               asset_config[:cdn][:url]
       end
 
-      # --
-      # rubocop:disable Style/ExtraSpacing
-      # baseurl mixes the prefix, and other stuff.
-      # @return [String]
-      # --
       def baseurl
         @baseurl ||= begin
           ary = []
@@ -181,19 +100,6 @@ module Jekyll
         end
       end
 
-      # --
-      # @param [String] what what you want to compress.
-      # compress? allows us to determine if we should compress.
-      # @return [true, false]
-      def compress?(what)
-        !!asset_config[:compress][what]
-      end
-
-      # --
-      # prefix_path prefixes the path with the baseurl.
-      # @param [String,Pathname,Pathutil] path the path to prefix.
-      # @return [Pathname,Pathutil,String]
-      # --
       def prefix_path(path = nil)
         path_ = []
 
@@ -209,38 +115,22 @@ module Jekyll
         url.chomp("/")
       end
 
-      # --
-      # @note we only shim stuff.
-      # cached is an instance of `Cached` for Sprockets.
-      # @return [Cached]
-      # --
       def cached
         @cached ||= Cached.new(self)
       end
 
-      # --
-      # @param [String] path the path.
-      # strip_path strips the path of the Jekyll source dir.
-      # @return [String]
-      # --
       private
       def strip_path(path)
-        path.sub(jekyll.in_source_dir("/"), "")
+        dir = jekyll.in_source_dir("/")
+        path.sub(dir, "")
       end
 
-      # --
-      # @param [String] path the path.
-      # in_source_dir wraps around Jekyll's `#in_source_dir`
-      # @return [Pathutil]
-      # --
+      private
       def in_source_dir(path)
-        Pathutil.new(jekyll.in_source_dir(path))
+        dir = jekyll.in_source_dir(path)
+        Pathutil.new(dir)
       end
 
-      # --
-      # @note this is a runner.
-      # enable_compression! enables compression if the user requests it.
-      # @return [nil]
       private
       def enable_compression!
         opts = asset_config[:plugins][:compression]
@@ -259,11 +149,6 @@ module Jekyll
         nil
       end
 
-      # --
-      # precompile! finds and compiles requested unused assets.
-      # @note you can set this with `precompile` in `_config.yml`.
-      # @return [nil]
-      # --
       private
       def precompile!
         assets = asset_config[:precompile]
@@ -274,11 +159,6 @@ module Jekyll
         nil
       end
 
-      # --
-      # disable_erb! disables erb if you are in safe mode.
-      # @note this is necessary to keep security for Github.
-      # @return [nil]
-      # --
       private
       def disable_erb!
         if jekyll.safe
@@ -287,6 +167,19 @@ module Jekyll
               v.proc == Sprockets::ERBProcessor
             end
           end
+        end
+      end
+
+      private
+      def setup_sources!
+        @sources ||= begin
+          asset_config["sources"].each do |v|
+            unless paths.include?(jekyll.in_source_dir(v))
+              append_path jekyll.in_source_dir(v)
+            end
+          end
+
+          paths
         end
       end
     end
