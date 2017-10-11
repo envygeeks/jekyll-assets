@@ -1,10 +1,16 @@
 <p align=center>
   <a href=https://goo.gl/BhrgjW>
-    <img src=https://envygeeks.io/badges/paypal-large_1.png alt=Donate>
+    <img src=https://envygeeks.io/badges/paypal-large_1.png>
   </a>
   <br>
   <a href=https://travis-ci.org/jekyll/jekyll-assets>
     <img src="https://travis-ci.org/jekyll/jekyll-assets.svg?branch=master" alt=Status>
+  </a>
+  <a href=https://codeclimate.com/github/codeclimate/codeclimate/coverage>
+    <img src=https://codeclimate.com/github/codeclimate/codeclimate/badges/coverage.svg />
+  </a>
+  <a href=https://codeclimate.com/github/codeclimate/codeclimate>
+    <img src=https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg />
   </a>
 </p>
 
