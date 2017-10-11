@@ -6,12 +6,6 @@ module Jekyll
   module Assets
     module Plugins
       class Liquid
-        EXT = %W(.liquid .js.liquid .css.liquid .scss.liquid).freeze
-        FOR = %W(text/css text/sass text/less application/javascript
-          text/scss text/coffeescript text/javascript).freeze
-
-        # --
-
         def self.call(context)
           file = Pathutil.new(context[:filename])
           jekyll = context[:environment].jekyll
