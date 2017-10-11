@@ -50,7 +50,7 @@ module Jekyll
           true
         end
 
-        env.manifest.find(file).first
+        env.find_asset!(file)
       end
 
       def self.copy(asset, env:, args:)

@@ -4,7 +4,7 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Helpers do
-  let(:asset) { env.manifest.find("bundle.css").first }
+  let(:asset) { env.find_asset!("bundle.css") }
   let :path do
     jekyll.in_dest_dir("/assets")
   end
@@ -23,7 +23,7 @@ describe Jekyll::Assets::Helpers do
   describe "#asset_path" do
     context do
       before { stub_asset_config strict: true }
-      let(:error) { Jekyll::Assets::Errors::AssetNotFound }
+      let(:error) { Sprockets::FileNotFound }
       it "should raise when an asset cannot be found" do
         expect { subject.asset_path("unknown") }.to(raise_error(error))
       end
@@ -39,7 +39,7 @@ describe Jekyll::Assets::Helpers do
 
   describe "#asset_url" do
     it "should wrap the path in url()" do
-      expect(subject.asset_url("ubuntu")).to(start_with("url("))
+      expect(subject.asset_url("img.png")).to(start_with("url("))
     end
   end
 end

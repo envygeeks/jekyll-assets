@@ -30,7 +30,7 @@ module Jekyll
 end
 
 describe Jekyll::Assets::Proxy do
-  let(:asset) { env.manifest.find(args[:argv1]).first }
+  let(:asset) { env.find_asset!(args[:argv1]) }
   let(:klass) { Jekyll::Assets::Plugins::ProxyTest1 }
   let :args do
     Liquid::Tag::Parser.new("img.png @test:2x")

@@ -5,7 +5,7 @@
 require "rspec/helper"
 describe "Plugins/Optim" do
   let :asset do
-    env.manifest.find("img.png").first
+    env.find_asset!("img.png")
   end
 
   describe "@preset" do

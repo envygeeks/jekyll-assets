@@ -71,12 +71,7 @@ module Jekyll
       private
       def asset
         @asset ||= begin
-          out = @jekyll.sprockets.manifest.find(@path).first
-          unless out
-            raise Errors::AssetNotFound, @path
-          end
-
-          out
+          @jekyll.sprockets.find_asset!(@path)
         end
       end
     end

@@ -5,7 +5,7 @@
 require "rspec/helper"
 describe "Plugins/Frontmatter" do
   let :asset do
-    env.manifest.find("plugins/frontmatter").first
+    env.find_asset!("plugins/frontmatter")
   end
 
   describe "---" do

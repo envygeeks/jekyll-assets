@@ -35,7 +35,7 @@ describe Jekyll::Assets::Env do
       env.send(:precompile!)
     end
 
-    let(:asset) { env.manifest.find("img.png").first }
+    let(:asset) { env.find_asset!("img.png") }
     it "should compile those extra assets" do
       expect(Pathutil.new(env.in_dest_dir(asset.digest_path))).to(exist)
     end

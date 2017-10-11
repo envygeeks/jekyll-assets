@@ -30,7 +30,7 @@ end
 describe Jekyll::Assets::Default do
   before { allow(asset).to(receive(:content_type).and_return(:test)) }
   let :asset do
-    env.manifest.find("img.png").first
+    env.find_asset!("img.png")
   end
 
   describe "get" do

@@ -6,8 +6,17 @@ module Jekyll
   module Assets
     module Errors
       class AssetNotFound < StandardError
-        def initialize(path)
-          super "unable to find the asset #{path}"
+        def initialize(path, context = nil)
+          base = "unable to find the asset #{path}"
+
+          if context
+            path = context.registers[:site].sprockets.paths.join("\n  ")
+            page = context.registers[:page]["path"]
+            super "#{base} in #{page} \n looked " \
+              "in: \n  #{path}"
+          else
+            super base
+          end
         end
       end
     end

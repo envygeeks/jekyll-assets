@@ -27,32 +27,25 @@ module Jekyll
 
       def render(context)
         env = context.registers[:site].sprockets
-        o_asset = env.manifest.find(@name).first
+        oga = context.registers[:site].sprockets.find_asset!(@name)
+        asset = Proxy.proxy(oga, type: oga.content_type, args: @args, env: env)
+        Default.set(@args, type: oga.content_type, env: env, asset: asset)
+        env.manifest.compile(asset.filename)
 
+        return asset.data_uri if @args[:"data-uri"]
+        return env.prefix_path(asset.digest_path) if @args[:path]
+        return asset.to_s if @args[:source]
+        build_html(asset, env: env)
+      end
 
-        if o_asset
-          type = o_asset.content_type
-          asset = Proxy.proxy(o_asset, type: type, args: @args, env: env)
-          Default.set(@args, type: type, asset: asset, env: env)
-
-          env.manifest.compile(asset.filename)
-          return asset.data_uri if @args[:"data-uri"]
-          return env.prefix_path(asset.digest_path) if @args[:path]
-          return asset.to_s if @args[:source]
-          type = asset.content_type
-
-          HTML.build({
-            type: type,
-            asset: asset,
-            args: @args,
-            env: env
-          })
-        else
-          env.logger.error "unable to find: #{@name} -- SKIPPING"
-          if env.asset_config[:strict]
-            raise Errors::AssetNotFound, @name
-          end
-        end
+      def build_html(asset, env:)
+        type = asset.content_type
+        HTML.build({
+          type: type,
+          asset: asset,
+          args: @args,
+          env: env,
+        })
       end
     end
   end

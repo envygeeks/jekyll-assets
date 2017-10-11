@@ -4,18 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Tag do
-  context do
-    it "should log errors" do
-      expect(env.logger).to(receive(:error))
-    end
-
-    after do
-      jekyll.reset
-      jekyll.process
-      jekyll.render
-    end
-  end
-
   [:asset, :css, :js, :img].each do |k|
     context k.to_s, :render => true do
       let :page do

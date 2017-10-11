@@ -5,7 +5,7 @@
 require "rspec/helper"
 describe "Plugins/Magick" do
   let :asset do
-    env.manifest.find("img.png").first
+    env.find_asset!("img.png")
   end
 
   describe "double" do
