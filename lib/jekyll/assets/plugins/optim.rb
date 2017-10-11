@@ -2,65 +2,55 @@
 # Copyright: 2017 - MIT License
 # Encoding: utf-8
 
-module Jekyll
-  module Assets
-    module Plugins
-      class ImageOptimProxy < Proxy
-        types %r!^image\/[a-zA-Z]+$!
-        args_key :optim
+try_require "image_optim" do
+  module Jekyll
+    module Assets
+      module Plugins
+        class ImageOptim < Proxy
+          types %r!^image\/[a-zA-Z]+$!
+          args_key :optim
 
-        # --
-        class MultiplePredefinedPresetsSpecified < RuntimeError
-          def initialize
-            super "Specifying multiple pre-defined presets at " \
-              "the same time is not supported"
-          end
-        end
-
-        # --
-        class PresetAlreadySpecified < RuntimeError
-          def initialize
-            super "Specifying pre-defined preset and preset-by-name " \
-              "at the same time is not supported"
-          end
-        end
-
-        # --
-        class UnknownPreset < RuntimeError
-          def initialize(name)
-            super "Unknown image_optim preset `#{name}'"
-          end
-        end
-
-        # --
-        # @todo right now this is working on the image
-        #  directly... rather than copying the data to a temporary
-        #  file and then doing it's work on said copy, this isn't
-        #  very friendly to users.
-        # --
-        def process
-          asset_config = @asset.env.asset_config
-          image_optim_config = asset_config["image_optim"]
-          presets = (@opts.keys - ARGS.map(&:to_sym))
-
-
-          raise PresetAlreadySpecified if @opts.key?(:preset) && presets.any?
-          if presets.count > 1
-            raise MultiplePredefinedPresetsSpecified
+          class UnknownPresetError < RuntimeError
+            def initialize(name)
+              "Unknown image_optim preset `#{name}'"
+            end
           end
 
-          name = @opts[:preset]
-          name = presets.first.to_s unless name || !presets.any?
-          if name != "default" && !image_optim_config.key?(name)
-            raise UnknownPreset, name
+          class MultiplePredefinedPresetsSpecified < RuntimeError
+            def initialize
+              super "Specifying multiple pre-defined presets " \
+                "at the same time is not supported"
+            end
           end
 
-          config = image_optim_config[name]
-          image_optim = ::ImageOptim.new(config)
-          image_optim.optimize_image!(@asset.filename)
-          # ^ Problem spot, this should not do that.
+          def process
+            optimc = @env.asset_config[:plugins][:img][:optim]
+            preset = @args[:optim].keys
+            if preset.count > 1
+              raise MultiplePredefinedPresetsSpecified
+            end
+
+            preset = preset.first
+            raise UnknownPreset, preset if preset != :default && !optimc.key?(preset)
+            oc = optimc[preset] unless preset == :default
+            optim = ::ImageOptim.new(oc || {})
+            optim.optimize_image!(@file)
+            @file
+          end
         end
       end
     end
+  end
+
+  Jekyll::Assets::Hook.register :config, :pre do |c|
+    c.deep_merge!({
+      plugins: {
+        img: {
+          optim: {
+            #
+          }
+        }
+      }
+    })
   end
 end
