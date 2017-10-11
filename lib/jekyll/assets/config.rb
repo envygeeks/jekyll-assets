@@ -33,12 +33,6 @@ module Jekyll
         },
 
         plugins: {
-          img: {
-            optim: {
-              #
-            },
-          },
-
           compression: {
             js: {
               enabled: true,
@@ -76,7 +70,12 @@ module Jekyll
       # @return [Config]
       # --
       def initialize(config)
-        super(defaults.deep_merge(config))
+        super(defaults)
+        Hook.trigger :config, :pre do |h|
+          h.call(self)
+        end
+
+        deep_merge!(config)
         s1 = [self[:sources] || []].flatten.compact
         s2 = defaults[:sources]
         self[:sources] =
