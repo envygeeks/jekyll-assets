@@ -10,9 +10,9 @@ module Jekyll
           "image/bmp", "image/gif", "image/png"
 
         def set_src
-          src = @asset.digest_path
-          src = @env.prefix_path(src)
-          @args[:src] = src
+          @args[:src] = @env.prefix_path(
+            @asset.digest_path
+          )
         end
 
         def set_alt
@@ -23,9 +23,9 @@ module Jekyll
         end
 
         def set_dimensions
-          return if @args.key?(:width) || @args.key?(:height)
-          img = FastImage.size(@asset.filename.to_s)
-          @args[:width], @args[:height] = img
+          @args[:width], @args[:height] = FastImage.size(
+            @asset.filename.to_s
+          )
         end
 
         def set_integrity

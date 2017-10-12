@@ -28,8 +28,9 @@ module Jekyll
       def render(context)
         env = context.registers[:site].sprockets
         oga = context.registers[:site].sprockets.find_asset!(@name)
+        Default.set(@args, env: env, type: oga.content_type, asset: oga)
         asset = Proxy.proxy(oga, type: oga.content_type, args: @args, env: env)
-        Default.set(@args, type: oga.content_type, env: env, asset: asset)
+        Default.set(@args, type: asset.content_type, env: env, asset: asset)
         env.manifest.compile(asset.filename)
 
         return asset.data_uri if @args[:"data-uri"]
