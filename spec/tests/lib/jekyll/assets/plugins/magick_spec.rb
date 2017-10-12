@@ -17,11 +17,10 @@ describe "Plugins/Magick" do
 
     it "should double the size" do
       frag = fragment(page.to_s).children.first
-      width, height = frag.attr("width"), frag.attr("height")
-      dim = FastImage.new(asset.filename)
-
-      expect( width.to_i).to(eq(dim.size.first * 2))
-      expect(height.to_i).to(eq(dim.size.last  * 2))
+      w1, h1 = FastImage.size(env.jekyll.in_dest_dir(frag.attr("src")))
+      w2, h2 = FastImage.size(asset.filename)
+      expect(w1).to(eq(w2 * 2))
+      expect(h1).to(eq(h2 * 2))
     end
   end
 
@@ -34,11 +33,10 @@ describe "Plugins/Magick" do
 
     it "should half the size" do
       frag = fragment(page.to_s).children.first
-      width, height = frag.attr("width"), frag.attr("height")
-      dim = FastImage.new(asset.filename)
-
-      expect( width.to_i).to(eq(dim.size.first / 2))
-      expect(height.to_i).to(eq(dim.size.last  / 2))
+      w1, h1 = FastImage.size(env.jekyll.in_dest_dir(frag.attr("src")))
+      w2, h2 = FastImage.size(asset.filename)
+      expect(w1).to(eq(w2 / 2))
+      expect(h1).to(eq(h2 / 2))
     end
   end
 end
