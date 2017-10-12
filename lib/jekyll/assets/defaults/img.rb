@@ -15,19 +15,6 @@ module Jekyll
           )
         end
 
-        def set_alt
-          return if @args.key?(:alt)
-          alt = @asset.logical_path
-          alt = File.basename(alt)
-          @args[:alt] = alt
-        end
-
-        def set_dimensions
-          @args[:width], @args[:height] = FastImage.size(
-            @asset.filename.to_s
-          )
-        end
-
         def set_integrity
           @args[:integrity] = @asset.integrity
           unless @args.key?(:crossorigin)
