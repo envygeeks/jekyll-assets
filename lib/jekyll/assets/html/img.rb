@@ -10,16 +10,15 @@ module Jekyll
           "image/bmp", "image/gif", "image/png"
 
         def run
-          doc = Nokogiri::HTML::DocumentFragment.parse("")
-          Nokogiri::HTML::Builder.with(doc) do |d|
+          Nokogiri::HTML::Builder.with(@doc) do |d|
             atr = @args.to_html({
               hash: true
             })
 
             d.img(atr)
           end
+        end
 
-          doc
         end
       end
     end

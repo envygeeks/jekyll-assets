@@ -10,14 +10,11 @@ module Jekyll
           "text/javascript"
 
         def run
-          doc = Nokogiri::HTML::DocumentFragment.parse("")
-          Nokogiri::HTML::Builder.with(doc) do |d|
+          Nokogiri::HTML::Builder.with(@doc) do |d|
             atr = @args.to_html(hash: true)
             d.script(@asset.to_s, atr) if @args[:inline]
             d.script(atr) unless @args[:inline]
           end
-
-          doc
         end
       end
     end

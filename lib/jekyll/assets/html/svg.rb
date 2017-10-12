@@ -9,13 +9,10 @@ module Jekyll
         types "image/svg+xml"
 
         def run
-          doc = Nokogiri::XML.parse(@asset.to_s)
           arg = @args.to_html(hash: true)
           arg.each do |k, v|
-            doc.set_attribute(k, v)
+            @doc.set_attribute(k, v)
           end
-
-          doc
         end
       end
     end

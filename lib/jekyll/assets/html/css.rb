@@ -9,14 +9,11 @@ module Jekyll
         types "text/css"
 
         def run
-          doc = Nokogiri::HTML::DocumentFragment.parse("")
-          Nokogiri::HTML::Builder.with(doc) do |d|
+          Nokogiri::HTML::Builder.with(@doc) do |d|
             atr = @args.to_html(hash: true)
             d.style(asset.to_s, atr) if @args[:inline]
             d.link(atr) unless @args[:inline]
           end
-
-          doc
         end
       end
     end
