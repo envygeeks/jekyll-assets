@@ -54,7 +54,7 @@ module Jekyll
 
       def self.copy(asset, env:, args:)
         raw = args.instance_variable_get(:@raw)
-        key = DIG.hexdigest(raw)
+        key = DIG.hexdigest(raw)[0,6]
 
         path = env.in_cache_dir(DIR)
         extname = File.extname(args[:argv1])
