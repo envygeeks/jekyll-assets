@@ -131,7 +131,7 @@ Our tags will take any number of arguments, and convert them to HTML, and even a
 
 ***Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)***
 
-#### Reponsive Images
+#### Responsive Images
 
 Jekyll Assets has the concept of responsive images, using the `picture` tag, if you ship multiple `srcset` with your image, we will proxy, build and then ship out a `picture` tag with any number of `source` and the original image being the `image`.
 
