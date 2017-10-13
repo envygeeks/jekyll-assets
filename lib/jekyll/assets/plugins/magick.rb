@@ -7,8 +7,10 @@ try_require "mini_magick" do
     module Assets
       module Plugins
         class MiniMagick < Proxy
-          types %r!^image\/[a-zA-Z]+$!
           args_key :magick
+          types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
+            "image/bmp", "image/gif", "image/png",
+              "image/svg+xml"
 
           def process
             img = ::MiniMagick::Image.open(@file)

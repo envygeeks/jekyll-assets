@@ -7,8 +7,10 @@ try_require "image_optim" do
     module Assets
       module Plugins
         class ImageOptim < Proxy
-          types %r!^image\/[a-zA-Z]+$!
           args_key :optim
+          types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
+            "image/bmp", "image/gif", "image/png",
+              "image/svg+xml"
 
           class UnknownPresetError < RuntimeError
             def initialize(name)
