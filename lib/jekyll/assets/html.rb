@@ -33,8 +33,11 @@ module Jekyll
         end
 
         # SVG will need to_xml!
-        doc.is_a?(Nokogiri::XML::Document) ?
-          doc.to_xml : doc.to_html
+        out = doc.is_a?(Nokogiri::XML::Document) ? doc.to_xml : doc.to_html
+        rtn.select { |v| v.respond_to?(:cleanup) }.each do |o|
+          out = o.cleanup(out)
+        end
+        out
       end
 
       def self.wants_xml?

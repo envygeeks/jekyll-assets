@@ -19,6 +19,8 @@ module Jekyll
           end
         end
 
+        def self.for?(type:, args:)
+          super && !args.key?(:srcset)
         end
       end
     end

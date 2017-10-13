@@ -26,13 +26,14 @@
 * Expanded source directories by default.
 * Stripping of FrontMatter (`---`) before processing.
 * Extensible/customizable decoupled HTML builders for tags.
+* Responsive images with `srcset` `<picture>` tag support.
 * Easier proxies, with rolling proxies.
 * Customizable HTML defaults.
 * SourceMaps.
 
 ## Coming Soon
 
-* `srcset` `<picture>` tag support.
+* Support for video assets (using `video` tag.)
 * Asset discovery via `<img>` inside of Markdown.
 * Proxies via `<img>`.
 
@@ -126,8 +127,21 @@ Our tags will take any number of arguments, and convert them to HTML, and even a
 | `@inline` | `text/svg+xml` XML Data | `image/svg+xml` | `text/svg+xml`
 | `@inline` | JavaScript `<script>` | `application/javascript` | `text/html`
 | `@inline` | CSS `<style>` | `text/css` | `text/html`
+| `srcset` | [Responsive](#responsive-images) | Args | `text/html` |
 
 ***Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)***
+
+#### Reponsive Images
+
+Jekyll Assets has the concept of responsive images, using the `picture` tag, if you ship multiple `srcset` with your image, we will proxy, build and then ship out a `picture` tag with any number of `source` and the original image being the `image`.
+
+##### Usage
+
+```liquid
+{% asset img.svg srcset='magick:format=image/png magick:resize=400 media="(min-width:400px)"'
+                 srcset='magick:format=image/png magick:resize=600 media="(min-width:600px)"'
+                 srcset='magick:format=image/png magick:resize=800 media="(min-width:800px)"' %}
+```
 
 ## Liquid
 
