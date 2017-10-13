@@ -43,6 +43,14 @@ module Jekyll
         true
       end
 
+      def compile(name)
+        proper = get_name(name)
+        asset = find_asset(proper)
+        return manifest.compile(proper) if asset
+        asset = find_asset!(name)
+        manifest.compile(name)
+      end
+
       def cache
         @cache ||= begin
           cache, type = asset_config[:caching].values_at(:enabled, :type)
@@ -126,6 +134,23 @@ module Jekyll
         @cached ||= Cached.new(self)
       end
 
+      def self.register_ext_map(ext, to_ext)
+        @ext_maps ||= {}
+        @ext_maps.update(
+          ext.to_s => to_ext.to_s
+        )
+      end
+
+      def self.map_ext(ext)
+        @ext_maps[ext] || ext
+      end
+
+      def get_name(file)
+        out = Pathutil.new(strip_paths(file))
+        out.sub_ext(self.class.map_ext(
+          out.extname)).to_s
+      end
+
       private
       def strip_path(path)
         dir = jekyll.in_source_dir("/")
@@ -160,7 +185,7 @@ module Jekyll
       def precompile!
         assets = asset_config[:precompile]
         assets = assets.map do |v|
-          manifest.compile(v)
+          compile(v)
         end
 
         nil
@@ -197,7 +222,27 @@ module Jekyll
             return path.sub(v + "/", "")
           end
         end
+
+        path
       end
+
+      register_ext_map ".es6", ".js"
+      register_ext_map ".coffee", ".js"
+      register_ext_map ".js.coffee",".js"
+      register_ext_map ".coffee.erb", ".js"
+      register_ext_map ".js.coffee.erb", ".js"
+      register_ext_map ".es6.erb", ".js"
+      register_ext_map ".js.erb", ".js"
+
+      register_ext_map ".sass", ".css"
+      register_ext_map ".scss", ".css"
+      register_ext_map ".css.scss", ".css"
+      register_ext_map ".css.scss.erb", ".css"
+      register_ext_map ".css.sass.erb", ".css"
+      register_ext_map ".sass.erb", ".css"
+      register_ext_map ".css.sass", ".css"
+      register_ext_map ".scss.erb", ".css"
+      register_ext_map ".css.erb", ".css"
     end
   end
 end

@@ -24,7 +24,19 @@ module Jekyll
   end
 end
 
-# This is super huge, but what can you do? They do it different than I do.
-Sprockets.register_transformer_suffix(%w(application/ecmascript-6
-application/javascript text/coffeescript text/css text/sass text/scss),
-'application/\2+liquid', '.liquid', Jekyll::Assets::Plugins::Liquid)
+args = %w(application/\2+liquid .liquid) << Jekyll::Assets::Plugins::Liquid
+Sprockets.register_transformer_suffix "text/sass", *args
+Sprockets.register_transformer_suffix "text/scss", *args
+Jekyll::Assets::Env.register_ext_map ".css.liquid", ".css"
+Jekyll::Assets::Env.register_ext_map ".sass.liquid", ".css"
+Jekyll::Assets::Env.register_ext_map ".js.coffee.liquid", ".js"
+Jekyll::Assets::Env.register_ext_map ".css.sass.liquid", ".css"
+Sprockets.register_transformer_suffix "application/javascript", *args
+Sprockets.register_transformer_suffix "application/ecmascript-6", *args
+Sprockets.register_transformer_suffix "text/coffeescript", *args
+Jekyll::Assets::Env.register_ext_map ".css.scss.liquid", ".css"
+Jekyll::Assets::Env.register_ext_map ".coffee.liquid", ".js"
+Jekyll::Assets::Env.register_ext_map ".scss.liquid", ".css"
+Jekyll::Assets::Env.register_ext_map ".es6.liquid", ".js"
+Sprockets.register_transformer_suffix "text/css", *args
+Jekyll::Assets::Env.register_ext_map ".js.liquid", ".js"

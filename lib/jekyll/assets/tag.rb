@@ -31,7 +31,7 @@ module Jekyll
         Default.set(@args, env: env, type: oga.content_type, asset: oga)
         asset = Proxy.proxy(oga, type: oga.content_type, args: @args, env: env)
         Default.set(@args, type: asset.content_type, env: env, asset: asset)
-        env.manifest.compile(asset.filename)
+        env.compile(asset.filename)
 
         return env.prefix_path(asset.digest_path) if @args[:path]
         return asset.data_uri if @args[:"data-uri"] || @args[:data_uri]
