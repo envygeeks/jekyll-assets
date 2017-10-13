@@ -14,6 +14,14 @@ module Jekyll
             @doc.set_attribute(k, v)
           end
         end
+
+        def self.wants_xml?
+          true
+        end
+
+        def self.for?(type:, args:)
+          super && args[:inline] && !args.key?(:srcset)
+        end
       end
     end
   end

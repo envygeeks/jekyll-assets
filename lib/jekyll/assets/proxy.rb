@@ -79,8 +79,8 @@ module Jekyll
         @file = file
       end
 
-      def self.also_for?(type:, args:)
-        args.key?(args_key)
+      def self.for?(type:, args:)
+        super && args.key?(args_key)
       end
     end
   end

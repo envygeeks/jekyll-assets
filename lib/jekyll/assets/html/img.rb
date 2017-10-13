@@ -7,7 +7,7 @@ module Jekyll
     class HTML
       class IMG < HTML
         types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-          "image/bmp", "image/gif", "image/png"
+          "image/bmp", "image/gif", "image/png", "image/svg+xml"
 
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|
