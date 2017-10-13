@@ -8,7 +8,7 @@ module Jekyll
       class Img < Default
         types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
           "image/bmp", "image/gif", "image/png",
-            "imgage/svg+xml"
+            "image/svg+xml"
 
         def set_src
           unless @args[:inline]
