@@ -5,12 +5,11 @@ gem "rake"
 group :development do
   gem "mini_racer", platforms: :mri, require: false
   gem "therubyrhino", platforms: :jruby, require: false
-  gem "stackprof", platforms: :mri, require: false
   gem "pry", require: false
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: false
+  gem "simplecov", require: false
   gem "rubocop", require: false
 end
 
