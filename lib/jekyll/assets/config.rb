@@ -75,7 +75,7 @@ module Jekyll
 
         deep_merge!(config)
         s1 = [self[:sources] || []].flatten.compact
-        s2 = defaults[:sources]
+        s2 = self.class.defaults[:sources]
         self[:sources] =
           s1 + s2
       end
