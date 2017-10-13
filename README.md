@@ -18,6 +18,24 @@
 [2]:https://github.com/rails/sprockets
 [3]:https://jekyllrb.com
 
+# Jekyll Assets 3.x
+## What's new
+
+* Jekyll like tag arguments.
+* Proxies in `asset()` for SASS.
+* Expanded source directories by default.
+* Stripping of FrontMatter (`---`) before processing.
+* Extensible/customizable decoupled HTML builders for tags.
+* Easier proxies, with rolling proxies.
+* Customizable HTML defaults.
+* SourceMaps.
+
+## Coming Soon
+
+* `srcset` `<picture>` tag support.
+* Asset discovery via `<img>` inside of Markdown.
+* Proxies via `<img>`.
+
 # Jekyll Assets
 
 Jekyll assets is an [asset pipeline][1] that uses [Sprockets][2] to build specifically for Jekyll. It utilizes [Sprockets][2], and [Jekyll][3] to try and achieve a clean and extensible assets platform that supports plugins, caching, converting your assets, and even the proxy of said assets in a way that does not interfere with either [Sprockets][2], or [Jekyll][3], and your own source.
@@ -60,14 +78,29 @@ plugins:
     css:
       enabled: true
 sources:
+- assets/css
+- assets/fonts
+- assets/images
+- assets/javascript
+- assets/image
+- assets/img
+- assets/js
+
 - _assets/css
 - _assets/fonts
+- _assets/images
+- _assets/javascript
+- _assets/image
 - _assets/img
 - _assets/js
-- _assets/css
-- _assets/fonts
-- _assets/img
-- _assets/js
+
+- css
+- fonts
+- images
+- javascript
+- image
+- img
+- js
 ```
 
 ## Tag
@@ -317,41 +350,6 @@ assets:
 
 <sup>\*</sup>***Where `preset` is the name of the preset.***
 
-## Tutorials
-### Jekyll to Jekyll Assets
-
-The following section shows how to get started with the generation of CSS, using Jekyll Assets. It applies to a newly generated Jekyll site (`jekyll new`,) however this should help anyone who has a Jekyll site. It should also be applicable for other types of assets.
-
-#### Create
-
-The default [Jekyll Assets configuration](#configuration) expects to find all the assets in directories under `_assets`. Create a directory for the CSS:
-
-```bash
-mkdir -p _assets/css
-mkdir -p _assets/font
-mkdir -p _assets/img
-mkdir -p _assets/js
-```
-
-#### Move
-
-Jekyll comes with a `css` directory containing a `main.css` file and then a `_sass` directory with a few SASS imports. Move all of that to the `_assets/css` directory.
-
-```bash
-mv css/main.css _assets/css
-mv _sass/* _assets/css
-```
-
-#### Update
-
-The layout will no longer be pointing to the correct `main.css` file. Jekyll Assets supplies [liquid tags](#tags) to generate the correct HTML for these assets. Open `_includes/head.html` and replace the `<link>` to the CSS with:
-
-```liquid
-{% asset main.css %}
-```
-
-Start up your local Jekyll server and if everything is correct, your site will be serving CSS via Sprockets. Read on for more information on how to customize your Jekyll Assets setup.
-
 ### Building Your Own Plugins
 #### Global Instance Vars
 
@@ -362,7 +360,9 @@ Start up your local Jekyll server and if everything is correct, your site will b
 | `@jekyll` | `Jekyll::Site` |
 | `@asset` | `Sprockets::Asset` |
 
-## Having trouble with our documentation?
+##### HTML Instance Vars
 
-If you do not understand something in our documentation please feel
-free to file a ticket and it will be explained and the documentation updated, however... if you have already figured out the problem please feel free to submit a pull request with clarification in the documentation and we'll happily work with you on updating it.
+| Name | Class | Type |
+|---|---|---|
+| `@doc` | `Nokogiri:: XML::Document` | `image/svg+xml` |
+| `@doc` | `Nokogiri::HTML::Document` | `image/*` |

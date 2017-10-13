@@ -33,10 +33,29 @@ module Jekyll
         },
 
         sources: %W(
+          assets/css
+          assets/fonts
+          assets/images
+          assets/javascript
+          assets/image
+          assets/img
+          assets/js
+
           _assets/css
           _assets/fonts
+          _assets/images
+          _assets/javascript
+          _assets/image
           _assets/img
           _assets/js
+
+          css
+          fonts
+          images
+          javascript
+          image
+          img
+          js
         )
       }.freeze
 
@@ -49,7 +68,7 @@ module Jekyll
       }).freeze
 
       def initialize(config)
-        super(defaults)
+        super(self.class.defaults)
         Hook.trigger :config, :pre do |h|
           h.call(self)
         end
@@ -61,7 +80,7 @@ module Jekyll
           s1 + s2
       end
 
-      def defaults
+      def self.defaults
         if Jekyll.env == "production"
           return PRODUCTION
         end
