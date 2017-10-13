@@ -6,9 +6,9 @@ cache:
     - vendor/bundle
 env:
   matrix:
-    - JEKYLL_VERSION="~> 3.6"
-    - JEKYLL_VERSION="<= 3.5"
-    - JEKYLL_VERSION="<= 3.4"
+    - JEKYLL_VERSION="~> 3.6.0"
+    - JEKYLL_VERSION="~> 3.5.0"
+    - JEKYLL_VERSION="~> 3.4.0"
 rvm:
   - &ruby24 2.4
   - &ruby23 2.3

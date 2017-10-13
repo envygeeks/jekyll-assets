@@ -4,8 +4,7 @@
 
 module Jekyll
   module Assets
-    class Context < Liquid::ParseContext
-      #
-    end
+    Context = Class.new(defined?(Liquid::ParseContext) ?
+      Liquid::ParseContext : Array)
   end
 end
