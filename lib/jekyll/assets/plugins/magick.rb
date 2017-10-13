@@ -14,10 +14,10 @@ try_require "mini_magick" do
 
           def process
             img = ::MiniMagick::Image.open(@file)
-            format_and_write(img) if @args[:magick][:format]
+            magick_format(img) if @args[:magick][:format]
             img.combine_options do |c|
               runners.each do |m|
-                send(m, img, c)
+                method(m).arity == 2 ? send(m, img, c) : send(m, c)
               end
             end
 
@@ -31,12 +31,12 @@ try_require "mini_magick" do
 
           def runners
             private_methods(true).select do |v|
-              v =~ /^magick_/
+              v =~ /^magick_/ && v != :magick_format
             end
           end
 
           private
-          def format_and_write(img)
+          def magick_format(img)
             new_ = nil
 
             exts = @env.mime_exts.select do |k, v|
@@ -57,56 +57,56 @@ try_require "mini_magick" do
           end
 
           private
-          def magick_compress(_, cmd)
+          def magick_compress(cmd)
             if @args[:magick].key?(:compress)
               cmd.compress @args[:magick][:compress]
             end
           end
 
           private
-          def magick_quality(_, cmd)
+          def magick_quality(cmd)
             if @args[:magick].key?(:quality)
               cmd.quality @args[:magick][:quality]
             end
           end
 
-          # private
-          # def magick_resize(_, cmd)
-          #   if @args[:magick].key?(:resize)
-          #     cmd.resize @args[:magick][:resize]
-          #   end
-          # end
+          private
+          def magick_resize(cmd)
+            if @args[:magick].key?(:resize)
+              cmd.resize @args[:magick][:resize]
+            end
+          end
 
           private
-          def magick_rotate(_, cmd)
+          def magick_rotate(cmd)
             if @args[:magick].key?(:rotate)
               cmd.rotate @args[:magick][:rotate]
             end
           end
 
           private
-          def magick_flip(_, cmd)
+          def magick_flip(cmd)
             if @args[:magick].key?(:flip)
               cmd.flip @args[:magick][:flip]
             end
           end
 
           private
-          def magick_crop(_, cmd)
+          def magick_crop(cmd)
             if @args[:magick].key?(:crop)
               cmd.crop @args[:magick][:crop]
             end
           end
 
           private
-          def magick_gravity(_, cmd)
+          def magick_gravity(cmd)
             if @args[:magick].key?(:gravity)
               cmd.gravity @args[:magick][:gravity]
             end
           end
 
           private
-          def magick_strip(_, cmd)
+          def magick_strip(cmd)
             cmd.strip
           end
 
@@ -114,7 +114,7 @@ try_require "mini_magick" do
           def magick_preset_resize(img, cmd)
             width,height = img.width*2,img.height*2 if @args[:magick].key?(:double)
             width,height = img.width/2,img.height/2 if @args[:magick].key?(:half)
-            cmd.resize "#{width}x#{height}"
+            cmd.resize "#{width}x#{height}" if width && height
           end
         end
       end
