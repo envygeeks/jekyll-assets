@@ -14,6 +14,7 @@ try_require "mini_magick" do
 
           def process
             img = ::MiniMagick::Image.open(@file)
+            format_and_write(img) if @args[:magick][:format]
             img.combine_options do |c|
               runners.each do |m|
                 send(m, img, c)
@@ -32,6 +33,27 @@ try_require "mini_magick" do
             private_methods(true).select do |v|
               v =~ /^magick_/
             end
+          end
+
+          private
+          def format_and_write(img)
+            new_ = nil
+
+            exts = @env.mime_exts.select do |k, v|
+              k == @args[:magick][:format] ||
+              v == @args[:magick][:format]
+            end
+
+            if exts.first
+              new_ = @file.sub_ext(exts.first[0])
+              img.format(exts.first[0].sub(".", ""))
+              @file.cp(new_)
+              @file.rm
+              @file =
+                new_
+            end
+
+            img.write(@file)
           end
 
           private
@@ -66,13 +88,6 @@ try_require "mini_magick" do
           def magick_flip(_, cmd)
             if @args[:magick].key?(:flip)
               cmd.flip @args[:magick][:flip]
-            end
-          end
-
-          private
-          def magick_format(img, _)
-            if @args[:magick].key?(:format)
-              img.format @args[:magick][:format]
             end
           end
 

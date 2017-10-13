@@ -303,10 +303,10 @@ See the [MiniMagick docs](https://github.com/minimagick/minimagick#usage)
 to get an idea what `<value>` can be.
 
 | Name | Accepts Value |
-|---| --- |
+|---|---|
 | `magick:compress` | ✔ |
 | `magick:resize` | ✔ |
-| `magick:format` | ✔ |
+| `magick:format`<sup>*</sup> | ✔ |
 | `magick:quality` | ✔ |
 | `magick:rotate` | ✔ |
 | `magick:gravity` | ✔ |
@@ -314,6 +314,8 @@ to get an idea what `<value>` can be.
 | `magick:flip` | ✔ |
 | `@magick:double` | ✗ |
 | `@magick:half` | ✗ |
+
+<sup>\*</sup>***`magick:format` requires an ext or a valid MIME content type like `image/jpeg` or `.jpg`.  We will `ImageMagick -format` on your behalf with that information by getting the extension.***
 
 ### ImageOptim
 #### Installation

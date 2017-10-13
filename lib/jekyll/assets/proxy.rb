@@ -41,10 +41,9 @@ module Jekyll
                 env: env,
             })
 
-            obj.process
-            if !file.exist?
-              raise Deleted, o
-            end
+            o = obj.process
+            file = o if o.is_a?(Pathutil) && file != o
+            raise Deleted, o if !file.exist?
           end
 
           true
