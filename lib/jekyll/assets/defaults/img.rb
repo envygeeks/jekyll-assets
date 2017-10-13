@@ -7,12 +7,13 @@ module Jekyll
     class Default
       class Img < Default
         types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-          "image/bmp", "image/gif", "image/png"
+          "image/bmp", "image/gif", "image/png",
+            "imgage/svg+xml"
 
         def set_src
-          @args[:src] = @env.prefix_path(
-            @asset.digest_path
-          )
+          unless @args[:inline]
+            @args[:src] = @env.prefix_path(@asset.digest_path)
+          end
         end
 
         def set_integrity
