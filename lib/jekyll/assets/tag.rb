@@ -33,8 +33,8 @@ module Jekyll
         Default.set(@args, type: asset.content_type, env: env, asset: asset)
         env.manifest.compile(asset.filename)
 
-        return asset.data_uri if @args[:"data-uri"]
         return env.prefix_path(asset.digest_path) if @args[:path]
+        return asset.data_uri if @args[:"data-uri"] || @args[:data_uri]
         return asset.to_s if @args[:source]
         build_html(asset, env: env)
       end
