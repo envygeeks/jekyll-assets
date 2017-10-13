@@ -70,12 +70,12 @@ try_require "mini_magick" do
             end
           end
 
-          private
-          def magick_resize(_, cmd)
-            if @args[:magick].key?(:resize)
-              cmd.resize @args[:magick][:resize]
-            end
-          end
+          # private
+          # def magick_resize(_, cmd)
+          #   if @args[:magick].key?(:resize)
+          #     cmd.resize @args[:magick][:resize]
+          #   end
+          # end
 
           private
           def magick_rotate(_, cmd)
