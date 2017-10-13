@@ -39,6 +39,10 @@ module Jekyll
         end
       end
 
+      def skip_gzip?
+        true
+      end
+
       def cache
         @cache ||= begin
           cache, type = asset_config[:caching].values_at(:enabled, :type)
