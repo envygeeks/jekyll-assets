@@ -82,13 +82,17 @@ sources:
 
 Our tags will take any number of arguments, and convert them to HTML, and even attach them to your output if the HTML processor you use accepts that kind of data.  ***This applies to anything but hashes, and arrays.*** So adding say, a class, or id, is as easy as doing `id="val"` inside of your tag arguments.
 
-#### Builtin
+#### Builtins
 
-| Arg | Description |
-|---|---|
-| `@path` | Return just the path |
-| `@data-uri` | Return a data URI instead of HTML |
-| `@source` | Return the source |
+| Arg | Description | Type | Return Type |
+|---|---|---|---|
+| `@path` | Path | Any | `text`
+| `@uri` | Data URI | Any | `text` |
+| `@source` |  Source | Any | `text`
+| `@data` | Data URI `<img>` | `image/*` | `text/html`
+| `@inline` | `text/svg+xml` XML Data | `image/svg+xml` | `text/svg+xml`
+| `@inline` | JavaScript `<script>` | `application/javascript` | `text/html`
+| `@inline` | CSS `<style>` | `text/css` | `text/html`
 
 ***Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)***
 
