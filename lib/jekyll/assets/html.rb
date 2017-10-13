@@ -13,7 +13,6 @@ module Jekyll
       end
 
       def self.build(type:, args:, asset:, env:)
-        doc = make_doc(asset: asset, type: type)
         rtn = self.inherited.select do |o|
           o.for?({
             type: type,
@@ -21,6 +20,7 @@ module Jekyll
           })
         end
 
+        doc = make_doc(rtn, asset: asset)
         rtn.each do |o|
           o = o.new({
             doc: doc,
@@ -37,9 +37,15 @@ module Jekyll
           doc.to_xml : doc.to_html
       end
 
-      def self.make_doc(type:, asset:)
-        type == "image/svg+xml" ? Nokogiri::XML.parse(asset.to_s) :
-          Nokogiri::HTML::DocumentFragment.parse("")
+      def self.wants_xml?
+        false
+      end
+
+      def self.make_doc(builders, asset:)
+        wants = builders.map(&:wants_xml?).uniq
+        raise RuntimeError, "incompatible wants xml/html for builders" if wants.size > 1
+        !wants[0] ? Nokogiri::HTML::DocumentFragment.parse("") :
+          Nokogiri::XML.parse(asset.to_s)
       end
     end
   end
