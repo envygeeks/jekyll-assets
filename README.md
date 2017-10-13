@@ -329,7 +329,7 @@ to get an idea what `<value>` can be.
 | `@magick:double` | ✗ |
 | `@magick:half` | ✗ |
 
-<sup>\*</sup>***`magick:format` requires an ext or a valid MIME content type like `image/jpeg` or `.jpg`.  We will `ImageMagick -format` on your behalf with that information by getting the extension.***
+<sup>\*</sup> ***`magick:format` requires an ext or a valid MIME content type like `image/jpeg` or `.jpg`.  We will `ImageMagick -format` on your behalf with that information by getting the extension.***
 
 ### ImageOptim
 #### Installation
