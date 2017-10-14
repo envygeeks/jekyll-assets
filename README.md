@@ -21,21 +21,21 @@
 # Jekyll Assets 3.x
 ## What's new
 
-* Jekyll like tag arguments.
-* Proxies in `asset()` for SASS.
-* Expanded source directories by default.
-* Stripping of FrontMatter (`---`) before processing.
-* Extensible/customizable decoupled HTML builders for tags.
-* Responsive images with `srcset` `<picture>` tag support.
-* Easier proxies, with rolling proxies.
-* Customizable HTML defaults.
-* SourceMaps.
+- [x] Jekyll like tag arguments.
+- [x] Proxies in `asset()` for SASS.
+- [x] Expanded source directories by default.
+- [ ] Support for `srcset`, width, and density.
+- [x] Stripping of FrontMatter (`---`) before processing.
+- [x] Extensible/customizable decoupled HTML builders for tags.
+- [ ] Support for `<audio>`, `<video>`, `<img>` discovery in Markdown.
+- [x] Responsive images with `srcset` `<picture>` tag support.
+- [ ] Support for audio assets (using `assets` tag.)
+- [ ] Support for video assets (using `assets` tag.)
+- [x] Easier proxies, with rolling proxies.
+- [x] Customizable HTML defaults.
+- [ ] Proxies via `<img>`.
+- [ ] SourceMaps.
 
-## Coming Soon
-
-* Support for video assets (using `video` tag.)
-* Asset discovery via `<img>` inside of Markdown.
-* Proxies via `<img>`.
 
 # Jekyll Assets
 
