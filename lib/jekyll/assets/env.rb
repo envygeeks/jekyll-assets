@@ -44,11 +44,18 @@ module Jekyll
       end
 
       def compile(name)
-        proper = get_name(name)
-        asset = find_asset(proper)
-        return manifest.compile(proper) if asset
-        asset = find_asset!(name)
-        manifest.compile(name)
+        other = get_name(name)
+        asset = find_asset(other)
+        didit = manifest.compile(other) if asset
+        asset = find_asset!(name) if !didit
+        didit = manifest.compile(name) \
+          if !didit
+
+        if didit.size > 0
+          Hook.trigger :asset, :compile do |h|
+            h.call(asset, manifest)
+          end
+        end
       end
 
       def cache
@@ -229,8 +236,8 @@ module Jekyll
       register_ext_map ".es6", ".js"
       register_ext_map ".coffee", ".js"
       register_ext_map ".js.coffee",".js"
-      register_ext_map ".coffee.erb", ".js"
       register_ext_map ".js.coffee.erb", ".js"
+      register_ext_map ".coffee.erb", ".js"
       register_ext_map ".es6.erb", ".js"
       register_ext_map ".js.erb", ".js"
 

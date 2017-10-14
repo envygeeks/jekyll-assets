@@ -220,7 +220,8 @@ Using Liquid Drop `assets`, you can check whether an asset is present.
 | Point | Name | Instance | Args |
 |---|---|---|---|
 | `:env` | `:init` | ✔ | ✗ |
-| `:config` | `:pre` | ✗ | `Config{}` |
+| `:config` | `:init` | ✗ | `Config{}` |
+| `asset` | `:compile` | ✗ | `Asset`, `Manifest` |
 
 ### Usage
 
@@ -231,7 +232,7 @@ end
 ```
 
 ```ruby
-Jekyll::Assets::Hook.register :config, :pre do |c|
+Jekyll::Assets::Hook.register :config, :init do |c|
   c.deep_merge!({
     plugins: {
       my_plugin: {
