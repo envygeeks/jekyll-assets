@@ -14,7 +14,12 @@ module Jekyll
         # --
         def obsolete_files
           sprockets, manifest = site.sprockets, site.sprockets.manifest
-          reject = manifest.files.keys.map{|v|sprockets.in_dest_dir(v)}
+          reject = manifest.files.keys.map do |v|
+            asset = sprockets.in_dest_dir(v)
+            [asset+".gz",asset+".map" asset]
+          end
+
+          reject.flatten!
           super.reject do |v|
             v == manifest.filename || \
             v == sprockets.in_dest_dir || \
