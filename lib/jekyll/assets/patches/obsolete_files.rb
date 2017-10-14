@@ -16,7 +16,7 @@ module Jekyll
           sprockets, manifest = site.sprockets, site.sprockets.manifest
           reject = manifest.files.keys.map do |v|
             asset = sprockets.in_dest_dir(v)
-            [asset+".gz",asset+".map" asset]
+            [asset+".gz",asset+".map",asset]
           end
 
           reject.flatten!
