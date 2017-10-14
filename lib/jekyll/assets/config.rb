@@ -16,6 +16,7 @@ module Jekyll
         integrity: false,
         autowrite: true,
         liquid: false,
+        gzip: false,
 
         caching: {
           enabled: true,

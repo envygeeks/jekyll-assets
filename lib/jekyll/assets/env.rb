@@ -39,9 +39,9 @@ module Jekyll
         end
       end
 
-      # def skip_gzip?
-      #   true
-      # end
+      def skip_gzip?
+        !asset_config[:gzip]
+      end
 
       def compile(name)
         other = get_name(name)
