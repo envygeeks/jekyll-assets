@@ -33,6 +33,7 @@
 - [ ] Support for video assets (using `assets` tag.)
 - [x] Easier proxies, with rolling proxies.
 - [x] Customizable HTML defaults.
+- [ ] Configurable GZipping.
 - [ ] Proxies via `<img>`.
 - [ ] SourceMaps.
 
