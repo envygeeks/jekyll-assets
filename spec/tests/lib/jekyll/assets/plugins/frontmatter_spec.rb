@@ -5,7 +5,7 @@
 require "rspec/helper"
 describe "Plugins/Frontmatter" do
   let :asset do
-    env.find_asset!("plugins/frontmatter")
+    environment.find_asset!("plugins/frontmatter")
   end
 
   describe "---" do

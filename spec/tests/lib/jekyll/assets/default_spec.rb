@@ -28,9 +28,13 @@ module Jekyll
 end
 
 describe Jekyll::Assets::Default do
-  before { allow(asset).to(receive(:content_type).and_return(:test)) }
+  before do
+    allow(asset).to(receive(:content_type).
+      and_return(:test))
+  end
+
   let :asset do
-    env.find_asset!("img.png")
+    environment.find_asset!("img.png")
   end
 
   describe "get" do

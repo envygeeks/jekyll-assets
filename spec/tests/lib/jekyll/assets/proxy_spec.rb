@@ -30,7 +30,7 @@ module Jekyll
 end
 
 describe Jekyll::Assets::Proxy do
-  let(:asset) { env.find_asset!(args[:argv1]) }
+  let(:asset) { environment.find_asset!(args[:argv1]) }
   let(:klass) { Jekyll::Assets::Plugins::ProxyTest1 }
   let :args do
     Liquid::Tag::Parser.new("img.png @test:2x")
@@ -54,12 +54,12 @@ describe Jekyll::Assets::Proxy do
     })
 
     expect(out).to(be_a(Sprockets::Asset))
-    path = Pathutil.new(env.in_cache_dir(subject::DIR)).children
+    path = Pathutil.new(environment.in_cache_dir(subject::DIR)).children
     expect(path).to(include(out.filename))
   end
 
   context do
-    let(:dir) { Pathutil.new(env.in_cache_dir(subject::DIR)) }
+    let(:dir) { Pathutil.new(environment.in_cache_dir(subject::DIR)) }
     it "should copy the asset" do
       out = subject.proxy(asset, {
         args: args,

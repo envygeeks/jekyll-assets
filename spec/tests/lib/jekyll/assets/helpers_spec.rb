@@ -4,19 +4,19 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Helpers do
-  let(:asset) { env.find_asset!("bundle.css") }
+  let(:asset) { environment.find_asset!("bundle.css") }
   let :path do
     jekyll.in_dest_dir("/assets")
   end
 
   subject do
-    env.context_class.new({
+    environment.context_class.new({
       name: asset.logical_path,
       filename: asset.filename,
       load_path: File.dirname(asset.filename),
       content_type: asset.content_type,
       metadata: asset.metadata,
-      environment: env.cached,
+      environment: environment.cached,
     })
   end
 
@@ -30,7 +30,7 @@ describe Jekyll::Assets::Helpers do
     end
 
     context do
-      let(:path) { env.prefix_path(env.find_asset("img").digest_path) }
+      let(:path) { environment.prefix_path(environment.find_asset("img").digest_path) }
       it "should return a path" do
         expect(subject.asset_path("img")).to(eq(path))
       end

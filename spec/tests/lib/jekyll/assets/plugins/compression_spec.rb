@@ -5,7 +5,7 @@
 require "rspec/helper"
 describe "Plugins/Compression" do
   describe "CSS" do
-    let(:asset) { env.find_asset!("plugins/compression.css") }
+    let(:asset) { environment.find_asset!("plugins/compression.css") }
     it "should compress" do
       result = "body{color:#fff}\n"
       expect(asset.to_s).to(eq(result))
@@ -13,7 +13,7 @@ describe "Plugins/Compression" do
   end
 
   describe "JS" do
-    let(:asset) { env.find_asset!("plugins/compression.js") }
+    let(:asset) { environment.find_asset!("plugins/compression.js") }
     it "should compress" do
       result = "!function(){console.log(\"hello\")}();"
       expect(asset.to_s).to(eq(result))

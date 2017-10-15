@@ -38,7 +38,7 @@ describe Jekyll::Assets::Tag do
     context "when given @path" do
       it "should just output the path" do
         page = jekyll.pages.find { |v| v.path == "tag/path.html" }
-        path = env.prefix_path(env.find_asset("bundle.css").digest_path)
+        path = environment.prefix_path(environment.find_asset("bundle.css").digest_path)
         expect(page.to_s.strip).to(eq(path))
       end
     end
