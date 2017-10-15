@@ -81,7 +81,7 @@ module Jekyll
 
       def manifest
         @manifest ||= begin
-          Sprockets::Manifest.new(self, in_dest_dir)
+          Manifest.new(self, in_dest_dir)
         end
       end
 
