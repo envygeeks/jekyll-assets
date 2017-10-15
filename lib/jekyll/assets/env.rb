@@ -18,6 +18,10 @@ module Jekyll
       rb_delegate :safe?, to: :jekyll
       attr_accessor :jekyll
 
+      def uncached
+        self
+      end
+
       def initialize(jekyll = nil)
         super()
 
