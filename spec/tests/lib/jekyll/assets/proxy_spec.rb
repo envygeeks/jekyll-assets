@@ -41,16 +41,16 @@ describe Jekyll::Assets::Proxy do
     expect(klass).to(receive(:new).and_call_original)
     subject.proxy(asset, {
       args: args,
+      env: environment,
       type: :test,
-      env: env,
     })
   end
 
   it "should return an asset" do
     out = subject.proxy(asset, {
       args: args,
+      env: environment,
       type: :test,
-      env: env,
     })
 
     expect(out).to(be_a(Sprockets::Asset))
@@ -63,8 +63,8 @@ describe Jekyll::Assets::Proxy do
     it "should copy the asset" do
       out = subject.proxy(asset, {
         args: args,
+        env: environment,
         type: :test,
-        env: env,
       })
 
       expect(dir.children.size).to be >= 1

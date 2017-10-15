@@ -4,7 +4,7 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Cached do
-  subject { env }
+  subject { environment }
   let :path do
     site.in_dest_dir("/assets")
   end

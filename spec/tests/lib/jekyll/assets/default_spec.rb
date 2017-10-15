@@ -29,8 +29,7 @@ end
 
 describe Jekyll::Assets::Default do
   before do
-    allow(asset).to(receive(:content_type).
-      and_return(:test))
+    allow(asset).to(receive(:content_type).and_return(:test))
   end
 
   let :asset do
@@ -65,8 +64,8 @@ describe Jekyll::Assets::Default do
 
       subject.set(result, {
         type: :test,
+        env: environment,
         asset: asset,
-        env: env,
       })
 
       expect(result).to(have_key(:hello))

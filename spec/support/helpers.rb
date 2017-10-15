@@ -34,7 +34,7 @@ module Helpers
 
   def stub_asset_config(hash)
     hash = environment.asset_config.deep_merge(hash)
-    allow(env).to(receive(:asset_config).
+    allow(environment).to(receive(:asset_config).
       and_return(hash))
   end
 

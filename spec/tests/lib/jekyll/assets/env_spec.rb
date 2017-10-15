@@ -4,7 +4,7 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Env do
-  subject { env }
+  subject { environment }
   let(:path) do
     site.in_dest_dir("/assets")
   end
@@ -52,7 +52,7 @@ describe Jekyll::Assets::Env do
             }
           })
 
-          allow(env).to(receive(:cdn?).and_return(true))
+          allow(environment).to(receive(:cdn?).and_return(true))
           stub_jekyll_config({
             baseurl: "hello"
           })
@@ -72,7 +72,7 @@ describe Jekyll::Assets::Env do
             }
           })
 
-          allow(env).to(receive(:cdn?).and_return(true))
+          allow(environment).to(receive(:cdn?).and_return(true))
           stub_jekyll_config({
             baseurl: "hello"
           })
@@ -85,7 +85,7 @@ describe Jekyll::Assets::Env do
 
       context "and when cdn.prefix = true" do
         before do
-          allow(env).to(receive(:cdn?).and_return(true))
+          allow(environment).to(receive(:cdn?).and_return(true))
           environment.instance_variable_set(:@baseurl, nil)
           stub_asset_config({
             cdn: {
@@ -101,7 +101,7 @@ describe Jekyll::Assets::Env do
 
       context "and when cdn.prefix = false" do
         before do
-          allow(env).to(receive(:cdn?).and_return(true))
+          allow(environment).to(receive(:cdn?).and_return(true))
           environment.instance_variable_set(:@baseurl, nil)
           stub_asset_config({
             cdn: {
@@ -132,7 +132,7 @@ describe Jekyll::Assets::Env do
 
     context "cdn? = true" do
       before do
-        allow(env).to(receive(:cdn?).and_return(true))
+        allow(environment).to(receive(:cdn?).and_return(true))
         stub_asset_config({
           cdn: {
             url: "hello.world",
