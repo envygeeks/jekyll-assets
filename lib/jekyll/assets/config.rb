@@ -10,14 +10,11 @@ module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
       DEVELOPMENT = {
-        strict: false,
-        compress: true,
         source_maps: true,
-        save_directory: "/assets",
         subresource_integrity: false,
-        digest_filename: false,
-        autowrite: true,
-        gzip: false,
+        save_directory: "/assets",
+        compression: true,
+        digest: false,
 
         caching: {
           enabled: true,
@@ -30,11 +27,11 @@ module Jekyll
         ],
 
         cdn: {
-          baseurl: false,
-          prefix: false,
+          save_directory: false,
+          jekyll_baseurl: false,
         },
 
-        source_directories: %W(
+        sources: %W(
           assets/css
           assets/fonts
           assets/images
