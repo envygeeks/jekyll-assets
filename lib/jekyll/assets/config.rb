@@ -13,6 +13,7 @@ module Jekyll
         prefix: "/assets",
         strict: false,
         digest: false,
+        compression: true,
         integrity: false,
         autowrite: true,
         liquid: false,
@@ -61,11 +62,6 @@ module Jekyll
       }.freeze
 
       PRODUCTION = DEVELOPMENT.deep_merge({
-        digest: true,
-        compress: {
-          css: true,
-          js: true,
-        }
       }).freeze
 
       def initialize(config)
