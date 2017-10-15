@@ -17,7 +17,6 @@ module Jekyll
         subresource_integrity: false,
         digest_filename: false,
         autowrite: true,
-        liquid: false,
         gzip: false,
 
         caching: {
