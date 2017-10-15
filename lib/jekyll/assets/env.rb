@@ -9,13 +9,8 @@ module Jekyll
     class Env < Sprockets::Environment
 
       extend Forwardable::Extended
-      rb_delegate :dev?, to: :Jekyll, bool: true
-      rb_delegate :logger, to: :"Jekyll::Assets::Logger"
-      rb_delegate :digest, to: :asset_config, type: :hash, bool: true
       rb_delegate :cache_path, to: :"asset_config[:caching]", type: :hash, key: :path, wrap: :in_source_dir
-      rb_delegate :cache?, to: :"asset_config[:cache]", type: :hash, key: :enabled
-      rb_delegate :production?, to: :jekyll
-      rb_delegate :safe?, to: :jekyll
+      rb_delegate :logger, to: :"Jekyll::Assets::Logger"
       attr_accessor :jekyll
 
       def uncached
@@ -47,6 +42,7 @@ module Jekyll
         !asset_config[:gzip]
       end
 
+      # TODO: Needs to move to `Manifest`
       def compile(name)
         other = get_name(name)
         asset = find_asset(other)
@@ -99,6 +95,7 @@ module Jekyll
         end
       end
 
+      # TODO: This needs to move to `Cache`
       def in_cache_dir(*paths)
         paths.reduce(cache_path.to_path) do |b, p|
           Jekyll.sanitized_path(b, p)
@@ -109,6 +106,7 @@ module Jekyll
         jekyll.in_dest_dir(prefix_path, *paths)
       end
 
+      # TODO: Remove
       def cdn?
         !dev? && asset_config[:cdn].key?(:url) &&
               asset_config[:cdn][:url]
@@ -145,9 +143,9 @@ module Jekyll
 
       def self.register_ext_map(ext, to_ext)
         @ext_maps ||= {}
-        @ext_maps.update(
+        @ext_maps.update({
           ext.to_s => to_ext.to_s
-        )
+        })
       end
 
       def self.map_ext(ext)
