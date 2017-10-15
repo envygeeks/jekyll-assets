@@ -10,11 +10,12 @@ module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
       DEVELOPMENT = {
-        prefix: "/assets",
         strict: false,
-        digest: false,
-        compression: true,
-        integrity: false,
+        compress: true,
+        source_maps: true,
+        save_directory: "/assets",
+        subresource_integrity: false,
+        digest_filename: false,
         autowrite: true,
         liquid: false,
         gzip: false,
@@ -34,7 +35,7 @@ module Jekyll
           prefix: false,
         },
 
-        sources: %W(
+        source_directories: %W(
           assets/css
           assets/fonts
           assets/images
@@ -62,6 +63,7 @@ module Jekyll
       }.freeze
 
       PRODUCTION = DEVELOPMENT.deep_merge({
+        source_maps: false
       }).freeze
 
       def initialize(config)
