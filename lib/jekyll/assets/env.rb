@@ -162,13 +162,6 @@ module Jekyll
           out.extname)).to_s
       end
 
-      private
-      def strip_path(path)
-        dir = jekyll.in_source_dir("/")
-        path.sub(dir, "")
-      end
-
-      private
       def in_source_dir(path)
         dir = jekyll.in_source_dir(path)
         Pathutil.new(dir)
