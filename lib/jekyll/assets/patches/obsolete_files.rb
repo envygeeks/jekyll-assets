@@ -6,12 +6,6 @@ module Jekyll
   module Assets
     module Patches
       module ObsoleteFiles
-
-        # --
-        # @note we don't want our files removed.
-        # obsolete_files patches Jekyll's obsolete_files
-        # @return [Array]
-        # --
         def obsolete_files
           sprockets, manifest = site.sprockets, site.sprockets.manifest
           reject = manifest.files.keys.map do |v|
@@ -31,7 +25,6 @@ module Jekyll
   end
 end
 
-# --
 module Jekyll
   class Cleaner
     prepend Jekyll::Assets::Patches::ObsoleteFiles

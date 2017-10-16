@@ -2,6 +2,7 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "jekyll/assets"
 try_require "image_optim" do
   module Jekyll
     module Assets

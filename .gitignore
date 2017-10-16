@@ -3,6 +3,7 @@
 /spec/fixture/.*
 /spec/fixture/_site
 /stackprof.dump
+/.jekyll-cache
 /Gemfile.lock
 /coverage
 /.bundle

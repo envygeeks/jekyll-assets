@@ -2,14 +2,26 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "pathutil"
+require "forwardable/extended"
+require "jekyll/sanity"
+require "sprockets"
+require "jekyll"
+
+require_all "patches/*"
 require_relative "drop"
+require_relative "cached"
+require_relative "manifest"
+require_relative "helpers"
+require_relative "config"
+require_relative "logger"
+require_relative "hook"
+require_relative "tag"
 
 module Jekyll
   module Assets
     class Env < Sprockets::Environment
-
       extend Forwardable::Extended
-      rb_delegate :cache_path, to: :"asset_config[:caching]", type: :hash, key: :path, wrap: :in_source_dir
       rb_delegate :logger, to: :"Jekyll::Assets::Logger"
       attr_accessor :jekyll
 
@@ -24,22 +36,21 @@ module Jekyll
         jekyll.sprockets = self
         @cache = nil
 
-        logger
-        manifest
-        asset_config
+        excludes!
+        disable_erb!
         enable_compression!
         setup_sources!
-        disable_erb!
-        cache
-
+        setup_drops!
         precompile!
+
         Hook.trigger :env, :init do |hook|
           instance_eval(&hook)
         end
       end
 
       def find_asset!(file, *args)
-        file.is_a?(Asset) ? super(file.logical_path, *args) : super
+        file.is_a?(Sprockets::Asset) ? super(file.logical_path,
+          *args) : super
       end
 
       def find_asset_source!(asset)
@@ -53,7 +64,7 @@ module Jekyll
       end
 
       def skip_gzip?
-        !asset_config[:gzip]
+        !asset_config[:compression]
       end
 
       # TODO: Needs to move to `Manifest`
@@ -176,18 +187,6 @@ module Jekyll
         Pathutil.new(jekyll.in_source_dir(path))
       end
 
-      private
-      def enable_compression!
-        opts = asset_config[:plugins][:compression]
-
-        if opts[:css][:enabled]
-          @css_compressor = :sass
-        end
-
-        if opts[:js][:enabled]
-          try_require "uglifier" do
-            @js_compressor = !jekyll.safe ? Uglifier.new(
-              opts[:js][:opts]) : :uglify
       def strip_paths(path)
         paths.map do |v|
           if path.start_with?(v)
@@ -198,6 +197,25 @@ module Jekyll
         path
       end
 
+      private
+      def excludes!
+        excludes = Config.defaults[:sources]
+        @jekyll.config["exclude"].push(excludes)
+        @jekyll.config["exclude"].uniq!
+      end
+
+      private
+      def enable_compression!
+        if asset_config[:compression]
+          if Jekyll.production?
+            self.js_compressor, self.css_compressor =
+              :uglify, :sass
+          else
+            self.js_compressor, self.css_compressor =
+              :source_map, :source_map
+          end
+        end
+        nil
       end
 
       private
@@ -234,6 +252,13 @@ module Jekyll
         end
       end
 
+      private
+      def setup_drops!
+        Jekyll::Hooks.register :site, :pre_render do |o, h|
+          h["assets"] = to_liquid_payload
+        end
+      end
+
       register_ext_map ".es6", ".js"
       register_ext_map ".coffee", ".js"
       register_ext_map ".js.coffee",".js"
@@ -251,6 +276,7 @@ module Jekyll
       register_ext_map ".css.sass", ".css"
       register_ext_map ".scss.erb", ".css"
       register_ext_map ".css.erb", ".css"
+      require_all "plugins/*"
     end
   end
 end

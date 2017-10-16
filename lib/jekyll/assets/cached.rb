@@ -2,15 +2,18 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "sprockets/cached_environment"
+require "forwardable/extended"
+
 module Jekyll
   module Assets
     class Cached < Sprockets::CachedEnvironment
       extend Forwardable::Extended
       attr_reader :uncached
 
-      rb_delegate :manifest, to: :uncached
-      rb_delegate :asset_config, to: :uncached
-      rb_delegate :jekyll, to: :uncached
+      rb_delegate :manifest, to: :@uncached
+      rb_delegate :asset_config, to: :@uncached
+      rb_delegate :jekyll, to: :@uncached
 
       def initialize(env)
         super

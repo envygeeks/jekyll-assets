@@ -48,7 +48,7 @@ describe Jekyll::Assets::Env do
           environment.instance_variable_set(:@baseurl, nil)
           stub_asset_config({
             cdn: {
-              baseurl: true
+              jekyll_baseurl: true
             }
           })
 

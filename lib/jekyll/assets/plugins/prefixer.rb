@@ -2,17 +2,21 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "jekyll/assets"
 try_require_if_javascript "autoprefixer-rails" do
+  Jekyll::Assets::Hook.register :config, :pre do |c|
+    c.deep_merge!({
+      plugins: {
+        css: {
+          autoprefixer: {}
+        }
+      }
+    })
+  end
+
   Jekyll::Assets::Hook.register :env, :init do
-    config = jekyll.safe ? Config.defaults[:autoprefixer] :
-      asset_config[:autoprefixer]
-
-    # --
-    # We don't allow configuring AutoPrefixer from within
-    # a safe environment, AKA places like Github Pages and
-    # in other places.
-    # --
-
-    AutoprefixerRails.install(self, config)
+    config = asset_config[:plugins][:css][:autoprefixer]
+    AutoprefixerRails.install(self, jekyll.safe ?
+      config : {})
   end
 end

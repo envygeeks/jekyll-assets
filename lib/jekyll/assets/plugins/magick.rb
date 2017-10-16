@@ -2,6 +2,8 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+
+require "jekyll/assets"
 try_require "mini_magick" do
   module Jekyll
     module Assets

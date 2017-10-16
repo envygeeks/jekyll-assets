@@ -22,14 +22,6 @@ describe Jekyll::Assets::Helpers do
 
   describe "#asset_path" do
     context do
-      before { stub_asset_config strict: true }
-      let(:error) { Sprockets::FileNotFound }
-      it "should raise when an asset cannot be found" do
-        expect { subject.asset_path("unknown") }.to(raise_error(error))
-      end
-    end
-
-    context do
       let(:path) { environment.prefix_path(environment.find_asset("img").digest_path) }
       it "should return a path" do
         expect(subject.asset_path("img")).to(eq(path))

@@ -3,6 +3,7 @@
 # Encoding: utf-8
 
 require_relative "extensible"
+require "nokogiri"
 
 module Jekyll
   module Assets

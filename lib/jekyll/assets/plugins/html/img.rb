@@ -2,6 +2,9 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "jekyll/assets"
+require "nokogiri"
+
 module Jekyll
   module Assets
     class HTML

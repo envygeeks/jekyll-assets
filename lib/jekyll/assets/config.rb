@@ -2,9 +2,11 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "jekyll"
 require "active_support/hash_with_indifferent_access"
 require "active_support/core_ext/hash/indifferent_access"
 require "active_support/core_ext/hash/deep_merge"
+require_relative "hook"
 
 module Jekyll
   module Assets
@@ -76,11 +78,7 @@ module Jekyll
       end
 
       def self.defaults
-        if Jekyll.env == "production"
-          return PRODUCTION
-        end
-
-        DEVELOPMENT
+        Jekyll.dev?? DEVELOPMENT : PRODUCTION
       end
     end
   end

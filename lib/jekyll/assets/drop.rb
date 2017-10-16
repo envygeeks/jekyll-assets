@@ -2,6 +2,8 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "liquid/drop"
+require "forwardable/extended"
 require "fastimage"
 
 module Jekyll

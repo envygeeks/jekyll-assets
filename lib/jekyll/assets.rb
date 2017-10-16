@@ -2,15 +2,8 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
-# --
-# External
-# --
-require "sprockets"
-require "extras/all"
-require "jekyll/sanity"
 require "pathutil"
 require "jekyll"
-require "liquid"
 
 def require_all(*globs)
   path = Pathutil.new("assets").expand_path(__dir__)
@@ -19,5 +12,7 @@ def require_all(*globs)
   end }
 end
 
-require_all "patches/*", "*", "liquid/*", "hooks/*",
-        "plugins/*", "defaults/*", "html/*"
+require_relative "assets/env"
+Jekyll::Hooks.register :site, :post_read do |o|
+  Jekyll::Assets::Env.new(o)
+end

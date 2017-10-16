@@ -2,6 +2,8 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "liquid/parse_context"
+
 module Jekyll
   module Assets
     Context = Class.new(defined?(Liquid::ParseContext) ?

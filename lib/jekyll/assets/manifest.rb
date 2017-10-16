@@ -2,6 +2,8 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
+require "sprockets/manifest"
+
 module Jekyll
   module Assets
     class Manifest < Sprockets::Manifest
