@@ -85,10 +85,13 @@ module Jekyll
 
       def cache
         @cache ||= begin
-          cache, type = asset_config[:caching].values_at(:enabled, :type)
-          out = Sprockets::Cache::MemoryStore.new if cache && type == "memory"
-          out = Sprockets::Cache::FileStore.new(cache_path) if cache && type == "file"
-          out = Sprockets::Cache::NullStore.new if !cache
+          type = asset_config[:caching][:type]
+          enabled = asset_config[:caching][:enabled]
+          path = in_cache_dir
+
+          out = Sprockets::Cache::MemoryStore.new if enabled && type == "memory"
+          out = Sprockets::Cache::FileStore.new(path) if enabled && type == "file"
+          out = Sprockets::Cache::NullStore.new if !enabled
           Sprockets::Cache.new(out, Logger)
         end
       end
