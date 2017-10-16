@@ -22,7 +22,7 @@ module Jekyll
   module Assets
     class Env < Sprockets::Environment
       extend Forwardable::Extended
-      rb_delegate :logger, to: :"Jekyll::Assets::Logger"
+      rb_delegate :logger, to: :Logger
       attr_accessor :jekyll
 
       def uncached
