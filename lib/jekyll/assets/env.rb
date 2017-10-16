@@ -38,6 +38,20 @@ module Jekyll
         end
       end
 
+      def find_asset!(file, *args)
+        file.is_a?(Asset) ? super(file.logical_path, *args) : super
+      end
+
+      def find_asset_source!(asset)
+        unless asset.is_a?(Sprockets::Asset)
+          asset = find_asset!(asset)
+        end
+
+        source_logical_path = Pathname.new(asset.logical_path)
+        source_logical_path = source_logical_path.sub_ext(".source#{source_logical_path.extname}")
+        find_asset!(source_logical_path)
+      end
+
       def skip_gzip?
         !asset_config[:gzip]
       end
