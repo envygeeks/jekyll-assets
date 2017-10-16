@@ -143,8 +143,8 @@ module Jekyll
       def baseurl
         ary = []
         s1, s2 = asset_config[:cdn].values_at(:baseurl, :prefix)
-        ary << jekyll.config["baseurl"] unless cdn? && !s1
-        ary <<  asset_config[:prefix  ] unless cdn? && !s2
+        ary << jekyll.config["baseurl"] unless (cdn? && !s1) || !cdn?
+        ary <<  asset_config[:prefix  ] unless (cdn? && !s2) || !cdn?
         File.join(*ary.delete_if do |val|
           val.nil? || val.empty?
         end)
