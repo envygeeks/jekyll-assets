@@ -125,7 +125,8 @@ module Jekyll
 
       # TODO: This needs to move to `Cache`
       def in_cache_dir(*paths)
-        paths.reduce(cache_path.to_path) do |b, p|
+        cache_path = jekyll.in_source_dir(asset_config[:caching][:path])
+        paths.reduce(cache_path) do |b, p|
           Jekyll.sanitized_path(b, p)
         end
       end
