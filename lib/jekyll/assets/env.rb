@@ -168,13 +168,12 @@ module Jekyll
 
       def get_name(file)
         out = Pathutil.new(strip_paths(file))
-        out.sub_ext(self.class.map_ext(
-          out.extname)).to_s
+        extension = self.class.map_ext(out.extname)
+        out.sub_ext(extension).to_s
       end
 
       def in_source_dir(path)
-        dir = jekyll.in_source_dir(path)
-        Pathutil.new(dir)
+        Pathutil.new(jekyll.in_source_dir(path))
       end
 
       private
@@ -189,10 +188,16 @@ module Jekyll
           try_require "uglifier" do
             @js_compressor = !jekyll.safe ? Uglifier.new(
               opts[:js][:opts]) : :uglify
+      def strip_paths(path)
+        paths.map do |v|
+          if path.start_with?(v)
+            return path.sub(v + "/", "")
           end
         end
 
-        nil
+        path
+      end
+
       end
 
       private
@@ -227,17 +232,6 @@ module Jekyll
 
           paths
         end
-      end
-
-      private
-      def strip_paths(path)
-        paths.map do |v|
-          if path.start_with?(v)
-            return path.sub(v + "/", "")
-          end
-        end
-
-        path
       end
 
       register_ext_map ".es6", ".js"
