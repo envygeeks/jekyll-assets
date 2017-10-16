@@ -137,8 +137,7 @@ module Jekyll
 
       # TODO: Remove
       def cdn?
-        !dev? && asset_config[:cdn].key?(:url) &&
-              asset_config[:cdn][:url]
+        !Jekyll.dev? && asset_config[:cdn].key?(:url) && asset_config[:cdn][:url]
       end
 
       def baseurl
