@@ -3,6 +3,13 @@
 # Encoding: utf-8
 
 module Kernel
+
+  # --
+  # Either require the file or keep moving along.
+  # @yield a block of code if the require works out.
+  # @param [String] file the file to require.
+  # @return [nil]
+  # --
   def try_require(file)
     require file
     if block_given?
@@ -13,6 +20,12 @@ module Kernel
       "optional file `#{file}'"
   end
 
+  # --
+  # @yield a blockof code if the require works out.
+  # Either require exec.js, and the file or move along.
+  # @param [String] file the file to require.
+  # @return [nil]
+  # --
   def try_require_if_javascript(file)
     ["execjs", file].map(&method(:require))
     if block_given?

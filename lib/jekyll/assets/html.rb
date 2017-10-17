@@ -8,11 +8,23 @@ require "nokogiri"
 module Jekyll
   module Assets
     class HTML < Extensible
+
+      # --
       def initialize(doc:, **kwd)
         super(**kwd)
-        @doc = doc
+        @doc =
+          doc
       end
 
+      # --
+      # @param [Hash] args the arguments.
+      # @param [String] type the content type.
+      # Search for plugins and runners and then run them.
+      # @param [Sprockets::Asset] the current asset.
+      # @note look inside of plugins for examples.
+      # @return [String] the final result.
+      # @param [Env] env the env.
+      # --
       def self.build(type:, args:, asset:, env:)
         rtn = self.inherited.select do |o|
           o.for?({
@@ -41,10 +53,20 @@ module Jekyll
         out
       end
 
+      # --
+      # Allows a plugin to inform us if they want XML.
+      # @note technically this can break sub-plugins later.
+      # @return [true, false]
+      # --
       def self.wants_xml?
         false
       end
 
+      # --
+      # Make an HTML/XML doc to work on.
+      # @note see `self.wants_html?` to control this.
+      # @return [Nokogiri::Document]
+      # --
       def self.make_doc(builders, asset:)
         wants = builders.map(&:wants_xml?).uniq
         raise RuntimeError, "incompatible wants xml/html for builders" if wants.size > 1

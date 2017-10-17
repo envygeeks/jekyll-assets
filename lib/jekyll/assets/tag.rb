@@ -28,9 +28,17 @@ module Jekyll
         super
       end
 
+      # --
+      # @return [String]
+      # Render the tag, run the proxies, set the defaults.
+      # @note Defaults are ran twice just incase the content type
+      #   changes, at that point there might be something that
+      #   has to change in the new content.
+      # --
       def render(context)
         env = context.registers[:site].sprockets
-        oga = context.registers[:site].sprockets.find_asset!(@name)
+
+        oga = env.find_asset!(@name)
         Default.set(@args, env: env, type: oga.content_type, asset: oga)
         asset = Proxy.proxy(oga, type: oga.content_type, args: @args, env: env)
         Default.set(@args, type: asset.content_type, env: env, asset: asset)
@@ -39,16 +47,13 @@ module Jekyll
         return env.prefix_path(asset.digest_path) if @args[:path]
         return asset.data_uri if @args[:"data-uri"] || @args[:data_uri]
         return asset.to_s if @args[:source]
-        build_html(asset, env: env)
-      end
-
-      def build_html(asset, env:)
         type = asset.content_type
+
         HTML.build({
-          type: type,
-          asset: asset,
           args: @args,
-          env: env,
+          asset: asset,
+          type: type,
+          env: env
         })
       end
     end

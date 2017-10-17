@@ -22,7 +22,7 @@ module Jekyll
   module Assets
     class Env < Sprockets::Environment
       extend Forwardable::Extended
-      rb_delegate :logger, to: :Logger
+      rb_delegate :logger, to: :"Jekyll::Assets::Logger"
       attr_accessor :jekyll
 
       def uncached
@@ -48,11 +48,22 @@ module Jekyll
         end
       end
 
+      # --
+      # @param [Sprockets::Asset, String] file the asset, or file.
+      # Wraps around `#find_asset` so that we can pass a `Sprockets::Asset`
+      # @return [Sprockets::Asset] the asset.
+      # --
       def find_asset!(file, *args)
         file.is_a?(Sprockets::Asset) ? super(file.logical_path,
           *args) : super
       end
 
+      # --
+      # @param [Sprockets::Asset, String] aset the asset, or file.
+      # Takes in an asset or path, and adds `.source` and pulls the source.
+      # @note this is useful to avoid manual reading.
+      # @return [Sprockets::Asset] the asset.
+      # --
       def find_asset_source!(asset)
         unless asset.is_a?(Sprockets::Asset)
           asset = find_asset!(asset)
@@ -63,11 +74,21 @@ module Jekyll
         find_asset!(source_logical_path)
       end
 
+      # --
+      # @note configurable with `:gzip`
+      # Tells Sprockets (upstream) not to GZip assets.
+      # @return [true, false]
+      # --
       def skip_gzip?
         !asset_config[:compression]
       end
 
-      # TODO: Needs to move to `Manifest`
+      # @note `.scss` -> `.css`
+      # @todo This needs to move to manifest.
+      # Discovers and compiles and asset, converting the extension.
+      # @param [String] name the asset.
+      # @return nil
+      # --
       def compile(name)
         other = get_name(name)
         asset = find_asset(other)
@@ -83,6 +104,12 @@ module Jekyll
         end
       end
 
+      # --
+      # @note this is configurable with :caching -> :type
+      # Create a cache, or a null cache (if no caching) for caching.
+      # @note this is configurable with :caching -> :enabled
+      # @return [Sprockets::Cache]
+      # --
       def cache
         @cache ||= begin
           type = asset_config[:caching][:type]
@@ -96,6 +123,11 @@ module Jekyll
         end
       end
 
+      # --
+      # @note `:assets` key inside of `_config.yml`
+      # Provides the user configuration, along with our defaults.
+      # @return [HashWithIndifferentAccess]
+      # --
       def asset_config
         @asset_config ||= begin
           user = jekyll.config["assets"] ||= {}
@@ -103,12 +135,21 @@ module Jekyll
         end
       end
 
+      # --
+      # Provides a manifest to do cached lookups.
+      # @return [Manifest]
+      # --
       def manifest
         @manifest ||= begin
           Manifest.new(self, in_dest_dir)
         end
       end
 
+      # --
+      # @note this does not find the asset.
+      # Takes all user assets and turns them into a drop.
+      # @return [Hash]
+      # --
       def to_liquid_payload
         each_file.each_with_object({}) do |k, h|
           path = strip_paths(k)
@@ -123,7 +164,12 @@ module Jekyll
         end
       end
 
-      # TODO: This needs to move to `Cache`
+      # --
+      # @todo This needs to move to `Cache`
+      # Lands your path inside of the cache directory.
+      # @note configurable with `:caching` -> `:path key`.
+      # @return [String]
+      # --
       def in_cache_dir(*paths)
         cache_path = jekyll.in_source_dir(asset_config[:caching][:path])
         paths.reduce(cache_path) do |b, p|
@@ -131,15 +177,30 @@ module Jekyll
         end
       end
 
+      # --
+      # @note this is configurable with `:prefix`
+      # Lands your path inside of the destination directory.
+      # @param [Array<String>] paths the paths.
+      # @return [String]
+      # --
       def in_dest_dir(*paths)
         jekyll.in_dest_dir(prefix_path, *paths)
       end
 
-      # TODO: Remove
+      # --
+      # @todo Time for this to go.
+      # Tells you if you are using a cdn.
+      # @return [true, false]
+      # --
       def cdn?
         !Jekyll.dev? && asset_config[:cdn].key?(:url) && asset_config[:cdn][:url]
       end
 
+      # --
+      # Builds the baseurl for our writes and urls.
+      # @todo this will be removed in favor of `prefix_url`
+      # @return [String]
+      # --
       def baseurl
         ary = []
         s1, s2 = asset_config[:cdn].values_at(:baseurl, :prefix)
@@ -150,6 +211,12 @@ module Jekyll
         end)
       end
 
+      # --
+      # Builds the path for our writes and urls.
+      # @todo this will be adjust for writes only soon.
+      # @param [String] the path.
+      # @return [String]
+      # --
       def prefix_path(path = nil)
         path_ = []
 
@@ -165,31 +232,31 @@ module Jekyll
         url.chomp("/")
       end
 
+      # --
+      # Provides you cached lookups for `find_asset!`
+      # @note this is why Sprockets go so fast lately...
+      # @return [Cached]
+      # --
       def cached
         @cached ||= Cached.new(self)
       end
 
-      def self.register_ext_map(ext, to_ext)
-        @ext_maps ||= {}
-        @ext_maps.update({
-          ext.to_s => to_ext.to_s
-        })
-      end
-
-      def self.map_ext(ext)
-        @ext_maps[ext] || ext
-      end
-
-      def get_name(file)
+      # --
+      # Takes in a file name, and then converts the extension.
+      # @note this is particularly useful to combat mistakes like `bundle.scss`
+      # @return [String] the fixed filename.
+      # --
+      def get_proper_asset_name(file)
         out = Pathutil.new(strip_paths(file))
         extension = self.class.map_ext(out.extname)
         out.sub_ext(extension).to_s
       end
 
-      def in_source_dir(path)
-        Pathutil.new(jekyll.in_source_dir(path))
-      end
-
+      # --
+      # Strips most source paths from a path.
+      # @param [String] path the path to strip.
+      # @return [String]
+      # --
       def strip_paths(path)
         paths.map do |v|
           if path.start_with?(v)
@@ -210,13 +277,8 @@ module Jekyll
       private
       def enable_compression!
         if asset_config[:compression]
-          if Jekyll.production?
-            self.js_compressor, self.css_compressor =
-              :uglify, :sass
-          else
-            self.js_compressor, self.css_compressor =
-              :source_map, :source_map
-          end
+          # self. js_compressor = Jekyll.dev?? :source_map : :uglify
+          # self.css_compressor = Jekyll.dev?? :source_map : :sass
         end
         nil
       end
@@ -260,6 +322,32 @@ module Jekyll
         Jekyll::Hooks.register :site, :pre_render do |o, h|
           h["assets"] = to_liquid_payload
         end
+      end
+
+      # --
+      # @note this is used by `#compile`
+      # Registers an extension mapping, like `.scss` -> `.css`
+      # @param [String] to_ext the extension to convert to.
+      # @param [String] ext the from extension.
+      # @return nil
+      # --
+      public
+      def self.register_ext_map(ext, to_ext)
+        @ext_maps ||= {}
+        @ext_maps.update({
+          ext.to_s => to_ext.to_s
+        })
+      end
+
+      # --
+      # @note this is used by `#compile`
+      # Uses extension maps to map your exension.
+      # @param [String] ext the extension.
+      # @return [String]
+      # --
+      public
+      def self.map_ext(ext)
+        @ext_maps[ext] || ext
       end
 
       register_ext_map ".es6", ".js"

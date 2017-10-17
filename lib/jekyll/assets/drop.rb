@@ -27,10 +27,20 @@ module Jekyll
       rb_delegate :integrity,    to: :asset
       rb_delegate :filename,     to: :asset
 
+      # --
+      # @todo this needs to move to `_url`
+      # @return [String] the prefixed and digested path.
+      # The digest path.
+      # --
       def digest_path
         @sprockets.prefix_path(asset.digest_path)
       end
 
+      # --
+      # Image dimensions if the asest is an image.
+      # @return [Hash<Integer,Integer>] the dimensions.
+      # @note this can break easily.
+      # --
       def dimensions
         @dimensions ||= begin
           img = img?? FastImage.size(asset.filename.to_s) : []

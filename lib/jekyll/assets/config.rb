@@ -64,19 +64,32 @@ module Jekyll
         source_maps: false
       }).freeze
 
+      # --
       def initialize(config)
         super(self.class.defaults)
-        Hook.trigger :config, :pre do |h|
-          h.call(self)
-        end
-
+        Hook.trigger(:config, :pre) { |h| h.call(self) }
         deep_merge!(config)
-        s1 = [self[:sources] || []].flatten.compact
-        s2 = self.class.defaults[:sources]
-        self[:sources] =
-          s1 + s2
+        merge_sources!
       end
 
+      # --
+      # Merge our sources with their sources.
+      # @note we don't really allow users to remove our sources.
+      # @return [nil]
+      # --
+      private
+      def merge_sources
+          our_sources = self.class.defaults[:sources]
+        their_sources = [self[:sources] || []].flatten.compact
+        self[:sources] = their_sources |
+          our_sources
+      end
+
+      # --
+      # @return [HashWithIndifferentAccess]
+      # @note this is useful if you are in safe mode.
+      # The original defaults we have set.
+      # --
       def self.defaults
         Jekyll.dev?? DEVELOPMENT : PRODUCTION
       end

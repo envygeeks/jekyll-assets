@@ -9,8 +9,8 @@ module Jekyll
   module Assets
     module Filters
       def asset(path, args = "")
-        args = "#{path} #{args}"
         context = Context.new
+        args = "#{path} #{args}"
         tag = Tag.new(val, args, context)
         tag.render(@context)
       end

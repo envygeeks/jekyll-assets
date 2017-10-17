@@ -13,28 +13,18 @@ module Jekyll
         self
       end
 
-      def self.warn(msg = nil)
-        msg = yield if block_given?
-        Jekyll.logger.warn \
-          PREFIX, msg
-      end
-
-      def self.error(msg = nil)
-        msg = yield if block_given?
-        Jekyll.logger.error \
-          PREFIX, msg
-      end
-
-      def self.info(msg = nil)
-        msg = yield if block_given?
-        Jekyll.logger.info \
-          PREFIX, msg
-      end
-
-      def self.debug(msg = nil)
-        msg = yield if block_given?
-        Jekyll.logger.debug \
-          PREFIX, msg
+      # --
+      # @note this is to be removed after 3.6.
+      # Creates self methods so that we can accept blocks.
+      # @param [String,Proc] message the message that to log.
+      # @return nil
+      # --
+      [:warn, :error, :info, :debug].each do |v|
+        define_singleton_method v do |message = nil|
+          message = yield if block_given?
+          Jekyll.logger.send v,
+            PREFIX, message
+        end
       end
     end
   end

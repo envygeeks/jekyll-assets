@@ -21,6 +21,14 @@ module Jekyll
         end
       end
 
+      # --
+      # @param [Hash] args the args.
+      # @param [Sprockets::Asset] asset the asset.
+      # @param [String] type the assets content_type
+      # @param [Env] env the environment.
+      # Run all your proxies on assets.
+      # @return [Sprockets::Asset]
+      # --
       def self.proxy(asset, type:, args:, env:)
         proxies = Proxy.inherited.select do |o|
           o.for?({
@@ -55,6 +63,14 @@ module Jekyll
         env.find_asset!(file)
       end
 
+      # --
+      # Copy the asset to the proxied directory.
+      # @note this is done so we do not directly alter.
+      # @param [Sprockets::Asset] asset the current asset.
+      # @param [Env] env the environment.
+      # @param [Hash] args the args.
+      # @return [Pathutil]
+      # --
       def self.copy(asset, env:, args:)
         raw = args.instance_variable_get(:@raw)
         key = DIG.hexdigest(raw)[0,6]
@@ -68,19 +84,28 @@ module Jekyll
         out
       end
 
+      # --
+      # @return [Symbol] the argument key.
+      # Allows you to tell the proxier which args are yours.
+      # @note we will not run your proxy if the argkey doen't match.
+      # @param [Symbol] key the key.
+      # --
       def self.args_key(key = nil)
         unless key.nil?
-          @key = key
+          @key =
+            key
         end
 
         @key
       end
 
+      # --
       def initialize(file, **kwd)
         super(**kwd)
         @file = file
       end
 
+      # --
       def self.for?(type:, args:)
         super && args.key?(args_key)
       end
