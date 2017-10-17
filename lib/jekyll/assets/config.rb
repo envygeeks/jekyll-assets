@@ -78,7 +78,7 @@ module Jekyll
       # @return [nil]
       # --
       private
-      def merge_sources
+      def merge_sources!
           our_sources = self.class.defaults[:sources]
         their_sources = [self[:sources] || []].flatten.compact
         self[:sources] = their_sources |
