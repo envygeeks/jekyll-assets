@@ -69,9 +69,9 @@ module Jekyll
           asset = find_asset!(asset)
         end
 
-        source_logical_path = Pathname.new(asset.logical_path)
-        source_logical_path = source_logical_path.sub_ext(".source#{source_logical_path.extname}")
-        find_asset!(source_logical_path)
+        logical_path = Pathname.new(asset.logical_path)
+        logical_path = logical_path.sub_ext(".source#{logical_path.extname}")
+        find_asset!(logical_path)
       end
 
       # --
