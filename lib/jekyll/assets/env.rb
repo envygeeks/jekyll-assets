@@ -90,7 +90,8 @@ module Jekyll
       # @return nil
       # --
       def compile(name)
-        other = get_name(name)
+        other = convert_asset_name(name)
+
         asset = find_asset(other)
         didit = manifest.compile(other) if asset
         asset = find_asset!(name) if !didit
@@ -246,7 +247,7 @@ module Jekyll
       # @note this is particularly useful to combat mistakes like `bundle.scss`
       # @return [String] the fixed filename.
       # --
-      def get_proper_asset_name(file)
+      def convert_asset_name(file)
         out = Pathutil.new(strip_paths(file))
         extension = self.class.map_ext(out.extname)
         out.sub_ext(extension).to_s
