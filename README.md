@@ -19,6 +19,9 @@
 [3]:https://jekyllrb.com
 
 # Jekyll Assets 3.x
+
+***Jekyll 3.x is unreleased at this time, it is scheduled to release sometime in October.  If you are looking for documentation for the current release please see: https://github.com/jekyll/jekyll-assets/tree/2.4-legacy***
+
 ## What's new
 
 - [x] Jekyll like tag arguments.
