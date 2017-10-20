@@ -2,7 +2,7 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
-try_require "liquid/parse_context"
+require "liquid/parse_context"
 
 module Jekyll
   module Assets
