@@ -4,7 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Cached do
-  subject { environment }
   let :path do
     site.in_dest_dir("/assets")
   end
@@ -19,6 +18,10 @@ describe Jekyll::Assets::Cached do
   #
 
   describe "#uncached" do
+    subject do
+      env
+    end
+
     it "should be the environment" do
       expect(subject.cached.uncached).to(eq(subject))
     end

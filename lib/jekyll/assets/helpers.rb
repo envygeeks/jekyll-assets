@@ -36,7 +36,7 @@ module Jekyll
       def context
         @struct ||= Struct.new(:registers)
         @struct.new({
-          :site => env.jekyll
+          :site => environment.jekyll
         })
       end
     end
@@ -48,6 +48,5 @@ end
 module Sprockets
   class Context
     prepend Jekyll::Assets::Helpers
-    alias_method :env, :environment
   end
 end

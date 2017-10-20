@@ -14,7 +14,7 @@ module Jekyll
       DEVELOPMENT = {
         source_maps: true,
         subresource_integrity: false,
-        save_directory: "/assets",
+        destination: "/assets",
         compression: true,
         digest: false,
 
@@ -29,8 +29,9 @@ module Jekyll
         ],
 
         cdn: {
-          save_directory: false,
-          jekyll_baseurl: false,
+          baseurl: false,
+          destination: false,
+          url: nil
         },
 
         sources: %W(
@@ -79,10 +80,11 @@ module Jekyll
       # --
       private
       def merge_sources!
-          our_sources = self.class.defaults[:sources]
-        their_sources = [self[:sources] || []].flatten.compact
-        self[:sources] = their_sources |
-          our_sources
+        ours = self.class.defaults[:sources]
+        theirs = [self[:sources] || []].flatten.
+          compact
+
+        self[:sources] = theirs | ours
       end
 
       # --

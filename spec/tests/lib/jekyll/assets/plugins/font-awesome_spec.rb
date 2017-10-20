@@ -4,7 +4,7 @@
 
 require "rspec/helper"
 describe "Plugins/FontAwesome" do
-  let(:asset) { environment.find_asset!("plugins/fon-awesome.css") }
+  let(:asset) { env.find_asset!("plugins/fon-awesome.css") }
   it "should import" do
     expect(asset.to_s).to(match(/^\.fa\{/))
   end

@@ -5,7 +5,7 @@
 require "rspec/helper"
 describe "Plugins/Optim" do
   let :asset do
-    environment.find_asset!("img.png")
+    env.find_asset!("img.png")
   end
 
   describe "@preset" do
@@ -17,7 +17,7 @@ describe "Plugins/Optim" do
 
     it "put me into pry" do
       file = fragment(page.to_s.strip).children.first
-      file = Pathutil.new(environment.jekyll.in_dest_dir(file.attr(:src)))
+      file = Pathutil.new(env.jekyll.in_dest_dir(file.attr(:src)))
       asst = Pathutil.new(asset.filename)
       expect(file.size).to be < asst.size
     end

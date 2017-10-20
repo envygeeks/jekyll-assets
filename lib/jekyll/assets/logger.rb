@@ -20,10 +20,9 @@ module Jekyll
       # @return nil
       # --
       [:warn, :error, :info, :debug].each do |v|
-        define_singleton_method v do |message = nil|
-          message = yield if block_given?
-          Jekyll.logger.send v,
-            PREFIX, message
+        define_singleton_method v do |message = nil, &block|
+          message = block.call if block
+          Jekyll.logger.send(v, PREFIX, message)
         end
       end
     end

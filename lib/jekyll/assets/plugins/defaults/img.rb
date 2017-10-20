@@ -14,7 +14,7 @@ module Jekyll
 
         def set_src
           unless @args[:inline]
-            @args[:src] = @env.prefix_path(@asset.digest_path)
+            @args[:src] = @env.prefix_url(@asset.digest_path)
           end
         end
 

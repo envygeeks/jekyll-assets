@@ -8,7 +8,7 @@ require "nokogiri"
 module Helpers
   extend Forwardable::Extended
   rb_delegate :stub_jekyll_site, to: :Helpers
-  rb_delegate :stub_environment, to: :Helpers
+  rb_delegate :stub_env, to: :Helpers
 
   def fragment(html)
     Nokogiri::HTML.fragment(html)
@@ -33,8 +33,8 @@ module Helpers
   end
 
   def stub_asset_config(hash)
-    hash = environment.asset_config.deep_merge(hash)
-    allow(environment).to(receive(:asset_config).
+    hash = env.asset_config.deep_merge(hash)
+    allow(env).to(receive(:asset_config).
       and_return(hash))
   end
 
@@ -55,8 +55,8 @@ module Helpers
     end
   end
 
-  def self.stub_environment
-    @environment ||= begin
+  def self.stub_env
+    @env ||= begin
       Jekyll::Assets::Env.new(stub_jekyll_site)
     end
   end

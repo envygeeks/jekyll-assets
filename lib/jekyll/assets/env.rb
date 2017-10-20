@@ -11,10 +11,12 @@ require "jekyll"
 require_all "patches/*"
 require_relative "drop"
 require_relative "cached"
+require_relative "filters"
 require_relative "manifest"
 require_relative "helpers"
 require_relative "config"
 require_relative "logger"
+require_relative "utils"
 require_relative "hook"
 require_relative "tag"
 
@@ -49,29 +51,27 @@ module Jekyll
       end
 
       # --
-      # @param [Sprockets::Asset, String] file the asset, or file.
+      # @param [Sprockets::Asset, String] asset the asset, or file.
       # Wraps around `#find_asset` so that we can pass a `Sprockets::Asset`
       # @return [Sprockets::Asset] the asset.
       # --
-      def find_asset!(file, *args)
-        file.is_a?(Sprockets::Asset) ? super(file.logical_path,
-          *args) : super
+      def find_asset!(asset, *args)
+        return asset if asset.is_a?(Sprockets::Asset)
+        return super asset, *args
       end
 
       # --
-      # @param [Sprockets::Asset, String] aset the asset, or file.
+      # @param [Sprockets::Asset, String] asset the asset, or file.
       # Takes in an asset or path, and adds `.source` and pulls the source.
       # @note this is useful to avoid manual reading.
       # @return [Sprockets::Asset] the asset.
       # --
-      def find_asset_source!(asset)
-        unless asset.is_a?(Sprockets::Asset)
-          asset = find_asset!(asset)
-        end
+      def find_source!(asset)
+        asset = asset.logical_path if asset.is_a?(Sprockets::Asset)
 
-        logical_path = Pathname.new(asset.logical_path)
-        logical_path = logical_path.sub_ext(".source#{logical_path.extname}")
-        find_asset!(logical_path)
+        asset = Pathname.new(asset)
+        asset = asset.sub_ext(".source#{asset.extname}")
+        find_asset!(asset.to_s)
       end
 
       # --
@@ -103,6 +103,8 @@ module Jekyll
             h.call(asset, manifest)
           end
         end
+
+        asset
       end
 
       # --
@@ -153,12 +155,12 @@ module Jekyll
       # --
       def to_liquid_payload
         each_file.each_with_object({}) do |k, h|
-          path = strip_paths(k)
-          next if File.basename(path).start_with?("_") ||
-                  File. dirname(path).start_with?("_")
+          path = Pathutil.new(strip_paths(k))
+          next if path.basename.start_with?("_") ||
+            path.dirname.start_with?("_")
 
           h.update({
-            path => Drop.new(path, {
+            path.to_s => Drop.new(path, {
               jekyll: jekyll
             })
           })
@@ -172,65 +174,47 @@ module Jekyll
       # @return [String]
       # --
       def in_cache_dir(*paths)
-        cache_path = jekyll.in_source_dir(asset_config[:caching][:path])
-        paths.reduce(cache_path) do |b, p|
+        destination = Utils.strip_slashes(asset_config[:caching][:path])
+        path = jekyll.in_source_dir(destination)
+        paths.reduce(path) do |b, p|
           Jekyll.sanitized_path(b, p)
         end
       end
 
       # --
-      # @note this is configurable with `:prefix`
+      # @note this is configurable with `:destination`
       # Lands your path inside of the destination directory.
       # @param [Array<String>] paths the paths.
       # @return [String]
       # --
       def in_dest_dir(*paths)
-        jekyll.in_dest_dir(prefix_path, *paths)
+        destination = Utils.strip_slashes(asset_config[:destination])
+
+        paths.unshift(destination)
+        paths = paths.flatten.compact
+        jekyll.in_dest_dir(*paths)
       end
 
       # --
-      # @todo Time for this to go.
-      # Tells you if you are using a cdn.
-      # @return [true, false]
-      # --
-      def cdn?
-        !Jekyll.dev? && asset_config[:cdn].key?(:url) && asset_config[:cdn][:url]
-      end
-
-      # --
-      # Builds the baseurl for our writes and urls.
-      # @todo this will be removed in favor of `prefix_url`
-      # @return [String]
-      # --
-      def baseurl
-        ary = []
-        s1, s2 = asset_config[:cdn].values_at(:baseurl, :prefix)
-        ary << jekyll.config["baseurl"] unless (cdn? && !s1) || !cdn?
-        ary <<  asset_config[:prefix  ] unless (cdn? && !s2) || !cdn?
-        File.join(*ary.delete_if do |val|
-          val.nil? || val.empty?
-        end)
-      end
-
-      # --
-      # Builds the path for our writes and urls.
-      # @todo this will be adjust for writes only soon.
       # @param [String] the path.
+      # @note this should only be used for *urls*
+      # Builds a url path for HTML.
       # @return [String]
       # --
-      def prefix_path(path = nil)
-        path_ = []
+      def prefix_url(user_path = nil)
+        destination = Utils.strip_slashes(asset_config[:destination])
+        cdn = Utils.make_https(Utils.strip_slashes(asset_config[:cdn][:url]))
+        base = Utils.strip_slashes(jekyll.config["baseurl"])
 
-        path_ << baseurl unless baseurl.empty?
-        unless path.nil?
-          path_ << path
-        end
+        path = []
+        path << cdn  if Jekyll.production? && cdn
+        path << base if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:baseurl])
+        path << destination  if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:destination])
+        path << user_path unless user_path.nil? || user_path == ""
 
-        url = asset_config[:cdn][:url] && cdn??
-          File.join(asset_config[:cdn][:url], *path_) :
-          File.join(*path_)
-
-        url.chomp("/")
+        path = File.join(path.flatten.compact)
+        return path if cdn && Jekyll.production?
+        return "/" + path
       end
 
       # --
@@ -278,6 +262,7 @@ module Jekyll
       private
       def enable_compression!
         if asset_config[:compression]
+          self.js_compressor, self.css_compressor = :uglify, :sass
           # self. js_compressor = Jekyll.dev?? :source_map : :uglify
           # self.css_compressor = Jekyll.dev?? :source_map : :sass
         end
@@ -368,7 +353,10 @@ module Jekyll
       register_ext_map ".css.sass", ".css"
       register_ext_map ".scss.erb", ".css"
       register_ext_map ".css.erb", ".css"
+
       require_all "plugins/*"
+      require_all "plugins/defaults/*"
+      require_all "plugins/html/*"
     end
   end
 end

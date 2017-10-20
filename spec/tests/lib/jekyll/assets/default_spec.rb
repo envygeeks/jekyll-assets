@@ -33,7 +33,7 @@ describe Jekyll::Assets::Default do
   end
 
   let :asset do
-    environment.find_asset!("img.png")
+    env.find_asset!("img.png")
   end
 
   describe "get" do
@@ -64,8 +64,8 @@ describe Jekyll::Assets::Default do
 
       subject.set(result, {
         type: :test,
-        env: environment,
         asset: asset,
+        env: env,
       })
 
       expect(result).to(have_key(:hello))

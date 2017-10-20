@@ -4,150 +4,358 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Env do
-  subject { environment }
-  let(:path) do
-    site.in_dest_dir("/assets")
+  subject do
+    env
   end
 
-  describe "#manifest" do
-    it "should put the path in Jekyll's dest dir" do
-      expect(environment.manifest.path).to(start_with(environment.jekyll.source))
+  describe "#find_asset!" do
+    context "w/ string" do
+      it "works" do
+        out = subject.find_asset!("img.png")
+        expect(out).to(be_a(Sprockets::Asset))
+      end
+    end
+
+    context "w/ assets" do
+      it "works" do
+        out = subject.manifest.find("img.png")
+        out = subject.find_asset!(out.first)
+        expect(out).to(be_a(Sprockets::Asset))
+      end
+    end
+  end
+
+  describe "#find_source!" do
+    context "w/ string" do
+      it "works" do
+        out = subject.find_source!("bundle.css")
+        expect(out).to(be_a(Sprockets::Asset))
+      end
+    end
+
+    context "w/ assets" do
+      it "works" do
+        out = subject.manifest.find("bundle.scss")
+        out = subject.find_source!(out.first)
+        expect(out).to(be_a(Sprockets::Asset))
+      end
+    end
+
+    it "returns source" do
+      out = subject.find_source!("bundle.css").source
+      compare = env.manifest.find("bundle.source.css").first.source
+      expect(out).to(eq(compare))
+    end
+  end
+
+  describe "#compile" do
+    context "w/ source extension" do
+      it "corrects" do
+        out = subject.compile("bundle.scss").content_type
+        expect(out).to(eq("text/css"))
+      end
+    end
+
+    context do
+      before do
+        asset = subject.find_asset!("bundle.css")
+        asset = subject.in_dest_dir(asset.digest_path)
+        Pathutil.new(asset).rm_f
+      end
+
+      it "works" do
+        out = subject.compile("bundle.css")
+        out = subject.in_dest_dir(out.digest_path)
+        out = Pathutil.new(out)
+        expect(out).to(exist)
+      end
+    end
+  end
+
+  describe "#cache" do
+    before do
+      subject.instance_variable_set(:@cache, nil)
+    end
+
+    context "asset_config[:caching][:type]" do
+      context "w/ nil" do
+        before do
+          stub_asset_config({
+            caching: {
+              type: nil
+            }
+          })
+        end
+
+        it "defaults" do
+          out = subject.cache
+          expect(out).to(be_a(Sprockets::Cache))
+        end
+      end
+
+      context "w/ empty" do
+        before do
+          stub_asset_config({
+            caching: {
+              type: ""
+            }
+          })
+        end
+
+        it "defaults" do
+          out = subject.cache
+          expect(out).to(be_a(Sprockets::Cache))
+        end
+      end
+    end
+  end
+
+  describe "#asset_config" do
+    before do
+      subject.instance_variable_set(:@asset_config, nil)
+      stub_jekyll_config({
+        assets: {
+          hello: :world
+        }
+      })
+    end
+
+    it "merges" do
+      out = subject.asset_config[:hello]
+      expect(out).to(eq(:world))
     end
   end
 
   describe "#to_liquid_payload" do
-    it "should build a list of liquid drops" do
-      expect(environment.to_liquid_payload).to(be_a(Hash))
-      environment.to_liquid_payload.each do |_, v|
+    it "returns Hash<String,Drop>" do
+      out = subject.to_liquid_payload
+      out.each do |_, v|
         expect(v).to(be_a(Jekyll::Assets::Drop))
       end
     end
-  end
 
-  describe "#precompile!" do
-    before do
-      stub_asset_config({
-        precompile: [
-          "img.png"
-        ]
-      })
-
-      environment.send(:precompile!)
-    end
-
-    let(:asset) { environment.find_asset!("img.png") }
-    it "should compile those extra assets" do
-      expect(Pathutil.new(environment.in_dest_dir(asset.digest_path))).to(exist)
+    it "is a Hash" do
+      out = subject.to_liquid_payload
+      expect(out).to(be_a(Hash))
     end
   end
 
-  describe "#baseurl" do
-    context "when cdn? = true" do
-      context "and when cdn.baseurl = true" do
-        before do
-          environment.instance_variable_set(:@baseurl, nil)
-          stub_asset_config({
-            cdn: {
-              jekyll_baseurl: true
-            }
-          })
-
-          allow(environment).to(receive(:cdn?).and_return(true))
-          stub_jekyll_config({
-            baseurl: "hello"
-          })
-        end
-
-        it "should add baseurl" do
-          expect(environment.baseurl).to(eq("hello"))
-        end
-      end
-
-      context "and when cdn.baseurl = false" do
-        before do
-          environment.instance_variable_set(:@baseurl, nil)
-          stub_asset_config({
-            cdn: {
-              baseurl: false
-            }
-          })
-
-          allow(environment).to(receive(:cdn?).and_return(true))
-          stub_jekyll_config({
-            baseurl: "hello"
-          })
-        end
-
-        it "doesn't add baseurl" do
-          expect(environment.baseurl).to(eq(""))
-        end
-      end
-
-      context "and when cdn.prefix = true" do
-        before do
-          allow(environment).to(receive(:cdn?).and_return(true))
-          environment.instance_variable_set(:@baseurl, nil)
-          stub_asset_config({
-            cdn: {
-              prefix: true
-            }
-          })
-        end
-
-        it "should add the prefix" do
-          expect(environment.baseurl).to(eq("/assets"))
-        end
-      end
-
-      context "and when cdn.prefix = false" do
-        before do
-          allow(environment).to(receive(:cdn?).and_return(true))
-          environment.instance_variable_set(:@baseurl, nil)
-          stub_asset_config({
-            cdn: {
-              prefix: false
-            }
-          })
-        end
-
-        it "doesn't add prefix" do
-          expect(environment.baseurl).to(eq(""))
-        end
-      end
-    end
-  end
-
-  describe "#prefix_path" do
-    context do
+  describe "#in_cache_dir" do
+    context "w/ asset_config[:caching][:path]" do
       before do
-        stub_jekyll_config({
-          baseurl: "hello"
-        })
-      end
-
-      it "should add the baseurl" do
-        expect(environment.prefix_path).to(eq("hello/assets"))
-      end
-    end
-
-    context "cdn? = true" do
-      before do
-        allow(environment).to(receive(:cdn?).and_return(true))
         stub_asset_config({
-          cdn: {
-            url: "hello.world",
-            prefix: true,
+          caching: {
+            path: "hello-cache"
           }
         })
       end
 
-      it "should add the cdn url" do
-        expect(environment.prefix_path).to(eq("hello.world/assets"))
+      it "uses it" do
+        out = subject.in_cache_dir
+        expect(out).to(end_with("/hello-cache"))
       end
     end
 
-    it "should add paths" do
-      expect(environment.prefix_path("hello.world")).to(eq("/assets/hello.world"))
+    it "allows paths" do
+      out = subject.in_cache_dir("one", "two")
+      expect(out).to(end_with("one/two"))
+    end
+
+    it "in source dir" do
+      out = subject.in_cache_dir
+      expect(out).to(start_with(jekyll.
+        in_source_dir))
+    end
+  end
+
+  describe "#in_dest_dir" do
+    context "w/ asset_config[:destination]" do
+      before do
+        stub_asset_config({
+          destination: "/hello"
+        })
+      end
+
+      it "uses it" do
+        out = subject.in_dest_dir
+        expect(out).to(end_with("/hello"))
+      end
+    end
+
+    it "in site dir" do
+      out = subject.in_dest_dir
+      expect(out).to(start_with(jekyll.
+        in_dest_dir))
+    end
+
+    it "allows paths" do
+      out = subject.in_dest_dir("one", "two")
+      expect(out).to(end_with("one/two"))
+    end
+  end
+
+  describe "#prefix_url" do
+    let :cdn do
+      "https://hello.cdn"
+    end
+
+    before do
+      stub_asset_config({
+        cdn: {
+          url: cdn
+        }
+      })
+    end
+
+    context "production" do
+      before do
+        allow(Jekyll).to(receive(:dev?)).and_return(false)
+        allow(Jekyll).to(receive(:production?)).
+          and_return(true)
+      end
+
+      context "w/ asset_config[:cdn][:url]" do
+        it "uses it" do
+          out = subject.prefix_url
+          expect(out).to(start_with(cdn))
+        end
+      end
+
+      context "jekyll.config[:baseurl]" do
+        before do
+          stub_jekyll_config({
+            baseurl: "hello"
+          })
+        end
+
+        context do
+          before do
+            stub_asset_config({
+              cdn: {
+                url: nil
+              }
+            })
+          end
+
+          it "uses it" do
+            out = subject.prefix_url
+            expect(out).to(start_with("/hello"))
+          end
+        end
+
+        context "w/ asset_config[:cdn][:url]" do
+          context "asset_config[:cdn][:baseurl]" do
+            context "w/ true" do
+              before do
+                stub_asset_config({
+                  cdn: {
+                    baseurl: true
+                  }
+                })
+              end
+
+              it "uses it" do
+                out = subject.prefix_url
+                expect(out).to(end_with("/hello"))
+              end
+            end
+
+            context "w/ false" do
+              it "doesn't use it" do
+                out = subject.prefix_url
+                expect(out).not_to(end_with("/hello"))
+              end
+            end
+          end
+        end
+      end
+
+      context "asset_config[:destination]" do
+        context do
+          before do
+            stub_asset_config({
+              cdn: {
+                url: nil
+              }
+            })
+          end
+
+          it "uses it" do
+            out = subject.prefix_url
+            destination = subject.asset_config[:destination]
+            expect(out).to(eq(destination))
+          end
+        end
+
+        context "w/ asset_config[:cdn][:destination]" do
+          context "w/ true" do
+            before do
+              stub_asset_config({
+                cdn: {
+                  destination: true
+                }
+              })
+            end
+
+            it "uses it" do
+              out = subject.prefix_url
+              destination = subject.asset_config[:destination]
+              expect(out).to(end_with(destination))
+            end
+          end
+
+          context "w/ false" do
+            it "doesn't use it" do
+              out = subject.prefix_url
+              destination = subject.asset_config[:destination]
+              expect(out).not_to(end_with(destination))
+            end
+          end
+        end
+      end
+    end
+
+    context "development" do
+      context "w/ asset_config[:cdn][:url]" do
+        let :cdn do
+          "https://my.cdn"
+        end
+
+        before do
+          stub_asset_config({
+            cdn: {
+              url: cdn
+            }
+          })
+        end
+
+        it "doesn't use it" do
+          out = subject.prefix_url
+          destination = subject.asset_config[:destination]
+          expect(out).to(eq(destination))
+        end
+      end
+
+      context "w/ jekyll.config[:baseurl]" do
+        before do
+          stub_jekyll_config({
+            baseurl: "hello"
+          })
+        end
+
+        it "uses it" do
+          out = subject.prefix_url
+          expect(out).to(start_with("/hello"))
+        end
+      end
+
+      context "w/ asset_config[:destination]" do
+        it "uses it" do
+          out = subject.prefix_url
+          destination = subject.asset_config[:destination]
+          expect(out).to(eq(destination))
+        end
+      end
     end
   end
 end

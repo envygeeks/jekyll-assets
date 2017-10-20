@@ -13,7 +13,7 @@ module Jekyll
 
         def set_src
           src = @asset.digest_path
-          src = @env.prefix_path(src)
+          src = @env.prefix_url(src)
           @args[:src] = src
         end
 

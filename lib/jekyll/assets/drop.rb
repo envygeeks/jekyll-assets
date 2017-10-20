@@ -33,7 +33,7 @@ module Jekyll
       # The digest path.
       # --
       def digest_path
-        @sprockets.prefix_path(asset.digest_path)
+        @sprockets.prefix_url(asset.digest_path)
       end
 
       # --

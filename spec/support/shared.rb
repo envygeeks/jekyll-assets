@@ -5,11 +5,11 @@
 module Shared
   extend RSpec::SharedContext
 
-  let(:sprockets) { env }
-  subject { described_class }
-  let(:environment) { stub_environment }
-  let(:site) { stub_jekyll_site }
   let(:jekyll) { site }
+  let(:sprockets) { env }
+  let(:site) { stub_jekyll_site }
+  subject { described_class }
+  let(:env) { stub_env }
 end
 
 RSpec.configure do |c|

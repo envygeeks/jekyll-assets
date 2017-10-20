@@ -44,7 +44,7 @@ module Jekyll
         Default.set(@args, type: asset.content_type, env: env, asset: asset)
         env.compile(asset.filename)
 
-        return env.prefix_path(asset.digest_path) if @args[:path]
+        return env.prefix_url(asset.digest_path) if @args[:path]
         return asset.data_uri if @args[:"data-uri"] || @args[:data_uri]
         return asset.to_s if @args[:source]
         type = asset.content_type

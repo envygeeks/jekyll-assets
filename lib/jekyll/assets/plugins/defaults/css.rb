@@ -12,7 +12,7 @@ module Jekyll
         types "text/css"
 
         def set_href
-          @args[:href] = @env.prefix_path(@asset.digest_path)
+          @args[:href] = @env.prefix_url(@asset.digest_path)
         end
 
         def set_integrity
