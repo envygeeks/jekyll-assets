@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
   spec.add_runtime_dependency("sprockets", ">= 3.3", "< 4.1")
   spec.add_runtime_dependency("liquid-tag-parser", "~> 1.0")
-  spec.add_runtime_dependency("jekyll", ">= 3.6", "< 4.0")
+  spec.add_runtime_dependency("jekyll", ">= 3.5", "< 4.0")
   spec.add_runtime_dependency("jekyll-sanity", "~> 1.2")
   spec.add_runtime_dependency("nokogumbo", "~> 1.4")
   spec.add_runtime_dependency("pathutil", "~> 0.16")
