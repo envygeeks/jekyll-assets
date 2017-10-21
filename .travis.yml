@@ -27,7 +27,6 @@ notifications:
 branches:
   only:
   - master
-  - sprockets-4.x
 addons:
   code_climate:
     repo_token:
