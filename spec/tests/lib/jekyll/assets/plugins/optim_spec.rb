@@ -15,7 +15,7 @@ describe "Plugins/Optim" do
       end
     end
 
-    it "put me into pry" do
+    it "works" do
       file = fragment(page.to_s.strip).children.first
       file = Pathutil.new(env.jekyll.in_dest_dir(file.attr(:src)))
       asst = Pathutil.new(asset.filename)

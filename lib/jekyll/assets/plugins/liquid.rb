@@ -3,6 +3,7 @@
 # Encoding: utf-8
 
 require "pathutil"
+require_relative "../utils"
 require "jekyll/assets"
 require "jekyll"
 
@@ -10,6 +11,27 @@ module Jekyll
   module Assets
     module Plugins
       class Liquid
+        TYPES = {
+          "application/liquid+javascript" =>  ".liquid.js",
+          "text/liquid+sass" => %w(.css.liquid.sass .liquid.sass),
+          "text/liquid+coffeescript" => %w(.js.liquid.coffee .liquid.coffee),
+          "application/ecmascript-6" => %w(.js.liquid.es6 .liquid.es6),
+          "text/liquid+scss" => %w(.css.liquid.scss .liquid.scss),
+          "text/liquid+css" => ".liquid.css",
+        }
+
+        MAPS = {
+          ".css.liquid" => ".css",
+          ".sass.liquid" => ".css",
+          ".scss.liquid" => ".css",
+          ".js.coffee.liquid" => ".js",
+          ".css.sass.liquid" => ".css",
+          ".css.scss.liquid" => ".css",
+          ".coffee.liquid" => ".js",
+          ".es6.liquid" => ".js",
+          ".js.liquid" => ".js",
+        }
+
         def self.call(context)
           file = Pathutil.new(context[:filename])
           jekyll = context[:environment].jekyll
@@ -24,23 +46,25 @@ module Jekyll
           })
         end
       end
+
+
+      # --
+      # Registers it inside of Sprockets.
+      # Because we need to keep some support for 3.x we register it
+      #   two different ways depending on the type of Sprockets.
+      # --
+      Liquid::TYPES.each { |k, v| Env.register_ext_map k, v }
+      if !Env.old_sprockets?
+        Liquid::TYPES.each do |k, v|
+          to = Utils.strip_secondary_content_type(k)
+          Sprockets.register_transformer_suffix to, k,
+            ".liquid", Liquid
+        end
+      else
+        Sprockets.register_engine '.liquid', Liquid, {
+          silence_deprecation: true
+        }
+      end
     end
   end
 end
-
-args = %w(application/\2+liquid .liquid) << Jekyll::Assets::Plugins::Liquid
-Sprockets.register_transformer_suffix "text/sass", *args
-Sprockets.register_transformer_suffix "text/scss", *args
-Jekyll::Assets::Env.register_ext_map ".css.liquid", ".css"
-Jekyll::Assets::Env.register_ext_map ".sass.liquid", ".css"
-Jekyll::Assets::Env.register_ext_map ".js.coffee.liquid", ".js"
-Jekyll::Assets::Env.register_ext_map ".css.sass.liquid", ".css"
-Sprockets.register_transformer_suffix "application/javascript", *args
-Sprockets.register_transformer_suffix "application/ecmascript-6", *args
-Sprockets.register_transformer_suffix "text/coffeescript", *args
-Jekyll::Assets::Env.register_ext_map ".css.scss.liquid", ".css"
-Jekyll::Assets::Env.register_ext_map ".coffee.liquid", ".js"
-Jekyll::Assets::Env.register_ext_map ".scss.liquid", ".css"
-Jekyll::Assets::Env.register_ext_map ".es6.liquid", ".js"
-Sprockets.register_transformer_suffix "text/css", *args
-Jekyll::Assets::Env.register_ext_map ".js.liquid", ".js"

@@ -3,28 +3,31 @@ sudo: false
 cache:
   bundler: true
   directories:
-    - vendor/bundle
+  - vendor/bundle
 env:
   matrix:
-    - JEKYLL_VERSION="~> 3.6.0"
+  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3"
+  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta"
+  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta"
+  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3"
 rvm:
-  - &ruby24 2.4
-  - &ruby23 2.3
-  - &rhead ruby-head
-  - &jruby jruby
+- &ruby24 2.4
+- &ruby23 2.3
+- &rhead ruby-head
+- &jruby jruby
 matrix:
   fast_finish: true
   allow_failures:
-    - rvm: *jruby
-    - rvm: *rhead
+  - rvm: *jruby
+  - rvm: *rhead
 notifications:
   email:
     recipients:
-      - jordon@envygeeks.io
+    - jordon@envygeeks.io
 branches:
   only:
-    - master
-    - sprockets-4.x
+  - master
+  - sprockets-4.x
 addons:
   code_climate:
     repo_token:
@@ -34,4 +37,4 @@ addons:
         WICu+GMg+ZHP0nVTa/FkoF5iAfY6NiE=\
       "
 after_success:
-  - bundle exec codeclimate-test-reporter
+- bundle exec codeclimate-test-reporter

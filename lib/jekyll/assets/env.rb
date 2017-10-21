@@ -57,7 +57,9 @@ module Jekyll
       # --
       def find_asset!(asset, *args)
         return asset if asset.is_a?(Sprockets::Asset)
-        return super asset, *args
+        return super(asset, *args) if defined?(super) # Sprockets 4.x
+        find_asset(asset, *args) || raise(Sprockets::FileNotFound,
+          "#{asset}")
       end
 
       # --
@@ -334,6 +336,11 @@ module Jekyll
       public
       def self.map_ext(ext)
         @ext_maps[ext] || ext
+      end
+
+      # --
+      def self.old_sprockets?
+        Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
       end
 
       register_ext_map ".es6", ".js"
