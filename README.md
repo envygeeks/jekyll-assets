@@ -36,7 +36,7 @@
 - [ ] Support for video assets (using `assets` tag.)
 - [x] Easier proxies, with rolling proxies.
 - [x] Customizable HTML defaults.
-- [ ] Configurable GZipping.
+- [x] Configurable GZipping.
 - [ ] Proxies via `<img>`.
 - [ ] SourceMaps.
 
@@ -53,6 +53,14 @@ gem "jekyll-assets", {
   group: :jekyll_plugins
 }
 ```
+
+### Requirments
+
+* Ruby ***2.3+***
+* Jekyll ***3.5+***
+* Sprockets ***3.3+***
+
+***If you would like SourceMap support, or faster Sprockets, you should prefer to use Sprockets "~> 4.0.beta", we support SourceMaps in this version of Sprockets because it supports them. It's manifest an other features are also much better inside of this version of Sprockets.***
 
 ## Configuration
 
