@@ -13,8 +13,8 @@ env:
 rvm:
 - &ruby24 2.4
 - &ruby23 2.3
+- &jruby jruby-head
 - &rhead ruby-head
-- &jruby jruby
 matrix:
   fast_finish: true
   allow_failures:
