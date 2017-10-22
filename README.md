@@ -20,7 +20,7 @@
 
 # Jekyll Assets 3.x
 
-***Jekyll 3.x is unreleased at this time, it is scheduled to release sometime in October.  If you are looking for documentation for the current release please see: https://github.com/jekyll/jekyll-assets/tree/2.4-legacy***
+***Jekyll 3.x is currently unreleased. It is scheduled to released sometime in October.  If you are looking for documentation, for the current release (2.x) please see: https://github.com/jekyll/jekyll-assets/tree/2.4-legacy it should have what you are looking for.***
 
 ## What's new
 
