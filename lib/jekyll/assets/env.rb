@@ -258,7 +258,7 @@ module Jekyll
       private
       def excludes!
         excludes = Config.defaults[:sources]
-        @jekyll.config["exclude"].push(excludes)
+        @jekyll.config["exclude"].push(*excludes)
         @jekyll.config["exclude"].uniq!
       end
 
