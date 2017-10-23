@@ -340,6 +340,12 @@ module Jekyll
       end
 
       # --
+      def self.mime_to_ext(mime)
+        Sprockets.mime_exts.select { |k, v| v ==
+          mime }.keys.first
+      end
+
+      # --
       def self.old_sprockets?
         @old_sprockets ||= begin
           Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
