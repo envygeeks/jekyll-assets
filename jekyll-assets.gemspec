@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency("activesupport", "~> 5.0")
   spec.add_runtime_dependency("concurrent-ruby", "~> 1.0")
   spec.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
-  spec.add_runtime_dependency("sprockets", ">= 3.3", "< 4.1")
+  spec.add_runtime_dependency("sprockets", ">= 3.3", "< 4.1.beta")
   spec.add_runtime_dependency("liquid-tag-parser", "~> 1.0")
   spec.add_runtime_dependency("jekyll", ">= 3.5", "< 4.0")
   spec.add_runtime_dependency("jekyll-sanity", "~> 1.2")
