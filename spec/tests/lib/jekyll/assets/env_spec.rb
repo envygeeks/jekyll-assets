@@ -26,6 +26,13 @@ describe Jekyll::Assets::Env do
   end
 
   describe "#find_source!" do
+    context "w/ double extensions" do
+      it "works" do
+        out = subject.find_source!("plugins/liquid.scss.liquid")
+        expect(out).to(be_a(Sprockets::Asset))
+      end
+    end
+
     context "w/ string" do
       it "works" do
         out = subject.find_source!("bundle.css")

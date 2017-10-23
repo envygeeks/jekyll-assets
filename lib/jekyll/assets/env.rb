@@ -70,9 +70,10 @@ module Jekyll
       # --
       def find_source!(asset)
         asset = asset.logical_path if asset.is_a?(Sprockets::Asset)
+        old_ext = Sprockets.path_extnames(asset).join
 
-        asset = Pathname.new(asset)
-        asset = asset.sub_ext(".source#{asset.extname}")
+        new_ext = ".source#{old_ext}"
+        asset = asset.chomp(old_ext) + new_ext if asset !~ /\.source\./
         find_asset!(asset.to_s)
       end
 
