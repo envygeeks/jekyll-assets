@@ -259,6 +259,7 @@ module Jekyll
       def excludes!
         excludes = Config.defaults[:sources]
         @jekyll.config["exclude"].push(*excludes)
+        @jekyll.config["exclude"].push(in_cache_dir.sub(jekyll.in_source_dir + "/", ""))
         @jekyll.config["exclude"].uniq!
       end
 
