@@ -341,7 +341,9 @@ module Jekyll
 
       # --
       def self.old_sprockets?
-        Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
+        @old_sprockets ||= begin
+          Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
+        end
       end
 
       register_ext_map ".es6", ".js"
