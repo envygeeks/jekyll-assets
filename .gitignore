@@ -1,7 +1,10 @@
 /.analysis
 /.asset-cache
-/spec/fixture/.*
 /spec/fixture/_site
+/spec/fixture/vendor
+/spec/fixture/_Gemfile
+/spec/fixture/_Gemfile.lock
+/spec/fixture/.*
 /stackprof.dump
 /.jekyll-cache
 /Gemfile.lock
