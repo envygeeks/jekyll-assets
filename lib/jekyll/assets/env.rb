@@ -266,10 +266,11 @@ module Jekyll
       private
       def enable_compression!
         if asset_config[:compression]
-          self.js_compressor, self.css_compressor = :uglify, :sass
-          # self. js_compressor = Jekyll.dev?? :source_map : :uglify
-          # self.css_compressor = Jekyll.dev?? :source_map : :sass
+          self.css_compressor = Jekyll.dev? && !self.class.old_sprockets?? :source_map : :scss
+          self. js_compressor = Jekyll.dev? && !self.class.old_sprockets?? \
+            :source_map : :uglify
         end
+
         nil
       end
 
@@ -374,6 +375,9 @@ module Jekyll
       require_all "plugins/*"
       require_all "plugins/defaults/*"
       require_all "plugins/html/*"
+      unless old_sprockets?
+        require_relative "map"
+      end
     end
   end
 end

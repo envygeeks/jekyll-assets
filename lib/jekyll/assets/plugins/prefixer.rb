@@ -3,6 +3,7 @@
 # Encoding: utf-8
 
 require "jekyll/assets"
+
 try_require_if_javascript "autoprefixer-rails" do
   Jekyll::Assets::Hook.register :config, :pre do |c|
     c.deep_merge!({
