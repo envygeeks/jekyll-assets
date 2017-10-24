@@ -22,39 +22,21 @@ module Jekyll
         # --
         def manifest_files
           manifest = site.sprockets.manifest.data
-          out = (manifest.keys - %w(files)).map do |v|
-            v = manifest[v]
-            ret = nil
+          manifest = manifest.values_at(*Manifest.keep_keys).map(&:to_a)
+          manifest.flatten.each_with_object([]) do |v, a|
+            path = Pathutil.new(site.sprockets.in_dest_dir(v))
+            a << path.to_s + ".gz" if path.exist? && !site.sprockets.skip_gzip?
+            a << path.to_s if path.exist?
+            v = Pathutil.new(v)
 
-            if v.is_a?(Hash)
-              ret = v.map do |k, vv|
-                vv = site.sprockets.in_dest_dir(vv)
-                k  = site.sprockets.in_dest_dir( k)
-
-                [
-                  vv,
-                  vv + ".gz",
-                  File.dirname(vv),
-                  File.dirname(k),
-                  k + ".gz",
-                  k,
-                ]
-              end
-            elsif v.is_a?(Array)
-              ret = v.map do |k|
-                k = site.sprockets.in_dest_dir(k)
-                [
-                  k + ".gz",
-                  File.dirname(k),
-                  k,
-                ]
+            next if v.dirname == "."
+            v.dirname.descend.each do |vv|
+              vv = site.sprockets.in_dest_dir(vv)
+              unless a.include?(vv)
+                a << vv
               end
             end
-
-            ret
           end
-
-          out.flatten.compact.uniq
         end
       end
     end

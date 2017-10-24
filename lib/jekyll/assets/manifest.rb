@@ -17,6 +17,18 @@ module Jekyll
       def self.simple_logical_path?(file)
         super || File.file?(file)
       end
+
+      # --
+      # Allows you to add a manifest key for us to keep.
+      # @note the format should be `key: { hashKey: hashVal }` or `key: []`
+      # @note complex keys aren't supported.
+      # @return [Array<String>]
+      # --
+      def self.keep_keys
+        @keep_keys ||= %w(
+          assets
+        )
+      end
     end
   end
 end
