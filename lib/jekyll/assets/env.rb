@@ -83,7 +83,7 @@ module Jekyll
       # @return [true, false]
       # --
       def skip_gzip?
-        !asset_config[:compression]
+        !asset_config[:gzip]
       end
 
       # @note `.scss` -> `.css`

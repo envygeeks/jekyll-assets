@@ -12,11 +12,12 @@ module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
       DEVELOPMENT = {
+        digest: false,
         source_maps: true,
         subresource_integrity: false,
         destination: "/assets",
         compression: true,
-        digest: false,
+        gzip: false,
 
         caching: {
           enabled: true,
