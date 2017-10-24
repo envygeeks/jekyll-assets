@@ -21,6 +21,5 @@ gem "font-awesome-sass", "~> 4.4", require: false
 gem "mini_magick", "~> 4.2", require: false
 gem "image_optim", "~> 0.25", require: false
 gem "image_optim_pack", "~> 0.5", require: false
-gem "less", "~> 2.6.0", require: false
 gem "babel-transpiler", require: false
 gem "bootstrap", require: false
