@@ -45,7 +45,7 @@ describe Jekyll::Assets::Hook do
     end
 
     it "should return the hooks" do
-      expect(subject.get_point(:env, :init)).to(be_a(Array))
+      expect(subject.get_point(:env, :before_init)).to(be_a(Array))
     end
   end
 end

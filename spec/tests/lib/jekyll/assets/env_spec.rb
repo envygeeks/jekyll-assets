@@ -8,81 +8,14 @@ describe Jekyll::Assets::Env do
     env
   end
 
-  describe "#find_asset!" do
-    context "w/ string" do
-      it "works" do
-        out = subject.find_asset!("img.png")
-        expect(out).to(be_a(Sprockets::Asset))
-      end
-    end
-
-    context "w/ assets" do
-      it "works" do
-        out = subject.manifest.find("img.png")
-        out = subject.find_asset!(out.first)
-        expect(out).to(be_a(Sprockets::Asset))
-      end
-    end
-  end
-
-  describe "#find_source!" do
-    context "w/ double extensions" do
-      it "works" do
-        out = subject.find_source!("plugins/liquid.scss.liquid")
-        expect(out).to(be_a(Sprockets::Asset))
-      end
-    end
-
-    context "w/ string" do
-      it "works" do
-        out = subject.find_source!("bundle.css")
-        expect(out).to(be_a(Sprockets::Asset))
-      end
-    end
-
-    context "w/ assets" do
-      it "works" do
-        out = subject.manifest.find("bundle.scss")
-        out = subject.find_source!(out.first)
-        expect(out).to(be_a(Sprockets::Asset))
-      end
-    end
-
-    it "returns source" do
-      out = subject.find_source!("bundle.css").source
-      compare = env.manifest.find("bundle.source.css").first.source
-      expect(out).to(eq(compare))
-    end
-  end
-
-  describe "#compile" do
-    context "w/ source extension" do
-      it "corrects" do
-        out = subject.compile("bundle.scss").content_type
-        expect(out).to(eq("text/css"))
-      end
-    end
-
-    context do
-      before do
-        asset = subject.find_asset!("bundle.css")
-        asset = subject.in_dest_dir(asset.digest_path)
-        Pathutil.new(asset).rm_f
-      end
-
-      it "works" do
-        out = subject.compile("bundle.css")
-        out = subject.in_dest_dir(out.digest_path)
-        out = Pathutil.new(out)
-        expect(out).to(exist)
-      end
-    end
-  end
+  #
 
   describe "#cache" do
     before do
       subject.instance_variable_set(:@cache, nil)
     end
+
+    #
 
     context "asset_config[:caching][:type]" do
       context "w/ nil" do
@@ -94,11 +27,14 @@ describe Jekyll::Assets::Env do
           })
         end
 
+        #
+
         it "defaults" do
-          out = subject.cache
-          expect(out).to(be_a(Sprockets::Cache))
+          expect(subject.cache).to(be_a(Sprockets::Cache))
         end
       end
+
+      #
 
       context "w/ empty" do
         before do
@@ -109,17 +45,19 @@ describe Jekyll::Assets::Env do
           })
         end
 
+        #
+
         it "defaults" do
-          out = subject.cache
-          expect(out).to(be_a(Sprockets::Cache))
+          expect(subject.cache).to(be_a(Sprockets::Cache))
         end
       end
     end
   end
 
+  #
+
   describe "#asset_config" do
     before do
-      subject.instance_variable_set(:@asset_config, nil)
       stub_jekyll_config({
         assets: {
           hello: :world
@@ -127,25 +65,36 @@ describe Jekyll::Assets::Env do
       })
     end
 
+    #
+
+    subject do
+      described_class.new(jekyll)
+    end
+
+    #
+
     it "merges" do
-      out = subject.asset_config[:hello]
-      expect(out).to(eq(:world))
+      expect(subject.asset_config[:hello]).to(eq(:world))
     end
   end
 
+  #
+
   describe "#to_liquid_payload" do
     it "returns Hash<String,Drop>" do
-      out = subject.to_liquid_payload
-      out.each do |_, v|
+      subject.to_liquid_payload.each do |_, v|
         expect(v).to(be_a(Jekyll::Assets::Drop))
       end
     end
 
+    #
+
     it "is a Hash" do
-      out = subject.to_liquid_payload
-      expect(out).to(be_a(Hash))
+      expect(subject.to_liquid_payload).to(be_a(Hash))
     end
   end
+
+  #
 
   describe "#in_cache_dir" do
     context "w/ asset_config[:caching][:path]" do
@@ -157,23 +106,27 @@ describe Jekyll::Assets::Env do
         })
       end
 
+      #
+
       it "uses it" do
-        out = subject.in_cache_dir
-        expect(out).to(end_with("/hello-cache"))
+        expect(subject.in_cache_dir).to(end_with("/hello-cache"))
       end
     end
 
+    #
+
     it "allows paths" do
-      out = subject.in_cache_dir("one", "two")
-      expect(out).to(end_with("one/two"))
+      expect(subject.in_cache_dir("one", "two")).to(end_with("one/two"))
     end
 
+    #
+
     it "in source dir" do
-      out = subject.in_cache_dir
-      expect(out).to(start_with(jekyll.
-        in_source_dir))
+      expect(subject.in_cache_dir).to(start_with(jekyll.in_source_dir))
     end
   end
+
+  #
 
   describe "#in_dest_dir" do
     context "w/ asset_config[:destination]" do
@@ -183,21 +136,23 @@ describe Jekyll::Assets::Env do
         })
       end
 
+      #
+
       it "uses it" do
-        out = subject.in_dest_dir
-        expect(out).to(end_with("/hello"))
+        rtn = subject.in_dest_dir
+        expect(rtn).to(end_with("/hello"))
       end
     end
 
     it "in site dir" do
-      out = subject.in_dest_dir
-      expect(out).to(start_with(jekyll.
+      rtn = subject.in_dest_dir
+      expect(rtn).to(start_with(jekyll.
         in_dest_dir))
     end
 
     it "allows paths" do
-      out = subject.in_dest_dir("one", "two")
-      expect(out).to(end_with("one/two"))
+      rtn = subject.in_dest_dir("one", "two")
+      expect(rtn).to(end_with("one/two"))
     end
   end
 

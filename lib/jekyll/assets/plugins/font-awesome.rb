@@ -2,6 +2,6 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
-try_require "font-awesome-sass" do
+Jekyll::Assets::Utils.try_require "font-awesome-sass" do
   FontAwesome::Sass.load!
 end

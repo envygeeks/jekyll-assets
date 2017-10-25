@@ -5,37 +5,27 @@
 module Jekyll
   module Assets
     module Patches
+
+      # --
+      # Patches Jekyll's obsolete files so that we can
+      # remove assets that we have used through the manifest.
+      # We expect the user to keep that manifest available,
+      # regardless of what's going on in their stuff.
+      # --
       module ObsoleteFiles
-        def obsolete_files
-          extra = manifest_files.tap(&:flatten!)
-          super.reject do |v|
+
+        # --
+        # @param [Object] args whatever Jekyll takes.
+        # Gives a list of files that should be removed, unless used.
+        # @return [Array<String>]
+        # --
+        def obsolete_files(*args)
+          extra = Utils.manifest_files(site.sprockets)
+
+          super(*args).reject do |v|
             v == site.sprockets.in_dest_dir || \
             v == site.sprockets.manifest.filename || \
             extra.include?(v)
-          end
-        end
-
-        # --
-        # Get all the manifest files.
-        # @note this includes dynamic keys, like SourceMaps.
-        # @return [Array<String>]
-        # --
-        def manifest_files
-          manifest = site.sprockets.manifest.data
-          manifest = manifest.values_at(*Manifest.keep_keys).map(&:to_a)
-          manifest.flatten.each_with_object([]) do |v, a|
-            path = Pathutil.new(site.sprockets.in_dest_dir(v))
-            a << path.to_s + ".gz" if path.exist? && !site.sprockets.skip_gzip?
-            a << path.to_s if path.exist?
-            v = Pathutil.new(v)
-
-            next if v.dirname == "."
-            v.dirname.descend.each do |vv|
-              vv = site.sprockets.in_dest_dir(vv)
-              unless a.include?(vv)
-                a << vv
-              end
-            end
           end
         end
       end
@@ -43,6 +33,7 @@ module Jekyll
   end
 end
 
+# --
 module Jekyll
   class Cleaner
     prepend Jekyll::Assets::Patches::ObsoleteFiles

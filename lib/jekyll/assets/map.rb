@@ -10,7 +10,9 @@ require "pathutil"
 module Jekyll
   module Assets
     module Map
-      DIR = Pathutil.new("source-maps")
+      DIR_NAME = "source-maps"
+      DIR = Pathutil.new(DIR_NAME)
+      NAME = "%s.map"
       EXT = ".map"
 
       # --
@@ -35,8 +37,8 @@ module Jekyll
       # @return [Pathutil] the path.
       # --
       def self.path(env:, asset:)
-        asset = asset.filename if asset.is_a?(Sprockets::Asset)
-        DIR.join(env.uncached.strip_paths(asset))
+        DIR.join(env.strip_paths(asset.is_a?(Sprockets::Asset) ?
+          asset.filename : asset))
       end
     end
   end

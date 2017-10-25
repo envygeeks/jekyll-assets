@@ -13,7 +13,13 @@ module Jekyll
 
       POINTS = {
         env: {
-          init: {
+          before_init: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
+
+          after_init: {
             1 => [],
             2 => [],
             3 => [],
@@ -21,7 +27,7 @@ module Jekyll
         },
 
         config: {
-          pre: {
+          before_merge: {
             1 => [],
             2 => [],
             3 => [],
@@ -29,7 +35,7 @@ module Jekyll
         },
 
         asset: {
-          compile: {
+          before_compile: {
             1 => [],
             2 => [],
             3 => [],
@@ -71,7 +77,7 @@ module Jekyll
 
         POINTS[point[0]][point[1]].
         each_with_object([]) do |(_, v), a|
-          a.push(*v)
+          a.concat(v)
         end
       end
 

@@ -9,9 +9,11 @@ module Jekyll
   module Assets
     module Map
       class Writer < Sprockets::Exporters::Base
+        alias_method :env, :environment
+
         def skip?(logger)
-          !@environment.asset_config[:source_maps] ||
-          !@asset.metadata[:map]
+          !env.asset_config[:source_maps] ||
+          !asset.metadata[:map]
         end
 
         # --
@@ -30,8 +32,11 @@ module Jekyll
         def files
           @files ||= begin
             key = "sourceMapFiles"
-            out = @environment.manifest.data[key] ||= []
-            Manifest.keep_keys << key unless Manifest.keep_keys.include?(key)
+            out = env.manifest.data[key] ||= []
+            unless Manifest.keep_keys.include?(key)
+              Manifest.keep_keys << key
+            end
+
             out
           end
         end
@@ -43,10 +48,8 @@ module Jekyll
         # --
         private
         def map
-          @map ||= begin
-            map = @asset.metadata[:map]
-            HashWithIndifferentAccess.new(map)
-          end
+          @map ||= asset.metadata[:map].
+            with_indifferent_access
         end
 
         # --
@@ -56,11 +59,8 @@ module Jekyll
         # --
         private
         def original_map
-          @original_map ||= begin
-            map = @asset.metadata[:map]
-            map = HashWithIndifferentAccess.new(map)
-            map.freeze
-          end
+          @original_map ||= asset.metadata[:map].
+            with_indifferent_access.freeze
         end
 
         # --
@@ -106,7 +106,7 @@ module Jekyll
         # --
         private
         def base
-          Pathutil.new(asset.filename.sub(environment.jekyll.
+          Pathutil.new(asset.filename.sub(env.jekyll.
             in_source_dir + "/", "")).dirname
         end
 
@@ -120,8 +120,8 @@ module Jekyll
 
         # --
         def write_map!
-          path = Map.map_path(asset: asset, env: environment)
-          write(environment.in_dest_dir(path)) do |f|
+          path = Map.map_path(asset: asset, env: env)
+          write(env.in_dest_dir(path)) do |f|
             files.push(path)
             f.write(map.to_json)
             files.uniq!
@@ -135,15 +135,16 @@ module Jekyll
         end
 
         def write_src!
-          asset = base.join(@environment.strip_paths(@asset.filename))
+          asset = base.join(env.strip_paths(@asset.filename)).to_s
+
           [asset, map_files].flatten.compact.uniq.each do |v|
-            source = environment.find_source!(strip_base(v))
-            path = base.join(environment.strip_paths(source.filename))
-            path = Map.path(asset: path, env: environment)
+            v = env.find_asset!(strip_base(v), pipeline: :source)
+            path = base.join(env.strip_paths(v.filename))
+            path = Map.path(asset: path, env: env)
 
             write(environment.in_dest_dir(path)) do |f|
+              f.write(v.source)
               files.push(path.to_s)
-              f.write(source.source)
               files.uniq!
             end
           end

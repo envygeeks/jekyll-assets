@@ -15,13 +15,13 @@ module Jekyll
 
         def run
           if @args[:srcset].is_a?(Array); @args[:picture] ||= {}
-            context1, context2 = Context.new, context
+            ctx1, ctx2 = Liquid::ParseContext.new, context
             Nokogiri::HTML::Builder.with(@doc) do |d|
               d.picture @args[:picture] do |p|
                 p.img @args.to_html(hash: true)
                 @args[:srcset].each do |v|
                   p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
-                    context1).render(context2)
+                    ctx1).render(ctx2)
                 end
               end
             end

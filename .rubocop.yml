@@ -1,27 +1,3 @@
-Metrics/LineLength: { Max: 112 }
-Metrics/BlockNesting: { Max: 4 }
-Metrics/ClassLength: { Max: 480 }
-Metrics/ModuleLength: { Max: 480 }
-Metrics/CyclomaticComplexity: { Max: 8 }
-Metrics/PerceivedComplexity: { Max: 8 }
-Metrics/ParameterLists: { Max: 6 }
-Metrics/MethodLength: { Max: 12 }
-Metrics/MethodLength: { Max: 32 }
-Metrics/AbcSize: { Max: 20 }
-
-Style/IndentHash: { EnforcedStyle: consistent }
-Style/SignalException: { EnforcedStyle: only_raise }
-Style/Semicolon: { AllowAsExpressionSeparator: true }
-Style/EmptyLineBetweenDefs: { AllowAdjacentOneLineDefs: true }
-Style/AlignParameters: { EnforcedStyle: with_fixed_indentation }
-Style/StringLiteralsInInterpolation: { EnforcedStyle: double_quotes }
-Style/MultilineMethodCallIndentation: { EnforcedStyle: indented }
-Style/MultilineOperationIndentation: { EnforcedStyle: indented }
-Style/FirstParameterIndentation: { EnforcedStyle: consistent }
-Style/StringLiterals: { EnforcedStyle: double_quotes }
-Style/IndentArray: { EnforcedStyle: consistent }
-Style/ExtraSpacing: { AllowForAlignment: true }
-
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%q': '{}'
@@ -31,35 +7,8 @@ Style/PercentLiteralDelimiters:
     '%w': '()'
     '%W': '()'
     '%x': '()'
-Style/HashSyntax:                     { Enabled: false }
-Style/AlignArray:                     { Enabled: false }
-Style/StringLiterals:                 { Enabled: false }
-Style/Documentation:                  { Enabled: false }
-Style/DoubleNegation:                 { Enabled: false }
-Style/RedundantReturn:                { Enabled: false }
-Style/UnneededCapitalW:               { Enabled: false }
-Lint/UselessAccessModifier:           { Enabled: false }
-Style/MultilineTernaryOperator:       { Enabled: false }
-Style/EmptyLinesAroundModuleBody:     { Enabled: false }
-Style/SpaceInsideHashLiteralBraces:   { Enabled: false }
-Style/EmptyLinesAroundAccessModifier: { Enabled: false }
-Style/ClosingParenthesisIndentation:  { Enabled: false }
-Style/SpaceInsideStringInterpolation: { Enabled: false }
-Style/BracesAroundHashParameters:     { Enabled: false }
-Style/EmptyLinesAroundClassBody:      { Enabled: false }
-Style/SpaceInsideBlockBraces:         { Enabled: false }
-Style/SpaceAroundOperators:           { Enabled: false }
-Style/SpaceInsideBrackets:            { Enabled: false }
-Style/IfUnlessModifier:               { Enabled: false }
-Style/ModuleFunction:                 { Enabled: false }
-Style/RegexpLiteral:                  { Enabled: false }
-Style/RescueModifier:                 { Enabled: false }
-Style/GuardClause:                    { Enabled: false }
-Style/FileName:                       { Enabled: false }
-Style/MutableConstant:                { Enabled: false }
-
 AllCops:
-  TargetRubyVersion: 2.0
   Exclude:
     - examples/**/*
+    - node_modules/**/*
     - vendor/**/*

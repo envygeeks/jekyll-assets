@@ -10,9 +10,9 @@ module Jekyll
       class JavaScript < Sprockets::UglifierCompressor
         def call(input)
           out = super(input)
-          env = input[:environment].uncached
-          asset = env.find_source!(env.strip_paths(input[:filename]))
-          path = asset.filename.sub(env.jekyll.in_source_dir + "/", "")
+          env = input[:environment]
+          asset = env.find_asset!(input[:filename], pipeline: :source)
+          path = asset.filename.sub(env.jekyll.in_source_dir+"/", "")
           url = Map.map_path(asset: asset, env: env)
           url = env.prefix_url(url)
 

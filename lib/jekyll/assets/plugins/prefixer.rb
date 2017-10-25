@@ -4,20 +4,25 @@
 
 require "jekyll/assets"
 
-try_require_if_javascript "autoprefixer-rails" do
-  Jekyll::Assets::Hook.register :config, :pre do |c|
-    c.deep_merge!({
-      plugins: {
-        css: {
-          autoprefixer: {}
+Jekyll::Assets::Utils.javascript? do
+  Jekyll::Assets::Utils.try_require "autoprefixer-rails" do
+    Jekyll::Assets::Hook.register :config, :before_merge do |c|
+      c.deep_merge!({
+        plugins: {
+          css: {
+            autoprefixer: {
+              # Your config here.
+            }
+          }
         }
-      }
-    })
-  end
+      })
+    end
 
-  Jekyll::Assets::Hook.register :env, :init do
-    config = asset_config[:plugins][:css][:autoprefixer]
-    AutoprefixerRails.install(self, jekyll.safe ?
-      config : {})
+    Jekyll::Assets::Hook.register :env, :after_init do
+      config = asset_config[:plugins][:css][:autoprefixer]
+      AutoprefixerRails.install(self, jekyll.safe ? config : {
+        # Your configuration here.
+      })
+    end
   end
 end

@@ -20,18 +20,6 @@ module Jekyll
           "text/liquid+css" => ".liquid.css",
         }
 
-        MAPS = {
-          ".css.liquid" => ".css",
-          ".sass.liquid" => ".css",
-          ".scss.liquid" => ".css",
-          ".js.coffee.liquid" => ".js",
-          ".css.sass.liquid" => ".css",
-          ".css.scss.liquid" => ".css",
-          ".coffee.liquid" => ".js",
-          ".es6.liquid" => ".js",
-          ".js.liquid" => ".js",
-        }
-
         def self.call(context)
           file = Pathutil.new(context[:filename])
           jekyll = context[:environment].jekyll
@@ -53,7 +41,6 @@ module Jekyll
       # Because we need to keep some support for 3.x we register it
       #   two different ways depending on the type of Sprockets.
       # --
-      Liquid::TYPES.each { |k, v| Env.register_ext_map k, v }
       if !Env.old_sprockets?
         Liquid::TYPES.each do |k, v|
           to = Utils.strip_secondary_content_type(k)
@@ -61,9 +48,9 @@ module Jekyll
             ".liquid", Liquid
         end
       else
-        Sprockets.register_engine '.liquid', Liquid, {
+        # Still the easiest way tbqf.  Never change.
+        Sprockets.register_engine '.liquid', Liquid,
           silence_deprecation: true
-        }
       end
     end
   end

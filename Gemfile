@@ -3,13 +3,14 @@ gemspec
 
 gem "rake"
 group :development do
-  gem "mini_racer", platforms: :mri, require: false
-  gem "therubyrhino", platforms: :jruby, require: false
-  gem "pry", require: false
+  gem "mini_racer", require: false if RUBY_PLATFORM != "java"
+  gem "therubyrhino", require: false if RUBY_PLATFORM == "java"
+  gem "pry", require: false if RUBY_PLATFORM != "java"
 end
 
 group :test do
   gem "simplecov", require: false
+  gem "luna-rspec-formatters", require: false
   gem "rubocop", require: false
 end
 

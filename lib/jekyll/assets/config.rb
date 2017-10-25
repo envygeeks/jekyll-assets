@@ -69,7 +69,7 @@ module Jekyll
       # --
       def initialize(config)
         super(self.class.defaults)
-        Hook.trigger(:config, :pre) { |h| h.call(self) }
+        Hook.trigger(:config, :before_merge) { |h| h.call(self) }
         deep_merge!(config)
         merge_sources!
       end

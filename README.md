@@ -231,14 +231,15 @@ Using Liquid Drop `assets`, you can check whether an asset is present.
 
 | Point | Name | Instance | Args |
 |---|---|---|---|
-| `:env` | `:init` | ✔ | ✗ |
-| `:config` | `:init` | ✗ | `Config{}` |
-| `asset` | `:compile` | ✗ | `Asset`, `Manifest` |
+| `:env` | `:before_init` | ✔ | ✗ |
+| `:env` | `:after_init` | ✔ | ✗ |
+| `:config` | `:before_merge` | ✗ | `Config{}` |
+| `asset` | `:before_compile` | ✗ | `Asset`, `Manifest` |
 
 ### Usage
 
 ```ruby
-Jekyll::Assets::Hook.register :env, :init do
+Jekyll::Assets::Hook.register :env, :before_init do
   append_path "myPluginsCustomPath"
 end
 ```
