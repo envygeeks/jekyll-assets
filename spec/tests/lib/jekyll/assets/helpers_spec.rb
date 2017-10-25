@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "rspec/helper"
 describe Jekyll::Assets::Helpers do
@@ -16,7 +15,7 @@ describe Jekyll::Assets::Helpers do
       load_path: File.dirname(asset.filename),
       content_type: asset.content_type,
       metadata: asset.metadata,
-      environment: env.cached,
+      environment: env.cached
     })
   end
 

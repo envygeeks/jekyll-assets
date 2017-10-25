@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "pathutil"
 require_relative "../utils"
@@ -17,7 +16,7 @@ module Jekyll
           "text/liquid+coffeescript" => %w(.js.liquid.coffee .liquid.coffee),
           "application/ecmascript-6" => %w(.js.liquid.es6 .liquid.es6),
           "text/liquid+scss" => %w(.css.liquid.scss .liquid.scss),
-          "text/liquid+css" => ".liquid.css",
+          "text/liquid+css" => ".liquid.css"
         }
 
         MAPS = {
@@ -29,7 +28,7 @@ module Jekyll
           ".css.scss.liquid" => ".css",
           ".coffee.liquid" => ".js",
           ".es6.liquid" => ".js",
-          ".js.liquid" => ".js",
+          ".js.liquid" => ".js"
         }
 
         def self.call(context)
@@ -47,7 +46,6 @@ module Jekyll
         end
       end
 
-
       # --
       # Registers it inside of Sprockets.
       # Because we need to keep some support for 3.x we register it
@@ -55,13 +53,13 @@ module Jekyll
       # --
       Liquid::TYPES.each { |k, v| Env.register_ext_map k, v }
       if !Env.old_sprockets?
-        Liquid::TYPES.each do |k, v|
+        Liquid::TYPES.each do |k, _v|
           to = Utils.strip_secondary_content_type(k)
           Sprockets.register_transformer_suffix to, k,
             ".liquid", Liquid
         end
       else
-        Sprockets.register_engine '.liquid', Liquid, {
+        Sprockets.register_engine ".liquid", Liquid, {
           silence_deprecation: true
         }
       end

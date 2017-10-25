@@ -1,10 +1,9 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "rspec/helper"
 describe Jekyll::Assets::Tag do
-  [:asset, :css, :js, :img].each do |k|
+  %i[asset css js img].each do |k|
     context k.to_s, :render => true do
       let :page do
         jekyll.pages.find do |v|

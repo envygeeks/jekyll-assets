@@ -1,27 +1,82 @@
-Metrics/LineLength: { Max: 112 }
+Metrics/AbcSize:
+   Max: 20
+   Exclude:
+     - lib/jekyll/assets/env.rb
+     - lib/jekyll/assets/plugins/html/pic.rb
+     - lib/jekyll/assets/tag.rb
+Metrics/BlockLength:
+  Exclude:
+    - jekyll-assets.gemspec
+    - lib/jekyll/assets/plugins/magick.rb
+    - lib/jekyll/assets/plugins/optim.rb
+    - spec/tests/**/*
 Metrics/BlockNesting: { Max: 4 }
 Metrics/ClassLength: { Max: 480 }
-Metrics/ModuleLength: { Max: 480 }
-Metrics/CyclomaticComplexity: { Max: 8 }
-Metrics/PerceivedComplexity: { Max: 8 }
-Metrics/ParameterLists: { Max: 6 }
-Metrics/MethodLength: { Max: 12 }
+Metrics/CyclomaticComplexity:
+  Max: 8
+  Exclude:
+    - lib/jekyll/assets/env.rb
+Metrics/LineLength: { Max: 112 }
 Metrics/MethodLength: { Max: 32 }
-Metrics/AbcSize: { Max: 20 }
+Metrics/ModuleLength: { Max: 480 }
+Metrics/ParameterLists: { Max: 6 }
+Metrics/PerceivedComplexity:
+  Max: 8
+  Exclude:
+    - lib/jekyll/assets/env.rb
 
-Style/IndentHash: { EnforcedStyle: consistent }
-Style/SignalException: { EnforcedStyle: only_raise }
-Style/Semicolon: { AllowAsExpressionSeparator: true }
-Style/EmptyLineBetweenDefs: { AllowAdjacentOneLineDefs: true }
-Style/AlignParameters: { EnforcedStyle: with_fixed_indentation }
-Style/StringLiteralsInInterpolation: { EnforcedStyle: double_quotes }
-Style/MultilineMethodCallIndentation: { EnforcedStyle: indented }
-Style/MultilineOperationIndentation: { EnforcedStyle: indented }
-Style/FirstParameterIndentation: { EnforcedStyle: consistent }
-Style/StringLiterals: { EnforcedStyle: double_quotes }
-Style/IndentArray: { EnforcedStyle: consistent }
-Style/ExtraSpacing: { AllowForAlignment: true }
+Layout/AlignArray:                     { Enabled: false }
+Layout/AlignParameters:                { EnforcedStyle: with_fixed_indentation }
+Layout/ClosingParenthesisIndentation:  { Enabled: false }
+Layout/EmptyLineAfterMagicComment:     { Enabled: false }
+Layout/EmptyLineBetweenDefs:           { AllowAdjacentOneLineDefs: true }
+Layout/EmptyLinesAroundAccessModifier: { Enabled: false }
+Layout/EmptyLinesAroundClassBody:      { Enabled: false }
+Layout/EmptyLinesAroundModuleBody:     { Enabled: false }
+Layout/ExtraSpacing:                   { AllowForAlignment: true }
+Layout/FirstParameterIndentation:      { EnforcedStyle: consistent }
+Layout/IndentArray:                    { EnforcedStyle: consistent }
+Layout/IndentHash:                     { EnforcedStyle: consistent }
+Layout/MultilineMethodCallIndentation: { EnforcedStyle: indented }
+Layout/MultilineOperationIndentation:  { EnforcedStyle: indented }
+Layout/SpaceAroundOperators:           { Enabled: false }
+Layout/SpaceInsideBlockBraces:         { Enabled: false }
+Layout/SpaceInsideBrackets:            { Enabled: false }
+Layout/SpaceInsideHashLiteralBraces:   { Enabled: false }
+Layout/SpaceInsideStringInterpolation: { Enabled: false }
 
+Lint/IneffectiveAccessModifier:
+  Exclude:
+    - lib/jekyll/assets/hook.rb
+    - lib/jekyll/assets/config.rb
+Lint/UnusedMethodArgument:
+  Exclude:
+    - lib/jekyll/assets/extensible.rb
+Lint/UselessAssignment:
+  Exclude:
+    - lib/jekyll/assets/env.rb
+    - lib/jekyll/assets/plugins/magick.rb
+Lint/UselessAccessModifier:            { Enabled: false }
+
+Naming/FileName:                       { Enabled: false }
+
+Performance/HashEachMethods:
+  Exclude:
+    - spec/tests/lib/jekyll/assets/env_spec.rb
+    - lib/jekyll/assets/plugins/liquid.rb
+
+Style/BracesAroundHashParameters:      { Enabled: false }
+Style/Documentation:                   { Enabled: false }
+Style/DoubleNegation:                  { Enabled: false }
+Style/GuardClause:                     { Enabled: false }
+Style/HashSyntax:                      { Enabled: false }
+Style/IfUnlessModifier:                { Enabled: false }
+Style/IfWithSemicolon:
+  Exclude:
+    - lib/jekyll/assets/plugins/html/pic.rb
+Style/ModuleFunction:                  { Enabled: false }
+Style/MultilineTernaryOperator:        { Enabled: false }
+Style/MutableConstant:                 { Enabled: false }
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%q': '{}'
@@ -31,35 +86,17 @@ Style/PercentLiteralDelimiters:
     '%w': '()'
     '%W': '()'
     '%x': '()'
-Style/HashSyntax:                     { Enabled: false }
-Style/AlignArray:                     { Enabled: false }
-Style/StringLiterals:                 { Enabled: false }
-Style/Documentation:                  { Enabled: false }
-Style/DoubleNegation:                 { Enabled: false }
-Style/RedundantReturn:                { Enabled: false }
-Style/UnneededCapitalW:               { Enabled: false }
-Lint/UselessAccessModifier:           { Enabled: false }
-Style/MultilineTernaryOperator:       { Enabled: false }
-Style/EmptyLinesAroundModuleBody:     { Enabled: false }
-Style/SpaceInsideHashLiteralBraces:   { Enabled: false }
-Style/EmptyLinesAroundAccessModifier: { Enabled: false }
-Style/ClosingParenthesisIndentation:  { Enabled: false }
-Style/SpaceInsideStringInterpolation: { Enabled: false }
-Style/BracesAroundHashParameters:     { Enabled: false }
-Style/EmptyLinesAroundClassBody:      { Enabled: false }
-Style/SpaceInsideBlockBraces:         { Enabled: false }
-Style/SpaceAroundOperators:           { Enabled: false }
-Style/SpaceInsideBrackets:            { Enabled: false }
-Style/IfUnlessModifier:               { Enabled: false }
-Style/ModuleFunction:                 { Enabled: false }
-Style/RegexpLiteral:                  { Enabled: false }
-Style/RescueModifier:                 { Enabled: false }
-Style/GuardClause:                    { Enabled: false }
-Style/FileName:                       { Enabled: false }
-Style/MutableConstant:                { Enabled: false }
+Style/RedundantReturn:                 { Enabled: false }
+Style/RegexpLiteral:                   { Enabled: false }
+Style/RescueModifier:                  { Enabled: false }
+Style/Semicolon:                       { AllowAsExpressionSeparator: true }
+Style/SignalException:                 { EnforcedStyle: only_raise }
+Style/StringLiterals:                  { EnforcedStyle: double_quotes }
+Style/StringLiteralsInInterpolation:   { EnforcedStyle: double_quotes }
+Style/UnneededCapitalW:                { Enabled: false }
 
 AllCops:
-  TargetRubyVersion: 2.0
+  TargetRubyVersion: 2.1
   Exclude:
     - examples/**/*
     - vendor/**/*

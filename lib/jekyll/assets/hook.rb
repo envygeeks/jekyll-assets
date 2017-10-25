@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 module Jekyll
   module Assets
@@ -16,7 +15,7 @@ module Jekyll
           init: {
             1 => [],
             2 => [],
-            3 => [],
+            3 => []
           }
         },
 
@@ -24,7 +23,7 @@ module Jekyll
           pre: {
             1 => [],
             2 => [],
-            3 => [],
+            3 => []
           }
         },
 
@@ -32,7 +31,7 @@ module Jekyll
           compile: {
             1 => [],
             2 => [],
-            3 => [],
+            3 => []
           }
         }
       }
@@ -69,8 +68,8 @@ module Jekyll
       def self.get_point(*point)
         check_point(*point)
 
-        POINTS[point[0]][point[1]].
-        each_with_object([]) do |(_, v), a|
+        POINTS[point[0]][point[1]]
+          .each_with_object([]) do |(_, v), a|
           a.push(*v)
         end
       end

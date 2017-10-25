@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "jekyll/assets"
 try_require "image_optim" do
@@ -11,7 +10,7 @@ try_require "image_optim" do
           args_key :optim
           types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
             "image/bmp", "image/gif", "image/png",
-              "image/svg+xml"
+            "image/svg+xml"
 
           class UnknownPresetError < RuntimeError
             def initialize(name)

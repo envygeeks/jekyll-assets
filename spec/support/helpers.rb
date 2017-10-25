@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "forwardable/extended"
 require "nokogiri"
@@ -15,7 +14,8 @@ module Helpers
   end
 
   def self.silence_stdout
-    stdout, stderr = $stdout, $stderr
+    stdout = $stdout
+    stderr = $stderr
     $stdout = StringIO.new
     $stderr = StringIO.new
 
@@ -28,14 +28,14 @@ module Helpers
   def stub_jekyll_config(hash)
     hash = hash.deep_stringify_keys
     hash = jekyll.config.deep_merge(hash)
-    allow(jekyll).to(receive(:config).
-      and_return(hash))
+    allow(jekyll).to(receive(:config)
+      .and_return(hash))
   end
 
   def stub_asset_config(hash)
     hash = env.asset_config.deep_merge(hash)
-    allow(env).to(receive(:asset_config).
-      and_return(hash))
+    allow(env).to(receive(:asset_config)
+      .and_return(hash))
   end
 
   def self.cleanup_trash
@@ -44,7 +44,7 @@ module Helpers
     end
   end
 
-  def self.stub_jekyll_site(opts = {})
+  def self.stub_jekyll_site(_opts = {})
     @jekyll ||= begin
       silence_stdout do
         dest = File.join(fixture_path, "_site")
@@ -68,7 +68,8 @@ end
 
 RSpec.configure do |c|
   # c.after (:suite) {  Helpers.cleanup_trash }
-  c.before(:suite) do Helpers.cleanup_trash
+  c.before(:suite) do
+    Helpers.cleanup_trash
     Helpers.stub_jekyll_site
   end
 

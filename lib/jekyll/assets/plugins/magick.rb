@@ -1,7 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
-
 
 require "jekyll/assets"
 try_require "mini_magick" do
@@ -12,7 +10,7 @@ try_require "mini_magick" do
           args_key :magick
           types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
             "image/bmp", "image/gif", "image/png",
-              "image/svg+xml"
+            "image/svg+xml"
 
           def process
             img = ::MiniMagick::Image.open(@file)
@@ -26,7 +24,7 @@ try_require "mini_magick" do
             img.write(@file)
             @file
           ensure
-            unless !img
+            if img
               img.destroy!
             end
           end
@@ -43,7 +41,7 @@ try_require "mini_magick" do
 
             exts = @env.mime_exts.select do |k, v|
               k == @args[:magick][:format] ||
-              v == @args[:magick][:format]
+                v == @args[:magick][:format]
             end
 
             if exts.first
@@ -114,8 +112,14 @@ try_require "mini_magick" do
 
           private
           def magick_preset_resize(img, cmd)
-            width,height = img.width*2,img.height*2 if @args[:magick].key?(:double)
-            width,height = img.width/2,img.height/2 if @args[:magick].key?(:half)
+            if @args[:magick].key?(:double)
+              width = img.width*2
+              height = img.height*2
+            end
+            if @args[:magick].key?(:half)
+              width = img.width/2
+              height = img.height/2
+            end
             cmd.resize "#{width}x#{height}" if width && height
           end
         end

@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "rspec/helper"
 
@@ -42,7 +41,7 @@ describe Jekyll::Assets::Default do
         type: :test,
         args: {
           #
-        },
+        }
       })
     end
 
@@ -53,7 +52,7 @@ describe Jekyll::Assets::Default do
     it "should merge values" do
       expect(subject).to(eq({
         "hello" => :world,
-        "world" => :hello,
+        "world" => :hello
       }))
     end
   end
@@ -65,7 +64,7 @@ describe Jekyll::Assets::Default do
       subject.set(result, {
         type: :test,
         asset: asset,
-        env: env,
+        env: env
       })
 
       expect(result).to(have_key(:hello))

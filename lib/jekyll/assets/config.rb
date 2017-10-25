@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "jekyll"
 require "active_support/hash_with_indifferent_access"
@@ -22,7 +21,7 @@ module Jekyll
         caching: {
           enabled: true,
           path: ".jekyll-cache/assets",
-          type: "file",
+          type: "file"
         },
 
         precompile: [
@@ -82,8 +81,8 @@ module Jekyll
       private
       def merge_sources!
         ours = self.class.defaults[:sources]
-        theirs = [self[:sources] || []].flatten.
-          compact
+        theirs = [self[:sources] || []].flatten
+          .compact
 
         self[:sources] = theirs | ours
       end
