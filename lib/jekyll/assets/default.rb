@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require_relative "extensible"
 require "active_support/hash_with_indifferent_access"
@@ -21,7 +20,7 @@ module Jekyll
         rtn = Default.inherited.select do |o|
           o.for?({
             type: type,
-            args: args,
+            args: args
           })
         end
 
@@ -42,21 +41,21 @@ module Jekyll
       def self.set(args, type:, asset:, env:)
         rtn = get({
           type: type,
-          args: args,
+          args: args
         })
 
         args.deep_merge!(rtn)
         rtn = Default.inherited.select do |o|
           o.for?({
             type: type,
-            args: args,
+            args: args
           })
         end
 
         rtn.each do |o|
           o.new(args, {
             asset: asset,
-              env: env,
+            env: env
           }).run
         end
       end
@@ -79,7 +78,7 @@ module Jekyll
       # --
       def run
         methods = self.class.instance_methods
-        methods = methods - Object.instance_methods
+        methods -= Object.instance_methods
         methods.grep(/^set_/).each do |v|
           send(v)
         end

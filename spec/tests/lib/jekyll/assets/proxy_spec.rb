@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "rspec/helper"
 
@@ -40,7 +39,7 @@ describe Jekyll::Assets::Proxy do
     subject.proxy(asset, {
       args: args,
       type: :test,
-      env: env,
+      env: env
     })
   end
 
@@ -48,7 +47,7 @@ describe Jekyll::Assets::Proxy do
     out = subject.proxy(asset, {
       args: args,
       type: :test,
-      env: env,
+      env: env
     })
 
     expect(out).to(be_a(Sprockets::Asset))
@@ -62,12 +61,12 @@ describe Jekyll::Assets::Proxy do
       out = subject.proxy(asset, {
         args: args,
         type: :test,
-        env: env,
+        env: env
       })
 
       expect(dir.children.size).to be >= 1
-      expect(Pathutil.new(out.filename).binread).to(eq(Pathutil.
-        new(asset.filename).binread))
+      expect(Pathutil.new(out.filename).binread).to(eq(Pathutil
+        .new(asset.filename).binread))
     end
   end
 end

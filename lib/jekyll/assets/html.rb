@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require_relative "extensible"
 require "nokogiri"
@@ -26,10 +25,10 @@ module Jekyll
       # @param [Env] env the env.
       # --
       def self.build(type:, args:, asset:, env:)
-        rtn = self.inherited.select do |o|
+        rtn = inherited.select do |o|
           o.for?({
             type: type,
-            args: args,
+            args: args
           })
         end
 
@@ -39,7 +38,7 @@ module Jekyll
             doc: doc,
             args: args,
             asset: asset,
-            env: env,
+            env: env
           })
 
           o.run
@@ -69,7 +68,7 @@ module Jekyll
       # --
       def self.make_doc(builders, asset:)
         wants = builders.map(&:wants_xml?).uniq
-        raise RuntimeError, "incompatible wants xml/html for builders" if wants.size > 1
+        raise "incompatible wants xml/html for builders" if wants.size > 1
         !wants[0] ? Nokogiri::HTML::DocumentFragment.parse("") :
           Nokogiri::XML.parse(asset.to_s)
       end

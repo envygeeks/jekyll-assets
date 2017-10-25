@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "pathutil"
 require_relative "extensible"
@@ -16,7 +15,7 @@ module Jekyll
 
       class Deleted < StandardError
         def initialize(obj)
-          super "#{obj.to_s} violated a contract and " \
+          super "#{obj} violated a contract and " \
             "deleted your proxy file"
         end
       end
@@ -33,28 +32,28 @@ module Jekyll
         proxies = Proxy.inherited.select do |o|
           o.for?({
             type: type,
-            args: args,
+            args: args
           })
         end
 
         return asset if proxies.empty?
         file = copy(asset, {
           args: args,
-           env: env,
+          env: env
         })
 
         cache = file.basename.sub_ext("").to_s
         env.cache.fetch(cache) do
           proxies.each do |o|
             obj = o.new(file, {
-               args: args,
+              args: args,
               asset: asset,
-                env: env,
+              env: env
             })
 
             o = obj.process
             file = o if o.is_a?(Pathutil) && file != o
-            raise Deleted, o if !file.exist?
+            raise Deleted, o unless file.exist?
           end
 
           true
@@ -73,7 +72,7 @@ module Jekyll
       # --
       def self.copy(asset, env:, args:)
         raw = args.instance_variable_get(:@raw)
-        key = DIG.hexdigest(raw)[0,6]
+        key = DIG.hexdigest(raw)[0, 6]
 
         path = env.in_cache_dir(DIR)
         extname = File.extname(args[:argv1])

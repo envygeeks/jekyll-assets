@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require_relative "context"
 require_relative "tag"
@@ -16,9 +15,9 @@ module Jekyll
       # @param [String] path the path.
       # @return [String] the path.
       # --
-      def asset_path(path, opts = {})
-        Tag.new("img", "#{path} @path", Context.
-          new).render(context)
+      def asset_path(path, _opts = {})
+        Tag.new("img", "#{path} @path", Context
+          .new).render(context)
       end
 
       # --

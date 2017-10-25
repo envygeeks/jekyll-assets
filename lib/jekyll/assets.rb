@@ -1,15 +1,16 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "pathutil"
 require "jekyll"
 
 def require_all(*globs)
   path = Pathutil.new("assets").expand_path(__dir__)
-  globs.each { |v| path.glob(v).reject { |o| o.directory? }.each do |vv|
-    require vv
-  end }
+  globs.each do |v|
+    path.glob(v).reject(&:directory?).each do |vv|
+      require vv
+    end
+  end
 end
 
 require_relative "assets/env"

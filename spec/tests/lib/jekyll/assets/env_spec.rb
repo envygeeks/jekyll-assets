@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "rspec/helper"
 describe Jekyll::Assets::Env do
@@ -170,8 +169,8 @@ describe Jekyll::Assets::Env do
 
     it "in source dir" do
       out = subject.in_cache_dir
-      expect(out).to(start_with(jekyll.
-        in_source_dir))
+      expect(out).to(start_with(jekyll
+        .in_source_dir))
     end
   end
 
@@ -191,8 +190,8 @@ describe Jekyll::Assets::Env do
 
     it "in site dir" do
       out = subject.in_dest_dir
-      expect(out).to(start_with(jekyll.
-        in_dest_dir))
+      expect(out).to(start_with(jekyll
+        .in_dest_dir))
     end
 
     it "allows paths" do
@@ -217,8 +216,8 @@ describe Jekyll::Assets::Env do
     context "production" do
       before do
         allow(Jekyll).to(receive(:dev?)).and_return(false)
-        allow(Jekyll).to(receive(:production?)).
-          and_return(true)
+        allow(Jekyll).to(receive(:production?))
+          .and_return(true)
       end
 
       context "w/ asset_config[:cdn][:url]" do

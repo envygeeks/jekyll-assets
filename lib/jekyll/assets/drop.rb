@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "liquid/drop"
 require "forwardable/extended"
@@ -10,10 +9,10 @@ module Jekyll
   module Assets
     class Drop < Liquid::Drop
       extend Forwardable::Extended
-      IMG = %W("image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-        "image/bmp", "image/gif", "image/png")
+      IMG = %W(image/webp image/jpeg image/jpeg image/tiff
+        image/bmp image/gif image/png)
 
-      def initialize(path, jekyll: )
+      def initialize(path, jekyll:)
         @path = path
         @sprockets = jekyll.sprockets
         @jekyll = jekyll
@@ -47,7 +46,7 @@ module Jekyll
 
           {
             width:  img.first,
-            height: img.last,
+            height: img.last
           }
         end
       end

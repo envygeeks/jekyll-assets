@@ -1,6 +1,5 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2017 - MIT License
-# Encoding: utf-8
 
 require "rspec/helper"
 describe Jekyll::Assets::Hook do
@@ -10,8 +9,8 @@ describe Jekyll::Assets::Hook do
 
   describe "#add_point" do
     it "should raise if given an invalid point" do
-      expect { subject.add_point(:good1, :good2, :bad1) }.
-        to(raise_error(ArgumentError))
+      expect { subject.add_point(:good1, :good2, :bad1) }
+        .to(raise_error(ArgumentError))
     end
 
     context do
@@ -32,15 +31,15 @@ describe Jekyll::Assets::Hook do
   describe "#get_point" do
     context "when a point is invalid" do
       it "should raise" do
-        expect { subject.get_point(:good1, :good2, :bad1) }.
-          to(raise_error(ArgumentError))
+        expect { subject.get_point(:good1, :good2, :bad1) }
+          .to(raise_error(ArgumentError))
       end
     end
 
     context "when a point doesn't exist" do
       it "should raise" do
-        expect { subject.get_point(:non, :existant) }.
-          to(raise_error(ArgumentError))
+        expect { subject.get_point(:non, :existant) }
+          .to(raise_error(ArgumentError))
       end
     end
 
