@@ -44,7 +44,6 @@ module Jekyll
 
           # --
           # Copyright 2017 Sprockets.
-          # rubocop:disable Style/GuardClause
           # @url https://github.com/rails/sprockets
           # @license MIT
           # --
@@ -56,15 +55,14 @@ module Jekyll
           end
 
           # --
+          # rubocop:disable Style/ClassAndModuleChildren
           # Patches it onto the base class too.
           # If it's not on cached, it's not on Env.
           # So we need to add it there.
           # --
-          class Sprockets
-            module Base
-              def find_asset!(*args)
-                cached.send(__method__, *args)
-              end
+          class Sprockets::Base
+            def find_asset!(*args)
+              cached.send(__method__, *args)
             end
           end
         end
