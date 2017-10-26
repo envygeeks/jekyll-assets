@@ -38,7 +38,11 @@
 - [x] Customizable HTML defaults.
 - [x] Configurable GZipping.
 - [ ] Proxies via `<img>`.
-- [ ] SourceMaps.
+- [x] SourceMaps.
+
+## Known Bugs (Maybe)
+
+- [ ] AutoPrefixer breaks SourceMaps.
 
 
 # Jekyll Assets
