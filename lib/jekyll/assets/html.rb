@@ -8,6 +8,7 @@ require "nokogiri"
 module Jekyll
   module Assets
     class HTML < Extensible
+      attr_reader :doc
 
       # --
       def initialize(doc:, **kwd)
