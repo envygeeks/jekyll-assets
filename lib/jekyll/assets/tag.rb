@@ -49,7 +49,7 @@ module Jekyll
         Default.set(@args, env: env, asset: o_asset)
         asset = Proxy.proxy(o_asset, args: @args, env: env)
         Default.set(@args, env: env, asset: asset)
-        env.manifest.compile(asset.filename)
+        env.manifest.compile(asset.logical_path)
 
         return env.prefix_url(asset.digest_path) if @args[:path]
         return asset.data_uri if @args[:"data-uri"] || @args[:data_uri]
