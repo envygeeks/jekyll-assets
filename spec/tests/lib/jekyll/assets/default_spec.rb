@@ -61,14 +61,11 @@ describe Jekyll::Assets::Default do
   describe "set_defaults" do
     it "should run and set defaults" do
       result = {}
-
       subject.set(result, {
-        type: :test,
         asset: asset,
-        env: env,
+          env: env,
       })
 
-      expect(result).to(have_key(:hello))
       expect(result[:hello]).to(eq(:world))
     end
   end

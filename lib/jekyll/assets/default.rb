@@ -39,22 +39,15 @@ module Jekyll
       # @param [Env] env the environment.
       # @return nil
       # --
-      def self.set(args, type:, asset:, env:)
-        rtn = get({
-          type: type,
-          args: args,
-        })
-
-        args.deep_merge!(rtn)
+      def self.set(args, asset:, env:)
+        args.deep_merge!(get(type: asset.content_type, args: args))
         rtn = Default.inherited.select do |o|
-          o.for?({
-            type: type,
-            args: args,
-          })
+          o.for?(type: asset.content_type, args: args)
         end
 
         rtn.each do |o|
-          o.new(args, {
+          o.new({
+             args: args,
             asset: asset,
               env: env,
           }).run
@@ -83,14 +76,6 @@ module Jekyll
         methods.grep(/^set_/).each do |v|
           send(v)
         end
-      end
-
-      # --
-      def initialize(args, asset:, env:)
-        @args = args
-        @jekyll = env.jekyll
-        @asset = asset
-        @env = env
       end
     end
   end

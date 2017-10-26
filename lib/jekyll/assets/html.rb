@@ -12,8 +12,7 @@ module Jekyll
       # --
       def initialize(doc:, **kwd)
         super(**kwd)
-        @doc =
-          doc
+        @doc = doc
       end
 
       # --

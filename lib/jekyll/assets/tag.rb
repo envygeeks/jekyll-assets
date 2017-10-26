@@ -19,6 +19,13 @@ module Jekyll
         public :new
       end
 
+      # --
+      attr_reader :name
+      attr_reader :tokens
+      attr_reader :args
+      attr_reader :tag
+
+      # --
       def initialize(tag, args, tokens)
         @tag = tag.to_sym
         @args = Liquid::Tag::Parser.new(args)
@@ -38,10 +45,10 @@ module Jekyll
       def render(context)
         env = context.registers[:site].sprockets
 
-        oga = env.find_asset!(@name)
-        Default.set(@args, env: env, type: oga.content_type, asset: oga)
-        asset = Proxy.proxy(oga, type: oga.content_type, args: @args, env: env)
-        Default.set(@args, type: asset.content_type, env: env, asset: asset)
+        o_asset = env.find_asset!(@name)
+        Default.set(@args, env: env, asset: o_asset)
+        asset = Proxy.proxy(o_asset, type: o_asset.content_type, args: @args, env: env)
+        Default.set(@args, env: env, asset: asset)
         env.manifest.compile(asset.filename)
 
         return env.prefix_url(asset.digest_path) if @args[:path]

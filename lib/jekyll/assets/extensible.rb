@@ -5,6 +5,10 @@
 module Jekyll
   module Assets
     class Extensible
+      attr_reader :args
+      attr_reader :jekyll
+      attr_reader :asset
+      attr_reader :env
 
       # --
       def initialize(asset:, args:, env:)
