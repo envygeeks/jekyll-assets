@@ -11,7 +11,7 @@ module Jekyll
         REGEXP = Jekyll::Document::YAML_FRONT_MATTER_REGEXP
         def call(input)
           {
-            data: input[:data].gsub(REGEXP, "")
+            data: input[:data].gsub(REGEXP, ""),
           }
         end
       end

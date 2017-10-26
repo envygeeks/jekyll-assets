@@ -5,7 +5,6 @@
 module Jekyll
   module Assets
     module Utils
-
       # --
       # @param [String] path the path to strip.
       # Strips most source paths from the given path path.
@@ -62,12 +61,12 @@ module Jekyll
         path = []
         path << cdn  if Jekyll.production? && cdn
         path << base if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:baseurl])
-        path << dest  if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:destination])
+        path << dest if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:destination])
         path << user_path unless user_path.nil? || user_path == ""
 
         path = File.join(path.flatten.compact)
         return path if cdn && Jekyll.production?
-        return "/" + path
+        "/" + path
       end
 
       # --
@@ -78,7 +77,7 @@ module Jekyll
       module_function
       def strip_secondary_content_type(str)
         str = str.split("/")
-        raise ArgumentError, "#{str.join("/")} is invalid." if str.size > 2
+        raise ArgumentError, "#{str.join('/')} is invalid." if str.size > 2
         File.join(str[0], str[1].rpartition(/\+/).last)
       end
 
@@ -90,7 +89,7 @@ module Jekyll
       module_function
       def strip_slashes(path)
         return if path.nil? || path == ""
-        path.gsub(/^\/|\/$/, "")
+        path.gsub(%r!^/|/$!, "")
       end
 
       # --

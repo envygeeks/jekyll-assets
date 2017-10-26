@@ -4,6 +4,6 @@
 
 module Jekyll
   module Assets
-    VERSION="3.0.0.alpha0"
+    VERSION = "3.0.0.alpha0"
   end
 end

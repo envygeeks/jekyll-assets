@@ -12,9 +12,9 @@ Jekyll::Assets::Utils.javascript? do
           css: {
             autoprefixer: {
               # Your config here.
-            }
-          }
-        }
+            },
+          },
+        },
       })
     end
 

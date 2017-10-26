@@ -9,11 +9,11 @@ module Jekyll
   module Assets
     module Map
       class Writer < Sprockets::Exporters::Base
-        alias_method :env, :environment
+        alias env environment
 
-        def skip?(logger)
+        def skip?(_)
           !env.asset_config[:source_maps] ||
-          !asset.metadata[:map]
+            !asset.metadata[:map]
         end
 
         # --
@@ -48,8 +48,8 @@ module Jekyll
         # --
         private
         def map
-          @map ||= asset.metadata[:map].
-            with_indifferent_access
+          @map ||= asset.metadata[:map]
+            .with_indifferent_access
         end
 
         # --
@@ -59,8 +59,8 @@ module Jekyll
         # --
         private
         def original_map
-          @original_map ||= asset.metadata[:map].
-            with_indifferent_access.freeze
+          @original_map ||= asset.metadata[:map]
+            .with_indifferent_access.freeze
         end
 
         # --
@@ -106,10 +106,14 @@ module Jekyll
         # --
         private
         def base
-          Pathutil.new(asset.filename.sub(env.jekyll.
-            in_source_dir + "/", "")).dirname
+          Pathutil.new(asset.filename.sub(env.jekyll
+            .in_source_dir + "/", "")).dirname
         end
 
+        # --
+        # rubocop:disable Layout/BlockEndNewline
+        # rubocop:disable Layout/MultilineBlockLayout
+        # rubocop:disable Style/BlockDelimiters
         # --
         private
         def map_files
@@ -118,6 +122,10 @@ module Jekyll
             if v.key?(:map) }.flatten.compact
         end
 
+        # --
+        # rubocop:enable Layout/BlockEndNewline
+        # rubocop:enable Layout/MultilineBlockLayout
+        # rubocop:enable Style/BlockDelimiters
         # --
         def write_map!
           path = Map.map_path(asset: asset, env: env)

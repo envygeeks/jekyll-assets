@@ -18,7 +18,7 @@ module Jekyll
           "application/ecmascript-6" => %w(.js.liquid.es6 .liquid.es6),
           "text/liquid+scss" => %w(.css.liquid.scss .liquid.scss),
           "text/liquid+css" => ".liquid.css",
-        }
+        }.freeze
 
         def self.call(context)
           file = Pathutil.new(context[:filename])
@@ -27,14 +27,13 @@ module Jekyll
           payload_ = jekyll.site_payload
           renderer = jekyll.liquid_renderer.file(file)
           context[:data] = renderer.parse(context[:data]).render!(payload_, {
-            :filters => [Jekyll::Filters, Jekyll::Assets::Filters],
-            :registers => {
-              :site => jekyll
-            }
+            filters: [Jekyll::Filters, Jekyll::Assets::Filters],
+            registers: {
+              site: jekyll,
+            },
           })
         end
       end
-
 
       # --
       # Registers it inside of Sprockets.
@@ -42,14 +41,14 @@ module Jekyll
       #   two different ways depending on the type of Sprockets.
       # --
       if !Env.old_sprockets?
-        Liquid::TYPES.each do |k, v|
+        Liquid::TYPES.each_key do |k|
           to = Utils.strip_secondary_content_type(k)
           Sprockets.register_transformer_suffix to, k,
             ".liquid", Liquid
         end
       else
         # Still the easiest way tbqf.  Never change.
-        Sprockets.register_engine '.liquid', Liquid,
+        Sprockets.register_engine ".liquid", Liquid,
           silence_deprecation: true
       end
     end

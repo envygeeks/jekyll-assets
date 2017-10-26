@@ -7,8 +7,7 @@ require "jekyll"
 module Jekyll
   module Assets
     class Logger
-      PREFIX = "Assets: "
-
+      PREFIX = "Assets: ".freeze
       def self.logger
         self
       end
@@ -19,7 +18,7 @@ module Jekyll
       # @param [String,Proc] message the message that to log.
       # @return nil
       # --
-      [:warn, :error, :info, :debug].each do |v|
+      %i(warn error info debug).each do |v|
         define_singleton_method v do |message = nil, &block|
           message = block.call if block
           Jekyll.logger.send(v, PREFIX, message)

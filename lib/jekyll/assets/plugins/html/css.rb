@@ -9,7 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class CSS < HTML
-        types "text/css"
+        content_types "text/css"
 
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|

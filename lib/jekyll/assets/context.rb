@@ -10,7 +10,7 @@ require_relative "tag"
 # of Liquid this wasn't here, and we don't want to have to
 # go back to using array's if we don't need to.
 # --
-if !defined?(Liquid::ParseContext)
+unless defined?(Liquid::ParseContext)
   module Liquid
     class ParseContext < Array
       # Nada
@@ -21,7 +21,6 @@ end
 # --
 module Sprockets
   class Context
-
     # --
     # Allows you to get an asset by it's path.
     # @note this SASS helper fully supports proxy arguments.
@@ -29,10 +28,10 @@ module Sprockets
     # @param [String] path the path.
     # @return [String] the path.
     # --
-    def asset_path(path, opts = {})
+    def asset_path(path, _ = {})
       ctx = Liquid::ParseContext.new
-      Tag.new("img", "#{path} @path", ctx).
-        render(context)
+      Tag.new("img", "#{path} @path", ctx)
+        .render(context)
     end
 
     # --
@@ -42,7 +41,7 @@ module Sprockets
     # @param [String] path the path.
     # --
     def asset_url(path, **kwd)
-      return "url(#{asset_path(path, **kwd)})"
+      "url(#{asset_path(path, **kwd)})"
     end
 
     # --
@@ -50,7 +49,7 @@ module Sprockets
     def context
       @struct ||= Struct.new(:registers)
       @struct.new({
-        :site => environment.jekyll
+        site: environment.jekyll,
       })
     end
   end

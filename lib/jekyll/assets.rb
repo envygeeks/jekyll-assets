@@ -6,8 +6,12 @@ require "pathutil"
 require "jekyll"
 
 def require_all(*globs)
+  # rubocop:disable Layout/BlockEndNewline
+  # rubocop:disable Style/MultilineBlockLayout
+  # rubocop:disable Style/BlockDelimiters
+
   path = Pathutil.new("assets").expand_path(__dir__)
-  globs.each { |v| path.glob(v).reject { |o| o.directory? }.each do |vv|
+  globs.each { |v| path.glob(v).reject(&:directory?).each do |vv|
     require vv
   end }
 end

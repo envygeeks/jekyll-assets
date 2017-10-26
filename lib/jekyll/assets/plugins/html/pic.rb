@@ -9,11 +9,17 @@ module Jekyll
   module Assets
     class HTML
       class Pic < HTML
-        types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-          "image/bmp", "image/gif", "image/png",
-            "image/svg+xml"
+        content_types "image/webp"
+        content_types "image/jpeg"
+        content_types "image/tiff"
+        content_types "image/svg+xml"
+        content_types "image/bmp"
+        content_types "image/gif"
+        content_types "image/png"
 
         def run
+          # rubocop:disable Style/IfWithSemicolon
+          # rubocop:disable Layout/IndentationConsistency
           if @args[:srcset].is_a?(Array); @args[:picture] ||= {}
             ctx1, ctx2 = Liquid::ParseContext.new, context
             Nokogiri::HTML::Builder.with(@doc) do |d|
@@ -36,8 +42,8 @@ module Jekyll
         end
 
         def self.cleanup(s)
-          s.gsub(/<(picture)>(.+)<\/\1>/) do |v|
-            v.gsub(/<\/source>/, "")
+          s.gsub(%r!<(picture)>(.+)<\/\1>!) do |v|
+            v.gsub(%r!</source>!, "")
           end
         end
 
@@ -49,7 +55,7 @@ module Jekyll
         def context
           @struct ||= Struct.new(:registers)
           @struct.new({
-            :site => @env.jekyll
+            site: @env.jekyll,
           })
         end
       end

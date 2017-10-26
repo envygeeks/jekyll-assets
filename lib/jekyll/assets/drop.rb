@@ -10,10 +10,7 @@ module Jekyll
   module Assets
     class Drop < Liquid::Drop
       extend Forwardable::Extended
-      IMG = %W("image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-        "image/bmp", "image/gif", "image/png")
-
-      def initialize(path, jekyll: )
+      def initialize(path, jekyll:)
         @path = path
         @sprockets = jekyll.sprockets
         @jekyll = jekyll
@@ -43,20 +40,15 @@ module Jekyll
       # --
       def dimensions
         @dimensions ||= begin
-          img = img?? FastImage.size(asset.filename.to_s) : []
+          img = FastImage.size(asset.filename.to_s)
 
           {
             width:  img.first,
             height: img.last,
           }
         end
-      end
-
-      private
-      def img?
-        if asset.content_type
-          IMG.include?(asset.content_type)
-        end
+      rescue => e
+        Logger.error e
       end
 
       private

@@ -9,8 +9,8 @@ module Jekyll
   module Assets
     module Plugins
       class ProxyTest1 < Proxy
-        args_key :test
-        types :test
+        content_types :test
+        arg_keys :test
 
         def process
           nil
@@ -18,8 +18,8 @@ module Jekyll
       end
 
       class ProxyTest2 < Proxy
-        args_key :test
-        types :test
+        content_types :test
+        arg_keys :test
 
         def process
           nil

@@ -5,7 +5,6 @@
 module Jekyll
   module Assets
     module Patches
-
       # --
       # Patches Jekyll's obsolete files so that we can
       # remove assets that we have used through the manifest.
@@ -13,7 +12,6 @@ module Jekyll
       # regardless of what's going on in their stuff.
       # --
       module ObsoleteFiles
-
         # --
         # @param [Object] args whatever Jekyll takes.
         # Gives a list of files that should be removed, unless used.
@@ -24,8 +22,8 @@ module Jekyll
 
           super(*args).reject do |v|
             v == site.sprockets.in_dest_dir || \
-            v == site.sprockets.manifest.filename || \
-            extra.include?(v)
+              v == site.sprockets.manifest.filename || \
+              extra.include?(v)
           end
         end
       end

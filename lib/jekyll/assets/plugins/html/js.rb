@@ -9,7 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class JS < HTML
-        types "application/javascript",
+        content_types "application/javascript",
           "text/javascript"
 
         def run

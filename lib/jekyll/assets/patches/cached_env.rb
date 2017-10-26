@@ -7,7 +7,6 @@ require_relative "../utils"
 module Jekyll
   module Assets
     module Patches
-
       # --
       # Patches `Sprockets::CachedEnvironment` with some of
       # the stuff that we would like available.  Including our
@@ -45,11 +44,12 @@ module Jekyll
 
           # --
           # Copyright 2017 Sprockets.
+          # rubocop:disable Style/GuardClause
           # @url https://github.com/rails/sprockets
           # @license MIT
           # --
           def find_asset!(*args)
-            uri, _ = resolve!(*args)
+            uri, = resolve!(*args)
             if uri
               load(uri)
             end
@@ -60,9 +60,11 @@ module Jekyll
           # If it's not on cached, it's not on Env.
           # So we need to add it there.
           # --
-          class Sprockets::Base
-            def find_asset!(*args)
-              cached.send(__method__, *args)
+          class Sprockets
+            module Base
+              def find_asset!(*args)
+                cached.send(__method__, *args)
+              end
             end
           end
         end

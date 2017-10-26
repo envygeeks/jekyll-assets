@@ -9,16 +9,19 @@ module Jekyll
   module Assets
     class HTML
       class IMG < HTML
-        types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-          "image/bmp", "image/gif", "image/png", "image/svg+xml"
+        content_types "image/bmp"
+        content_types "image/webp"
+        content_types "image/svg+xml"
+        content_types "image/jpeg"
+        content_types "image/tiff"
+        content_types "image/gif"
+        content_types "image/png"
 
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|
-            atr = @args.to_html({
-              hash: true
-            })
-
-            d.img(atr)
+            d.img(@args.to_html({
+              hash: true,
+            }))
           end
         end
 

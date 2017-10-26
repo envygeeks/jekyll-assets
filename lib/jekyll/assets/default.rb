@@ -10,7 +10,6 @@ require "active_support/core_ext/hash/deep_merge"
 module Jekyll
   module Assets
     class Default < Extensible
-
       # --
       # @param [String] type the content type.
       # @param [Hash] args the args from the liquid tag.
@@ -47,9 +46,9 @@ module Jekyll
 
         rtn.each do |o|
           o.new({
-             args: args,
+            args: args,
             asset: asset,
-              env: env,
+            env: env,
           }).run
         end
       end
@@ -61,8 +60,8 @@ module Jekyll
       # @return nil
       # --
       def self.static(hash = nil)
-        return @static ||= {} if hash.nil?
-        @static = hash.with_indifferent_access
+        return @static ||= {}.with_indifferent_access if hash.nil?
+        static.deep_merge!(hash)
       end
 
       # --
@@ -71,8 +70,7 @@ module Jekyll
       # @return nile
       # --
       def run
-        methods = self.class.instance_methods
-        methods = methods - Object.instance_methods
+        methods = self.class.instance_methods - Object.instance_methods
         methods.grep(/^set_/).each do |v|
           send(v)
         end

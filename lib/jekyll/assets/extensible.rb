@@ -31,6 +31,15 @@ module Jekyll
       end
 
       # --
+      def self.requirements
+        @requirements ||= {
+          args: [], types: [
+            #
+          ]
+        }
+      end
+
+      # --
       # @note a type is a "content type"
       # Allows you to use types to determine if this class fits.
       # @param [String] type the content type.
@@ -38,20 +47,35 @@ module Jekyll
       # @return [true, false]
       # --
       def self.for?(type:, args:)
-        self.types.any? do |k|
-          k.is_a?(Regexp) ? !!(type =~ k) : k.to_s == type.to_s
+        for_type?(type) && for_args?(args)
+      end
+
+      # --
+      def self.for_args?(args)
+        return true if arg_keys.empty?
+        !arg_keys.collect { |k| args.key?(k) }.any? do |k|
+          k == false
         end
       end
 
       # --
-      # Attach your class a type.
-      # @param [Array<String>] types the content types.
-      # @note a type is a content type.
-      # @return [nil]
+      def self.for_type?(type)
+        return true if content_types.empty?
+        content_types.any? do |k|
+          k.is_a?(Regexp) ? type =~ k : k.to_s == type.to_s
+        end
+      end
+
       # --
-      def self.types(*types)
-        types.empty?? @types ||= [] :
-          @types = types
+      # Creates `#arg_keys`, and `#content_types` so that you
+      #   can limit your surface for an extensible plugin.  For
+      #   example if you only work for
+      [%i(arg_keys args), %i(content_types types)].each do |(k, v)|
+        instance_eval <<-RUBY
+          def self.#{k}(*a)
+            requirements[:#{v}].concat(a)
+          end
+        RUBY
       end
     end
   end

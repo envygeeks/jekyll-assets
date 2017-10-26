@@ -10,10 +10,10 @@ require "pathutil"
 module Jekyll
   module Assets
     module Map
-      DIR_NAME = "source-maps"
+      NAME = "%s.map".freeze
+      DIR_NAME = "source-maps".freeze
       DIR = Pathutil.new(DIR_NAME)
-      NAME = "%s.map"
-      EXT = ".map"
+      EXT = ".map".freeze
 
       # --
       # @return [String] the map name.
@@ -26,10 +26,9 @@ module Jekyll
             asset: asset,
             env: env,
           }),
-          EXT
+          EXT,
         ].join
       end
-
 
       # --
       # @note this is used for anything in source-maps.

@@ -60,7 +60,7 @@ module Jekyll
           args: @args,
           asset: asset,
           type: type,
-          env: env
+          env: env,
         })
       end
     end

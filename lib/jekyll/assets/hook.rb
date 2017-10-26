@@ -11,7 +11,7 @@ module Jekyll
         end
       end
 
-      POINTS = {
+      @points = {
         env: {
           before_init: {
             1 => [],
@@ -23,7 +23,7 @@ module Jekyll
             1 => [],
             2 => [],
             3 => [],
-          }
+          },
         },
 
         config: {
@@ -31,7 +31,7 @@ module Jekyll
             1 => [],
             2 => [],
             3 => [],
-          }
+          },
         },
 
         asset: {
@@ -39,8 +39,8 @@ module Jekyll
             1 => [],
             2 => [],
             3 => [],
-          }
-        }
+          },
+        },
       }
 
       # --
@@ -52,18 +52,18 @@ module Jekyll
       def self.add_point(*point)
         raise ArgumentError, "only give 2 points" if point.count > 2
 
-        POINTS[point[0]] ||= {}
-        POINTS[point[0]][point[1]] ||= {
+        @points[point[0]] ||= {}
+        @points[point[0]][point[1]] ||= {
           #
         }
 
         1.upto(3).each do |i|
-          POINTS[point[0]][point[1]][i] ||= [
+          @points[point[0]][point[1]][i] ||= [
             #
           ]
         end
 
-        POINTS
+        @points
       end
 
       # --
@@ -75,10 +75,10 @@ module Jekyll
       def self.get_point(*point)
         check_point(*point)
 
-        POINTS[point[0]][point[1]].
-        each_with_object([]) do |(_, v), a|
-          a.concat(v)
-        end
+        @points[point[0]][point[1]]
+          .each_with_object([]) do |(_, v), a|
+            a.concat(v)
+          end
       end
 
       # --
@@ -109,17 +109,20 @@ module Jekyll
         end
 
         check_point(*point)
-        out = POINTS[point[0]]
+        out = @points[point[0]]
         out = out[point[1]]
         out = out[priority]
         out << block
       end
 
       # --
-      private
+      # @param point the points to check.
+      # Checks that a point exists or raises an error.
+      # @return [nil]
+      # --
       def self.check_point(*point)
         raise ArgumentError, "only give 2 points" if point.count > 2
-        unless POINTS.key?(point[0]) && POINTS[point[0]].key?(point[1])
+        if !@points.key?(point[0]) || !@points[point[0]].key?(point[1])
           raise ArgumentError, "Unknown hook #{point}"
         end
       end

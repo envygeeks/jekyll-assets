@@ -8,10 +8,14 @@ module Jekyll
   module Assets
     module Plugins
       class MiniMagick < Proxy
-        args_key :magick
-        types "image/webp", "image/jpeg", "image/jpeg", "image/tiff",
-          "image/bmp", "image/gif", "image/png",
-            "image/svg+xml"
+        arg_keys :magick
+        content_types "image/webp"
+        content_types "image/jpeg"
+        content_types "image/svg+xml"
+        content_types "image/tiff"
+        content_types "image/bmp"
+        content_types "image/gif"
+        content_types "image/png"
 
         def process
           img = ::MiniMagick::Image.open(@file)
@@ -25,9 +29,7 @@ module Jekyll
           img.write(@file)
           @file
         ensure
-          unless !img
-            img.destroy!
-          end
+          img&.destroy!
         end
 
         def runners
@@ -38,11 +40,8 @@ module Jekyll
 
         private
         def magick_format(img)
-          new_ = nil
-
           exts = @env.mime_exts.select do |k, v|
-            k == @args[:magick][:format] ||
-            v == @args[:magick][:format]
+            k == @args[:magick][:format] || v == @args[:magick][:format]
           end
 
           if exts.first
@@ -113,8 +112,8 @@ module Jekyll
 
         private
         def magick_preset_resize(img, cmd)
-          width,height = img.width*2,img.height*2 if @args[:magick].key?(:double)
-          width,height = img.width/2,img.height/2 if @args[:magick].key?(:half)
+          width, height = img.width * 2, img.height * 2 if @args[:magick].key?(:double)
+          width, height = img.width / 2, img.height / 2 if @args[:magick].key?(:half)
           cmd.resize "#{width}x#{height}" if width && height
         end
       end

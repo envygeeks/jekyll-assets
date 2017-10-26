@@ -74,7 +74,7 @@ module Jekyll
 
           out = Sprockets::Cache::MemoryStore.new if enabled && type == "memory"
           out = Sprockets::Cache::FileStore.new(path) if enabled && type == "file"
-          out = Sprockets::Cache::NullStore.new if !enabled
+          out = Sprockets::Cache::NullStore.new unless enabled
           Sprockets::Cache.new(out, Logger)
         end
       end
@@ -86,15 +86,27 @@ module Jekyll
       # --
       def to_liquid_payload
         each_file.each_with_object({}) do |k, h|
-          path = Pathutil.new(strip_paths(k))
-          next if path.basename.start_with?("_") ||
-            path.dirname.start_with?("_")
+          skip, path = false, Pathutil.new(strip_paths(k))
+          path.descend do |p|
+            skip = p.start_with?("_")
+            if skip
+              break
+            end
+          end
 
+          next if skip
           h.update({
             path.to_s => Drop.new(path, {
-              jekyll: jekyll
-            })
+              jekyll: jekyll,
+            }),
           })
+        end
+      end
+
+      # --
+      def self.old_sprockets?
+        @old_sprockets ||= begin
+          Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
         end
       end
 
@@ -110,11 +122,10 @@ module Jekyll
       # --
       private
       def enable_compression!
-        if asset_config[:compression]
-          self.css_compressor = Jekyll.dev? && !self.class.old_sprockets?? :source_map : :scss
-          self. js_compressor = Jekyll.dev? && !self.class.old_sprockets?? \
-            :source_map : :uglify
-        end
+        return unless asset_config[:compression]
+        source_map = Jekyll.dev? && !self.class.old_sprockets?
+        self. js_compressor = (source_map ? :source_map : :uglify)
+        self.css_compressor = (source_map ? :source_map : :scss)
 
         nil
       end
@@ -123,7 +134,7 @@ module Jekyll
       private
       def precompile!
         assets = asset_config[:precompile]
-        assets = assets.map do |v|
+        assets.map do |v|
           compile(v)
         end
 
@@ -133,11 +144,10 @@ module Jekyll
       # --
       private
       def disable_erb!
-        if jekyll.safe
-          @config = hash_reassoc @config, :registered_transformers do |o|
-            o.delete_if do |v|
-              v.proc == Sprockets::ERBProcessor
-            end
+        return unless jekyll.safe
+        @config = hash_reassoc @config, :registered_transformers do |o|
+          o.delete_if do |v|
+            v.proc == Sprockets::ERBProcessor
           end
         end
       end
@@ -159,15 +169,8 @@ module Jekyll
       # --
       private
       def setup_drops!
-        Jekyll::Hooks.register :site, :pre_render do |o, h|
+        Jekyll::Hooks.register :site, :pre_render do |_, h|
           h["assets"] = to_liquid_payload
-        end
-      end
-
-      # --
-      def self.old_sprockets?
-        @old_sprockets ||= begin
-          Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
         end
       end
 

@@ -10,13 +10,13 @@ require "digest"
 module Jekyll
   module Assets
     class Proxy < Extensible
-      attr_reader :file
       DIG = Digest::SHA256
-      DIR = "proxied"
+      DIR = "proxied".freeze
+      attr_reader :file
 
       class Deleted < StandardError
         def initialize(obj)
-          super "#{obj.to_s} violated a contract and " \
+          super "#{obj} violated a contract and " \
             "deleted your proxy file"
         end
       end
@@ -35,23 +35,20 @@ module Jekyll
         end
 
         return asset if proxies.empty?
-        file = copy(asset, {
-          args: args,
-           env: env,
-        })
-
+        file = copy(asset, args: args, env: env)
         cache = file.basename.sub_ext("").to_s
+
         env.cache.fetch(cache) do
           proxies.each do |o|
             obj = o.new(file, {
-               args: args,
+              args: args,
               asset: asset,
-                env: env,
+              env: env,
             })
 
             o = obj.process
             file = o if o.is_a?(Pathutil) && file != o
-            raise Deleted, o if !file.exist?
+            raise Deleted, o unless file.exist?
           end
 
           true
@@ -70,7 +67,7 @@ module Jekyll
       # --
       def self.copy(asset, env:, args:)
         raw = args.instance_variable_get(:@raw)
-        key = DIG.hexdigest(raw)[0,6]
+        key = DIG.hexdigest(raw)[0, 6]
 
         path = env.in_cache_dir(DIR)
         extname = File.extname(args[:argv1])
@@ -100,11 +97,6 @@ module Jekyll
       def initialize(file, **kwd)
         super(**kwd)
         @file = file
-      end
-
-      # --
-      def self.for?(type:, args:)
-        super && args.key?(args_key)
       end
     end
   end

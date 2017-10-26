@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2017 - MIT License
+# Encoding: utf-8
+
 $LOAD_PATH.unshift(File.expand_path("lib", __dir__))
 require "jekyll/assets/version"
 
@@ -6,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "http://github.com/jekyll/jekyll-assets/"
   spec.authors = ["Jordon Bedwell", "Aleksey V Zapparov", "Zachary Bush"]
   spec.email = ["jordon@envygeeks.io", "ixti@member.fsf.org", "zach@zmbush.com"]
-  spec.files = %W(Rakefile Gemfile README.md LICENSE) + Dir["lib/**/*"]
+  spec.files = %w(Rakefile Gemfile README.md LICENSE) + Dir["lib/**/*"]
   spec.summary = "Assets for Jekyll"
   spec.name = "jekyll-assets"
   spec.license = "MIT"

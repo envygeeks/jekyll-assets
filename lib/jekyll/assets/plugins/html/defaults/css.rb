@@ -8,11 +8,9 @@ module Jekyll
   module Assets
     class Default
       class CSS < Default
-        types "text/css"
-        static({
-          rel: "stylesheet",
-          type: "text/css",
-        })
+        static rel: "stylesheet"
+        content_types "text/css"
+        static type: "text/css"
 
         def set_href
           @args[:href] = @env.prefix_url(@asset.digest_path)

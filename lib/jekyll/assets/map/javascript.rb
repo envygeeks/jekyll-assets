@@ -12,7 +12,7 @@ module Jekyll
           out = super(input)
           env = input[:environment]
           asset = env.find_asset!(input[:filename], pipeline: :source)
-          path = asset.filename.sub(env.jekyll.in_source_dir+"/", "")
+          path = asset.filename.sub(env.jekyll.in_source_dir + "/", "")
           url = Map.map_path(asset: asset, env: env)
           url = env.prefix_url(url)
 

@@ -10,12 +10,12 @@ module Jekyll
     class Default
       class Test1 < Default
         static hello: :world
-        types :test
+        content_types :test
       end
 
       class Test2 < Default
         static world: :hello
-        types :test
+        content_types :test
 
         def run
           @args.update({

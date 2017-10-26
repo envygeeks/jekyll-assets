@@ -1,3 +1,7 @@
+# Frozen-string-literal: true
+# Copyright: 2012 - 2017 - MIT License
+# Encoding: utf-8
+
 source "https://rubygems.org"
 gemspec
 
@@ -16,8 +20,8 @@ end
 
 gem "uglifier", require: false
 gem "autoprefixer-rails", require: false
-gem "sprockets", "#{ENV["SPROCKETS_VERSION"] || "~> 4.0.beta"}"
-gem "jekyll", "#{ENV["JEKYLL_VERSION"]}" if ENV["JEKYLL_VERSION"]
+gem "sprockets", ENV["SPROCKETS_VERSION"] || "~> 4.0.beta"
+gem "jekyll", ENV["JEKYLL_VERSION"] if ENV["JEKYLL_VERSION"]
 gem "font-awesome-sass", "~> 4.4", require: false
 gem "mini_magick", "~> 4.2", require: false
 gem "image_optim", "~> 0.25", require: false

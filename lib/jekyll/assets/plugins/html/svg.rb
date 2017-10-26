@@ -8,7 +8,7 @@ module Jekyll
   module Assets
     class HTML
       class SVG < HTML
-        types "image/svg+xml"
+        content_types "image/svg+xml"
 
         def run
           arg = @args.to_html(hash: true)

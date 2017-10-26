@@ -1,3 +1,23 @@
+Metrics/MethodLength: { Max: 24 }
+Metrics/ModuleLength: { Max: 120 }
+Bundler/OrderedGems: { Enabled: false }
+Style/IfUnlessModifier: { Enabled: false }
+Lint/UselessAccessModifier: { Enabled: false }
+Lint/RescueWithoutErrorClass: { Enabled: false }
+Style/BracesAroundHashParameters: { Enabled: false }
+Layout/MultilineMethodCallBraceLayout: { Enabled: false }
+Layout/AlignParameters: { EnforcedStyle: with_fixed_indentation }
+Style/TrailingCommaInLiteral: { EnforcedStyleForMultiline: comma }
+Layout/MultilineMethodCallIndentation: { EnforcedStyle: indented }
+Layout/EmptyLinesAroundAccessModifier: { Enabled: false }
+Style/StringLiterals: { EnforcedStyle: double_quotes }
+Style/MultilineTernaryOperator: { Enabled: false }
+Layout/IndentHash: { EnforcedStyle: consistent }
+Gemspec/OrderedDependencies: { Enabled: false }
+Style/ParallelAssignment: { Enabled: false }
+Style/Documentation: { Enabled: false }
+Style/GuardClause: { Enabled: false }
+Metrics/ClassLength: { Max: 120 }
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%q': '{}'
@@ -7,7 +27,10 @@ Style/PercentLiteralDelimiters:
     '%w': '()'
     '%W': '()'
     '%x': '()'
+    '%i': '()'
+    '%I': '()'
 AllCops:
+  TargetRubyVersion: 2.3
   Exclude:
     - examples/**/*
     - node_modules/**/*

@@ -4,8 +4,6 @@
 
 module Jekyll
   module Assets
-    module Plugins
-      #
-    end
+    Plugins = Module.new
   end
 end

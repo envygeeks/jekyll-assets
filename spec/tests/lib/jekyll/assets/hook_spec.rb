@@ -4,10 +4,6 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Hook do
-  it "should store hooks on POINTS" do
-    expect(subject::POINTS).to(be_a(Hash))
-  end
-
   describe "#add_point" do
     it "should raise if given an invalid point" do
       expect { subject.add_point(:good1, :good2, :bad1) }.
@@ -23,8 +19,8 @@ describe Jekyll::Assets::Hook do
 
       it "should add the point" do
         subject.add_point(:good1, :good2)
-        expect(subject::POINTS[:good1]).to(have_key(:good2))
-        expect(subject::POINTS).to(have_key(:good1))
+        var = subject.instance_variable_get(:@points)
+        expect(var[:good1]).to(have_key(:good2))
       end
     end
   end
