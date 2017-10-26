@@ -47,7 +47,7 @@ module Jekyll
 
         o_asset = env.find_asset!(@name)
         Default.set(@args, env: env, asset: o_asset)
-        asset = Proxy.proxy(o_asset, type: o_asset.content_type, args: @args, env: env)
+        asset = Proxy.proxy(o_asset, args: @args, env: env)
         Default.set(@args, env: env, asset: asset)
         env.manifest.compile(asset.filename)
 

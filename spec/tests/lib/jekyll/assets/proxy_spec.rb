@@ -31,6 +31,7 @@ end
 
 describe Jekyll::Assets::Proxy do
   let(:klass) { Jekyll::Assets::Plugins::ProxyTest1 }
+  before { allow(asset).to(receive(:content_type).and_return(:test)) }
   let(:args) { Liquid::Tag::Parser.new("img.png @test:2x") }
   let(:asset) { env.find_asset!(args[:argv1]) }
 
@@ -39,7 +40,6 @@ describe Jekyll::Assets::Proxy do
     expect(klass).to(receive(:new).and_call_original)
     subject.proxy(asset, {
       args: args,
-      type: :test,
       env: env,
     })
   end
@@ -47,7 +47,6 @@ describe Jekyll::Assets::Proxy do
   it "should return an asset" do
     out = subject.proxy(asset, {
       args: args,
-      type: :test,
       env: env,
     })
 
@@ -61,7 +60,6 @@ describe Jekyll::Assets::Proxy do
     it "should copy the asset" do
       out = subject.proxy(asset, {
         args: args,
-        type: :test,
         env: env,
       })
 

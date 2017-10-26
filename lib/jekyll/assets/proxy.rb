@@ -29,12 +29,9 @@ module Jekyll
       # Run all your proxies on assets.
       # @return [Sprockets::Asset]
       # --
-      def self.proxy(asset, type:, args:, env:)
+      def self.proxy(asset, args:, env:)
         proxies = Proxy.inherited.select do |o|
-          o.for?({
-            type: type,
-            args: args,
-          })
+          o.for?(type: asset.content_type, args: args)
         end
 
         return asset if proxies.empty?
