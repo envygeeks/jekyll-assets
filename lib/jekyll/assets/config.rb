@@ -39,7 +39,9 @@ module Jekyll
           assets/css
           assets/fonts
           assets/images
+          assets/videos
           assets/javascript
+          assets/video
           assets/image
           assets/img
           assets/js
@@ -47,7 +49,9 @@ module Jekyll
           _assets/css
           _assets/fonts
           _assets/images
+          _assets/videos
           _assets/javascript
+          _assets/video
           _assets/image
           _assets/img
           _assets/js
@@ -55,7 +59,9 @@ module Jekyll
           css
           fonts
           images
+          videos
           javascript
+          video
           image
           img
           js
