@@ -48,8 +48,8 @@ module Helpers
     @jekyll ||= begin
       silence_stdout do
         config = Jekyll.configuration(opts)
-        config.update!("destination" => File.join(fixture_path, "_site"))
-        config.update!("source" => fixture_path)
+        config.update("destination" => File.join(fixture_path, "_site"))
+        config.update("source" => fixture_path)
         Jekyll::Site.new(config).tap(&:process)
       end
     end
