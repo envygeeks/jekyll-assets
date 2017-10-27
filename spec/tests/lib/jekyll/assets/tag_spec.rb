@@ -18,7 +18,7 @@ describe Jekyll::Assets::Tag do
     end
   end
 
-  context nil, reder: true do
+  context nil, render: true do
     let :page do
       jekyll.pages.find do |v|
         v.path == "tag/attr.html"
