@@ -6,19 +6,6 @@ require_relative "context"
 require_relative "tag"
 
 # --
-# Provides Liquid::ParseContext, because o older versions
-# of Liquid this wasn't here, and we don't want to have to
-# go back to using array's if we don't need to.
-# --
-unless defined?(Liquid::ParseContext)
-  module Liquid
-    class ParseContext < Array
-      # Nada
-    end
-  end
-end
-
-# --
 module Sprockets
   class Context
     # --
