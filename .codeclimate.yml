@@ -1,5 +1,6 @@
 engines:
   rubocop:
+    channel: rubocop-0-51
     enabled: true
     config:
       file: .rubocop.yml
