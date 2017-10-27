@@ -67,7 +67,7 @@ module Helpers
 end
 
 RSpec.configure do |c|
-  c.before(:suite) { Helpers.tap(&:clean_trash).stub_jekyll_site }
+  c.before(:suite) { Helpers.tap(&:cleanup_trash).stub_jekyll_site }
   # c.after (:suite) do
   #   Helpers.cleanup_trash
   # end
