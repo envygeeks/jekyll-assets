@@ -38,6 +38,7 @@ module Jekyll
           end
 
           preset = preset.first
+          # rubocop:disable Metrics/LineLength
           raise UnknownPreset, preset if preset != :default && !optimc.key?(preset)
           oc = optimc[preset] unless preset == :default
           optim = ::ImageOptim.new(oc || {})
@@ -49,6 +50,7 @@ module Jekyll
   end
 end
 
+# rubocop:enable Metrics/LineLength
 Jekyll::Assets::Hook.register :config, :before_merge do |c|
   c.deep_merge!({
     plugins: {

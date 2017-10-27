@@ -50,6 +50,9 @@ module Jekyll
       # --
       # @param [String] the path.
       # @note this should only be used for *urls*
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/AbcSize
       # Builds a url path for HTML.
       # @return [String]
       # --
@@ -57,11 +60,12 @@ module Jekyll
         dest = strip_slashes(asset_config[:destination])
         cdn = make_https(strip_slashes(asset_config[:cdn][:url]))
         base = strip_slashes(jekyll.config["baseurl"])
+        cfg = asset_config
 
         path = []
         path << cdn  if Jekyll.production? && cdn
-        path << base if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:baseurl])
-        path << dest if Jekyll.dev? || !cdn || (cdn && asset_config[:cdn][:destination])
+        path << base if Jekyll.dev? || !cdn || (cdn && cfg[:cdn][:baseurl])
+        path << dest if Jekyll.dev? || !cdn || (cdn && cfg[:cdn][:destination])
         path << user_path unless user_path.nil? || user_path == ""
 
         path = File.join(path.flatten.compact)
@@ -72,6 +76,9 @@ module Jekyll
       # --
       # param [String] the content type
       # Strips the secondary content from type.
+      # rubocop:enable Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/AbcSize
       # @return [String]
       # --
       module_function
@@ -107,6 +114,7 @@ module Jekyll
       # --
       # Get all the manifest files.
       # @note this includes dynamic keys, like SourceMaps.
+      # rubocop:disable Metrics/AbcSize
       # @return [Array<String>]
       # --
       module_function
@@ -131,6 +139,7 @@ module Jekyll
       end
 
       # --
+      # rubocop:enable Metrics/AbcSize
       # Either require the file or keep moving along.
       # @yield a block of code if the require works out.
       # @param [String] file the file to require.

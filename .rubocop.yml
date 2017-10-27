@@ -19,6 +19,7 @@ Style/ParallelAssignment: { Enabled: false }
 Style/Documentation: { Enabled: false }
 Style/GuardClause: { Enabled: false }
 Metrics/ClassLength: { Max: 120 }
+Metrics/AbcSize: { Max: 24 }
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%q': '{}'

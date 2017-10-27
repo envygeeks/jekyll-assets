@@ -153,19 +153,31 @@ module Jekyll
         # --
         private
         def write_src!
-          asset = base.join(env.strip_paths(@asset.filename)).to_s
-
-          [asset, map_files].flatten.compact.uniq.each do |v|
+          [asset_path, map_files].flatten.compact.uniq.each do |v|
             v = env.find_asset!(strip_base(v), pipeline: :source)
-            path = base.join(env.strip_paths(v.filename))
-            path = Map.path(asset: path, env: env)
+            path = map_path(v.filename)
 
             write(environment.in_dest_dir(path)) do |f|
               f.write(v.source)
               files.push(path.to_s)
-              files.uniq!
+                .uniq!
             end
           end
+        end
+
+        # --
+        private
+        def asset_path
+          base.join(env.strip_paths(@asset.filename)).to_s
+        end
+
+        # --
+        private
+        def map_path(file)
+          asset = base.join(env.strip_paths(file))
+          Map.path({
+            asset: asset, env: env
+          })
         end
       end
 

@@ -53,7 +53,7 @@ module Jekyll
       # --
       def self.for_args?(args)
         return true if arg_keys.empty?
-        !arg_keys.collect { |k| args.key?(k) }.any? do |k|
+        arg_keys.collect { |k| args.key?(k) }.none? do |k|
           k == false
         end
       end

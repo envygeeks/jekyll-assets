@@ -112,6 +112,7 @@ module Jekyll
 
         private
         def magick_preset_resize(img, cmd)
+          # rubocop:disable Metrics/LineLength
           width, height = img.width * 2, img.height * 2 if @args[:magick].key?(:double)
           width, height = img.width / 2, img.height / 2 if @args[:magick].key?(:half)
           cmd.resize "#{width}x#{height}" if width && height

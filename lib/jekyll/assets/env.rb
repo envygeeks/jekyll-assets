@@ -69,12 +69,12 @@ module Jekyll
       def cache
         @cache ||= begin
           type = asset_config[:caching][:type]
-          enabled = asset_config[:caching][:enabled]
+          enbl = asset_config[:caching][:enabled]
           path = in_cache_dir
 
-          out = Sprockets::Cache::MemoryStore.new if enabled && type == "memory"
-          out = Sprockets::Cache::FileStore.new(path) if enabled && type == "file"
-          out = Sprockets::Cache::NullStore.new unless enabled
+          out = Sprockets::Cache::MemoryStore.new if enbl && type == "memory"
+          out = Sprockets::Cache::FileStore.new(path) if enbl && type == "file"
+          out = Sprockets::Cache::NullStore.new unless enbl
           Sprockets::Cache.new(out, Logger)
         end
       end
@@ -114,8 +114,9 @@ module Jekyll
       private
       def excludes!
         excludes = Config.defaults[:sources]
+        source_dir = jekyll.in_source_dir + "/"
         jekyll.config["exclude"].concat(excludes)
-        jekyll.config["exclude"] << in_cache_dir.sub(jekyll.in_source_dir + "/", "")
+        jekyll.config["exclude"] << in_cache_dir.sub(source_dir, "")
         jekyll.config["exclude"].uniq!
       end
 
