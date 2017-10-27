@@ -42,6 +42,11 @@ module Jekyll
         end
 
         # --
+        def self.register_on(instance)
+          instance.register_exporter("*/*", self)
+        end
+
+        # --
         # @return [HashWithIndifferentAccess]
         # @note do not modify the original map.
         # Provides a modifible SourceMap
@@ -92,6 +97,7 @@ module Jekyll
         end
 
         # --
+        private
         def strip_src(path)
           path = Pathutil.new(path)
           base = path.basename.gsub(/\.source/, "")
@@ -127,6 +133,7 @@ module Jekyll
         # rubocop:enable Layout/MultilineBlockLayout
         # rubocop:enable Style/BlockDelimiters
         # --
+        private
         def write_map!
           path = Map.map_path(asset: asset, env: env)
           write(env.in_dest_dir(path)) do |f|
@@ -137,11 +144,14 @@ module Jekyll
         end
 
         # --
+        private
         def strip_base(asset)
           return asset if asset.is_a?(Sprockets::Asset)
           asset.sub(base + "/", "")
         end
 
+        # --
+        private
         def write_src!
           asset = base.join(env.strip_paths(@asset.filename)).to_s
 
@@ -156,10 +166,6 @@ module Jekyll
               files.uniq!
             end
           end
-        end
-
-        def self.register_on(instance)
-          instance.register_exporter("*/*", self)
         end
       end
 
