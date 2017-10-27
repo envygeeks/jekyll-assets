@@ -24,11 +24,20 @@ module Jekyll
             CSS
           })
         end
+
+        def self.register_on(instance)
+          content_type = "text/css"
+          instance.register_compressor content_type,
+            :source_map, CSS
+        end
       end
 
-      content_type = "text/css"
-      Sprockets.register_compressor content_type, \
-        :source_map, CSS
+      # --
+      # We load late in some cases.
+      # You can also register it in a Hook.
+      # Globally Register it.
+      # --
+      CSS.register_on(Sprockets)
     end
   end
 end

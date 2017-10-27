@@ -11,6 +11,12 @@ module Jekyll
         end
       end
 
+      # --
+      class << self
+        attr_reader :points
+      end
+
+      # --
       @points = {
         env: {
           before_init: {
@@ -102,7 +108,7 @@ module Jekyll
       # @note this is what plugins should use.
       # @return [nil]
       # --
-      def self.register(*point, priority: 3, &block)
+      def self.register(*point, priority: 2, &block)
         if priority > 3
           raise ArgumentError,
             "priority must be between 1 and 3"

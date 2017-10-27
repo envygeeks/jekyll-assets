@@ -39,6 +39,16 @@ module Jekyll
         DIR.join(env.strip_paths(asset.is_a?(Sprockets::Asset) ?
           asset.filename : asset))
       end
+
+      # --
+      def self.register_on(instance)
+        Writer.register_on(instance)
+        JavaScript.register_on(instance)
+        CSS.register_on(instance)
+
+        instance.css_compressor, instance.js_compressor =
+          :source_map, :source_map
+      end
     end
   end
 end

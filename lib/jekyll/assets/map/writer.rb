@@ -157,9 +157,18 @@ module Jekyll
             end
           end
         end
+
+        def self.register_on(instance)
+          instance.register_exporter("*/*", self)
+        end
       end
 
-      Sprockets.register_exporter "*/*", Writer
+      # --
+      # We load late in some cases.
+      # You can also register it in a Hook.
+      # Globally Register it.
+      # --
+      Writer.register_on(Sprockets)
     end
   end
 end

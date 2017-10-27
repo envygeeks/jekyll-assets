@@ -24,11 +24,20 @@ module Jekyll
             TXT
           })
         end
+
+        def self.register_on(instance)
+          content_type = "application/javascript"
+          instance.register_compressor(content_type,
+            :source_map, self)
+        end
       end
 
-      content_type = "application/javascript"
-      Sprockets.register_compressor content_type, \
-        :source_map, JavaScript
+      # --
+      # We load late in some cases.
+      # You can also register it in a Hook.
+      # Globally Register it.
+      # --
+      JavaScript.register_on(Sprockets)
     end
   end
 end
