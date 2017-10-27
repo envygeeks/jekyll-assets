@@ -1,5 +1,5 @@
 Metrics/MethodLength: { Max: 24 }
-Metrics/ModuleLength: { Max: 120 }
+Metrics/ModuleLength: { Max: 240 }
 Bundler/OrderedGems: { Enabled: false }
 Style/IfUnlessModifier: { Enabled: false }
 Lint/UselessAccessModifier: { Enabled: false }
