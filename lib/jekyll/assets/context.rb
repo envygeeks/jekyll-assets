@@ -17,7 +17,7 @@ module Sprockets
     # --
     def asset_path(path, _ = {})
       ctx = Liquid::ParseContext.new
-      Tag.new("img", "#{path} @path", ctx)
+      Jekyll::Assets::Tag.new("img", "#{path} @path", ctx)
         .render(context)
     end
 
