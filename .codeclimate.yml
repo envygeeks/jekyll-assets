@@ -10,3 +10,7 @@ exclude_paths:
   - .travis.yml
   - .gitignore
   - .rspec
+ratings:
+  paths:
+  - "spec/tests/**.rb"
+  - "lib/**.rb"
