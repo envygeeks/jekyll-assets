@@ -10,9 +10,9 @@ require "digest"
 module Jekyll
   module Assets
     class Proxy < Extensible
-      DIG = Digest::SHA256
-      DIR = "proxied".freeze
       attr_reader :file
+      DIG = Digest::SHA256
+      DIR = "proxied"
 
       class Deleted < StandardError
         def initialize(obj)

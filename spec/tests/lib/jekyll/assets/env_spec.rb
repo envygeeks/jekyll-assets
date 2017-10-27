@@ -22,8 +22,8 @@ describe Jekyll::Assets::Env do
         before do
           stub_asset_config({
             caching: {
-              type: nil
-            }
+              type: nil,
+            },
           })
         end
 
@@ -40,8 +40,8 @@ describe Jekyll::Assets::Env do
         before do
           stub_asset_config({
             caching: {
-              type: ""
-            }
+              type: "",
+            },
           })
         end
 
@@ -60,8 +60,8 @@ describe Jekyll::Assets::Env do
     before do
       stub_jekyll_config({
         assets: {
-          hello: :world
-        }
+          hello: :world,
+        },
       })
     end
 
@@ -82,7 +82,7 @@ describe Jekyll::Assets::Env do
 
   describe "#to_liquid_payload" do
     it "returns Hash<String,Drop>" do
-      subject.to_liquid_payload.each do |_, v|
+      subject.to_liquid_payload.each_value do |v|
         expect(v).to(be_a(Jekyll::Assets::Drop))
       end
     end
@@ -101,8 +101,8 @@ describe Jekyll::Assets::Env do
       before do
         stub_asset_config({
           caching: {
-            path: "hello-cache"
-          }
+            path: "hello-cache",
+          },
         })
       end
 
@@ -132,7 +132,7 @@ describe Jekyll::Assets::Env do
     context "w/ asset_config[:destination]" do
       before do
         stub_asset_config({
-          destination: "/hello"
+          destination: "/hello",
         })
       end
 
@@ -146,8 +146,8 @@ describe Jekyll::Assets::Env do
 
     it "in site dir" do
       rtn = subject.in_dest_dir
-      expect(rtn).to(start_with(jekyll.
-        in_dest_dir))
+      expect(rtn).to(start_with(jekyll
+        .in_dest_dir))
     end
 
     it "allows paths" do
@@ -164,16 +164,16 @@ describe Jekyll::Assets::Env do
     before do
       stub_asset_config({
         cdn: {
-          url: cdn
-        }
+          url: cdn,
+        },
       })
     end
 
     context "production" do
       before do
         allow(Jekyll).to(receive(:dev?)).and_return(false)
-        allow(Jekyll).to(receive(:production?)).
-          and_return(true)
+        allow(Jekyll).to(receive(:production?))
+          .and_return(true)
       end
 
       context "w/ asset_config[:cdn][:url]" do
@@ -186,7 +186,7 @@ describe Jekyll::Assets::Env do
       context "jekyll.config[:baseurl]" do
         before do
           stub_jekyll_config({
-            baseurl: "hello"
+            baseurl: "hello",
           })
         end
 
@@ -194,8 +194,8 @@ describe Jekyll::Assets::Env do
           before do
             stub_asset_config({
               cdn: {
-                url: nil
-              }
+                url: nil,
+              },
             })
           end
 
@@ -211,8 +211,8 @@ describe Jekyll::Assets::Env do
               before do
                 stub_asset_config({
                   cdn: {
-                    baseurl: true
-                  }
+                    baseurl: true,
+                  },
                 })
               end
 
@@ -237,8 +237,8 @@ describe Jekyll::Assets::Env do
           before do
             stub_asset_config({
               cdn: {
-                url: nil
-              }
+                url: nil,
+              },
             })
           end
 
@@ -254,8 +254,8 @@ describe Jekyll::Assets::Env do
             before do
               stub_asset_config({
                 cdn: {
-                  destination: true
-                }
+                  destination: true,
+                },
               })
             end
 
@@ -286,8 +286,8 @@ describe Jekyll::Assets::Env do
         before do
           stub_asset_config({
             cdn: {
-              url: cdn
-            }
+              url: cdn,
+            },
           })
         end
 
@@ -301,7 +301,7 @@ describe Jekyll::Assets::Env do
       context "w/ jekyll.config[:baseurl]" do
         before do
           stub_jekyll_config({
-            baseurl: "hello"
+            baseurl: "hello",
           })
         end
 

@@ -19,7 +19,7 @@ module Jekyll
 
         def run
           @args.update({
-            hello: :world
+            hello: :world,
           })
         end
       end
@@ -63,7 +63,7 @@ describe Jekyll::Assets::Default do
       result = {}
       subject.set(result, {
         asset: asset,
-          env: env,
+        env: env,
       })
 
       expect(result[:hello]).to(eq(:world))

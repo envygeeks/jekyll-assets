@@ -28,18 +28,18 @@ module Helpers
   def stub_jekyll_config(hash)
     hash = hash.deep_stringify_keys
     hash = jekyll.config.deep_merge(hash)
-    allow(jekyll).to(receive(:config).
-      and_return(hash))
+    allow(jekyll).to(receive(:config)
+      .and_return(hash))
   end
 
   def stub_asset_config(hash)
     hash = env.asset_config.deep_merge(hash)
-    allow(env).to(receive(:asset_config).
-      and_return(hash))
+    allow(env).to(receive(:asset_config)
+      .and_return(hash))
   end
 
   def self.cleanup_trash
-    %W(.jekyll-metadata _site .jekyll-cache).each do |v|
+    %w(.jekyll-metadata _site .jekyll-cache).each do |v|
       Pathutil.new(fixture_path).join(v).rm_rf
     end
   end
@@ -47,10 +47,10 @@ module Helpers
   def self.stub_jekyll_site(opts = {})
     @jekyll ||= begin
       silence_stdout do
-        dest = File.join(fixture_path, "_site")
-        Jekyll::Site.new(Jekyll.configuration({
-          "destination" => dest, "source" => fixture_path
-        })).tap(&:process)
+        config = Jekyll.configuration(opts)
+        config.update!("destination" => File.join(fixture_path, "_site"))
+        config.update!("source" => fixture_path)
+        Jekyll::Site.new(config).tap(&:process)
       end
     end
   end
@@ -67,10 +67,10 @@ module Helpers
 end
 
 RSpec.configure do |c|
-  # c.after (:suite) {  Helpers.cleanup_trash }
-  c.before(:suite) do Helpers.cleanup_trash
-    Helpers.stub_jekyll_site
-  end
+  c.before(:suite) { Helpers.tap(&:clean_trash).stub_jekyll_site }
+  # c.after (:suite) do
+  #   Helpers.cleanup_trash
+  # end
 
   c.include Helpers
   c.extend  Helpers

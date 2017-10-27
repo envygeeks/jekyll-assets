@@ -64,8 +64,8 @@ describe Jekyll::Assets::Proxy do
       })
 
       expect(dir.children.size).to be >= 1
-      expect(Pathutil.new(out.filename).binread).to(eq(Pathutil.
-        new(asset.filename).binread))
+      expect(Pathutil.new(out.filename).binread).to(eq(Pathutil
+        .new(asset.filename).binread))
     end
   end
 end

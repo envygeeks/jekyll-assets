@@ -12,6 +12,7 @@ Layout/MultilineMethodCallIndentation: { EnforcedStyle: indented }
 Layout/EmptyLinesAroundAccessModifier: { Enabled: false }
 Style/StringLiterals: { EnforcedStyle: double_quotes }
 Style/MultilineTernaryOperator: { Enabled: false }
+Layout/IndentArray: { EnforcedStyle: consistent }
 Layout/IndentHash: { EnforcedStyle: consistent }
 Gemspec/OrderedDependencies: { Enabled: false }
 Style/ParallelAssignment: { Enabled: false }
@@ -35,3 +36,6 @@ AllCops:
     - examples/**/*
     - node_modules/**/*
     - vendor/**/*
+Metrics/BlockLength:
+  Exclude:
+  - 'spec/**/*_spec.rb'

@@ -7,7 +7,7 @@ require "jekyll"
 module Jekyll
   module Assets
     class Logger
-      PREFIX = "Assets: ".freeze
+      PREFIX = "Assets: "
       def self.logger
         self
       end

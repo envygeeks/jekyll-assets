@@ -4,8 +4,8 @@
 
 require "rspec/helper"
 describe Jekyll::Assets::Tag do
-  [:asset, :css, :js, :img].each do |k|
-    context k.to_s, :render => true do
+  %i(asset css js img).each do |k|
+    context k.to_s, render: true do
       let :page do
         jekyll.pages.find do |v|
           v.path == "tag/#{k}.html"
@@ -18,7 +18,7 @@ describe Jekyll::Assets::Tag do
     end
   end
 
-  context nil, :render => true do
+  context nil, reder: true do
     let :page do
       jekyll.pages.find do |v|
         v.path == "tag/attr.html"
