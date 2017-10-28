@@ -10,6 +10,8 @@ describe Jekyll::Assets::Drop do
     })
   end
 
+  #
+
   it { respond_to :height }
   it { respond_to :basename }
   it { respond_to :digest_path }
@@ -19,9 +21,11 @@ describe Jekyll::Assets::Drop do
   it { respond_to :filename }
   it { respond_to :width }
 
+  #
+
   describe "#dimensions" do
-    it "should return a hash" do
-      expect(subject.dimensions).to(be_a(Hash))
+    it "returns a Hash<Symbol,Integer>" do
+      expect(subject.dimensions).to be_a(Hash)
     end
   end
 end

@@ -12,11 +12,15 @@ describe Jekyll::Assets::Tag do
         end
       end
 
-      it "should render" do
+      #
+
+      it "renders" do
         expect(page.to_s.strip).not_to(be_empty)
       end
     end
   end
+
+  #
 
   context nil, render: true do
     let :page do
@@ -25,18 +29,24 @@ describe Jekyll::Assets::Tag do
       end
     end
 
+    #
+
     subject do
       fragment(page.to_s.strip)
     end
 
-    it "should render custom attributes" do
+    #
+
+    it "supports attrs" do
       html = subject.children.first
       expect(html.attributes["myattr"].to_s).to(eq("val"))
       expect(html.attributes).to(have_key("myattr"))
     end
 
+    #
+
     context "when given @path" do
-      it "should just output the path" do
+      it "returns <String>" do
         page = jekyll.pages.find { |v| v.path == "tag/path.html" }
         path = env.prefix_url(env.find_asset("bundle.css").digest_path)
         expect(page.to_s.strip).to(eq(path))

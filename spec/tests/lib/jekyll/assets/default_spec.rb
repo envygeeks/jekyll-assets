@@ -13,6 +13,8 @@ module Jekyll
         content_types :test
       end
 
+      #
+
       class Test2 < Default
         static world: :hello
         content_types :test
@@ -27,16 +29,22 @@ module Jekyll
   end
 end
 
+#
+
 describe Jekyll::Assets::Default do
   before do
-    allow(asset).to(receive(:content_type).and_return(:test))
+    allow(asset).to receive(:content_type).and_return(:test)
   end
+
+  #
 
   let :asset do
     env.find_asset!("img.png")
   end
 
-  describe "get" do
+  #
+
+  describe ".get" do
     subject do
       described_class.get({
         type: :test,
@@ -46,11 +54,15 @@ describe Jekyll::Assets::Default do
       })
     end
 
-    it "should give an indifferent hash" do
-      expect(subject).to(be_a(HashWithIndifferentAccess))
+    #
+
+    it "is indifferent" do
+      expect(subject).to be_a(HashWithIndifferentAccess)
     end
 
-    it "should merge values" do
+    #
+
+    it "merges" do
       expect(subject).to(eq({
         "hello" => :world,
         "world" => :hello,
@@ -58,15 +70,16 @@ describe Jekyll::Assets::Default do
     end
   end
 
-  describe "set_defaults" do
-    it "should run and set defaults" do
-      result = {}
-      subject.set(result, {
+  #
+
+  describe ".set" do
+    it "sets defaults" do
+      subject.set(result = {}, {
         asset: asset,
         env: env,
       })
 
-      expect(result[:hello]).to(eq(:world))
+      expect(result[:hello]).to eq(:world)
     end
   end
 end

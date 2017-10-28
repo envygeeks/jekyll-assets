@@ -17,6 +17,8 @@ module Jekyll
         end
       end
 
+      #
+
       class ProxyTest2 < Proxy
         content_types :test
         arg_keys :test
@@ -29,13 +31,17 @@ module Jekyll
   end
 end
 
+#
+
 describe Jekyll::Assets::Proxy do
   let(:klass) { Jekyll::Assets::Plugins::ProxyTest1 }
   before { allow(asset).to(receive(:content_type).and_return(:test)) }
   let(:args) { Liquid::Tag::Parser.new("img.png @test:2x") }
   let(:asset) { env.find_asset!(args[:argv1]) }
 
-  it "should call the proxy" do
+  #
+
+  it "calls" do
     expect_any_instance_of(klass).to(receive(:process))
     expect(klass).to(receive(:new).and_call_original)
     subject.proxy(asset, {
@@ -44,7 +50,9 @@ describe Jekyll::Assets::Proxy do
     })
   end
 
-  it "should return an asset" do
+  #
+
+  it "returns <Asset>" do
     out = subject.proxy(asset, {
       args: args,
       env: env,
@@ -55,9 +63,11 @@ describe Jekyll::Assets::Proxy do
     expect(path).to(include(out.filename))
   end
 
+  #
+
   context do
     let(:dir) { Pathutil.new(env.in_cache_dir(subject::DIR)) }
-    it "should copy the asset" do
+    it "copies" do
       out = subject.proxy(asset, {
         args: args,
         env: env,

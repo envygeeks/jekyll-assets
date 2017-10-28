@@ -153,15 +153,13 @@ module Jekyll
       # --
       private
       def setup_sources!
-        @sources ||= begin
-          asset_config["sources"].each do |v|
-            unless paths.include?(jekyll.in_source_dir(v))
-              append_path jekyll.in_source_dir(v)
-            end
+        asset_config["sources"].each do |v|
+          unless paths.include?(jekyll.in_source_dir(v))
+            append_path jekyll.in_source_dir(v)
           end
-
-          paths
         end
+
+        paths
       end
 
       # --
@@ -176,9 +174,9 @@ module Jekyll
       require_all "plugins/html/defaults/*"
       require_all "plugins/html/*"
 
+      require_relative "map" unless old_sprockets?
       Hook.register :env, :after_init, priority: 3 do
         unless self.class.old_sprockets?
-          require_relative "map"
           Map.register_on(self)
         end
       end

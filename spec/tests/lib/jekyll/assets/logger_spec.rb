@@ -9,10 +9,12 @@ describe Jekyll::Assets::Logger do
   it { respond_to :debug }
   it { respond_to :warn }
 
+  #
+
   %i(info error debug warn).each do |k|
     describe "##{k}" do
-      it "should accept a block" do
-        expect(Jekyll.logger).to(receive(k)).with(subject::PREFIX, "hello")
+      it "accepts blocks" do
+        expect(Jekyll.logger).to receive(k).with(subject::PREFIX, "hello")
         subject.send(k) do
           "hello"
         end
