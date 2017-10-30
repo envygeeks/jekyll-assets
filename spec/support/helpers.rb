@@ -39,8 +39,9 @@ module Helpers
   end
 
   def self.cleanup_trash
-    %w(.jekyll-metadata _site .jekyll-cache).each do |v|
-      Pathutil.new(fixture_path).join(v).rm_rf
+    Pathutil.new(fixture_path).join("_site").rm_rf
+    %w(.jekyll-metadata .sass-cache .jekyll-cache).each do |v|
+      Pathutil.pwd.join(v).rm_rf
     end
   end
 
@@ -48,8 +49,8 @@ module Helpers
     @jekyll ||= begin
       silence_stdout do
         config = Jekyll.configuration(opts)
-        config.update("destination" => File.join(fixture_path, "_site"))
-        config.update("source" => fixture_path)
+        config["source"] = fixture_path
+        config["destination"] = File.join(fixture_path, "_site")
         Jekyll::Site.new(config).tap(&:process)
       end
     end
@@ -68,9 +69,9 @@ end
 
 RSpec.configure do |c|
   c.before(:suite) { Helpers.tap(&:cleanup_trash).stub_jekyll_site }
-  # c.after (:suite) do
-  #   Helpers.cleanup_trash
-  # end
+  c.after (:suite) do
+    Helpers.cleanup_trash
+  end
 
   c.include Helpers
   c.extend  Helpers

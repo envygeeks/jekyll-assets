@@ -34,12 +34,6 @@ describe Jekyll::Assets::Utils do
       expect(subject.in_cache_dir("one", "two")).to \
         end_with("one/two")
     end
-
-    #
-
-    it "in source dir" do
-      expect(subject.in_cache_dir).to start_with(jekyll.in_source_dir)
-    end
   end
 
   #

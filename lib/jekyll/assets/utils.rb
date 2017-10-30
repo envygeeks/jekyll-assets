@@ -26,9 +26,8 @@ module Jekyll
       # @return [String]
       # --
       def in_cache_dir(*paths)
-        destination = strip_slashes(asset_config[:caching][:path])
-        path = jekyll.in_source_dir(destination)
-        paths.reduce(path) do |b, p|
+        path = Pathutil.pwd.join(strip_slashes(asset_config[:caching][:path]))
+        paths.reduce(path.to_s) do |b, p|
           Jekyll.sanitized_path(b, p)
         end
       end
