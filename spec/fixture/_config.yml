@@ -1,3 +1,4 @@
+img: img.png
 defaults:
 - scope:
     type: pages

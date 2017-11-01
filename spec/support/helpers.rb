@@ -48,10 +48,13 @@ module Helpers
   def self.stub_jekyll_site(opts = {})
     @jekyll ||= begin
       silence_stdout do
-        config = Jekyll.configuration(opts)
-        config["source"] = fixture_path
+        cfg = Pathutil.new(fixture_path).join("_config.yml").read_yaml
+
+        config = Jekyll.configuration(cfg.deep_merge(opts))
         config["destination"] = File.join(fixture_path, "_site")
-        Jekyll::Site.new(config).tap(&:process)
+        config["source"] = fixture_path
+        Jekyll::Site.new(config)
+          .tap(&:process)
       end
     end
   end

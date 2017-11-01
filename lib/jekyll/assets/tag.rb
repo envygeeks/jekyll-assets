@@ -29,9 +29,7 @@ module Jekyll
       def initialize(tag, args, tokens)
         @tag = tag.to_sym
         @args = Liquid::Tag::Parser.new(args)
-        @name = @args[:argv1]
         @tokens = tokens
-
         super
       end
 
@@ -43,22 +41,22 @@ module Jekyll
       #   has to change in the new content.
       # --
       def render(context)
-        env = context.registers[:site].sprockets
-        arg = env.parse_liquid(@args)
+        env  = context.registers[:site].sprockets
+        args = env.parse_liquid(@args)
 
-        o_asset = env.find_asset!(@name)
-        Default.set(arg, env: env, asset: o_asset)
-        asset = Proxy.proxy(o_asset, args: arg, env: env)
-        Default.set(arg, env: env, asset: asset)
+        o_asset = env.find_asset!(args[:argv1])
+        Default.set(args, env: env, asset: o_asset)
+        asset = Proxy.proxy(o_asset, args: args, env: env)
+        Default.set(args, env: env, asset: asset)
         env.manifest.compile(asset.logical_path)
 
-        return env.prefix_url(asset.digest_path) if arg[:path]
-        return asset.data_uri if args[:"data-uri"] || arg[:data_uri]
-        return asset.to_s if arg[:source]
+        return env.prefix_url(asset.digest_path) if args[:path]
+        return asset.data_uri if args[:"data-uri"] || args[:data_uri]
+        return asset.to_s if args[:source]
         type = asset.content_type
 
         HTML.build({
-          args: arg,
+          args: args,
           asset: asset,
           type: type,
           env: env,

@@ -53,4 +53,18 @@ describe Jekyll::Assets::Tag do
       end
     end
   end
+
+  #
+
+  context "w/ Liquid" do
+    let :page do
+      jekyll.pages.find do |v|
+        v.path == "tag/liquid.html"
+      end
+    end
+
+    it "renders" do
+      expect(page.to_s).not_to be_empty
+    end
+  end
 end
