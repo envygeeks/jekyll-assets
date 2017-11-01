@@ -6,8 +6,42 @@ module Jekyll
   module Assets
     module Utils
       # --
+      # @param [String,Hash<>,Array<>] obj the liquid to parse.
+      # Parses the Liquid that's being passed, with Jekyll's context.
+      # rubocop:disable Lint/LiteralAsCondition
+      # @return [String]
+      # --
+      def parse_liquid(obj)
+        case true
+        when obj.is_a?(Hash) || obj.is_a?(Liquid::Tag::Parser)
+          obj.each_key.with_object(obj) do |k, o|
+            if o[k].is_a?(String)
+              then o[k] = parse_liquid(o[k])
+            end
+          end
+        when obj.is_a?(Array)
+          obj.map do |v|
+            if v.is_a?(String)
+              then v = parse_liquid(v)
+            end
+
+            v
+          end
+        else
+          payload = jekyll.site_payload
+          jekyll.liquid_renderer.file("asset").parse(obj).render!(payload, {
+            filters: [Jekyll::Filters, Filters],
+            registers: {
+              site: jekyll,
+            },
+          })
+        end
+      end
+
+      # --
       # @param [String] path the path to strip.
       # Strips most source paths from the given path path.
+      # rubocop:enable Lint/LiteralAsCondition
       # @return [String]
       # --
       def strip_paths(path)

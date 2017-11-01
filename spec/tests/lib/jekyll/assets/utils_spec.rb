@@ -10,6 +10,37 @@ describe Jekyll::Assets::Utils do
 
   #
 
+  describe "#parse_liquid" do
+    context "w/ {}" do
+      it "parses" do
+        expect(env.parse_liquid(hello: "{{ site }}")).to eq({
+          hello: "Jekyll::Drops::SiteDrop",
+        })
+      end
+    end
+
+    #
+
+    context "w/ []" do
+      it "parses" do
+        expect(env.parse_liquid(["{{ site }}"])).to eq([
+          "Jekyll::Drops::SiteDrop",
+        ])
+      end
+    end
+
+    #
+
+    context "w/ String" do
+      it "parses" do
+        expect(env.parse_liquid("{{ site }}")).to eq(
+          "Jekyll::Drops::SiteDrop")
+      end
+    end
+  end
+
+  #
+
   describe "#in_cache_dir" do
     context "w/ asset_config[:caching][:path]" do
       before do

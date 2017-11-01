@@ -44,20 +44,21 @@ module Jekyll
       # --
       def render(context)
         env = context.registers[:site].sprockets
+        arg = env.parse_liquid(@args)
 
         o_asset = env.find_asset!(@name)
-        Default.set(@args, env: env, asset: o_asset)
-        asset = Proxy.proxy(o_asset, args: @args, env: env)
-        Default.set(@args, env: env, asset: asset)
+        Default.set(arg, env: env, asset: o_asset)
+        asset = Proxy.proxy(o_asset, args: arg, env: env)
+        Default.set(arg, env: env, asset: asset)
         env.manifest.compile(asset.logical_path)
 
-        return env.prefix_url(asset.digest_path) if @args[:path]
-        return asset.data_uri if @args[:"data-uri"] || @args[:data_uri]
-        return asset.to_s if @args[:source]
+        return env.prefix_url(asset.digest_path) if arg[:path]
+        return asset.data_uri if args[:"data-uri"] || arg[:data_uri]
+        return asset.to_s if arg[:source]
         type = asset.content_type
 
         HTML.build({
-          args: @args,
+          args: arg,
           asset: asset,
           type: type,
           env: env,
