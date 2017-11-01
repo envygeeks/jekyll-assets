@@ -2,8 +2,13 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
-require "rubocop/rake_task"
+ogv = $VERBOSE
+$VERBOSE = nil
+require "bundler/setup"
 require "rspec/core/rake_task"
-RSpec::Core::RakeTask.new(:spec)
+require "rubocop/rake_task"
+$VERBOSE = ogv
+
 RuboCop::RakeTask.new(:rubocop)
+RSpec::Core::RakeTask.new(:spec)
 task default: [:spec]
