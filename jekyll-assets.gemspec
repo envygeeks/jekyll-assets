@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
     them, respecting dependencies, minify and many more.
   DESC
 
+  spec.add_runtime_dependency("execjs", "~> 2.7")
   spec.add_runtime_dependency("nokogiri", "~> 1.8")
   spec.add_runtime_dependency("activesupport", "~> 5.0")
   spec.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
