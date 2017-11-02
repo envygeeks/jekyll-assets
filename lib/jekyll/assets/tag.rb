@@ -40,9 +40,9 @@ module Jekyll
       #   changes, at that point there might be something that
       #   has to change in the new content.
       # --
-      def render(context)
-        env  = context.registers[:site].sprockets
-        args = env.parse_liquid(@args)
+      def render(ctx)
+        env  = ctx.registers[:site].sprockets
+        args = env.parse_liquid(@args, ctx)
 
         o_asset = env.find_asset!(args[:argv1])
         Default.set(args, env: env, asset: o_asset)

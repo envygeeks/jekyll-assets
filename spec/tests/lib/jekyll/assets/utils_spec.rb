@@ -11,9 +11,16 @@ describe Jekyll::Assets::Utils do
   #
 
   describe "#parse_liquid" do
+    let :ctx do
+      Struct.new(:registers).new({
+        site: jekyll,
+        page: nil,
+      })
+    end
+
     context "w/ {}" do
       it "parses" do
-        expect(env.parse_liquid(hello: "{{ site }}")).to eq({
+        expect(env.parse_liquid({ hello: "{{ site }}" }, ctx)).to eq({
           hello: "Jekyll::Drops::SiteDrop",
         })
       end
@@ -23,7 +30,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ []" do
       it "parses" do
-        expect(env.parse_liquid(["{{ site }}"])).to eq([
+        expect(env.parse_liquid(["{{ site }}"], ctx)).to eq([
           "Jekyll::Drops::SiteDrop",
         ])
       end
@@ -33,7 +40,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ String" do
       it "parses" do
-        expect(env.parse_liquid("{{ site }}")).to eq(
+        expect(env.parse_liquid("{{ site }}", ctx)).to eq(
           "Jekyll::Drops::SiteDrop")
       end
     end

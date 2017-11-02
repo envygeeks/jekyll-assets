@@ -6,34 +6,38 @@ module Jekyll
   module Assets
     module Utils
       # --
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
       # @param [String,Hash<>,Array<>] obj the liquid to parse.
       # Parses the Liquid that's being passed, with Jekyll's context.
       # rubocop:disable Lint/LiteralAsCondition
       # @return [String]
       # --
-      def parse_liquid(obj)
+      def parse_liquid(obj, ctx)
         case true
         when obj.is_a?(Hash) || obj.is_a?(Liquid::Tag::Parser)
           obj.each_key.with_object(obj) do |k, o|
             if o[k].is_a?(String)
-              then o[k] = parse_liquid(o[k])
+              then o[k] = parse_liquid(o[k], ctx)
             end
           end
         when obj.is_a?(Array)
           obj.map do |v|
             if v.is_a?(String)
-              then v = parse_liquid(v)
+              then v = parse_liquid(v, ctx)
             end
 
             v
           end
         else
-          payload = jekyll.site_payload
+          payload = ctx.registers[:site].site_payload
+          payload = payload.merge(ctx.registers[:page] || {})
+          registers = { site: ctx.registers[:site] }
+          filters = [Jekyll::Filters, Filters]
+
+          run_liquid_hooks(payload, registers[:site])
           jekyll.liquid_renderer.file("asset").parse(obj).render!(payload, {
-            filters: [Jekyll::Filters, Filters],
-            registers: {
-              site: jekyll,
-            },
+            filters: filters, registers: registers
           })
         end
       end
@@ -41,7 +45,9 @@ module Jekyll
       # --
       # @param [String] path the path to strip.
       # Strips most source paths from the given path path.
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Lint/LiteralAsCondition
+      # rubocop:enable Metrics/AbcSize
       # @return [String]
       # --
       def strip_paths(path)
@@ -202,6 +208,38 @@ module Jekyll
         end
       rescue ExecJS::RuntimeUnavailable
         nil
+      end
+
+      # --
+      # @param [Jekyll::Site] site
+      # @param [Hash<Symbol,Object>] payload
+      # Try to replicate and run hooks the Jekyll would normally run.
+      # rubocop:disable Metrics/LineLength
+      # @return nil
+      # --
+      def run_liquid_hooks(payload, site)
+        Hook.trigger(:liquid, :pre_render) { |h| h.call(payload, site) }
+        post, page, doc = get_liquid_obj(payload, site)
+
+        # This is a bit nasty, but Jekyll does not distinguish?!
+        Jekyll::Hooks.trigger(:post, :pre_render, payload, site) if post
+        Jekyll::Hooks.trigger(:document, :pre_render, payload, site) if post || doc
+        Jekyll::Hooks.trigger(:page, :pre_render, payload, site) if page
+      end
+
+      # --
+      # @param [Jekyll::Site] site
+      # @param [Hash<Symbol,Object>] payload
+      # Discovers the Jekyll object, corresponding to the type.
+      # @note this allows us to trigger hooks that Jekyll would trigger.
+      # @return [Jekyll::Document, Jekyll::Page]
+      # rubocop:disable Layout/ExtraSpacing
+      # --
+      def get_liquid_obj(payload, site)
+        post = site.posts.docs.find { |v| v["path"] == payload["path"] }
+        docs = site. documents.find { |v| v["path"] == payload["path"] } unless post
+        page = site.     pages.find { |v| v["path"] == payload["path"] } unless docs
+        [post, page, docs]
       end
     end
   end
