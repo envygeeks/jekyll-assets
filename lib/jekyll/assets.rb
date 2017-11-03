@@ -18,6 +18,6 @@ def require_all(*globs)
 end
 
 require_relative "assets/env"
-Jekyll::Hooks.register :site, :pre_render, priority: :low do |s, _|
-  Jekyll::Assets::Env.new(s)
+Jekyll::Hooks.register :site, :post_read do |o|
+  Jekyll::Assets::Env.new(o)
 end
