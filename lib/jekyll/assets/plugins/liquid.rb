@@ -20,18 +20,11 @@ module Jekyll
           "text/liquid+css" => ".liquid.css",
         }.freeze
 
-        def self.call(context)
-          file = Pathutil.new(context[:filename])
-          jekyll = context[:environment].jekyll
-
-          payload_ = jekyll.site_payload
-          renderer = jekyll.liquid_renderer.file(file)
-          context[:data] = renderer.parse(context[:data]).render!(payload_, {
-            filters: [Jekyll::Filters, Jekyll::Assets::Filters],
-            registers: {
-              site: jekyll,
-            },
-          })
+        def self.call(ctx)
+          env, mck = ctx[:environment], Struct.new(:registers)
+          ctx[:data] = env.parse_liquid(ctx[:data], mck.new({
+            site: env.jekyll,
+          }))
         end
       end
 
