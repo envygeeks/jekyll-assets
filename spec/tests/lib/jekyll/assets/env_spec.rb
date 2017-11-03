@@ -16,6 +16,16 @@ describe Jekyll::Assets::Env do
 
   #
 
+  describe "#initialize" do
+    context "on Jekyll::Site" do
+      it "sets sprockets" do
+        expect(env.jekyll.sprockets).not_to be_nil
+      end
+    end
+  end
+
+  #
+
   describe "#cache" do
     before do
       subject.instance_variable_set(:@cache, nil)

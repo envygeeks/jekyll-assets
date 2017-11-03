@@ -221,10 +221,10 @@ module Jekyll
         Hook.trigger(:liquid, :pre_render) { |h| h.call(payload, site) }
         post, page, doc = get_liquid_obj(payload, site)
 
-        # This is a bit nasty, but Jekyll does not distinguish?!
-        Jekyll::Hooks.trigger(:post, :pre_render, payload, site) if post
-        Jekyll::Hooks.trigger(:document, :pre_render, payload, site) if post || doc
-        Jekyll::Hooks.trigger(:page, :pre_render, payload, site) if page
+        # I would assume most people set in :pre_render logically?
+        Jekyll::Hooks.trigger(:posts, :pre_render, post, payload) if post
+        Jekyll::Hooks.trigger(:documents, :pre_render, post || doc, payload) if post || doc
+        Jekyll::Hooks.trigger(:pages, :pre_render, page, payload) if page
       end
 
       # --

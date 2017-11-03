@@ -18,6 +18,22 @@ describe Jekyll::Assets::Utils do
       })
     end
 
+    #
+
+    context "a page" do
+      let :page do
+        site.pages.find do |v|
+          v.path == "context.html"
+        end
+      end
+
+      #
+
+      it "parses" do
+        expect(page.output).to match(%r!<img!)
+      end
+    end
+
     context "w/ {}" do
       it "parses" do
         expect(env.parse_liquid({ hello: "{{ site }}" }, ctx)).to eq({
