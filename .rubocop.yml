@@ -4,6 +4,7 @@ Bundler/OrderedGems: { Enabled: false }
 Style/IfUnlessModifier: { Enabled: false }
 Lint/UselessAccessModifier: { Enabled: false }
 Lint/RescueWithoutErrorClass: { Enabled: false }
+Style/RegexpLiteral: { EnforcedStyle: percent_r }
 Style/BracesAroundHashParameters: { Enabled: false }
 Layout/MultilineMethodCallBraceLayout: { Enabled: false }
 Layout/AlignParameters: { EnforcedStyle: with_fixed_indentation }
