@@ -54,9 +54,10 @@ module Helpers
 
         config = Jekyll.configuration(cfg.deep_merge(opts))
         config["destination"] = File.join(fixture_path, "_site")
-        config["source"] = fixture_path
+        config["source"] = fixture_path.to_s
         out = Jekyll::Site.new(config)
         out.process
+        out
       end
     rescue => e
       STDERR.puts "There was a problem building the site.".yellow
