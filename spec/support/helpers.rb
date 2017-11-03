@@ -47,15 +47,22 @@ module Helpers
 
   def self.stub_jekyll_site(opts = {})
     @jekyll ||= begin
+      out = nil
+
       silence_stdout do
         cfg = Pathutil.new(fixture_path).join("_config.yml").read_yaml
 
         config = Jekyll.configuration(cfg.deep_merge(opts))
         config["destination"] = File.join(fixture_path, "_site")
         config["source"] = fixture_path
-        Jekyll::Site.new(config)
-          .tap(&:process)
+        out = Jekyll::Site.new(config)
+        out.process
       end
+    rescue => e
+      STDERR.puts "There was a problem building the site.".yellow
+      STDERR.puts(e.message.red)
+      STDERR.puts "\n\n"
+      out
     end
   end
 
