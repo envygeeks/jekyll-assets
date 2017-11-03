@@ -236,10 +236,17 @@ module Jekyll
       # rubocop:disable Layout/ExtraSpacing
       # --
       def get_liquid_obj(payload, site)
-        post = site.posts.docs.find { |v| v["path"] == payload["path"] }
-        docs = site. documents.find { |v| v["path"] == payload["path"] } unless post
-        page = site.     pages.find { |v| v["path"] == payload["path"] } unless docs
-        [post, page, docs]
+        path = payload["path"]
+
+        post = site.posts.docs.find { |v| v.relative_path == path }
+        docs = site. documents.find { |v| v.relative_path == path } unless post
+        page = site.     pages.find { |v| v.relative_path == path } unless docs
+
+        [
+          post,
+          page,
+          docs,
+        ]
       end
     end
   end
