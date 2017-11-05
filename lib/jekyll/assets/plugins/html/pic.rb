@@ -24,7 +24,7 @@ module Jekyll
             ctx1, ctx2 = Liquid::ParseContext.new, context
             Nokogiri::HTML::Builder.with(@doc) do |d|
               d.picture @args[:picture] do |p|
-                p.img @args.to_html(hash: true)
+                p.img @args.to_h(html: true)
                 @args[:srcset].each do |v|
                   p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
                     ctx1).render(ctx2)
@@ -34,7 +34,7 @@ module Jekyll
           else
             @args[:srcset] = @args[:src]
             Nokogiri::HTML::Builder.with(@doc) do |d|
-              d.source(@args.to_html(hash: true).tap do |o|
+              d.source(@args.to_h(html: true).tap do |o|
                 o.delete(:src)
               end)
             end

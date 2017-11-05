@@ -14,7 +14,7 @@ module Jekyll
 
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|
-            atr = @args.to_html(hash: true)
+            atr = @args.to_h(html: true)
             d.script(@asset.to_s, atr) if @args[:inline]
             d.script(atr) unless @args[:inline]
           end

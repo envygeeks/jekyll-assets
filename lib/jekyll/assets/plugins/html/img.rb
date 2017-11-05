@@ -19,8 +19,8 @@ module Jekyll
 
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|
-            d.img(@args.to_html({
-              hash: true,
+            d.img(@args.to_h({
+              html: true,
             }))
           end
         end

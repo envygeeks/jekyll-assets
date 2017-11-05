@@ -11,7 +11,7 @@ module Jekyll
         content_types "image/svg+xml"
 
         def run
-          arg = @args.to_html(hash: true)
+          arg = @args.to_h(html: true)
           arg.each do |k, v|
             @doc.set_attribute(k, v)
           end
