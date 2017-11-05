@@ -13,6 +13,6 @@ describe Jekyll::Assets::Config do
 
   it "merges sources" do
     expect(subject.new(sources: ["hello"])[:sources]
-      .grep(/hello/).size).to eq(1)
+      .grep(%r!hello!).size).to eq(1)
   end
 end

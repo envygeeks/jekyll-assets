@@ -71,7 +71,7 @@ module Jekyll
       # --
       def run
         methods = self.class.instance_methods - Object.instance_methods
-        methods.grep(/^set_/).each do |v|
+        methods.grep(%r!^set_!).each do |v|
           send(v)
         end
       end

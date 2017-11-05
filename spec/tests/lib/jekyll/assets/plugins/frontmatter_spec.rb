@@ -10,7 +10,7 @@ describe "Plugins/Frontmatter" do
 
   describe "---" do
     it "strips frontmatter" do
-      expect(asset.to_s).to(match(/^body\s*{/))
+      expect(asset.to_s).to(match(%r!^body\s*{!))
     end
   end
 end

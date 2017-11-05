@@ -34,7 +34,7 @@ module Jekyll
 
         def runners
           private_methods(true).select do |v|
-            v =~ /^magick_/ && v != :magick_format
+            v =~ %r!^magick_! && v != :magick_format
           end
         end
 

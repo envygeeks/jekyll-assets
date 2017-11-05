@@ -100,7 +100,7 @@ module Jekyll
         private
         def strip_src(path)
           path = Pathutil.new(path)
-          base = path.basename.gsub(/\.source/, "")
+          base = path.basename.gsub(%r!\.source!, "")
           return path.dirname.join(base).to_s unless path.dirname == "."
           base.to_s if path.dirname == "."
         end
