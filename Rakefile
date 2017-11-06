@@ -2,17 +2,14 @@
 # Copyright: 2012 - 2017 - MIT License
 # Encoding: utf-8
 
-$VERBOSE = nil
+$stderr = StringIO.new
 require "bundler/setup"
 require "rspec/core/rake_task"
 require "rubocop/rake_task"
+$stderr = STDERR
 
 # --
-RuboCop::RakeTask.new(:rubocop)
 RSpec::Core::RakeTask.new(:spec)
+RuboCop::RakeTask.new(:rubocop) { |t| t.options = %w(--format=e --parallel) }
+Rake::Task[:spec].enhance { Rake::Task[:rubocop].invoke }
 task default: %i(spec rubocop)
-
-# --
-Rake::Task[:spec].enhance do
-  Rake::Task[:rubocop].invoke
-end
