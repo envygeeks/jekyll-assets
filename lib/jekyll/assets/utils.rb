@@ -12,24 +12,21 @@ module Jekyll
       #  the rest of Jekyll-Assets with little trouble.
       # --
       def external_asset(url, env:)
-        _, mime = Sprockets.match_path_extname(url, Sprockets.mime_exts)
-        raise Sprockets::AssetNotFound, url unless mime
+        _, type = Sprockets.match_path_extname(url, Sprockets.mime_exts)
+        raise Sprockets::FileNotFound, url unless type
         name = File.basename(url)
-        opts = {
+
+        Url.new(*[Env.old_sprockets? ? env : nil, {
           name: name,
           filename: url,
-          content_type: mime,
+          content_type: type,
           load_path: File.dirname(url),
           id: Digest::SHA256.hexdigest(url),
           logical_path: name,
           metadata: {},
           source: "",
           uri: url,
-        }
-
-        # Old Sprockets needs the env.
-        Url.new(*(Env.old_sprockets? ? \
-          [env, opts] : [opts]))
+        }].compact)
       end
 
       # --
