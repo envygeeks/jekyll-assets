@@ -13,12 +13,15 @@ module Jekyll
         static type: "text/css"
 
         def set_href
-          @args[:href] = @env.prefix_url(@asset.digest_path)
+          return @args[:href] = @asset.url if @asset.is_a?(Url)
+          @args[:href] = @env.prefix_url(@asset
+            .digest_path)
         end
 
         def set_integrity
+          return if @asset.is_a?(Url)
           @args[:integrity] = @asset.integrity
-          unless @args.key?(:crossorigin)
+          if !@args.key?(:crossorigin) && @args[:integrity]
             @args[:crossorigin] = "anonymous"
           end
         end

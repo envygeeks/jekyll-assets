@@ -10,17 +10,25 @@ module Jekyll
       class SVG < HTML
         content_types "image/svg+xml"
 
+        # --
         def run
-          arg = @args.to_h(html: true)
-          arg.each do |k, v|
-            @doc.set_attribute(k, v)
+          if @asset.is_a?(Url) && @args[:inline]
+            raise Errors::Generic, "cannot inline external" \
+              "invalid argument @inline"
+          else
+            arg = @args.to_h(html: true)
+            arg.each do |k, v|
+              @doc.set_attribute(k, v)
+            end
           end
         end
 
+        # --
         def self.wants_xml?
           true
         end
 
+        # --
         def self.for?(type:, args:)
           super && args[:inline] && !args.key?(:srcset)
         end

@@ -10,6 +10,100 @@ describe Jekyll::Assets::Utils do
 
   #
 
+  describe "#external?" do
+    context "w/out external" do
+      context "w/ relative" do
+        it "true" do
+          expect(env.external?(argv1: "img.png")).to eq(false)
+        end
+      end
+
+      #
+
+      context "w/ absolute" do
+        it "false" do
+          expect(env.external?(argv1: "/hello.world"))
+            .to eq(false)
+        end
+      end
+
+      #
+
+      context "w/ http" do
+        it "true" do
+          expect(env.external?(argv1: "http://hello.world"))
+            .to eq(true)
+        end
+      end
+
+      #
+
+      context "w/ https" do
+        it "true" do
+          expect(env.external?(argv1: "https://hello.world"))
+            .to eq(true)
+        end
+      end
+
+      #
+
+      context "w/ //" do
+        it "true" do
+          expect(env.external?(argv1: "//hello.world"))
+            .to eq(true)
+        end
+      end
+    end
+
+    #
+
+    context "w/ external: true" do
+      let :args do
+        {
+          external: true,
+        }
+      end
+
+      #
+
+      context "w/ absolute" do
+        it "true" do
+          expect(env.external?(args.merge(argv1: "/hello.world")))
+            .to eq(true)
+        end
+      end
+
+      #
+
+      context "w/ http" do
+        it "true" do
+          expect(env.external?(args.merge(argv1: "http://hello.world")))
+            .to eq(true)
+        end
+      end
+
+      #
+
+      context "w/ https" do
+        it "true" do
+          expect(env.external?(args.merge(argv1: "https://hello.world")))
+            .to eq(true)
+        end
+      end
+
+      #
+
+      context "w/ //" do
+        it "true" do
+          expect(env.external?(args.merge(argv1: "//hello.world")))
+            .to eq(true)
+        end
+      end
+    end
+  end
+
+  #
+
   describe "#parse_liquid" do
     let :ctx do
       Struct.new(:registers).new({

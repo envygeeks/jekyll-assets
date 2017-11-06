@@ -20,6 +20,13 @@ module Jekyll
       end
 
       # --
+      class InvalidExternal < StandardError
+        def initialize(arg)
+          super "cannot use `#{arg}' with external url's"
+        end
+      end
+
+      # --
       attr_reader :name
       attr_reader :tokens
       attr_reader :args
@@ -30,6 +37,7 @@ module Jekyll
         @tag = tag.to_sym
         @args = Liquid::Tag::Parser.new(args)
         @tokens = tokens
+        @og_args = args
         super
       end
 
@@ -42,25 +50,91 @@ module Jekyll
       # --
       def render(ctx)
         env  = ctx.registers[:site].sprockets
-        args = env.parse_liquid(@args, ctx)
+        args = ctx.registers[:site].sprockets.parse_liquid(@args, ctx)
+        raise Sprockets::AssetNotFound, "no asset" unless args.key?(:argv1)
+        asset = env.external?(args) ? external!(ctx) : internal!(ctx)
 
-        o_asset = env.find_asset!(args[:argv1])
-        Default.set(args, env: env, asset: o_asset)
-        asset = Proxy.proxy(o_asset, args: args, env: env)
-        Default.set(args, env: env, asset: asset)
-        env.manifest.compile(asset.logical_path)
+        return_or_build(ctx, args: args, asset: asset) do
+          HTML.build({
+            args: args,
+            type: asset.content_type,
+            asset: asset,
+            env: env,
+          })
+        end
+      end
 
-        return env.prefix_url(asset.digest_path) if args[:path]
-        return asset.data_uri if args[:"data-uri"] || args[:data_uri]
-        return asset.to_s if args[:source]
-        type = asset.content_type
+      # --
+      def return_or_build(ctx, args:, asset:)
+        methods.grep(%r!^on_(?\!or_build$)!).each do |m|
+          out = send(m, args, ctx: ctx, asset: asset)
+          if out
+            return out
+          end
+        end
 
-        HTML.build({
-          args: args,
-          asset: asset,
-          type: type,
-          env: env,
+        yield
+      end
+
+      # --
+      # Returns the path to the asset.
+      # @example {% asset img.png @path %}
+      # @return [String]
+      # --
+      def on_path(args, ctx:, asset:)
+        env = ctx.registers[:site].sprockets
+        if args[:path]
+          raise InvalidExternal, "@path" if env.external?(args)
+          env.prefix_url(asset.digest_path)
+        end
+      end
+
+      # --
+      # Returns the data uri of an object.
+      # @example {% asset img.png @data-url %}
+      # @example {% asset img.png @data_uri %}
+      # @return [String]
+      # --
+      def on_data_url(args, ctx:, asset:)
+        env = ctx.registers[:site].sprockets
+        if args[:data]
+          raise InvalidExternal, "@data" if env.external?(args)
+          asset.data_uri
+        end
+      end
+
+      # --
+      # @param [Liquid::Context] ctx
+      # Set's up an external url using `Url`
+      # @return [Url]
+      # --
+      def external!(ctx)
+        env = ctx.registers[:site].sprockets
+        out = env.external_asset(args[:argv1])
+        Default.set(args, {
+          env: env, asset: out
         })
+
+        out
+      end
+
+      # --
+      # @param [Liquid::Context] ctx
+      # Set's up an internal asset using `Sprockets::Asset`
+      # @return [Sprockets::Asset]
+      # --
+      def internal!(ctx)
+        env = ctx.registers[:site].sprockets
+        original = env.find_asset!(args[:argv1])
+        Default.set(args, env: env, asset: original)
+        out = Proxy.proxy(original, args: args, env: env)
+        env.manifest.compile(out.logical_path)
+
+        Default.set(args, {
+          env: env, asset: out
+        })
+
+        out
       end
     end
   end

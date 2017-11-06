@@ -6,6 +6,43 @@ module Jekyll
   module Assets
     module Utils
       # --
+      # @param [String] url
+      # @return [Sprockets::Asset]
+      # Wraps around an external url and so it can be wrapped into
+      #  the rest of Jekyll-Assets with little trouble.
+      # --
+      def external_asset(url)
+        _, mime = Sprockets.match_path_extname(url, Sprockets.mime_exts)
+        raise Sprockets::AssetNotFound, url unless mime
+        name = File.basename(url)
+
+        Url.new({
+          name: name,
+          filename: url,
+          content_type: mime,
+          load_path: File.dirname(url),
+          id: Digest::SHA256.hexdigest(url),
+          logical_path: name,
+          metadata: {},
+          source: "",
+          uri: url,
+        })
+      end
+
+      # --
+      # @param [String,Sprockets::Asset] url
+      # Tells you if a url... or asset is external.
+      # @return [nil,true,false]
+      # --
+      def external?(args)
+        return true  if args.is_a?(Url)
+        return false if args.is_a?(Sprockets::Asset)
+        return args =~ %r!^(https?:)?//! if args.is_a?(String)
+        return args[:external] if args.key?(:external)
+        args[:argv1] !~ %r!^(?\!(https?:)?//)!
+      end
+
+      # --
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
       # @param [String,Hash<>,Array<>] obj the liquid to parse.

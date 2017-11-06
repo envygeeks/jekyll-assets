@@ -20,23 +20,28 @@ module Jekyll
         def run
           # rubocop:disable Style/IfWithSemicolon
           # rubocop:disable Layout/IndentationConsistency
-          if @args[:srcset].is_a?(Array); @args[:picture] ||= {}
-            ctx1, ctx2 = Liquid::ParseContext.new, context
-            Nokogiri::HTML::Builder.with(@doc) do |d|
-              d.picture @args[:picture] do |p|
-                p.img @args.to_h(html: true)
-                @args[:srcset].each do |v|
-                  p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
-                    ctx1).render(ctx2)
+          if @asset.is_a?(Url)
+            raise Errors::Generic, "cannot inline external" \
+              "invalid argument @srcset"
+          else
+            if @args[:srcset].is_a?(Array); @args[:picture] ||= {}
+              ctx1, ctx2 = Liquid::ParseContext.new, context
+              Nokogiri::HTML::Builder.with(@doc) do |d|
+                d.picture @args[:picture] do |p|
+                  p.img @args.to_h(html: true)
+                  @args[:srcset].each do |v|
+                    p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
+                      ctx1).render(ctx2)
+                  end
                 end
               end
-            end
-          else
-            @args[:srcset] = @args[:src]
-            Nokogiri::HTML::Builder.with(@doc) do |d|
-              d.source(@args.to_h(html: true).tap do |o|
-                o.delete(:src)
-              end)
+            else
+              @args[:srcset] = @args[:src]
+              Nokogiri::HTML::Builder.with(@doc) do |d|
+                d.source(@args.to_h(html: true).tap do |o|
+                  o.delete(:src)
+                end)
+              end
             end
           end
         end

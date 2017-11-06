@@ -22,7 +22,23 @@ describe Jekyll::Assets::Tag do
 
   #
 
-  context nil, render: true do
+  context do
+    let :page do
+      jekyll.pages.find do |v|
+        v.path == "tag/external.html"
+      end
+    end
+
+    #
+
+    it "supports urls" do
+      expect(page.to_s).to match(%r!<img!)
+    end
+  end
+
+  #
+
+  context do
     let :page do
       jekyll.pages.find do |v|
         v.path == "tag/attr.html"

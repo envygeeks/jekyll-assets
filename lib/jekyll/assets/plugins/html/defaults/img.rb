@@ -19,11 +19,14 @@ module Jekyll
 
         def set_src
           unless @args[:inline]
-            @args[:src] = @env.prefix_url(@asset.digest_path)
+            return @args[:src] = @asset.url if @asset.is_a?(Url)
+            @args[:src] = @env.prefix_url(@asset
+              .digest_path)
           end
         end
 
         def set_integrity
+          return if @asset.is_a?(Url)
           @args[:integrity] = @asset.integrity
           unless @args.key?(:crossorigin)
             @args[:crossorigin] = "anonymous"

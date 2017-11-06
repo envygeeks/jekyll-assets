@@ -14,7 +14,7 @@ end
 
 group :test do
   gem "simplecov", require: false
-  gem "luna-rspec-formatters", require: false, path: "/home/jordon/development/src/github.com/envygeeks/luna-rspec-formatters"
+  gem "luna-rspec-formatters", require: false
   gem "rubocop", require: false
 end
 

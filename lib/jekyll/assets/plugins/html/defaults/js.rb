@@ -13,12 +13,13 @@ module Jekyll
         static type: "text/javascript"
 
         def set_src
-          src = @asset.digest_path
-          src = @env.prefix_url(src)
-          @args[:src] = src
+          return @args[:src] = @asset.url if @asset.is_a?(Url)
+          @args[:src] = @env.prefix_url(@asset
+            .digest_path)
         end
 
         def set_integrity
+          return if @asset.is_a?(Url)
           @args[:integrity] = @asset.integrity
           unless @args.key?(:crossorigin)
             @args[:crossorigin] = "anonymous"

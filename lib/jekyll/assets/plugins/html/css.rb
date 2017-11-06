@@ -12,10 +12,15 @@ module Jekyll
         content_types "text/css"
 
         def run
-          Nokogiri::HTML::Builder.with(@doc) do |d|
-            atr = @args.to_h(html: true)
-            d.style(asset.to_s, atr) if @args[:inline]
-            d.link(atr) unless @args[:inline]
+          if @asset.is_a?(Url) && @args[:inline]
+            raise Errors::Generic, "cannot inline external" \
+              "invalid argument @inline"
+          else
+            Nokogiri::HTML::Builder.with(@doc) do |d|
+              atr = @args.to_h(html: true)
+              d.style(asset.to_s, atr) if @args[:inline]
+              d.link(atr) unless @args[:inline]
+            end
           end
         end
       end

@@ -18,6 +18,7 @@ require_relative "logger"
 require_relative "utils"
 require_relative "hook"
 require_relative "tag"
+require_relative "url"
 
 module Jekyll
   module Assets

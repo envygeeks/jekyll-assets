@@ -2,6 +2,8 @@
 # Copyright: 2015 Jordon Bedwell - MIT License
 # Encoding: utf-8
 
-RSpec.configure do |c|
-  c.profile_examples = true
+unless ENV["CI"] == "true"
+  RSpec.configure do |c|
+    c.profile_examples = true
+  end
 end

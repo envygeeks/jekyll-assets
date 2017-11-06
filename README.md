@@ -133,7 +133,6 @@ Our tags will take any number of arguments, and convert them to HTML, and even a
 |---|---|---|---|
 | `@path` | Path | Any | `text`
 | `@uri` | Data URI | Any | `text` |
-| `@source` |  Source | Any | `text`
 | `@data` | Data URI `<img>` | `image/*` | `text/html`
 | `@inline` | `text/svg+xml` XML Data | `image/svg+xml` | `text/svg+xml`
 | `@inline` | JavaScript `<script>` | `application/javascript` | `text/html`
