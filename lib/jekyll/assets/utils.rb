@@ -11,12 +11,11 @@ module Jekyll
       # Wraps around an external url and so it can be wrapped into
       #  the rest of Jekyll-Assets with little trouble.
       # --
-      def external_asset(url)
+      def external_asset(url, env:)
         _, mime = Sprockets.match_path_extname(url, Sprockets.mime_exts)
         raise Sprockets::AssetNotFound, url unless mime
         name = File.basename(url)
-
-        Url.new({
+        opts = {
           name: name,
           filename: url,
           content_type: mime,
@@ -26,7 +25,11 @@ module Jekyll
           metadata: {},
           source: "",
           uri: url,
-        })
+        }
+
+        # Old Sprockets needs the env.
+        Url.new(*(Env.old_sprockets? ? \
+          [env, opts] : [opts]))
       end
 
       # --

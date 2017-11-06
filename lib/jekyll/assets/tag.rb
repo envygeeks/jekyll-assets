@@ -117,7 +117,7 @@ module Jekyll
       # --
       def external!(ctx)
         env = ctx.registers[:site].sprockets
-        out = env.external_asset(args[:argv1])
+        out = env.external_asset(args[:argv1], env: env)
         Default.set(args, {
           env: env, asset: out
         })
