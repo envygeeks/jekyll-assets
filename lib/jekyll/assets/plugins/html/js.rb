@@ -14,8 +14,8 @@ module Jekyll
 
         def run
           if @asset.is_a?(Url) && @args[:inline]
-            raise Errors::Generic, "cannot inline external" \
-              "invalid argument @inline"
+            raise Tag::MixedArg, "@external", "@inline"
+
           else
             Nokogiri::HTML::Builder.with(@doc) do |d|
               atr = @args.to_h(html: true)

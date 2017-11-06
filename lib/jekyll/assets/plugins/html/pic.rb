@@ -17,45 +17,50 @@ module Jekyll
         content_types "image/gif"
         content_types "image/png"
 
+        # --
+        # rubocop:disable Metrics/AbcSize
+        # @todo this should be reworked so we don't need to use
+        #   tag to loop back in on ourselves.
+        # --
         def run
-          # rubocop:disable Style/IfWithSemicolon
-          # rubocop:disable Layout/IndentationConsistency
-          if @asset.is_a?(Url)
-            raise Errors::Generic, "cannot inline external" \
-              "invalid argument @srcset"
-          else
-            if @args[:srcset].is_a?(Array); @args[:picture] ||= {}
-              ctx1, ctx2 = Liquid::ParseContext.new, context
-              Nokogiri::HTML::Builder.with(@doc) do |d|
-                d.picture @args[:picture] do |p|
-                  p.img @args.to_h(html: true)
-                  @args[:srcset].each do |v|
-                    p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
-                      ctx1).render(ctx2)
-                  end
+          raise Tag::MixedArg, "@srcset", "@inline" if @asset.is_a?(Url)
+
+          if @args[:srcset].is_a?(Array)
+            ctx1, ctx2 = Liquid::ParseContext.new, context
+            @args[:picture] ||= {}
+
+            Nokogiri::HTML::Builder.with(@doc) do |d|
+              d.picture @args[:picture] do |p|
+                p.img @args.to_h(html: true)
+                @args[:srcset].each do |v|
+                  p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
+                    ctx1).render(ctx2)
                 end
               end
-            else
-              @args[:srcset] = @args[:src]
-              Nokogiri::HTML::Builder.with(@doc) do |d|
-                d.source(@args.to_h(html: true).tap do |o|
-                  o.delete(:src)
-                end)
-              end
+            end
+          else
+            @args[:srcset] = @args[:src]
+            Nokogiri::HTML::Builder.with(@doc) do |d|
+              d.source(@args.to_h(html: true).tap do |o|
+                o.delete(:src)
+              end)
             end
           end
         end
 
+        # --
         def self.cleanup(s)
           s.gsub(%r!<(picture)>(.+)<\/\1>!) do |v|
             v.gsub(%r!</source>!, "")
           end
         end
 
+        # --
         def self.for?(args:, type:)
           super && !args[:inline] && args.key?(:srcset)
         end
 
+        # --
         private
         def context
           @struct ||= Struct.new(:registers)

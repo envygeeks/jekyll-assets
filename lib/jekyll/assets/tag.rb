@@ -20,6 +20,13 @@ module Jekyll
       end
 
       # --
+      class MixedArg < StandardError
+        def initialize(arg, mixed)
+          super "cannot use #{arg} w/ #{mixed}"
+        end
+      end
+
+      # --
       class InvalidExternal < StandardError
         def initialize(arg)
           super "cannot use `#{arg}' with external url's"
