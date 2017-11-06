@@ -57,9 +57,10 @@ module Jekyll
       # --
       def render(ctx)
         env  = ctx.registers[:site].sprockets
-        args = ctx.registers[:site].sprockets.parse_liquid(@args, ctx)
-        raise Sprockets::AssetNotFound, "no asset" unless args.key?(:argv1)
-        asset = env.external?(args) ? external!(ctx) : internal!(ctx)
+        args = env.parse_liquid(@args, ctx)
+        raise Sprockets::FileNotFound, "UNKNOWN" unless args.key?(:argv1)
+        asset = env.external?(args) ? external!(ctx) \
+          : internal!(ctx)
 
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
@@ -69,6 +70,10 @@ module Jekyll
             env: env,
           })
         end
+      rescue Sprockets::FileNotFound => e
+        env.logger.error @args.to_h(html: false).inspect
+        env.logger.debug  args.to_h(html: false).inspect
+        raise e
       end
 
       # --
