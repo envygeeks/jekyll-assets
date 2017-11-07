@@ -130,7 +130,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ {}" do
       it "parses" do
-        expect(env.parse_liquid({ hello: "{{ site }}" }, ctx)).to eq({
+        expect(env.parse_liquid({ hello: "{{ site }}" }, ctx: ctx)).to eq({
           hello: "Jekyll::Drops::SiteDrop",
         })
       end
@@ -140,7 +140,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ []" do
       it "parses" do
-        expect(env.parse_liquid(["{{ site }}"], ctx)).to eq([
+        expect(env.parse_liquid(["{{ site }}"], ctx: ctx)).to eq([
           "Jekyll::Drops::SiteDrop",
         ])
       end
@@ -150,7 +150,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ String" do
       it "parses" do
-        expect(env.parse_liquid("{{ site }}", ctx)).to eq(
+        expect(env.parse_liquid("{{ site }}", ctx: ctx)).to eq(
           "Jekyll::Drops::SiteDrop")
       end
     end

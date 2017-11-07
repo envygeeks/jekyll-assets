@@ -57,10 +57,10 @@ module Jekyll
       # --
       def render(ctx)
         env  = ctx.registers[:site].sprockets
-        args = env.parse_liquid(@args, ctx)
+        args = env.parse_liquid(@args, ctx: ctx)
         raise Sprockets::FileNotFound, "UNKNOWN" unless args.key?(:argv1)
-        asset = env.external?(args) ? external!(ctx) \
-          : internal!(ctx)
+        asset = external(ctx, args: args) if env.external?(args)
+        asset ||= internal(ctx)
 
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
@@ -120,9 +120,9 @@ module Jekyll
       # Set's up an external url using `Url`
       # @return [Url]
       # --
-      def external!(ctx)
+      def external(ctx, args:)
         env = ctx.registers[:site].sprockets
-        out = env.external_asset(args[:argv1], env: env)
+        out = env.external_asset(args[:argv1], args: args)
         Default.set(args, {
           env: env, asset: out
         })
@@ -135,7 +135,7 @@ module Jekyll
       # Set's up an internal asset using `Sprockets::Asset`
       # @return [Sprockets::Asset]
       # --
-      def internal!(ctx)
+      def internal(ctx)
         env = ctx.registers[:site].sprockets
         original = env.find_asset!(args[:argv1])
         Default.set(args, env: env, asset: original)

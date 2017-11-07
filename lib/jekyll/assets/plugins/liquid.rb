@@ -22,7 +22,7 @@ module Jekyll
 
         def self.call(ctx)
           env, mck = ctx[:environment], Struct.new(:registers)
-          ctx[:data] = env.parse_liquid(ctx[:data], mck.new({
+          ctx[:data] = env.parse_liquid(ctx[:data], ctx: mck.new({
             site: env.jekyll,
           }))
         end

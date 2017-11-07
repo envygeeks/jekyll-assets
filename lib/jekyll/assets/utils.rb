@@ -6,17 +6,11 @@ module Jekyll
   module Assets
     module Utils
       # --
-      # @param [String] url
-      # @return [Sprockets::Asset]
-      # Wraps around an external url and so it can be wrapped into
-      #  the rest of Jekyll-Assets with little trouble.
-      # --
-      def external_asset(url, env:)
-        _, type = Sprockets.match_path_extname(url, Sprockets.mime_exts)
-        raise Sprockets::FileNotFound, url unless type
+      def external_asset_with_type(url, type:)
         name = File.basename(url)
+        old_ = Env.old_sprockets?
 
-        Url.new(*[Env.old_sprockets? ? env : nil, {
+        Url.new(*[old_ ? self : nil, {
           name: name,
           filename: url,
           content_type: type,
@@ -27,6 +21,27 @@ module Jekyll
           source: "",
           uri: url,
         }].compact)
+      end
+
+      # --
+      # @param [String] url
+      # @return [Sprockets::Asset]
+      # Wraps around an external url and so it can be wrapped into
+      #  the rest of Jekyll-Assets with little trouble.
+      # --
+      def external_asset(url, args:)
+        if args[:asset]&.key?(:type)
+          external_asset_with_type(url, {
+            type: args[:asset][:type],
+          })
+
+        else
+          _, type = Sprockets.match_path_extname(url, Sprockets.mime_exts)
+          logger.debug "no type for #{url}, assuming image/*" unless type
+          external_asset_with_type(url, {
+            type: type || "image/jpg",
+          })
+        end
       end
 
       # --
@@ -48,20 +63,25 @@ module Jekyll
       # @param [String,Hash<>,Array<>] obj the liquid to parse.
       # Parses the Liquid that's being passed, with Jekyll's context.
       # rubocop:disable Lint/LiteralAsCondition
+      # rubocop:disable Metrics/MethodLength
       # @return [String]
       # --
-      def parse_liquid(obj, ctx)
+      def parse_liquid(obj, ctx:)
         case true
         when obj.is_a?(Hash) || obj.is_a?(Liquid::Tag::Parser)
           obj.each_key.with_object(obj) do |k, o|
             if o[k].is_a?(String)
-              then o[k] = parse_liquid(o[k], ctx)
+              then o[k] = parse_liquid(o[k], {
+                ctx: ctx,
+              })
             end
           end
         when obj.is_a?(Array)
           obj.map do |v|
             if v.is_a?(String)
-              then v = parse_liquid(v, ctx)
+              then v = parse_liquid(v, {
+                ctx: ctx,
+              })
             end
 
             v
@@ -80,6 +100,7 @@ module Jekyll
       end
 
       # --
+      # rubocop:enable Metrics/MethodLength
       # @param [String] path the path to strip.
       # Strips most source paths from the given path path.
       # rubocop:enable Metrics/CyclomaticComplexity
