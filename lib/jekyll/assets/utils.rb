@@ -39,7 +39,7 @@ module Jekyll
           _, type = Sprockets.match_path_extname(url, Sprockets.mime_exts)
           logger.debug "no type for #{url}, assuming image/*" unless type
           external_asset_with_type(url, {
-            type: type || "image/jpg",
+            type: type || "image/jpeg",
           })
         end
       end

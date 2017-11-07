@@ -14,7 +14,8 @@ describe Jekyll::Assets::Utils do
     context "w/out external" do
       context "w/ relative" do
         it "true" do
-          expect(env.external?(argv1: "img.png")).to eq(false)
+          out = env.external?(argv1: "img.png")
+          expect(out).to(eq(false))
         end
       end
 
@@ -22,8 +23,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ absolute" do
         it "false" do
-          expect(env.external?(argv1: "/hello.world"))
-            .to eq(false)
+          out = env.external?(argv1: "/hello.world")
+          expect(out).to eq(false)
         end
       end
 
@@ -31,8 +32,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ http" do
         it "true" do
-          expect(env.external?(argv1: "http://hello.world"))
-            .to eq(true)
+          out = env.external?(argv1: "http://hello.world")
+          expect(out).to eq(true)
         end
       end
 
@@ -40,8 +41,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ https" do
         it "true" do
-          expect(env.external?(argv1: "https://hello.world"))
-            .to eq(true)
+          out = env.external?(argv1: "https://hello.world")
+          expect(out).to eq(true)
         end
       end
 
@@ -49,8 +50,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ //" do
         it "true" do
-          expect(env.external?(argv1: "//hello.world"))
-            .to eq(true)
+          out = env.external?(argv1: "//hello.world")
+          expect(out).to eq(true)
         end
       end
     end
@@ -68,8 +69,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ absolute" do
         it "true" do
-          expect(env.external?(args.merge(argv1: "/hello.world")))
-            .to eq(true)
+          out = env.external?(args.merge(argv1: "/hello.world"))
+          expect(out).to eq(true)
         end
       end
 
@@ -77,8 +78,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ http" do
         it "true" do
-          expect(env.external?(args.merge(argv1: "http://hello.world")))
-            .to eq(true)
+          out = env.external?(args.merge(argv1: "http://hello.world"))
+          expect(out).to eq(true)
         end
       end
 
@@ -86,8 +87,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ https" do
         it "true" do
-          expect(env.external?(args.merge(argv1: "https://hello.world")))
-            .to eq(true)
+          out = env.external?(args.merge(argv1: "https://hello.world"))
+          expect(out).to eq(true)
         end
       end
 
@@ -95,8 +96,8 @@ describe Jekyll::Assets::Utils do
 
       context "w/ //" do
         it "true" do
-          expect(env.external?(args.merge(argv1: "//hello.world")))
-            .to eq(true)
+          out = env.external?(args.merge(argv1: "//hellow.world"))
+          expect(out).to eq(true)
         end
       end
     end
