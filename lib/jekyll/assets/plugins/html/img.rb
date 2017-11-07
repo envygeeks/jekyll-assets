@@ -16,6 +16,7 @@ module Jekyll
         content_types "image/tiff"
         content_types "image/gif"
         content_types "image/png"
+        content_types "image/jpg"
 
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|

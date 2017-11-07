@@ -16,6 +16,7 @@ module Jekyll
         content_types "image/bmp"
         content_types "image/gif"
         content_types "image/png"
+        content_types "image/jpg"
 
         # --
         # rubocop:disable Metrics/AbcSize
