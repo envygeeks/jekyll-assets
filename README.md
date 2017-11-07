@@ -148,9 +148,9 @@ Jekyll Assets has the concept of responsive images, using the `picture` tag, if 
 ##### Usage
 
 ```liquid
-{% asset img.svg srcset='magick:format=image/png magick:resize=400 media="(min-width:400px)"'
+{% asset img.svg srcset='magick:format=image/png magick:resize=800 media="(min-width:800px)"'
                  srcset='magick:format=image/png magick:resize=600 media="(min-width:600px)"'
-                 srcset='magick:format=image/png magick:resize=800 media="(min-width:800px)"' %}
+                 srcset='magick:format=image/png magick:resize=400 media="(min-width:400px)"' %}
 ```
 
 ## Liquid
