@@ -28,6 +28,7 @@
 - [x] Proxies in `asset()` for SASS.
 - [x] Expanded source directories by default.
 - [ ] Support for `srcset`, width, and density.
+- [x] Support for building HTML for external assets.
 - [x] Stripping of FrontMatter (`---`) before processing.
 - [x] Extensible/customizable decoupled HTML builders for tags.
 - [ ] Support for `<audio>`, `<video>`, `<img>` discovery in Markdown.
