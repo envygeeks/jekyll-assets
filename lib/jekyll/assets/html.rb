@@ -25,10 +25,10 @@ module Jekyll
       # @return [String] the final result.
       # @param [Env] env the env.
       # --
-      def self.build(type:, args:, asset:, env:)
+      def self.build(args:, asset:, ctx:)
         rtn = inherited.select do |o|
           o.for?({
-            type: type,
+            type: asset.content_type,
             args: args,
           })
         end
@@ -37,9 +37,9 @@ module Jekyll
         rtn.each do |o|
           o = o.new({
             doc: doc,
-            args: args,
             asset: asset,
-            env: env,
+            args: args,
+            ctx: ctx,
           })
 
           o.run

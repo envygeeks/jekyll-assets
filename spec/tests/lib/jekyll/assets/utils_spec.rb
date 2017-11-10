@@ -106,19 +106,10 @@ describe Jekyll::Assets::Utils do
   #
 
   describe "#parse_liquid" do
-    let :ctx do
-      Struct.new(:registers).new({
-        site: jekyll,
-        page: nil,
-      })
-    end
-
-    #
-
     context "a page" do
       let :page do
         site.pages.find do |v|
-          v.path == "context.html"
+          v.path == "utils/parse_liquid/ctx.html"
         end
       end
 
@@ -127,13 +118,32 @@ describe Jekyll::Assets::Utils do
       it "parses" do
         expect(page.output).to match(%r!<img!)
       end
+
+      #
+
+      context "with an assign" do
+        let :page do
+          site.pages.find do |v|
+            v.path == "utils/parse_liquid/assign.html"
+          end
+        end
+
+        #
+
+        it "works" do
+          expect(page.output).to match(%r!<img!)
+          expect(page.output).to \
+            match(%r!\.png!)
+        end
+      end
     end
 
     context "w/ {}" do
       it "parses" do
-        expect(env.parse_liquid({ hello: "{{ site }}" }, ctx: ctx)).to eq({
-          hello: "Jekyll::Drops::SiteDrop",
-        })
+        expect(env.parse_liquid({ hello: "{{ site }}" }, ctx: Thief.ctx))
+          .to eq({
+            hello: "Jekyll::Drops::SiteDrop",
+          })
       end
     end
 
@@ -141,7 +151,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ []" do
       it "parses" do
-        expect(env.parse_liquid(["{{ site }}"], ctx: ctx)).to eq([
+        expect(env.parse_liquid(["{{ site }}"], ctx: Thief.ctx)).to eq([
           "Jekyll::Drops::SiteDrop",
         ])
       end
@@ -151,7 +161,7 @@ describe Jekyll::Assets::Utils do
 
     context "w/ String" do
       it "parses" do
-        expect(env.parse_liquid("{{ site }}", ctx: ctx)).to eq(
+        expect(env.parse_liquid("{{ site }}", ctx: Thief.ctx)).to eq(
           "Jekyll::Drops::SiteDrop")
       end
     end

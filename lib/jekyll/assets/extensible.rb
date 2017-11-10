@@ -5,17 +5,20 @@
 module Jekyll
   module Assets
     class Extensible
+      attr_reader :ctx
       attr_reader :args
       attr_reader :jekyll
       attr_reader :asset
       attr_reader :env
 
       # --
-      def initialize(asset:, args:, env:)
+      def initialize(asset:, args:, ctx:)
         @args = args
-        @jekyll = env.jekyll
+        @env = ctx.registers[:site].sprockets
+        @jekyll = ctx.registers[:site]
+        @jekyll = @env.jekyll
         @asset = asset
-        @env = env
+        @ctx = ctx
       end
 
       # --

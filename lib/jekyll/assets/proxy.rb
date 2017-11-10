@@ -29,13 +29,14 @@ module Jekyll
       # Run all your proxies on assets.
       # @return [Sprockets::Asset]
       # --
-      def self.proxy(asset, args:, env:)
+      def self.proxy(asset, args:, ctx:)
         proxies = Proxy.inherited.select do |o|
           o.for?(type: asset.content_type, args: args)
         end
 
         return asset if proxies.empty?
-        file = copy(asset, args: args, env: env)
+        env = ctx.registers[:site].sprockets
+        file = copy(asset, args: args, ctx: ctx)
         cache = file.basename.sub_ext("").to_s
 
         env.cache.fetch(cache) do
@@ -43,7 +44,7 @@ module Jekyll
             obj = o.new(file, {
               args: args,
               asset: asset,
-              env: env,
+              ctx: ctx,
             })
 
             o = obj.process
@@ -65,7 +66,8 @@ module Jekyll
       # @param [Hash] args the args.
       # @return [Pathutil]
       # --
-      def self.copy(asset, env:, args:)
+      def self.copy(asset, ctx:, args:)
+        env = ctx.registers[:site].sprockets
         raw = args.instance_variable_get(:@raw)
         key = DIG.hexdigest(raw)[0, 6]
 

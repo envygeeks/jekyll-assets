@@ -38,7 +38,7 @@ module Jekyll
       # @param [Env] env the environment.
       # @return nil
       # --
-      def self.set(args, asset:, env:)
+      def self.set(args, asset:, ctx:)
         args.deep_merge!(get(type: asset.content_type, args: args))
         rtn = Default.inherited.select do |o|
           o.for?(type: asset.content_type, args: args)
@@ -48,7 +48,7 @@ module Jekyll
           o.new({
             args: args,
             asset: asset,
-            env: env,
+            ctx: ctx,
           }).run
         end
       end

@@ -45,8 +45,7 @@ describe Jekyll::Assets::Proxy do
     expect_any_instance_of(klass).to(receive(:process))
     expect(klass).to(receive(:new).and_call_original)
     subject.proxy(asset, {
-      args: args,
-      env: env,
+      ctx: Thief.ctx, args: args
     })
   end
 
@@ -54,8 +53,7 @@ describe Jekyll::Assets::Proxy do
 
   it "returns <Asset>" do
     out = subject.proxy(asset, {
-      args: args,
-      env: env,
+      args: args, ctx: Thief.ctx
     })
 
     expect(out).to(be_a(Sprockets::Asset))
@@ -69,8 +67,7 @@ describe Jekyll::Assets::Proxy do
     let(:dir) { Pathutil.new(env.in_cache_dir(subject::DIR)) }
     it "copies" do
       out = subject.proxy(asset, {
-        args: args,
-        env: env,
+        args: args, ctx: Thief.ctx
       })
 
       expect(dir.children.size).to be >= 1

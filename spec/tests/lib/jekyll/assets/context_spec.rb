@@ -24,14 +24,14 @@ describe Sprockets::Context do
   #
 
   describe "#asset_path" do
-    it "returns a pat" do
+    it "returns" do
       expect(subject.asset_path("img")).to eq(env.prefix_url(env
         .find_asset("img").digest_path))
     end
 
     #
 
-    it "supports proxies" do
+    it "proxies" do
       asset = subject.asset_path("img.png @magick:double")
       s1 = FastImage.new(env.find_asset!("img.png").filename)
       s2 = FastImage.new(jekyll.in_dest_dir(asset))
@@ -45,7 +45,7 @@ describe Sprockets::Context do
   #
 
   describe "#asset_url" do
-    it "wraps inside of url()" do
+    it "wraps" do
       expect(subject.asset_url("img.png")).to start_with("url(")
     end
   end

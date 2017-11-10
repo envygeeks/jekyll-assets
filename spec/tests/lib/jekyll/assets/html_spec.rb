@@ -14,17 +14,18 @@ describe Jekyll::Assets::HTML do
   #
 
   let :asset do
-    env.find_asset!("img.png")
+    out = env.find_asset!("img.png")
+    allow(out).to receive(:content_type).and_return(:hello)
+    out
   end
 
   #
 
   let :kwd do
     {
-      args: {},
       asset: asset,
-      type: :hello,
-      env: env,
+      ctx: Thief.ctx,
+      args: {},
     }
   end
 

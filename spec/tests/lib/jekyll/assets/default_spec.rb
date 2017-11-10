@@ -33,7 +33,8 @@ end
 
 describe Jekyll::Assets::Default do
   before do
-    allow(asset).to receive(:content_type).and_return(:test)
+    allow(asset).to receive(:content_type)
+      .and_return(:test)
   end
 
   #
@@ -75,8 +76,7 @@ describe Jekyll::Assets::Default do
   describe ".set" do
     it "sets defaults" do
       subject.set(result = {}, {
-        asset: asset,
-        env: env,
+        asset: asset, ctx: Thief.ctx
       })
 
       expect(result[:hello]).to eq(:world)

@@ -27,7 +27,7 @@ module Jekyll
           raise Tag::MixedArg, "@srcset", "@inline" if @asset.is_a?(Url)
 
           if @args[:srcset].is_a?(Array)
-            ctx1, ctx2 = Liquid::ParseContext.new, context
+            bctx = Liquid::ParseContext.new
             @args[:picture] ||= {}
 
             Nokogiri::HTML::Builder.with(@doc) do |d|
@@ -35,7 +35,7 @@ module Jekyll
                 p.img @args.to_h(html: true)
                 @args[:srcset].each do |v|
                   p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
-                    ctx1).render(ctx2)
+                    bctx).render(ctx)
                 end
               end
             end
@@ -59,15 +59,6 @@ module Jekyll
         # --
         def self.for?(args:, type:)
           super && !args[:inline] && args.key?(:srcset)
-        end
-
-        # --
-        private
-        def context
-          @struct ||= Struct.new(:registers)
-          @struct.new({
-            site: @env.jekyll,
-          })
         end
       end
     end

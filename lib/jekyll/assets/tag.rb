@@ -65,9 +65,8 @@ module Jekyll
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
             args: args,
-            type: asset.content_type,
             asset: asset,
-            env: env,
+            ctx: ctx,
           })
         end
       rescue Sprockets::FileNotFound => e
@@ -124,7 +123,7 @@ module Jekyll
         env = ctx.registers[:site].sprockets
         out = env.external_asset(args[:argv1], args: args)
         Default.set(args, {
-          env: env, asset: out
+          ctx: ctx, asset: out
         })
 
         out
@@ -138,12 +137,12 @@ module Jekyll
       def internal(ctx)
         env = ctx.registers[:site].sprockets
         original = env.find_asset!(args[:argv1])
-        Default.set(args, env: env, asset: original)
-        out = Proxy.proxy(original, args: args, env: env)
+        Default.set(args, ctx: ctx, asset: original)
+        out = Proxy.proxy(original, args: args, ctx: ctx)
         env.manifest.compile(out.logical_path)
 
         Default.set(args, {
-          env: env, asset: out
+          ctx: ctx, asset: out
         })
 
         out

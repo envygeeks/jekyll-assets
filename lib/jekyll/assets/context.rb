@@ -16,9 +16,10 @@ module Sprockets
     # @return [String] the path.
     # --
     def asset_path(path, _ = {})
-      ctx = Liquid::ParseContext.new
-      Jekyll::Assets::Tag.new("img", "#{path} @path", ctx)
-        .render(context)
+      ctx1 = Liquid::ParseContext.new
+      ctx2 = Liquid::Context.new({}, {}, site: environment.jekyll)
+      Jekyll::Assets::Tag.new("img", "#{path} @path", ctx1)
+        .render(ctx2)
     end
 
     # --
@@ -29,15 +30,6 @@ module Sprockets
     # --
     def asset_url(path, **kwd)
       "url(#{asset_path(path, **kwd)})"
-    end
-
-    # --
-    private
-    def context
-      @struct ||= Struct.new(:registers)
-      @struct.new({
-        site: environment.jekyll,
-      })
     end
   end
 end

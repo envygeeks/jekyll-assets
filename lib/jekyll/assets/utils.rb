@@ -6,7 +6,7 @@ module Jekyll
   module Assets
     module Utils
       # --
-      def external_asset_with_type(url, type:)
+      def url_asset(url, type:)
         name = File.basename(url)
         old_ = Env.old_sprockets?
 
@@ -31,14 +31,14 @@ module Jekyll
       # --
       def external_asset(url, args:)
         if args[:asset]&.key?(:type)
-          external_asset_with_type(url, {
+          url_asset(url, {
             type: args[:asset][:type],
           })
 
         else
           _, type = Sprockets.match_path_extname(url, Sprockets.mime_exts)
           logger.debug "no type for #{url}, assuming image/*" unless type
-          external_asset_with_type(url, {
+          url_asset(url, {
             type: type || "image/jpeg",
           })
         end
@@ -58,12 +58,9 @@ module Jekyll
       end
 
       # --
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
       # @param [String,Hash<>,Array<>] obj the liquid to parse.
       # Parses the Liquid that's being passed, with Jekyll's context.
       # rubocop:disable Lint/LiteralAsCondition
-      # rubocop:disable Metrics/MethodLength
       # @return [String]
       # --
       def parse_liquid(obj, ctx:)
@@ -87,25 +84,15 @@ module Jekyll
             v
           end
         else
-          payload = ctx.registers[:site].site_payload
-          payload = payload.merge(ctx.registers[:page] || {})
-          registers = { site: ctx.registers[:site] }
-          filters = [Jekyll::Filters, Filters]
-
-          run_liquid_hooks(payload, registers[:site])
-          jekyll.liquid_renderer.file("asset").parse(obj).render!(payload, {
-            filters: filters, registers: registers
-          })
+          ctx.registers[:site].liquid_renderer.file("(asset:var)")
+            .parse(obj).render!(ctx)
         end
       end
 
       # --
-      # rubocop:enable Metrics/MethodLength
       # @param [String] path the path to strip.
       # Strips most source paths from the given path path.
-      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Lint/LiteralAsCondition
-      # rubocop:enable Metrics/AbcSize
       # @return [String]
       # --
       def strip_paths(path)
