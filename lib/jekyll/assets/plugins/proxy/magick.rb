@@ -17,6 +17,12 @@ module Jekyll
         content_types "image/gif"
         content_types "image/png"
 
+        class SameType < StandardError
+          def initialize(type)
+            "Trying to convert #{type} to #{type} won't work."
+          end
+        end
+
         def process
           img = ::MiniMagick::Image.open(@file)
           magick_format(img) if @args[:magick][:format]
@@ -45,8 +51,10 @@ module Jekyll
           end
 
           if exts.first
-            new_ = @file.sub_ext(exts.first[0])
-            img.format(exts.first[0].sub(".", ""))
+            ext, type = exts.first
+            new_ = @file.sub_ext(ext)
+            raise SameType, type if type == asset.content_type
+            img.format(ext.sub(".", ""))
             @file.cp(new_)
             @file.rm
             @file =
