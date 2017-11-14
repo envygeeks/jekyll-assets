@@ -32,10 +32,10 @@ module Jekyll
 
             Nokogiri::HTML::Builder.with(@doc) do |d|
               d.picture @args[:picture] do |p|
-                p.img @args.to_h(html: true)
                 @args[:srcset].each do |v|
-                  p << Tag.new("asset", "#{@args[:argv1]} @srcset #{v}",
-                    bctx).render(ctx)
+                  args = "#{@args[:argv1]} @srcset #{v}"
+                  p << Tag.new("asset", args, bctx).render(ctx)
+                  p.img @args.to_h(html: true)
                 end
               end
             end
