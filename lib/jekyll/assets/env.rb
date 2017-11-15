@@ -11,7 +11,6 @@ require "jekyll"
 require_all "patches/*"
 require_relative "utils"
 require_relative "drop"
-require_relative "writer"
 require_relative "filters"
 require_relative "manifest"
 require_relative "config"
@@ -164,6 +163,7 @@ module Jekyll
       require_all "plugins/*"
       require_all "plugins/html/defaults/*"
       require_all "plugins/html/*"
+      require_relative "writer"
 
       require_relative "map" unless old_sprockets?
       Hook.register :env, :after_init, priority: 3 do
