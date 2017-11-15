@@ -36,6 +36,7 @@ module Jekyll
                   args = "#{@args[:argv1]} @srcset #{v}"
                   p << Tag.new("asset", args, bctx).render(ctx)
                 end
+
                 p.img @args.to_h(html: true)
               end
             end
