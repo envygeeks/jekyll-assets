@@ -88,15 +88,6 @@ describe Jekyll::Assets::Env do
 
   #
 
-  describe "#excludes!" do
-    it "adds" do
-      expect(jekyll.config["exclude"]).to include(env
-        .asset_config["sources"].first)
-    end
-  end
-
-  #
-
   describe "#enable_compression!" do
     context "w/ asset_config[:compression] = true" do
       it "enables" do
