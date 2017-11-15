@@ -11,6 +11,7 @@ require "jekyll"
 require_all "patches/*"
 require_relative "utils"
 require_relative "drop"
+require_relative "writer"
 require_relative "filters"
 require_relative "manifest"
 require_relative "config"
@@ -47,7 +48,6 @@ module Jekyll
         @logger = Logger
         @cache = nil
 
-        excludes!
         disable_erb!
         enable_compression!
         setup_sources!
@@ -109,16 +109,6 @@ module Jekyll
         @old_sprockets ||= begin
           Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
         end
-      end
-
-      # --
-      private
-      def excludes!
-        excludes = Config.defaults[:sources]
-        source_dir = jekyll.in_source_dir + "/"
-        jekyll.config["exclude"].concat(excludes)
-        jekyll.config["exclude"] << in_cache_dir.sub(source_dir, "")
-        jekyll.config["exclude"].uniq!
       end
 
       # --
