@@ -35,8 +35,8 @@ module Jekyll
                 @args[:srcset].each do |v|
                   args = "#{@args[:argv1]} @srcset #{v}"
                   p << Tag.new("asset", args, bctx).render(ctx)
-                  p.img @args.to_h(html: true)
                 end
+                p.img @args.to_h(html: true)
               end
             end
           else
