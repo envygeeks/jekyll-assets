@@ -4,13 +4,13 @@
   </a>
   <br>
   <a href=https://travis-ci.org/envygeeks/jekyll-assets>
-    <img src="https://travis-ci.org/envygeeks/jekyll-assets.svg?branch=master" alt=Status>
+    <img src="https://travis-ci.org/envygeeks/jekyll-assets.svg?branch=master">
   </a>
-  <a href=https://codeclimate.com/github/envygeeks/jekyll-assets/coverage>
-    <img src=https://codeclimate.com/github/envygeeks/jekyll-assets/badges/coverage.svg />
+  <a href="https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage">
+    <img src="https://api.codeclimate.com/v1/badges/56f67324553069bf51e7/test_coverage" />
   </a>
-  <a href=https://codeclimate.com/github/envygeeks/jekyll-assets>
-    <img src=https://codeclimate.com/github/envygeeks/jekyll-assets/badges/gpa.svg />
+  <a href="https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability">
+    <img src="https://api.codeclimate.com/v1/badges/56f67324553069bf51e7/maintainability" />
   </a>
 </p>
 
