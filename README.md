@@ -3,14 +3,14 @@
     <img src=https://envygeeks.io/badges/paypal-large_1.png>
   </a>
   <br>
-  <a href=https://travis-ci.org/jekyll/jekyll-assets>
-    <img src="https://travis-ci.org/jekyll/jekyll-assets.svg?branch=master" alt=Status>
+  <a href=https://travis-ci.org/envygeeks/jekyll-assets>
+    <img src="https://travis-ci.org/envygeeks/jekyll-assets.svg?branch=master" alt=Status>
   </a>
-  <a href=https://codeclimate.com/github/jekyll/jekyll-assets/coverage>
-    <img src=https://codeclimate.com/github/jekyll/jekyll-assets/badges/coverage.svg />
+  <a href=https://codeclimate.com/github/envygeeks/jekyll-assets/coverage>
+    <img src=https://codeclimate.com/github/envygeeks/jekyll-assets/badges/coverage.svg />
   </a>
-  <a href=https://codeclimate.com/github/jekyll/jekyll-assets>
-    <img src=https://codeclimate.com/github/jekyll/jekyll-assets/badges/gpa.svg />
+  <a href=https://codeclimate.com/github/envygeeks/jekyll-assets>
+    <img src=https://codeclimate.com/github/envygeeks/jekyll-assets/badges/gpa.svg />
   </a>
 </p>
 
