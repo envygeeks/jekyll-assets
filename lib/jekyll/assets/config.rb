@@ -15,7 +15,7 @@ module Jekyll
         digest: false,
         source_maps: true,
         destination: "/assets",
-        compression: true,
+        compression: false,
         gzip: false,
 
         defaults: {
@@ -73,6 +73,7 @@ module Jekyll
 
       PRODUCTION = DEVELOPMENT.deep_merge({
         source_maps: false,
+        compression: true,
       }).freeze
 
       # --
