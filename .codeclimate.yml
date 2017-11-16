@@ -1,5 +1,5 @@
 version: "2"
-engines:
+plugins:
   # --
   # It chokes on our Regexp patterns.
   # I don't know why, but I should probably file
@@ -7,7 +7,6 @@ engines:
   # --
   duplication:
     enabled: false
-plugins:
   rubocop:
     enabled: true
     config:
