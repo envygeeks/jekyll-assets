@@ -1,15 +1,14 @@
-engines:
+version: "2"
+plugins:
   rubocop:
     enabled: true
     config:
       file: .rubocop.yml
-exclude_paths:
-  - .rubocop.yml
-  - .codeclimate.yml
-  - .travis.yml
-  - .gitignore
-  - .rspec
-ratings:
-  paths:
-  - "spec/tests/**.rb"
-  - "lib/**.rb"
+checks:
+  # --
+  # It chokes on our Regexp patterns.
+  # I don't know why, but I should probably file
+  #   a ticket to let them know.
+  # --
+  similar-code:
+    enabled: false
