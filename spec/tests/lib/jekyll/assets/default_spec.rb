@@ -81,5 +81,24 @@ describe Jekyll::Assets::Default do
 
       expect(result[:hello]).to eq(:world)
     end
+
+    #
+
+    context "w/ false attrs" do
+      let :page do
+        site.pages.find do |v|
+          v.path == "defaults.html"
+        end
+      end
+
+      #
+
+      it "doesn't set" do
+        file = fragment(page.output)
+        expect(file.search("img").first[:integrity]).to be_nil
+        expect(file.search("link").first[:integrity]).to be_nil
+        expect(file.search("link").first[:type]).to be_nil
+      end
+    end
   end
 end

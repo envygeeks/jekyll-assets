@@ -39,7 +39,7 @@ module Jekyll
       # @return nil
       # --
       def self.set(args, asset:, ctx:)
-        args.deep_merge!(get(type: asset.content_type, args: args))
+        # set_static(args, asset: asset)
         rtn = Default.inherited.select do |o|
           o.for?(type: asset.content_type, args: args)
         end
@@ -50,6 +50,16 @@ module Jekyll
             asset: asset,
             ctx: ctx,
           }).run
+        end
+      end
+
+      # --
+      def self.set_static(args, asset:)
+        get(type: asset.content_type, args: args).each do |k, v|
+          unless args.key?(k)
+            args[k] = args[k].is_a?(Hash) ?
+              args[k].deep_merge(v) : v
+          end
         end
       end
 

@@ -19,7 +19,7 @@ module Jekyll
         end
 
         def set_integrity
-          return if @asset.is_a?(Url)
+          return if @asset.is_a?(Url) || @args.key?(:integrity)
           @args[:integrity] = @asset.integrity
           if !@args.key?(:crossorigin) && @args[:integrity]
             @args[:crossorigin] = "anonymous"

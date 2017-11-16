@@ -117,18 +117,30 @@ sources:
 ```
 
 ## Tag
-### Liquid Usage
+### Usage
+#### Liquid
 
 ```liquid
 {% asset src @magick:2x alt='This is my alt' %}
 {% asset src @magick:2x alt='This is my alt' %}
 ```
 
-### HTML Usage
+#### HTML
 
 ```html
 <img src="src" asset="@magick:2x" alt="This is my alt">
 <img src="src" alt="This is my alt" asset>
+```
+
+### Defaults
+
+We provide several defaults that get set when you run an asset, depending on content type, this could be anything from type, all the way to integrity.  If there is a default attribute you do not wish to be included, you can disable the attribute with `!attribute`, and it will be skipped over.
+
+#### Usage
+
+```liquid
+{% asset img.png !integrity %}
+{% asset bundle.css !type   %}
 ```
 
 ### Arguments
