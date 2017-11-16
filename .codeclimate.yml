@@ -11,3 +11,7 @@ plugins:
     enabled: true
     config:
       file: .rubocop.yml
+ratings:
+  paths:
+  - "spec/tests/**.rb"
+  - "lib/**.rb"
