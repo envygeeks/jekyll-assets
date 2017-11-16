@@ -49,6 +49,16 @@ module Jekyll
       end
 
       # --
+      def render_raw(ctx)
+        env  = ctx.registers[:site].sprockets
+        args = env.parse_liquid(@args, ctx: ctx)
+        raise Sprockets::FileNotFound, "UNKNOWN" unless args.key?(:argv1)
+        asset = external(ctx, args: args) if env.external?(args)
+        asset ||= internal(ctx)
+        [args, asset]
+      end
+
+      # --
       # @return [String]
       # Render the tag, run the proxies, set the defaults.
       # @note Defaults are ran twice just incase the content type
@@ -56,12 +66,7 @@ module Jekyll
       #   has to change in the new content.
       # --
       def render(ctx)
-        env  = ctx.registers[:site].sprockets
-        args = env.parse_liquid(@args, ctx: ctx)
-        raise Sprockets::FileNotFound, "UNKNOWN" unless args.key?(:argv1)
-        asset = external(ctx, args: args) if env.external?(args)
-        asset ||= internal(ctx)
-
+        args, asset = render_raw(ctx)
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
             args: args,

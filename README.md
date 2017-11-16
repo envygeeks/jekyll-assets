@@ -38,7 +38,7 @@
 - [x] Easier proxies, with rolling proxies.
 - [x] Customizable HTML defaults.
 - [x] Configurable GZipping.
-- [ ] Proxies via `<img>`.
+- [x] Proxies via `<img>`.
 - [x] SourceMaps.
 
 # Jekyll Assets
@@ -117,11 +117,18 @@ sources:
 ```
 
 ## Tag
-### Usage
+### Liquid Usage
 
 ```liquid
 {% asset src @magick:2x alt='This is my alt' %}
 {% asset src @magick:2x alt='This is my alt' %}
+```
+
+### HTML Usage
+
+```html
+<img src="src" asset="@magick:2x" alt="This is my alt">
+<img src="src" alt="This is my alt" asset>
 ```
 
 ### Arguments
