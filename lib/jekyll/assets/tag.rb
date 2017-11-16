@@ -75,8 +75,9 @@ module Jekyll
           })
         end
       rescue Sprockets::FileNotFound => e
+        env = ctx.registers[:site].sprockets
+        env.logger.debug  args.to_h(html: false).inspect if args
         env.logger.error @args.to_h(html: false).inspect
-        env.logger.debug  args.to_h(html: false).inspect
         raise e
       end
 
