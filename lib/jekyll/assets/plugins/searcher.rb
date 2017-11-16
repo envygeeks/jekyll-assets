@@ -37,8 +37,8 @@ module Jekyll
             end
           end
 
-          @doc.output = html
-            .to_html
+          out = html.to_html
+          @doc.output = out
         end
 
         # --
@@ -53,7 +53,13 @@ module Jekyll
         private
         def html
           @html ||= begin
-            Nokogiri::HTML.parse(@doc.output)
+            out = @doc.output
+            # @see https://github.com/sparklemotion/nokogiri/issues/553
+            good, buggy = Encoding::UTF_8, Encoding::ASCII_8BIT
+            out = out.encode good if out.encoding == buggy
+            Nokogiri::HTML.send((@doc.output.strip
+              .start_with?("<!DOCTYPE ") ? :parse :
+                :fragment), out)
           end
         end
       end
