@@ -24,6 +24,8 @@ notifications:
   email:
     recipients:
     - jordon@envygeeks.io
+    on_success: change
+    on_failure: change
 branches:
   only:
   - master
