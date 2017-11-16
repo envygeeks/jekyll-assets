@@ -60,6 +60,11 @@ module Jekyll
       end
 
       # --
+      def skip_gzip?
+        !asset_config[:gzip]
+      end
+
+      # --
       # @note this is configurable with :caching -> :type
       # Create a cache, or a null cache (if no caching) for caching.
       # @note this is configurable with :caching -> :enabled
