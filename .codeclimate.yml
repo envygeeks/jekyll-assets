@@ -1,14 +1,14 @@
 version: "2"
-plugins:
-  rubocop:
-    enabled: true
-    config:
-      file: .rubocop.yml
-checks:
+engines:
   # --
   # It chokes on our Regexp patterns.
   # I don't know why, but I should probably file
   #   a ticket to let them know.
   # --
-  similar-code:
+  duplication:
     enabled: false
+plugins:
+  rubocop:
+    enabled: true
+    config:
+      file: .rubocop.yml
