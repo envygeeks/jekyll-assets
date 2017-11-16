@@ -14,10 +14,13 @@ module Jekyll
       DEVELOPMENT = {
         digest: false,
         source_maps: true,
-        subresource_integrity: false,
         destination: "/assets",
         compression: true,
         gzip: false,
+
+        defaults: {
+          #
+        },
 
         caching: {
           enabled: true,

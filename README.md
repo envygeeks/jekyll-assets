@@ -48,10 +48,9 @@ Jekyll Assets is a drop in [asset pipeline][1] that uses [Sprockets][2] to build
 ## Using Jekyll Assets with Jekyll
 
 ```ruby
-# Gemfile
-gem "jekyll-assets", {
-  group: :jekyll_plugins
-}
+gem "jekyll-assets", group: :jekyll_plugins
+gem "jekyll-assets", git: "https://github.com/envygeeks/jekyll-assets", group: :jekyll_plugins
+gem "jekyll-assets", "~> x.x.alpha", group: :jekyll_plugins
 ```
 
 ### Requirments
@@ -62,58 +61,66 @@ gem "jekyll-assets", {
 
 ***If you would like SourceMap support, or faster Sprockets, you should prefer to use Sprockets "~> 4.0.beta", we support SourceMaps in this version of Sprockets because it supports them. It's manifest an other features are also much better inside of this version of Sprockets.***
 
+```ruby
+gem "sprockets", "~> 4.0.beta", {
+  require: false
+}
+```
+
 ## Configuration
 
-The configuration file is the same as Jekyll's, which is `_config.yml`. Except we use the special key "assets" inside of that file.
+The configuration file is the same as Jekyll's, which is `_config.yml`. Except we use the special key "assets" inside of that file.  Any environment variable noted as "val on `JEKYLL_ENV`" is only overridden when not explicitly set.  All values listed below are default, you need not copy these into your configuration file unless you plan to change a value.
 
 ```yaml
-liquid: false
-prefix: "/assets"
-integrity: false
-autowrite: true
 digest: false
-strict: false
+source_maps: true # false on JEKYLL_ENV=production
+destination: "/assets"
+compression: true
+gzip: false
+defaults:
+   js: { integrity: false } # true on JEKYLL_ENV=production
+  css: { integrity: false } # true on JEKYLL_ENV=production
+  img: { integrity: false } # true on JEKYLL_ENV=production
 caching:
-  enabled: true
   path: ".jekyll-cache/assets"
-  type: file
+  type: file # Possible values: memory, file
+  enabled: true
 precompile: []
 cdn:
   baseurl: false
-  prefix: false
-plugins:
-  img:
-    optim: {}
-  compression:
-    js:
-      enabled: false
-      opts: {}
-    css:
-      enabled: true
+  destination: false
+  url: null
 sources:
 - assets/css
 - assets/fonts
 - assets/images
+- assets/videos
 - assets/javascript
+- assets/video
 - assets/image
 - assets/img
 - assets/js
-
 - _assets/css
 - _assets/fonts
 - _assets/images
+- _assets/videos
 - _assets/javascript
+- _assets/video
 - _assets/image
 - _assets/img
 - _assets/js
-
 - css
 - fonts
 - images
+- videos
 - javascript
+- video
 - image
 - img
 - js
+plugins:
+  css: { autoprefixer: {}}
+  img: { optim: {}}
 ```
 
 ## Tag

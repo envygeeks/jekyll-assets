@@ -19,13 +19,30 @@ module Jekyll
         end
 
         def set_integrity
-          return if @asset.is_a?(Url) || @args.key?(:integrity)
+          return unless integrity?
           @args[:integrity] = @asset.integrity
           if !@args.key?(:crossorigin) && @args[:integrity]
             @args[:crossorigin] = "anonymous"
           end
         end
+
+        # --
+        def integrity?
+          config[:integrity] && !@asset.is_a?(Url) &&
+            !@args.key?(:integrity)
+        end
       end
     end
   end
+end
+
+# --
+Jekyll::Assets::Hook.register :config, :before_merge do |c|
+  c.deep_merge!({
+    defaults: {
+      css: {
+        integrity: Jekyll.production?,
+      },
+    },
+  })
 end
