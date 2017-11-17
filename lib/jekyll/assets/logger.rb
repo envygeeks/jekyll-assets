@@ -24,6 +24,11 @@ module Jekyll
           Jekyll.logger.send(v, PREFIX, message)
         end
       end
+
+      # --
+      def efile(file)
+        Jekyll.logger.error("Asset File", file)
+      end
     end
   end
 end

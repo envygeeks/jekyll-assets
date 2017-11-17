@@ -67,6 +67,8 @@ module Jekyll
       # --
       def render(ctx)
         args, asset = render_raw(ctx)
+        env = ctx.registers[:site].sprockets
+        env.logger.debug args&.to_h(html: false).inspect
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
             args: args,
@@ -74,11 +76,17 @@ module Jekyll
             ctx: ctx,
           })
         end
-      rescue Sprockets::FileNotFound => e
-        env = ctx.registers[:site].sprockets
-        env.logger.debug  args.to_h(html: false).inspect if args
-        env.logger.error @args.to_h(html: false).inspect
-        raise e
+      # --
+      # @note you can --trace to get this same info
+      # Handle errors that Sass ships because Jekyll finds
+      # error handling hard, and makes it even harder, so we
+      # need to ship debug info to the user, or they'll
+      # never get it. That's not very good.
+      # --
+      rescue Sass::SyntaxError => e
+        env.logger.error e.message
+        env.logger.efile env.strip_paths(e.backtrace.first)
+        raise Sass::SyntaxError, "Sass Error"
       end
 
       # --
