@@ -26,7 +26,7 @@ module Jekyll
       end
 
       # --
-      def efile(file)
+      def self.efile(file)
         Jekyll.logger.error("Asset File", file)
       end
     end
