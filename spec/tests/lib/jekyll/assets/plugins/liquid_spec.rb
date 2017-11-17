@@ -11,6 +11,7 @@ describe "Plugins/Liquid" do
   #
 
   it "should pre-process" do
-    expect(asset.to_s).to match("html{opacity:3}body{opacity:3}\n")
+    expect(asset.to_s.gsub(%r!\s+|\n+|;!, "").strip).to \
+      match("html{opacity:3}body{opacity:3}")
   end
 end
