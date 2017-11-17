@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export SPROCKETS_VERSION="~> 4.0.beta"
+bundle update >/dev/null
+bundle clean  >/dev/null
+rake spec

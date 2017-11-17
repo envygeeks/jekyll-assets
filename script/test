@@ -1,0 +1,6 @@
+#!/bin/bash
+[ "$DEBUG" = "true" ] && set -x
+set -e
+
+script/test3
+script/test4

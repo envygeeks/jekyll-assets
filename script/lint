@@ -1,0 +1,5 @@
+#!/bin/bash
+[ "$DEBUG" = "true" ] && set -x
+set -e
+
+rake rubocop
