@@ -22,7 +22,12 @@ module Jekyll
 
         def self.call(ctx)
           env = ctx[:environment]
-          bctx = ::Liquid::Context.new({}, {}, site: env.jekyll)
+          registers = { site: env.jekyll }
+          environment = env.jekyll.to_liquid.merge(jekyll: {
+            "version" => Jekyll::VERSION, "environment" => Jekyll.env
+          })
+
+          bctx = ::Liquid::Context.new(environment, {}, registers)
           ctx[:data] = env.parse_liquid(ctx[:data], {
             ctx: bctx,
           })
