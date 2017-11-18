@@ -60,6 +60,7 @@ module Jekyll
 
       # --
       # @return [String]
+      # rubocop:disable Metrics/AbcSize
       # Render the tag, run the proxies, set the defaults.
       # @note Defaults are ran twice just incase the content type
       #   changes, at that point there might be something that
@@ -77,6 +78,12 @@ module Jekyll
             ctx: ctx,
           })
         end
+      # --
+      rescue ExecJS::RuntimeError => e
+        env.logger.error e.message
+        env.logger.efile @args[:argv1]
+        raise ExecJS::RuntimeError, \
+          "JS Error"
       # --
       # @note you can --trace to get this same info
       # Handle errors that Sass ships because Jekyll finds
