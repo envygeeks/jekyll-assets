@@ -127,7 +127,7 @@ module Jekyll
       def precompile!
         assets = asset_config[:precompile]
         assets.map do |v|
-          compile(v)
+          manifest.compile(v)
         end
 
         nil
