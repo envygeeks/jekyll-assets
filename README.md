@@ -207,6 +207,32 @@ processing we do, so you can do whatever you like, and be as dynamic as you like
 
 ***In order to import your Liquid pre-processed assets inside of Liquid or JS you should use a Sprockets `//require=`, Sprockets does not integrate that deeply into JavaScript and SASS to allow you to `@import` and pre-process.***
 
+## Sass/SCSS Helpers
+
+We provide two helpers, `asset_path` to return the path of an asset, and `asset_url` which will wrap `asset_path` into a `url()` for you, making it easy for you to extract your assets and their paths inside of SCSS.
+
+### Usage
+
+```scss
+body {
+  background-image: asset_url("img.png");
+}
+```
+
+#### Proxies, and Other Arguments
+
+Any argument that is supported by our regular tags, is also supported by our Sass/SCSS helpers, with a few obvious exceptions (like `srcset`).  This means that you can wrap your assets into `magick` if you wish, or `imageoptim` or any other proxy that is able to spit out a path for you to use.
+
+##### Usage
+
+```scss
+body {
+  background-image: asset_url("img.png @magick:half")
+}
+```
+
+***Not we do not validate your arguments, so if you send a conflicting argument that results in invalid CSS, you are responsible for that, in that if you ship us `srcset` we won't throw, we will spit out HTML for you, and it will break your CSS, this is by design.***
+
 ## List
 
 We provide all *your* assets as a hash of Liquid Drops so you can get basic info that we wish you to have access to without having to prepare the class.
