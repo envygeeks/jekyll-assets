@@ -9,9 +9,9 @@ module Jekyll
   module Assets
     module Filters
       def asset(path, args = "")
-        context = Context.new
         args = "#{path} #{args}"
-        tag = Tag.new(val, args, context)
+        ctx = Liquid::ParseContext.new
+        tag = Tag.new("asset", args, ctx)
         tag.render(@context)
       end
     end

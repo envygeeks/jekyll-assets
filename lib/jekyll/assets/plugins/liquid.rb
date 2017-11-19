@@ -12,12 +12,12 @@ module Jekyll
     module Plugins
       class Liquid
         TYPES = {
-          "application/liquid+javascript" =>  ".liquid.js",
-          "text/liquid+sass" => %w(.css.liquid.sass .liquid.sass),
-          "text/liquid+coffeescript" => %w(.js.liquid.coffee .liquid.coffee),
-          "application/ecmascript-6" => %w(.js.liquid.es6 .liquid.es6),
-          "text/liquid+scss" => %w(.css.liquid.scss .liquid.scss),
-          "text/liquid+css" => ".liquid.css",
+          "text/liquid+sass" => %w(.sass.liquid .liquid.sass),
+          "application/liquid+javascript" =>  %w(.liquid.js .js.liquid),
+          "application/liquid+ecmascript-6" => %w(.liquid.es6 .es6.liquid),
+          "text/liquid+coffeescript" => %w(.liquid.coffee .coffee.liquid),
+          "text/liquid+scss" => %w(.liquid.scss .scss.liquid),
+          "text/liquid+css" => %w(.liquid.css .css.liquid),
         }.freeze
 
         def self.call(ctx)
@@ -40,15 +40,17 @@ module Jekyll
       #   two different ways depending on the type of Sprockets.
       # --
       if !Env.old_sprockets?
-        Liquid::TYPES.each_key do |k|
+        Liquid::TYPES.each do |k, v|
           to = Utils.strip_secondary_content_type(k)
-          Sprockets.register_transformer_suffix to, k,
-            ".liquid", Liquid
+          charset = Sprockets.mime_types[to][:charset]
+          Sprockets.register_mime_type(k, extensions: v, charset: charset)
+          Sprockets.register_transformer(k, to, Liquid)
         end
       else
         # Still the easiest way tbqf.  Never change.
-        Sprockets.register_engine ".liquid", Liquid,
-          silence_deprecation: true
+        Sprockets.register_engine ".liquid", Liquid, {
+          silence_deprecation: true,
+        }
       end
     end
   end

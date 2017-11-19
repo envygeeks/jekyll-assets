@@ -4,14 +4,45 @@
 
 require "rspec/helper"
 describe "Plugins/Liquid" do
-  let(:asset) do
-    env.find_asset!("plugins/liquid.css")
+  context "w/ .scss.liquid", sprockets: 4 do
+    let(:asset) do
+      env.find_asset!("plugins/liquid/basic1.css")
+    end
+
+    #
+
+    it "works" do
+      expect(asset.to_s.gsub(%r!\s+|\n+|;!, "").strip).to \
+        match("html{opacity:3}")
+    end
+  end
+
+  context "w/ .liquid.scss" do
+    let(:asset) do
+      env.find_asset!("plugins/liquid/basic2.css")
+    end
+
+    #
+
+    it "works" do
+      expect(asset.to_s.gsub(%r!\s+|\n+|;!, "").strip).to \
+        match("html{opacity:3}")
+    end
   end
 
   #
 
-  it "should pre-process" do
-    expect(asset.to_s.gsub(%r!\s+|\n+|;!, "").strip).to \
-      match("html{opacity:3}body{opacity:3}")
+  context "inception/complex" do
+    let :asset do
+      env.find_asset!("plugins/liquid/complex.css")
+    end
+
+    #
+
+    it "works" do
+      expect(asset.to_s).to match(%r!hello:\s*"/assets/!)
+      expect(asset.to_s).to match(%r!background:\s*url\("/assets/!)
+      expect(asset.to_s).to match(%r!world:\s*"&amp;"!)
+    end
   end
 end

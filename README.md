@@ -192,7 +192,7 @@ We support liquid arguments for tag values (but not tag keys), and we also suppo
 {% img {{\ image_path\ }} %}
 ```
 
-#### `.liquid`
+#### `.liquid.ext`, and `.ext.liquid`
 
 ```scss
 .bg {
@@ -201,11 +201,11 @@ We support liquid arguments for tag values (but not tag keys), and we also suppo
 ```
 
 You have full access to your entire Jekyll context from any liquid
-processing we do, so you can do whatever you like and be as dynamic as you like, including full loops and conditional Liquid based CSS since we pre-process your text files.
+processing we do, so you can do whatever you like, and be as dynamic as you like, including full loops, and conditional Liquid based CSS/JavaScript since we pre-process your text files. ***On Sprockets 4.x you can use `.liquid.ext` and `.ext.liquid`, but because of the way Sprockets 3.x works, we have opted to only allow the default extension of `.ext.liquid` when running on "Old Sprockets" (AKA 3.x.)  If you would like Syntax + Liquid you should opt to install Sprockets 4.x so you can get the more advanced features.***
 
 ##### Importing
 
-In order to import your Liquid pre-processed assets inside of Liquid or JS you should use a Sprockets `//require=`, Sprockets does not integrate that deeply into JavaScript and SASS to allow you to `@import` and pre-process.
+***In order to import your Liquid pre-processed assets inside of Liquid or JS you should use a Sprockets `//require=`, Sprockets does not integrate that deeply into JavaScript and SASS to allow you to `@import` and pre-process.***
 
 ## List
 

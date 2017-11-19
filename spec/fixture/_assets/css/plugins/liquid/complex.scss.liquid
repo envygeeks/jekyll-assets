@@ -1,0 +1,5 @@
+.background {
+  hello: "{{ site.img | asset : '@path' }}";
+  background: url("{% asset '{{ site.img }}' @path %}");
+  world: "{{ '&' | xml_escape }}"
+}
