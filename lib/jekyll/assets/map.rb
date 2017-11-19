@@ -42,10 +42,13 @@ module Jekyll
 
       # --
       def self.register_on(instance)
-        Writer.register_on(instance)
-        JavaScript.register_on(instance)
-        CSS.register_on(instance)
+        return unless instance.asset_config[:source_maps]
+        unless instance.asset_config[:compression]
+          instance.logger.warn "Compression is ignored w/ SourceMaps"
+        end
 
+        # Register everything, so we can get this party started.
+        [Writer, JavaScript, CSS].map { |v| v.register_on(instance) }
         instance.css_compressor, instance.js_compressor =
           :source_map, :source_map
       end
