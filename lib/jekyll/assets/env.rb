@@ -126,23 +126,10 @@ module Jekyll
 
       # --
       def copy_raw!
-        dest = Pathutil.new(in_dest_dir)
-        asset_config[:raw_precompile].each do |v|
-          if v.is_a?(Hash)
-            from = v[:from]; to = dest.join(v[:to]).tap(&:mkdir_p)
-            glob_paths(from).each do |sv|
-              Pathutil.new(sv)
-                .cp(to)
-            end
-          else
-            glob_paths(v).each do |sv|
-              d = strip_paths(sv)
-              d = Pathutil.new(in_dest_dir(d))
-              d.parent.mkdir_p
-              Pathutil.new(sv)
-                .cp(d)
-            end
-          end
+        raw_precompiles.each do |v|
+          v[:dst].mkdir_p if v[:dst].extname.empty?
+          v[:dst].parent.mkdir_p unless v[:dst].extname.empty?
+          v[:src].cp(v[:dst])
         end
       end
 

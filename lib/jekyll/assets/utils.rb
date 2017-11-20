@@ -5,10 +5,37 @@
 module Jekyll
   module Assets
     module Utils
+      def raw_precompiles
+        asset_config[:raw_precompile].each_with_object([]) do |v, a|
+          if v.is_a?(Hash)
+            dst, src = in_dest_dir.join(v[:dst]).tap(&:mkdir_p), v[:src]
+            glob_paths(src).each do |sv|
+              a << {
+                src: sv,
+                full_dst: dst.join(sv.basename),
+                dst: dst,
+              }
+            end
+          else
+            src = glob_paths(v).first
+
+            next unless src
+            dst = in_dest_dir(strip_paths(src))
+            dst.parent.mkdir_p
+
+            a << {
+              src: src,
+              full_dst: dst,
+              dst: dst,
+            }
+          end
+        end
+      end
+
       # --
       def find_assets_by_glob(glob)
         glob_paths(glob).map do |v|
-          find_asset!(v)
+          find_asset!(v.to_s)
         end
       end
 
@@ -18,8 +45,9 @@ module Jekyll
 
         paths.each do |sv|
           sv = Pathutil.new(sv)
+
           if sv.directory?
-            out.concat(sv.glob(glob).map(&:to_s))
+            out.concat(sv.glob(glob).to_a)
           end
         end
 
@@ -133,9 +161,9 @@ module Jekyll
       # --
       def in_cache_dir(*paths)
         path = Pathutil.pwd.join(strip_slashes(asset_config[:caching][:path]))
-        paths.reduce(path.to_s) do |b, p|
+        Pathutil.new(paths.reduce(path.to_s) do |b, p|
           Jekyll.sanitized_path(b, p)
-        end
+        end)
       end
 
       # --
@@ -149,7 +177,8 @@ module Jekyll
 
         paths.unshift(destination)
         paths = paths.flatten.compact
-        jekyll.in_dest_dir(*paths)
+        Pathutil.new(jekyll
+          .in_dest_dir(*paths))
       end
 
       # --

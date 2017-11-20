@@ -18,12 +18,15 @@ module Jekyll
         # @return [Array<String>]
         # --
         def obsolete_files(*args)
-          extra = Utils.manifest_files(site.sprockets)
+          extras = Utils.manifest_files(site.sprockets)
+          extras.concat(site.sprockets.raw_precompiles
+            .map { |v| v.values_at(:dst, :full_dst) }
+              .flatten.uniq)
 
           super(*args).reject do |v|
             v == site.sprockets.in_dest_dir || \
               v == site.sprockets.manifest.filename || \
-              extra.include?(v)
+              extras.include?(v)
           end
         end
       end
