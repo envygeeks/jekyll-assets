@@ -148,9 +148,12 @@ module Jekyll
       # --
       private
       def setup_sources!
+        source_dir, cwd = Pathutil.new(jekyll.in_source_dir), Pathutil.cwd
         asset_config["sources"].each do |v|
-          unless paths.include?(jekyll.in_source_dir(v))
-            append_path jekyll.in_source_dir(v)
+          path = source_dir.join(v).expand_path
+          next unless path.in_path?(cwd)
+          unless paths.include?(path)
+            append_path path
           end
         end
 
