@@ -28,6 +28,10 @@ module Jekyll
           type: "file",
         },
 
+        raw_precompile: [
+          #
+        ],
+
         precompile: [
           #
         ],
