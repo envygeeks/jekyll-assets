@@ -182,7 +182,7 @@ describe Jekyll::Assets::Utils do
       #
 
       it "uses it" do
-        expect(subject.in_cache_dir).to \
+        expect(subject.in_cache_dir.to_s).to \
           end_with("/hello-cache")
       end
     end
@@ -190,7 +190,7 @@ describe Jekyll::Assets::Utils do
     #
 
     it "allows paths" do
-      expect(subject.in_cache_dir("one", "two")).to \
+      expect(subject.in_cache_dir("one", "two").to_s).to \
         end_with("one/two")
     end
   end
@@ -209,7 +209,7 @@ describe Jekyll::Assets::Utils do
 
       it "uses it" do
         rtn = subject.in_dest_dir
-        expect(rtn).to end_with("/hello")
+        expect(rtn.to_s).to end_with("/hello")
       end
     end
 
@@ -217,15 +217,15 @@ describe Jekyll::Assets::Utils do
 
     it "in site dir" do
       rtn = subject.in_dest_dir
-      expect(rtn).to start_with(jekyll
-        .in_dest_dir)
+      expect(rtn.to_s).to start_with(jekyll
+        .in_dest_dir.to_s)
     end
 
     #
 
     it "allows paths" do
       rtn = subject.in_dest_dir("one", "two")
-      expect(rtn).to end_with("one/two")
+      expect(rtn.to_s).to end_with("one/two")
     end
   end
 
