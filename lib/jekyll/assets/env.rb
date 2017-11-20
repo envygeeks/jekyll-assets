@@ -128,7 +128,9 @@ module Jekyll
       def precompile!
         assets = asset_config[:precompile]
         assets.map do |v|
-          manifest.compile(v)
+          v !~ %r!\*! ? manifest.compile(v) : glob_paths(v).each do |sv|
+            manifest.compile(sv)
+          end
         end
 
         nil

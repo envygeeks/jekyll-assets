@@ -6,6 +6,27 @@ module Jekyll
   module Assets
     module Utils
       # --
+      def find_assets_by_glob(glob)
+        glob_paths(glob).map do |v|
+          find_asset!(v)
+        end
+      end
+
+      # --
+      def glob_paths(glob)
+        out = []
+
+        paths.each do |sv|
+          sv = Pathutil.new(sv)
+          if sv.directory?
+            out.concat(sv.glob(glob).map(&:to_s))
+          end
+        end
+
+        out
+      end
+
+      # --
       def url_asset(url, type:)
         name = File.basename(url)
         old_ = Env.old_sprockets?
