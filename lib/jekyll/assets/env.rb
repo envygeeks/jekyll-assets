@@ -172,6 +172,7 @@ module Jekyll
       require_all "plugins/*"
       require_all "plugins/html/defaults/*"
       require_all "plugins/html/*"
+      require_relative "context"
       require_relative "writer"
 
       require_relative "map" unless old_sprockets?
