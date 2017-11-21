@@ -37,13 +37,15 @@ module Jekyll
                   p << Tag.new("asset", args, bctx).render(ctx)
                 end
 
-                p.img @args.to_h(html: true)
+                p.img @args.to_h({
+                  html: true, skip: HTML.skips
+                })
               end
             end
           else
             @args[:srcset] = @args[:src]
             Nokogiri::HTML::Builder.with(@doc) do |d|
-              d.source(@args.to_h(html: true).tap do |o|
+              d.source(@args.to_h(html: true, skip: HTML.skips).tap do |o|
                 o.delete(:src)
               end)
             end

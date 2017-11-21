@@ -21,7 +21,7 @@ module Jekyll
         def run
           Nokogiri::HTML::Builder.with(@doc) do |d|
             d.img(@args.to_h({
-              html: true,
+              html: true, skip: HTML.skips
             }))
           end
         end

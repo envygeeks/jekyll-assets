@@ -8,7 +8,7 @@ require "nokogiri"
 module Jekyll
   module Assets
     class HTML
-      class Audio < HTML
+      class Video < HTML
         content_types "video/avi"
         content_types "video/webm"
         content_types "video/mp4"
@@ -16,7 +16,7 @@ module Jekyll
         def run
           Nokogiri::HTML::Builder.with(doc) do |d|
             d.video("No support for video.", args.to_h({
-              html: true,
+              html: true, skip: HTML.skips
             }))
           end
         end

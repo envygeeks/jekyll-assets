@@ -7,7 +7,7 @@ require "jekyll/assets"
 module Jekyll
   module Assets
     class Default
-      class Img < Default
+      class Audio < Default
         content_types "audio/aiff"
         content_types "audio/basic"
         content_types "audio/mpeg"
@@ -61,7 +61,7 @@ end
 Jekyll::Assets::Hook.register :config, :before_merge do |c|
   c.deep_merge!({
     defaults: {
-      img: {
+      audio: {
         integrity: Jekyll.production?,
       },
     },
