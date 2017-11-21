@@ -41,12 +41,4 @@ describe Sprockets::Context do
       expect(s1.size[1] * 2).to eq(s2.size[1])
     end
   end
-
-  #
-
-  describe "#asset_url" do
-    it "wraps" do
-      expect(subject.asset_url("img.png")).to start_with("url(")
-    end
-  end
 end
