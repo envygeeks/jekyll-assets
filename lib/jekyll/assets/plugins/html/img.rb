@@ -18,12 +18,44 @@ module Jekyll
         content_types "image/png"
         content_types "image/jpg"
 
+        # --
         def run
-          Nokogiri::HTML::Builder.with(@doc) do |d|
-            d.img(@args.to_h({
-              html: true, skip: HTML.skips
-            }))
+          Nokogiri::HTML::Builder.with(doc) do |d|
+            if srcset?
+              complex(d)
+            else
+              d.img(args.to_h({
+                html: true, skip: HTML.skips
+              }))
+            end
           end
+        end
+
+        # --
+        def complex(doc)
+          img = doc.img @args.to_h(html: true, skip: HTML.skips)
+          Array(args[:srcset][:width]).each do |w|
+            w, d = w.to_s.split(%r!\s+!, 2)
+            Integer(w)
+
+            img["srcset"] ||= ""
+            img["srcset"] += ", #{path(width: w)} #{d || "#{w}w"}"
+            img["srcset"] = img["srcset"].gsub(
+              %r!^,\s*!, "")
+          end
+        end
+
+        # --
+        def path(width:)
+          args_ = "#{args[:argv1]} magick:resize=#{width} @path"
+          Tag.new("asset", args_, Liquid::ParseContext.new)
+            .render(ctx)
+        end
+
+        # --
+        def srcset?
+          args.key?(:srcset) && args[:srcset]
+            .key?(:width)
         end
 
         # --

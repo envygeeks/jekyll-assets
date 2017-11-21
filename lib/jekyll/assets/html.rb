@@ -15,7 +15,7 @@ module Jekyll
       # --
       def self.skips
         return %i(
-          inline path data
+          inline path data pic
         )
       end
 
