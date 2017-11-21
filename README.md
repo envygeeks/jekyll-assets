@@ -162,24 +162,51 @@ Our tags will take any number of arguments, and convert them to HTML, and even a
 | `@path` | Path | `*/*` | `text`
 | `@data` | `data` URI | `*/*` | `text` |
 | `@inline` | CSS `<style>` | `text/css` | `text/html` |
-| `@inline` | `text/svg+xml` XML | `image/svg+xml` | `text/svg+xml` |
-| `@inline` | JavaScript `<script>` | `application/javascript` | `text/html` |
-| `@inline` | Image `<img>` | `image/*` | `text/html` |
-| `srcset` | [Responsive](#responsive-images) | `image/*` | `text/html` |
+| | `text/svg+xml` XML | `image/svg+xml` | `text/svg+xml` |
+| | JavaScript `<script>` | `application/javascript` | `text/html` |
+| | Image `<img>` | `image/*` | `text/html` |
+| `srcset` | [Responsive]() `<img>` | `image/*` | `text/html` |
+| `srcset` + `@pic` | [Responsive]() `<pic>` | `image/*` | `text/html` |
 
 ***Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)***
 
 #### Responsive Images
 
-Jekyll Assets has the concept of responsive images, using the `picture` tag, if you ship multiple `srcset` with your image, we will proxy, build and then ship out a `picture` tag with any number of `source` and the original image being the `image`.
+Jekyll Assets has the concept of responsive images, using the `picture` (when using `@pic` w/ `srcset`) and the `<img>` tag when using `srcset`. If you ship multiple `srcset` with your image, we will proxy, build and then ship out a `picture/img` tag with any number of `source/srcset`, and in the case of picture, with the original image being the `image`.
 
-##### Usage
+##### `<picture>` usage, requires `@pic`
+###### Example
 
 ```liquid
-{% asset img.svg srcset='magick:format=image/png magick:resize=800 media="(min-width:800px)"'
-                 srcset='magick:format=image/png magick:resize=600 media="(min-width:600px)"'
-                 srcset='magick:format=image/png magick:resize=400 media="(min-width:400px)"' %}
+{% asset img.png @pic
+    srcset:max-width=800
+    srcset:max-width=600
+    srcset:max-width=400
+      %}
 ```
+
+##### `<img>` usage
+###### Example
+
+```liquid
+{% asset img.png
+    srcset:min-width=400
+    srcset:min-width=600
+    srcset:min-width=800
+      %}
+```
+
+##### Args
+
+| Arg | Type | Description |
+| --- | ---- | ------------|
+| `width`     | Int | Resize, set `srcset="<Src> <Int>w"` |
+| `min-width` | Int | Resize, set `media="(min-width: <Int>)"` |
+| `max-width` | Int | Resize, set `media="(max-width: <Int>)"` |
+| `sizes`     | Any | Your value, unaltered, unparsed.    |
+| `media`     | Any | Your value, unaltered, unparsed.    |
+
+***If you set `media`, w/ `max-width`, `min-width`, we will not ship `media`, we will simply resize and assume you know what you're doing.  Our parser is not complex, and does not make a whole lot of assumptions on your behalf, it's simple and only meant to make your life easier.  In the future we may make it more advanced.***
 
 ## Liquid
 
