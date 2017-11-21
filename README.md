@@ -25,16 +25,17 @@
 ## What's new
 
 - [x] Jekyll like tag arguments.
+- [ ] Support for `<img>` srcset.
 - [x] Proxies in `asset()` for SASS.
 - [x] Expanded source directories by default.
 - [ ] Support for `srcset`, width, and density.
 - [x] Support for building HTML for external assets.
 - [x] Stripping of FrontMatter (`---`) before processing.
 - [x] Extensible/customizable decoupled HTML builders for tags.
-- [ ] Support for `<audio>`, `<video>`, `<img>` discovery in Markdown.
+- [x] Support for `<audio>`, `<video>`, `<img>` discovery in Markdown.
 - [x] Responsive images with `srcset` `<picture>` tag support.
-- [ ] Support for audio assets (using `assets` tag.)
-- [ ] Support for video assets (using `assets` tag.)
+- [x] Support for audio assets (using `assets` tag.)
+- [x] Support for video assets (using `assets` tag.)
 - [x] Easier proxies, with rolling proxies.
 - [x] Customizable HTML defaults.
 - [x] Configurable GZipping.
