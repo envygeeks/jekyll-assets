@@ -58,8 +58,14 @@ module Jekyll
         end
 
         # --
+        # {% img src src="" @pic %}
+        # --
         def self.for?(args:, type:)
-          super && !args[:inline] && args.key?(:srcset)
+          return false unless super
+          return false unless args.key?(:srcset) &&
+              args.key?(:pic)
+
+          true
         end
       end
     end

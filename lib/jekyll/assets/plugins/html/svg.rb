@@ -12,14 +12,9 @@ module Jekyll
 
         # --
         def run
-          if @asset.is_a?(Url) && @args[:inline]
-            raise Tag::MixedArg, "@external", "@inline"
-
-          else
-            arg = @args.to_h(html: true)
-            arg.each do |k, v|
-              @doc.set_attribute(k, v)
-            end
+          arg = @args.to_h(html: true)
+          arg.each do |k, v|
+            @doc.set_attribute(k, v)
           end
         end
 
@@ -30,7 +25,11 @@ module Jekyll
 
         # --
         def self.for?(type:, args:)
-          super && args[:inline] && !args.key?(:srcset)
+          return false unless super
+          return false unless args.key?(:inline) &&
+              !args.key?(:srcset)
+
+          true
         end
       end
     end

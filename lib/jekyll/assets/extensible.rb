@@ -73,6 +73,7 @@ module Jekyll
       # Creates `#arg_keys`, and `#content_types` so that you
       #   can limit your surface for an extensible plugin.  For
       #   example if you only work for
+      # --
       [%i(arg_keys args), %i(content_types types)].each do |(k, v)|
         instance_eval <<-RUBY
           def self.#{k}(*a)

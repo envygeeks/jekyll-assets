@@ -12,15 +12,10 @@ module Jekyll
         content_types "text/css"
 
         def run
-          if @asset.is_a?(Url) && @args[:inline]
-            raise Tag::MixedArg, "@external", "@inline"
-
-          else
-            Nokogiri::HTML::Builder.with(@doc) do |d|
-              atr = @args.to_h(html: true)
-              d.style(asset.to_s, atr) if @args[:inline]
-              d.link(atr) unless @args[:inline]
-            end
+          Nokogiri::HTML::Builder.with(@doc) do |d|
+            attr = @args.to_h(html: true)
+            d.style(asset.to_s, attr) if @args[:inline]
+            d.link(attr) unless @args[:inline]
           end
         end
       end

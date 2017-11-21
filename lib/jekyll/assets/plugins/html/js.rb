@@ -18,9 +18,9 @@ module Jekyll
 
           else
             Nokogiri::HTML::Builder.with(@doc) do |d|
-              atr = @args.to_h(html: true)
-              d.script(@asset.to_s, atr) if @args[:inline]
-              d.script(atr) unless @args[:inline]
+              attr = @args.to_h(html: true)
+              d.script(@asset.to_s, attr) if @args[:inline]
+              d.script(attr) unless @args[:inline]
             end
           end
         end

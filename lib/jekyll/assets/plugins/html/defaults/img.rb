@@ -18,11 +18,10 @@ module Jekyll
         content_types "image/jpg"
 
         def set_src
-          unless @args[:inline]
-            return @args[:src] = @asset.url if @asset.is_a?(Url)
-            @args[:src] = @env.prefix_url(@asset
-              .digest_path)
-          end
+          dpath = @asset.digest_path
+          return @args[:src] = @asset.url if @asset.is_a?(Url)
+          return @args[:src] = @env.prefix_url(dpath) unless @args[:inline]
+          @args[:src] = @asset.data_uri
         end
 
         def set_integrity

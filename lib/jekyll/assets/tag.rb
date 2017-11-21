@@ -116,10 +116,10 @@ module Jekyll
       # --
       def on_path(args, ctx:, asset:)
         env = ctx.registers[:site].sprockets
-        if args[:path]
-          raise InvalidExternal, "@path" if env.external?(args)
-          env.prefix_url(asset.digest_path)
-        end
+
+        return unless args[:path]
+        raise InvalidExternal, "@path" if env.external?(args)
+        env.prefix_url(asset.digest_path)
       end
 
       # --
@@ -128,12 +128,12 @@ module Jekyll
       # @example {% asset img.png @data_uri %}
       # @return [String]
       # --
-      def on_data_url(args, ctx:, asset:)
+      def on_data(args, ctx:, asset:)
         env = ctx.registers[:site].sprockets
-        if args[:data]
-          raise InvalidExternal, "@data" if env.external?(args)
-          asset.data_uri
-        end
+
+        return unless args[:data]
+        raise InvalidExternal "@data" if env.external?(args)
+        asset.data_uri
       end
 
       # --
@@ -144,9 +144,7 @@ module Jekyll
       def external(ctx, args:)
         env = ctx.registers[:site].sprockets
         out = env.external_asset(args[:argv1], args: args)
-        Default.set(args, {
-          ctx: ctx, asset: out
-        })
+        Default.set(args, ctx: ctx, asset: out)
 
         out
       end

@@ -26,8 +26,17 @@ module Jekyll
           end
         end
 
+        # --
+        # @example {% asset src srcset="" %}
+        # @example {% asset src %}
+        # --
         def self.for?(type:, args:)
-          super && !args.key?(:srcset)
+          return false unless super
+          return false if args.key?(:pic)
+          return false if args.key?(:inline) &&
+              type == "image/svg+xml"
+
+          true
         end
       end
     end

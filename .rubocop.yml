@@ -11,6 +11,7 @@ Layout/MultilineMethodCallBraceLayout: { Enabled: false }
 Layout/AlignParameters: { EnforcedStyle: with_fixed_indentation }
 Style/TrailingCommaInLiteral: { EnforcedStyleForMultiline: comma }
 Layout/MultilineMethodCallIndentation: { EnforcedStyle: indented }
+Layout/MultilineOperationIndentation: { EnforcedStyle: indented }
 Layout/FirstParameterIndentation: { EnforcedStyle: consistent }
 Layout/EmptyLinesAroundAccessModifier: { Enabled: false }
 Style/StringLiterals: { EnforcedStyle: double_quotes }

@@ -158,13 +158,13 @@ Our tags will take any number of arguments, and convert them to HTML, and even a
 
 | Arg | Description | Type | Return Type |
 |---|---|---|---|
-| `@path` | Path | Any | `text`
-| `@uri` | Data URI | Any | `text` |
-| `@data` | Data URI `<img>` | `image/*` | `text/html`
-| `@inline` | `text/svg+xml` XML Data | `image/svg+xml` | `text/svg+xml`
-| `@inline` | JavaScript `<script>` | `application/javascript` | `text/html`
-| `@inline` | CSS `<style>` | `text/css` | `text/html`
-| `srcset` | [Responsive](#responsive-images) | Args | `text/html` |
+| `@path` | Path | `*/*` | `text`
+| `@data` | `data` URI | `*/*` | `text` |
+| `@inline` | CSS `<style>` | `text/css` | `text/html` |
+| `@inline` | `text/svg+xml` XML | `image/svg+xml` | `text/svg+xml` |
+| `@inline` | JavaScript `<script>` | `application/javascript` | `text/html` |
+| `@inline` | Image `<img>` | `image/*` | `text/html` |
+| `srcset` | [Responsive](#responsive-images) | `image/*` | `text/html` |
 
 ***Jekyll Assets uses [@envygeeks](https://github.com/envygeeks) `liquid-tag-parser` which supports advanced arguments (hash based arguments) as well as array based arguments.  When you see something like `k1:sk1=val` it will get converted to `k1 = { sk1: "val" }` in Ruby.  To find out more about how we process tags you should visit the documentation for [`liquid-tag-parser`](https://github.com/envygeeks/liquid-tag-parser)***
 
