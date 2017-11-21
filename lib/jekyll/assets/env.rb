@@ -119,8 +119,9 @@ module Jekyll
       private
       def enable_compression!
         return unless asset_config[:compression]
-        self.js_compressor, self.css_compressor =
-          :uglify, :scss
+        config = asset_config[:compressors][:uglifier].symbolize_keys
+        self. js_compressor = Sprockets::UglifierCompressor.new(config)
+        self.css_compressor = :scss
       end
 
       # --

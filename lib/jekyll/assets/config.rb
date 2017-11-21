@@ -13,28 +13,26 @@ module Jekyll
     class Config < HashWithIndifferentAccess
       DEVELOPMENT = {
         digest: false,
+        precompile: [],
         source_maps: true,
         destination: "/assets",
         compression: false,
+        raw_precompile: [],
+        defaults: {},
         gzip: false,
 
-        defaults: {
-          #
+        compressors: {
+          uglifier: {
+            comments: false,
+            harmony:   true,
+          },
         },
 
         caching: {
-          enabled: true,
           path: ".jekyll-cache/assets",
+          enabled: true,
           type: "file",
         },
-
-        raw_precompile: [
-          #
-        ],
-
-        precompile: [
-          #
-        ],
 
         cdn: {
           baseurl: false,
