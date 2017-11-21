@@ -179,10 +179,19 @@ Jekyll Assets has the concept of responsive images, using the `picture` (when us
 
 ```liquid
 {% asset img.png @pic
-    srcset:max-width=800
-    srcset:max-width=600
-    srcset:max-width=400
+    srcset:max-width="800 2x"
+    srcset:max-width="600 1.5x"
+    srcset:max-width="400 1x"
       %}
+```
+
+```html
+<picture>
+  <source srcset="1.png 2x"   media="(max-width:800px)">
+  <source srcset="2.png 1.5x" media="(max-width:600px)">
+  <source srcset="3.png 1x"   media="(max-width:400px)">
+  <img src="img.png">
+</picture>
 ```
 
 ##### `<img>` usage
@@ -190,21 +199,32 @@ Jekyll Assets has the concept of responsive images, using the `picture` (when us
 
 ```liquid
 {% asset img.png
-    srcset:min-width=400
-    srcset:min-width=600
-    srcset:min-width=800
+    srcset:width="400 2x"
+    srcset:width="600 1.5x"
+    srcset:width="800 1x"
       %}
+
+{% asset img.png
+    srcset:width=400
+    srcset:width=600
+    srcset:width=800
+      %}
+```
+
+```html
+<img srcset="1.png   2x, 2.png 1.5x, 3.png   1x">
+<img srcset="1.png 400w, 2.png 600w, 3.pnx 800w">
 ```
 
 ##### Args
 
-| Arg | Type | Description |
-| --- | ---- | ------------|
-| `width`     | Int | Resize, set `srcset="<Src> <Int>w"` |
-| `min-width` | Int | Resize, set `media="(min-width: <Int>)"` |
-| `max-width` | Int | Resize, set `media="(max-width: <Int>)"` |
-| `sizes`     | Any | Your value, unaltered, unparsed.    |
-| `media`     | Any | Your value, unaltered, unparsed.    |
+| Arg | Type | Description | `@pic` Only |
+| --- | ---- | ------------| ----------- |
+| `width`     | Width [Density] | Resize, set `srcset="<Src> <<Width>px/Density>"` | ✗ |
+| `min-width` | Width [Density] | Resize, set `media="(min-width: <Width>px)"` | ✔ |
+| `max-width` | Width [Density] | Resize, set `media="(max-width: <Width>px)"` | ✔ |
+| `sizes`     | Any | Your value, unaltered, unparsed. | ✗ |
+| `media`     | Any | Your value, unaltered, unparsed. | ✗ |
 
 ***If you set `media`, w/ `max-width`, `min-width`, we will not ship `media`, we will simply resize and assume you know what you're doing.  Our parser is not complex, and does not make a whole lot of assumptions on your behalf, it's simple and only meant to make your life easier.  In the future we may make it more advanced.***
 
