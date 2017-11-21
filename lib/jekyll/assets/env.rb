@@ -191,6 +191,17 @@ module Jekyll
           Map.register_on(self)
         end
       end
+
+      # --
+      # @see https://github.com/rails/sprockets/pull/523
+      # Registers a few MimeTypes since I don't think
+      #   Sprockets will update before we release, so we
+      #   need them to be available.
+      # --
+      Sprockets.register_mime_type "audio/mp4", extensions: %w(.m4a)
+      Sprockets.register_mime_type "audio/ogg", extensions: %w(.ogg .oga)
+      Sprockets.register_mime_type "audio/flac", extensions: %w(.flac)
+      Sprockets.register_mime_type "audio/aac", extensions: %w(.aac)
     end
   end
 end
