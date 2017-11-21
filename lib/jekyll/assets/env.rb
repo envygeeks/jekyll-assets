@@ -47,9 +47,8 @@ module Jekyll
         @logger = Logger
         @cache = nil
 
-        disable_erb!
-        enable_compression!
         setup_sources!
+        enable_compression!
         setup_drops!
         precompile!
         copy_raw!
@@ -144,17 +143,6 @@ module Jekyll
         end
 
         nil
-      end
-
-      # --
-      private
-      def disable_erb!
-        return unless jekyll.safe
-        @config = hash_reassoc @config, :registered_transformers do |o|
-          o.delete_if do |v|
-            v.proc == Sprockets::ERBProcessor
-          end
-        end
       end
 
       # --
