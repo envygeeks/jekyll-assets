@@ -18,29 +18,7 @@
 [2]:https://github.com/rails/sprockets
 [3]:https://jekyllrb.com
 
-# Jekyll Assets 3.x
-
-***Jekyll Assets 3.x is currently unreleased. It is scheduled to released sometime in October.  If you are looking for documentation, for the current release (2.x) please see: https://github.com/jekyll/jekyll-assets/tree/2.4-legacy it should have what you are looking for.***
-
-## What's new
-
-- [x] Jekyll like tag arguments.
-- [x] Support for `<img>` srcset.
-- [x] Proxies in `asset()` for SASS.
-- [x] Expanded source directories by default.
-- [x] Support for `srcset`, width, and density.
-- [x] Support for building HTML for external assets.
-- [x] Stripping of FrontMatter (`---`) before processing.
-- [x] Extensible/customizable decoupled HTML builders for tags.
-- [x] Support for `<audio>`, `<video>`, `<img>` discovery in Markdown.
-- [x] Responsive images with `srcset` `<picture>` tag support.
-- [x] Support for audio assets (using `assets` tag.)
-- [x] Support for video assets (using `assets` tag.)
-- [x] Easier proxies, with rolling proxies.
-- [x] Customizable HTML defaults.
-- [x] Configurable GZipping.
-- [x] Proxies via `<img>`.
-- [x] SourceMaps.
+***Jekyll Assets 3.0.0 has been released, see what's new: https://envygeeks.io/2017/11/21/jekyll-assets-3-released***
 
 # Jekyll Assets
 
