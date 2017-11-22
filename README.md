@@ -386,7 +386,7 @@ assets:
 #### Installation
 
 ```ruby
-gem "bootstrap-sass"
+gem "bootstrap"
 ```
 
 #### Usage
