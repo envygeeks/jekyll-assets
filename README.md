@@ -12,6 +12,8 @@
   <a href="https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability">
     <img src="https://api.codeclimate.com/v1/badges/56f67324553069bf51e7/maintainability" />
   </a>
+	<a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/jekyll-assets/backers/badge.svg" /></a> 
+	<a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/jekyll-assets/sponsors/badge.svg" />
 </p>
 
 [1]:http://guides.rubyonrails.org/asset_pipeline.html
@@ -473,3 +475,33 @@ assets:
 |---|---|---|
 | `@doc` | `Nokogiri:: XML::Document` | `image/svg+xml` |
 | `@doc` | `Nokogiri::HTML::Document` | `image/*` |
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
+<a href="graphs/contributors"><img src="https://opencollective.com/jekyll-assets/contributors.svg?width=890" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/jekyll-assets#backer)]
+
+<a href="https://opencollective.com/jekyll-assets#backers" target="_blank"><img src="https://opencollective.com/jekyll-assets/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/jekyll-assets#sponsor)]
+
+<a href="https://opencollective.com/jekyll-assets/sponsor/0/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/1/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/2/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/3/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/4/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/5/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/6/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/7/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/8/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/jekyll-assets/sponsor/9/website" target="_blank"><img src="https://opencollective.com/jekyll-assets/sponsor/9/avatar.svg"></a>
+
+
