@@ -1,28 +1,10 @@
-<p align=center>
-  <a href=https://goo.gl/BhrgjW>
-    <img src=https://envygeeks.io/badges/paypal-large_1.png>
-  </a>
-  <br>
-  <a href=https://travis-ci.org/envygeeks/jekyll-assets>
-    <img src="https://travis-ci.org/envygeeks/jekyll-assets.svg?branch=master">
-  </a>
-  <a href="https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage">
-    <img src="https://api.codeclimate.com/v1/badges/56f67324553069bf51e7/test_coverage" />
-  </a>
-  <a href="https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability">
-    <img src="https://api.codeclimate.com/v1/badges/56f67324553069bf51e7/maintainability" />
-  </a>
-</p>
-
-[1]:http://guides.rubyonrails.org/asset_pipeline.html
-[2]:https://github.com/rails/sprockets
-[3]:https://jekyllrb.com
-
 ***Jekyll Assets 3.0.0 has been released, see what's new: https://envygeeks.io/2017/11/21/jekyll-assets-3-released***
+
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability) [![Code Climate](https://img.shields.io/codeclimate/coverage/github/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage) [![Travis branch](https://img.shields.io/travis/envygeeks/jekyll-assets/master.svg?style=for-the-badge)](https://travis-ci.org/envygeeks/jekyll-assets) [![Donate](https://img.shields.io/badge/DONATE-USD-green.svg?style=for-the-badge)](https://envygeeks.io#donate)
 
 # Jekyll Assets
 
-Jekyll Assets is a drop in [asset pipeline][1] that uses [Sprockets][2] to build specifically for Jekyll. It utilizes [Sprockets][2], and [Jekyll][3] to try and achieve a clean and extensible assets platform that supports plugins, caching, converting your assets, and even the proxy of said assets in a way that does not interfere with either [Sprockets][2], or [Jekyll][3], and your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS/CoffeeScript processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.
+Jekyll Assets is a drop in [asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html) that uses [Sprockets](https://github.com/rails/sprockets) to build specifically for Jekyll. It utilizes [Sprockets](https://github.com/rails/sprockets), and [Jekyll](https://jekyllrb.com) to try and achieve a clean and extensible assets platform that supports plugins, caching, converting your assets, and even the proxy of said assets in a way that does not interfere with either [Sprockets](https://github.com/rails/sprockets), or [Jekyll](3), and your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS/CoffeeScript processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.
 
 ## Using Jekyll Assets with Jekyll
 
