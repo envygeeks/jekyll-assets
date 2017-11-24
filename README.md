@@ -1,5 +1,3 @@
-***Jekyll Assets 3.0.0 has been released, see what's new: https://envygeeks.io/2017/11/21/jekyll-assets-3-released***
-
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability) [![Code Climate](https://img.shields.io/codeclimate/coverage/github/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage) [![Travis branch](https://img.shields.io/travis/envygeeks/jekyll-assets/master.svg?style=for-the-badge)](https://travis-ci.org/envygeeks/jekyll-assets) [![Donate](https://img.shields.io/badge/DONATE-USD-green.svg?style=for-the-badge)](https://envygeeks.io#donate) [![Gem](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)]()
 
 # Jekyll Assets
