@@ -365,8 +365,14 @@ assets:
 ### Bootstrap
 #### Installation
 
+***4.x***
 ```ruby
 gem "bootstrap"
+```
+
+***3.x***
+```ruby
+gem "boostrap-sass"
 ```
 
 #### Usage
