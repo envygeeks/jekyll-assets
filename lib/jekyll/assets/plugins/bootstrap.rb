@@ -3,3 +3,6 @@
 # Encoding: utf-8
 
 Jekyll::Assets::Utils.try_require "bootstrap"
+Jekyll::Assets::Utils.try_require "boostrap-sass" do
+  Bootstrap.load!
+end
