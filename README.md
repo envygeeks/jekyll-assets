@@ -1,4 +1,4 @@
-[![Code Climate](https://img.shields.io/codeclimate/maintainability/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability) [![Code Climate](https://img.shields.io/codeclimate/coverage/github/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage) [![Travis branch](https://img.shields.io/travis/envygeeks/jekyll-assets/master.svg?style=for-the-badge)](https://travis-ci.org/envygeeks/jekyll-assets) [![Donate](https://img.shields.io/badge/DONATE-USD-green.svg?style=for-the-badge)](https://envygeeks.io#donate) [![Gem](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)]()
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability) [![Code Climate](https://img.shields.io/codeclimate/coverage/github/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage) [![Travis branch](https://img.shields.io/travis/envygeeks/jekyll-assets/master.svg?style=for-the-badge)](https://travis-ci.org/envygeeks/jekyll-assets) [![Donate](https://img.shields.io/badge/DONATE-MONEY-yellow.svg?style=for-the-badge)](https://envygeeks.io#donate) [![Gem](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)]()
 
 # Jekyll Assets
 
@@ -44,11 +44,27 @@ caching:
   path: ".jekyll-cache/assets"
   type: file # Possible values: memory, file
   enabled: true
+# --
+# Assets you wish to always have compiled.
+#   This can also be combined with raw_precompile which
+#   copies assets without running through the pipeline
+#   making them ultra fast.
+# --
 precompile: []
+raw_precompile: []
+# --
+# baseurl: whether or not to append site.baseurl
+# destination: the folder you store them in on the CDN.
+# url: the CDN url (fqdn, or w/ identifier).
+# --
 cdn:
   baseurl: false
   destination: false
   url: null
+# --
+# These are all default. No need to add them
+#   Only use this if you have more.
+# --
 sources:
 - assets/css
 - assets/fonts
