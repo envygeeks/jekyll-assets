@@ -57,8 +57,8 @@ module Jekyll
             # @see https://github.com/sparklemotion/nokogiri/issues/553
             good, buggy = Encoding::UTF_8, Encoding::ASCII_8BIT
             out = out.encode good if out.encoding == buggy
-            Nokogiri::HTML.send((@doc.output.strip
-              .start_with?("<!DOCTYPE ") ? :parse :
+            Nokogiri::HTML.send((@doc.output.strip \
+              =~ %r!<\!doctype\s+!i ? :parse :
                 :fragment), out)
           end
         end
