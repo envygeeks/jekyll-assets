@@ -51,7 +51,9 @@ caching:
 #   making them ultra fast.
 # --
 precompile: []
-raw_precompile: []
+raw_precompile: [
+  #
+]
 # --
 # baseurl: whether or not to append site.baseurl
 # destination: the folder you store them in on the CDN.
