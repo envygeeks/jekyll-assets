@@ -68,7 +68,7 @@ module Jekyll
 end
 
 Jekyll::Hooks.register [:pages, :documents, :posts], :post_render do |d|
-  if d.extname == ".html" || d.extname == ".md"
+  if d.output_ext == ".html"
     Jekyll::Assets::Plugins::Searcher.new(d).run
   end
 end
