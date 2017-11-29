@@ -46,6 +46,7 @@ module Jekyll
           assets/images
           assets/videos
           assets/audios
+          assets/components
           assets/javascript
           assets/video
           assets/audio
@@ -58,6 +59,7 @@ module Jekyll
           _assets/images
           _assets/videos
           _assets/audios
+          _assets/components
           _assets/javascript
           _assets/video
           _assets/audio
@@ -70,6 +72,7 @@ module Jekyll
           images
           videos
           audios
+          components
           javascript
           audio
           video
