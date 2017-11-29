@@ -2,8 +2,7 @@
 [ "$DEBUG" = "true" ] && set -x
 set -e
 
-: ${TEST_TYPE:=spec}
-if [ "$TEST_TYPE" = "spec" ]; then
+if [ "$LINTING" != "true" ]; then
   if [ "$1" ]; then
     export SPROCKETS_VERSION="~> $1"
     bundle update >/dev/null
