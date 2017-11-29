@@ -20,7 +20,7 @@ env:
     - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
     - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
     - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
-    - TEST_TYPE=lints
+    - TEST_TYPE=lint
 rvm:
   - 2.4
   - 2.3
