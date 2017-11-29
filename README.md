@@ -306,6 +306,53 @@ Using Liquid Drop `assets`, you can check whether an asset is present.
 {{ src | asset:"@magick:2x magick:quality:92" }}
 ```
 
+## Polymer WebComponents
+
+We have basic support for WebComponents when using Sprockets `~> 4.0.0.beta`, this will allow you to place your HTML in the `_assets/components` folder, `{% asset myComponent.html %}`, and get an import, you can place your regular JS files inside of the normal structure.
+
+### Example
+
+***test.html***
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    {% asset webcomponents.js %}
+    {% asset test.html %}
+  </head>
+  <body>
+    <contact-card starred>
+      {% asset profile.jpg %}
+      <span>Your Name</span>
+    </contact-card>
+  </body>
+</body>
+```
+
+***_assets/components/test.html***
+
+```html
+<dom-module id="contact-card">
+  <template>
+    <style>/* ... */</style>
+    <slot></slot>
+    <iron-icon icon="star" hidden$="{{!starred}}"></iron-icon>
+  </template>
+  <script>
+    class ContactCard extends Polymer.Element {
+      static get is() { return "contact-card"; }
+      static get properties() {
+        return {
+          starred: { type: Boolean, value: false }
+        }
+      }
+    }
+    customElements.define(ContactCard.is, ContactCard);
+  </script>
+</dom-module>
+```
+
 ## Hooks
 
 | Point | Name | Instance | Args |

@@ -1,0 +1,18 @@
+<dom-module id="contact-card">
+  <template>
+    <style>/* ... */</style>
+    <slot></slot>
+    <iron-icon icon="star" hidden$="{{!starred}}"></iron-icon>
+  </template>
+  <script>
+    class ContactCard extends Polymer.Element {
+      static get is() { return "contact-card"; }
+      static get properties() {
+        return {
+          starred: { type: Boolean, value: false }
+        }
+      }
+    }
+    customElements.define(ContactCard.is, ContactCard);
+  </script>
+</dom-module>
