@@ -57,14 +57,19 @@ describe Jekyll::Assets::Proxy do
     })
 
     expect(out).to(be_a(Sprockets::Asset))
-    path = Pathutil.new(env.in_cache_dir(subject::DIR)).children
+    path = Pathutil.new(env.in_cache_dir("proxied")).children
     expect(path).to(include(out.filename))
   end
 
   #
 
   context do
-    let(:dir) { Pathutil.new(env.in_cache_dir(subject::DIR)) }
+    let(:dir) do
+      Pathutil.new(env.in_cache_dir("proxied"))
+    end
+
+    #
+
     it "copies" do
       out = subject.proxy(asset, {
         args: args, ctx: Thief.ctx
