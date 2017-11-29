@@ -1,0 +1,22 @@
+#!/bin/bash
+[ "$DEBUG" = "true" ] && set -x
+set -e
+
+# if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS" = "true" ]; then
+  if [ "$1" = "before" ]; then
+    url=https://codeclimate.com/downloads/test-reporter
+    url=$url/test-reporter-latest-linux-amd64
+    curl -sL $url > ./cctr
+
+    # --
+    # Eventually they should make this the default on Travis-CI
+    #   this way I don't worry about some strange stuff going on with
+    #   a possible compromise, and an invalid SHA.
+    # --
+
+    chmod +x ./cctr && ./cctr before-build
+  else
+    ./cctr after-build --exit-code \
+      $TRAVIS_TEST_RESULT
+  fi
+# fi

@@ -1,25 +1,37 @@
 language: ruby
+after_success: script/report
+before_script: script/report before
+script: script/test
 sudo: false
 cache:
   bundler: true
   directories:
   - vendor/bundle
+  - node_modules
 env:
+  global:
+    - secure: "\
+        JR7KLpy0oRWS9QFAoUvxR+phVwpKLL2PLJ9FJcn1OoUPlfyeCcr22VjK/\
+        fNsD6agXfkWOzDVLyfoOHxA9RwmWEhSMT2w7djxMW3ZRLVQKkdQXYkfYt\
+        q5jrz1ZFOWLHQB53dg2/Aq0ZJAlK4DzHofeka5nEFS0NVHzxnlIVVPGI=\
+      "
   matrix:
-  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3"
-  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta"
-  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta"
-  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3"
+  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
+  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
+  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
+  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
+  - TEST_TYPE=lints
 rvm:
 - &ruby24 2.4
 - &ruby23 2.3
+- &ruby-head ruby-head
 - &jruby jruby-head
-- &rhead ruby-head
 matrix:
   fast_finish: true
   allow_failures:
+  - rvm: *ruby-head
   - rvm: *jruby
-  - rvm: *rhead
+
 notifications:
   email:
     recipients:
@@ -29,13 +41,3 @@ notifications:
 branches:
   only:
   - master
-addons:
-  code_climate:
-    repo_token:
-      secure: "\
-        SprHjZdYxOWHXrnDLKu+tTLI/28dgNlHGH9pUF0NIouu5nhWVizoRt1xK19s+6Rct9h/b8\
-        H9In1ExFom05IcXX4c1JGX1LlGbWRV/BHRwgys+MpWJCLfs8kBigufDdZBmyXubEj2KsjE\
-        WICu+GMg+ZHP0nVTa/FkoF5iAfY6NiE=\
-      "
-after_success:
-- bundle exec codeclimate-test-reporter

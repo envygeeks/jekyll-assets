@@ -2,4 +2,4 @@
 [ "$DEBUG" = "true" ] && set -x
 set -e
 
-rake rubocop
+bundle exec rubocop

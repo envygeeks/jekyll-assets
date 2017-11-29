@@ -12,3 +12,4 @@
 /.bundle
 /vendor
 *.gem
+/cctr
