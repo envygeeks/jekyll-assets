@@ -11,8 +11,6 @@ module Jekyll
   module Assets
     class Proxy < Extensible
       attr_reader :file
-      DIG = Digest::SHA256
-      DIR = "proxied"
 
       class Deleted < StandardError
         def initialize(obj)
@@ -68,16 +66,24 @@ module Jekyll
       # --
       def self.copy(asset, ctx:, args:)
         env = ctx.registers[:site].sprockets
-        raw = args.instance_variable_get(:@raw)
-        key = DIG.hexdigest(raw)[0, 6]
 
-        path = env.in_cache_dir(DIR)
+        path = env.in_cache_dir("proxied")
         extname = File.extname(args[:argv1])
-        out = Pathutil.new(path).join(key).sub_ext(extname)
-        out.dirname.mkdir_p unless out.dirname.exist?
-        Pathutil.new(asset.filename).cp(out)
+        out = Pathutil.new(path).join(digest(args))
+          .sub_ext(extname)
+
+        unless out.file?
+          out.dirname.mkdir_p
+          Pathutil.new(asset.filename)
+            .cp(out)
+        end
 
         out
+      end
+
+      def self.digest(args)
+        Digest::SHA256.hexdigest(args.instance_variable_get(
+          :@raw))[0, 6]
       end
 
       # --
