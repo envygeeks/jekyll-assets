@@ -13,7 +13,7 @@ module Jekyll
 
           # We strip the query string, and the fragment.
           path = sprockets_context.asset_path(path, options)
-          Sprockets::Autoload::Sass::Script::String.new \
+          ::Sprockets::Autoload::Sass::Script::String.new \
             path, :string
         end
       end
