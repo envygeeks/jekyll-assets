@@ -49,6 +49,7 @@ module Jekyll
 
         setup_sources!
         enable_compression!
+        ignore_caches!
         setup_drops!
         precompile!
         copy_raw!
@@ -113,6 +114,14 @@ module Jekyll
         @old_sprockets ||= begin
           Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
         end
+      end
+
+      # --
+      private
+      def ignore_caches!
+        jekyll.config["exclude"] ||= []
+        jekyll.config["exclude"].push(asset_config[:caching][:path])
+        jekyll.config["exclude"].uniq!
       end
 
       # --
