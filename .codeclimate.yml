@@ -1,16 +1,11 @@
 version: "2"
 plugins:
-  # --
-  # It chokes on our Regexp patterns.
-  # I don't know why, but I should probably file
-  #   a ticket to let them know.
-  # --
-  duplication:
-    enabled: false
+  bundler-audit: { enabled:  true }
+  duplication:   { enabled: false }
   rubocop:
+    channel: rubocop-0-51
+    config: { file: .rubocop.yml }
     enabled: true
-    config:
-      file: .rubocop.yml
 ratings:
   paths:
   - "spec/tests/**.rb"
