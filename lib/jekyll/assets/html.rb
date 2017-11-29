@@ -80,8 +80,7 @@ module Jekyll
       def self.make_doc(builders, asset:)
         wants = builders.map(&:wants_xml?).uniq
         raise "incompatible wants xml/html for builders" if wants.size > 1
-        !wants[0] ? Nokogiri::HTML::DocumentFragment.parse("") :
-          Nokogiri::XML.parse(asset.to_s)
+        !wants[0] ? Utils.html_fragment("") : Utils.xml(asset.to_s)
       end
     end
   end

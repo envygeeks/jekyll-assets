@@ -5,6 +5,28 @@
 module Jekyll
   module Assets
     module Utils
+      def self.html_fragment(*a)
+        Nokogiri::HTML.fragment(*a) do |c|
+          c.options = Nokogiri::XML::ParseOptions::NONET | \
+            Nokogiri::XML::ParseOptions::NOENT
+        end
+      end
+
+      # --
+      def self.html(*a)
+        Nokogiri::HTML.parse(*a) do |c|
+          c.options = Nokogiri::XML::ParseOptions::NONET | \
+            Nokogiri::XML::ParseOptions::NOENT
+        end
+      end
+
+      # --
+      def self.xml(*a)
+        Nokogiri::XML.parse(*a) do |c|
+          c.options = Nokogiri::XML::ParseOptions::NONET
+        end
+      end
+
       def raw_precompiles
         asset_config[:raw_precompile].each_with_object([]) do |v, a|
           if v.is_a?(Hash)

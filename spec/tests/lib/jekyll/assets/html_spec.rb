@@ -63,6 +63,14 @@ describe Jekyll::Assets::HTML do
 
   describe ".make_doc" do
     context "w/ wants_xml?" do
+      let :asset do
+        out = env.find_asset!("img.svg")
+        allow(out).to receive(:content_type).and_return(:hello)
+        out
+      end
+
+      #
+
       before do
         allow(TestHTML1).to receive(:wants_xml?)
           .and_return(true)
