@@ -6,38 +6,42 @@ sudo: false
 cache:
   bundler: true
   directories:
-  - vendor/bundle
-  - node_modules
+    - vendor/bundle
+    - node_modules
 env:
   global:
-    - secure: "\
-        JR7KLpy0oRWS9QFAoUvxR+phVwpKLL2PLJ9FJcn1OoUPlfyeCcr22VjK/\
-        fNsD6agXfkWOzDVLyfoOHxA9RwmWEhSMT2w7djxMW3ZRLVQKkdQXYkfYt\
-        q5jrz1ZFOWLHQB53dg2/Aq0ZJAlK4DzHofeka5nEFS0NVHzxnlIVVPGI=\
-      "
+    secure: "\
+      h+3g4a4eXVBiZWcnSJ39lTlhv+JmRrPJPOW7Qvs0u3ix4nZLd4DhDnsmOmu2gRze9BFhX3Ga1\
+      6clq2Kku75Ty9pgZ9/8jrN+CcPbqv3rQHdHIaaQf5eFirr5Lw0eY02etRf9G6pHEdIyMSOrXU\
+      GTwDtjR+BT65M5qESGniBXTd8=\
+    "
   matrix:
-  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
-  - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
-  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
-  - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
-  - TEST_TYPE=lints
+    - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
+    - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
+    - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta" TEST_TYPE=spec
+    - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3" TEST_TYPE=spec
+    - TEST_TYPE=lints
 rvm:
-- &ruby24 2.4
-- &ruby23 2.3
-- &ruby-head ruby-head
-- &jruby jruby-head
+  - 2.4
+  - 2.3
+  - jruby-head
+  - ruby-head
 matrix:
   fast_finish: true
   allow_failures:
-  - rvm: *ruby-head
-  - rvm: *jruby
-
+    - rvm: jruby-head
+    - rvm: ruby-head
+  exclude:
+    - { rvm: 2.3, env: TEST_TYPE=lint }
+    - { rvm: 2.4, env: TEST_TYPE=lint }
+    - { rvm: jruby-head, env: TEST_TYPE=lint }
+    - { rvm: ruby-head,  env: TEST_TYPE=lint }
 notifications:
   email:
     recipients:
-    - jordon@envygeeks.io
+      - jordon@envygeeks.io
     on_success: change
     on_failure: change
 branches:
   only:
-  - master
+    - master
