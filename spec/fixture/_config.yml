@@ -12,3 +12,7 @@ defaults:
   values:
     layout: default
     type: post
+loopable:
+  - img.jpg
+  - img.gif
+  - img.png

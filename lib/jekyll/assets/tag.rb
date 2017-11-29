@@ -42,19 +42,20 @@ module Jekyll
       # --
       def initialize(tag, args, tokens)
         @tag = tag.to_sym
-        @args = Liquid::Tag::Parser.new(args)
         @tokens = tokens
-        @og_args = args
+        @args = args
         super
       end
 
       # --
       def render_raw(ctx)
-        env  = ctx.registers[:site].sprockets
-        args = env.parse_liquid(@args, ctx: ctx)
+        env = ctx.registers[:site].sprockets
+
+        args = Liquid::Tag::Parser.new(@args)
+        args = env.parse_liquid(args, ctx: ctx)
         raise Sprockets::FileNotFound, "UNKNOWN" unless args.key?(:argv1)
         asset = external(ctx, args: args) if env.external?(args)
-        asset ||= internal(ctx)
+        asset ||= internal(ctx, args: args)
         [args, asset]
       end
 
@@ -81,7 +82,7 @@ module Jekyll
       # --
       rescue ExecJS::RuntimeError => e
         env.logger.error e.message
-        env.logger.efile @args[:argv1]
+        env.logger.efile args[:argv1]
         raise ExecJS::RuntimeError, \
           "JS Error"
       # --
@@ -154,7 +155,7 @@ module Jekyll
       # Set's up an internal asset using `Sprockets::Asset`
       # @return [Sprockets::Asset]
       # --
-      def internal(ctx)
+      def internal(ctx, args:)
         env = ctx.registers[:site].sprockets
         original = env.find_asset!(args[:argv1])
         Default.set(args, ctx: ctx, asset: original)
