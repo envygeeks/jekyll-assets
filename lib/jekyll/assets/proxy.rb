@@ -111,5 +111,5 @@ module Jekyll
 end
 
 Jekyll::Assets::Hook.register :env, :after_init do
-  append_path(in_cache_dir(Jekyll::Assets::Proxy::DIR))
+  append_path(in_cache_dir("proxied"))
 end
