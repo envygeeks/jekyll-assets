@@ -304,45 +304,6 @@ module Jekyll
       rescue ExecJS::RuntimeUnavailable
         nil
       end
-
-      # --
-      # @param [Jekyll::Site] site
-      # @param [Hash<Symbol,Object>] payload
-      # Try to replicate and run hooks the Jekyll would normally run.
-      # rubocop:disable Metrics/LineLength
-      # @return nil
-      # --
-      def run_liquid_hooks(payload, site)
-        Hook.trigger(:liquid, :pre_render) { |h| h.call(payload, site) }
-        post, page, doc = get_liquid_obj(payload, site)
-
-        # I would assume most people set in :pre_render logically?
-        Jekyll::Hooks.trigger(:posts, :pre_render, post, payload) if post
-        Jekyll::Hooks.trigger(:documents, :pre_render, post || doc, payload) if post || doc
-        Jekyll::Hooks.trigger(:pages, :pre_render, page, payload) if page
-      end
-
-      # --
-      # @param [Jekyll::Site] site
-      # @param [Hash<Symbol,Object>] payload
-      # Discovers the Jekyll object, corresponding to the type.
-      # @note this allows us to trigger hooks that Jekyll would trigger.
-      # @return [Jekyll::Document, Jekyll::Page]
-      # rubocop:disable Layout/ExtraSpacing
-      # --
-      def get_liquid_obj(payload, site)
-        path = payload["path"]
-
-        post = site.posts.docs.find { |v| v.relative_path == path }
-        docs = site. documents.find { |v| v.relative_path == path } unless post
-        page = site.     pages.find { |v| v.relative_path == path } unless docs
-
-        [
-          post,
-          page,
-          docs,
-        ]
-      end
     end
   end
 end
