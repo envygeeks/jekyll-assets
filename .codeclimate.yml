@@ -1,7 +1,6 @@
 version: "2"
 plugins:
-  bundler-audit: { enabled:  true }
-  duplication:   { enabled: false }
+  duplication: { enabled: false }
   rubocop:
     channel: rubocop-0-51
     config: { file: .rubocop.yml }
