@@ -31,7 +31,6 @@ gem "sprockets", "~> 4.0.beta", {
 The configuration file is the same as Jekyll's, which is `_config.yml`. Except we use the special key "assets" inside of that file.  Any environment variable noted as "val on `JEKYLL_ENV`" is only overridden when not explicitly set.  All values listed below are default, you need not copy these into your configuration file unless you plan to change a value.
 
 ```yaml
-digest: false
 source_maps: true # false on JEKYLL_ENV=production
 destination: "/assets"
 compression: true
