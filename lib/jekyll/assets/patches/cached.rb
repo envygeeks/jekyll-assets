@@ -36,34 +36,16 @@ module Jekyll
         end
 
         # --
-        # Conditionally creates the find_asset! method from
-        # Sprockets 4.x so that we don't have to change all that
-        # much to get things compatible between the two.
-        # --
-        unless Sprockets::CachedEnvironment.method_defined?(:find_asset!)
-
-          # --
-          # Copyright 2017 Sprockets.
-          # @url https://github.com/rails/sprockets
-          # @license MIT
-          # --
-          def find_asset!(*args)
-            uri, = resolve!(*args)
-            if uri
-              load(uri)
-            end
+        def find_asset(*)
+          super.tap do |v|
+            v.environment = self
           end
+        end
 
-          # --
-          # rubocop:disable Style/ClassAndModuleChildren
-          # Patches it onto the base class too.
-          # If it's not on cached, it's not on Env.
-          # So we need to add it there.
-          # --
-          class Sprockets::Base
-            def find_asset!(*args)
-              cached.send(__method__, *args)
-            end
+        # --
+        def find_asset!(*args)
+          load(resolve!(*args).first).tap do |v|
+            v.environment = self
           end
         end
       end

@@ -7,6 +7,15 @@ module Jekyll
     module Patches
       module Sprockets
         module Asset
+          attr_accessor :environment
+
+          # --
+          def digest_path
+            environment.asset_config[:digest] ? \
+              super : logical_path
+          end
+
+          # --
           def data_uri
             "data:#{content_type};base64,#{Rack::Utils.escape(
               Base64.encode64(to_s))}"
