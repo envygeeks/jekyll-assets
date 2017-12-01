@@ -13,6 +13,7 @@ module Jekyll
         static type: "text/javascript"
 
         def set_src
+          return if @args[:inline]
           return @args[:src] = @asset.url if @asset.is_a?(Url)
           @args[:src] = @env.prefix_url(@asset
             .digest_path)

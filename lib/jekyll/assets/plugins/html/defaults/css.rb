@@ -13,6 +13,7 @@ module Jekyll
         static type: "text/css"
 
         def set_href
+          return if @args[:inline]
           return @args[:href] = @asset.url if @asset.is_a?(Url)
           @args[:href] = @env.prefix_url(@asset
             .digest_path)
