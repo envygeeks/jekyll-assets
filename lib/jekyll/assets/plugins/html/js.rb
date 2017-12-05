@@ -10,7 +10,6 @@ module Jekyll
     class HTML
       class JS < HTML
         content_types "application/javascript"
-        content_types "text/javascript"
 
         # --
         def run

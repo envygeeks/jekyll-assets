@@ -9,9 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class Video < HTML
-        content_types "video/avi"
-        content_types "video/webm"
-        content_types "video/mp4"
+        content_types %r!^video/.*$!
 
         # --
         def run

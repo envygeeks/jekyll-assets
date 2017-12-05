@@ -10,6 +10,7 @@ module Jekyll
       class Component < Default
         content_types "text/html"
 
+        # --
         def set_href
           dpath = @asset.digest_path
           return @args[:href] = @asset.url if @asset.is_a?(Url)

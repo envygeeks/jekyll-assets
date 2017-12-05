@@ -9,15 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class Audio < HTML
-        content_types "audio/aiff"
-        content_types "audio/basic"
-        content_types "audio/mpeg"
-        content_types "audio/midi"
-        content_types "audio/wave"
-        content_types "audio/mp4"
-        content_types "audio/ogg"
-        content_types "audio/flac"
-        content_types "audio/aac"
+        content_types %r!^audio/[a-zA-Z0-9\-_]+$!
 
         # --
         def run

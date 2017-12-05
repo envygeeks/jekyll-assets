@@ -9,14 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class Pic < HTML
-        content_types "image/webp"
-        content_types "image/jpeg"
-        content_types "image/tiff"
-        content_types "image/svg+xml"
-        content_types "image/bmp"
-        content_types "image/gif"
-        content_types "image/png"
-        content_types "image/jpg"
+        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_]+$!
 
         # --
         # @todo this should be reworked so we don't need to use

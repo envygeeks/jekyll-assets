@@ -8,7 +8,6 @@ module Jekyll
   module Assets
     class Default
       class JS < Default
-        content_types "text/javascript"
         content_types "application/javascript"
         static type: "text/javascript"
 

@@ -8,9 +8,7 @@ module Jekyll
   module Assets
     class Default
       class Video < Default
-        content_types "video/avi"
-        content_types "video/webm"
-        content_types "video/mp4"
+        content_types %r!^video/.*$!
 
         # --
         def set_src
