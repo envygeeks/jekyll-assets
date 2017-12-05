@@ -120,6 +120,7 @@ module Jekyll
 
       # --
       def write_all
+        remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
         Logger.debug "Calling hooks for env, after_write" do
           Hook.trigger :env, :after_write do |h|
@@ -128,6 +129,13 @@ module Jekyll
         end
 
         true
+      end
+
+      # ---
+      def remove_old_assets
+        assets_to_write.each do |v|
+          in_dest_dir(find_asset!(v).logical_path).rm_f
+        end
       end
 
       # --
