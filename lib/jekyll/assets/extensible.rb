@@ -15,7 +15,6 @@ module Jekyll
       def initialize(asset:, args:, ctx:)
         @args = args
         @env = ctx.registers[:site].sprockets
-        @jekyll = ctx.registers[:site]
         @jekyll = @env.jekyll
         @asset = asset
         @ctx = ctx
