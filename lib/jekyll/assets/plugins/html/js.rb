@@ -9,9 +9,10 @@ module Jekyll
   module Assets
     class HTML
       class JS < HTML
-        content_types "application/javascript",
-          "text/javascript"
+        content_types "application/javascript"
+        content_types "text/javascript"
 
+        # --
         def run
           if @asset.is_a?(Url) && @args[:inline]
             raise Tag::MixedArg, "@external", "@inline"

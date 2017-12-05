@@ -17,6 +17,7 @@ module Jekyll
         content_types "image/png"
         content_types "image/jpg"
 
+        # --
         def set_src
           dpath = @asset.digest_path
           return @args[:src] = @asset.url if @asset.is_a?(Url)
@@ -24,6 +25,7 @@ module Jekyll
           @args[:src] = @asset.data_uri
         end
 
+        # --
         def set_integrity
           return unless integrity?
           @args[:integrity] = @asset.integrity

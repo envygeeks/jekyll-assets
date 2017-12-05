@@ -12,6 +12,7 @@ module Jekyll
         content_types "text/css"
         static type: "text/css"
 
+        # --
         def set_href
           return if @args[:inline]
           return @args[:href] = @asset.url if @asset.is_a?(Url)
@@ -19,6 +20,7 @@ module Jekyll
             .digest_path)
         end
 
+        # --
         def set_integrity
           return unless integrity?
           @args[:integrity] = @asset.integrity
