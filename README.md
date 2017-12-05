@@ -359,6 +359,7 @@ We have basic support for WebComponents when using Sprockets `~> 4.0.0.beta`, th
 |---|---|---|---|
 | `:env` | `:before_init` | ✔ | ✗ |
 | `:env` | `:after_init` | ✔ | ✗ |
+| `:env` | `:after_write` | ✔ | ✗ |
 | `:config` | `:before_merge` | ✗ | `Config{}` |
 | `asset` | `:before_compile` | ✗ | `Asset`, `Manifest` |
 

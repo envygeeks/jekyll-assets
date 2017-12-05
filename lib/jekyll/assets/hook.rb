@@ -30,6 +30,12 @@ module Jekyll
             2 => [],
             3 => [],
           },
+
+          after_write: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
         },
 
         config: {

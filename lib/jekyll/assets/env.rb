@@ -28,6 +28,7 @@ module Jekyll
 
       # --
       attr_reader :manifest
+      attr_accessor :assets_to_write
       attr_reader :asset_config
       attr_reader :jekyll
 
@@ -42,6 +43,7 @@ module Jekyll
 
         super()
         @jekyll = jekyll
+        @assets_to_write = []
         @manifest = Manifest.new(self, in_dest_dir)
         @jekyll.sprockets = self
         @logger = Logger
@@ -117,6 +119,18 @@ module Jekyll
       end
 
       # --
+      def write_all
+        manifest.compile(*assets_to_write); @asset_to_write = []
+        Logger.debug "Calling hooks for env, after_write" do
+          Hook.trigger :env, :after_write do |h|
+            instance_eval(&h)
+          end
+        end
+
+        true
+      end
+
+      # --
       private
       def ignore_caches!
         jekyll.config["exclude"] ||= []
@@ -147,8 +161,8 @@ module Jekyll
       def precompile!
         assets = asset_config[:precompile]
         assets.map do |v|
-          v !~ %r!\*! ? manifest.compile(v) : glob_paths(v).each do |sv|
-            manifest.compile(sv)
+          v !~ %r!\*! ? @assets_to_write |= [sv] : glob_paths(v).each do |sv|
+            @assets_to_write |= [sv]
           end
         end
 

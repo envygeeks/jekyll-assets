@@ -32,13 +32,9 @@ describe Sprockets::Context do
     #
 
     it "proxies" do
-      asset = subject.asset_path("img.png @magick:double")
-      s1 = FastImage.new(env.find_asset!("img.png").filename)
-      s2 = FastImage.new(jekyll.in_dest_dir(asset))
-
-      expect(asset).not_to be_empty
-      expect(s1.size[0] * 2).to eq(s2.size[0])
-      expect(s1.size[1] * 2).to eq(s2.size[1])
+      cls = Jekyll::Assets::Plugins::MiniMagick
+      expect_any_instance_of(cls).to receive(:process)
+      subject.asset_path("img.png @magick:double")
     end
   end
 end

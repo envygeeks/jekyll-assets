@@ -160,7 +160,7 @@ module Jekyll
         original = env.find_asset!(args[:argv1])
         Default.set(args, ctx: ctx, asset: original)
         out = Proxy.proxy(original, args: args, ctx: ctx)
-        env.manifest.compile(out.logical_path)
+        env.assets_to_write |= [out.logical_path]
 
         Default.set(args, {
           ctx: ctx, asset: out

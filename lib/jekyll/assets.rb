@@ -18,6 +18,7 @@ def require_all(*globs)
 end
 
 require_relative "assets/env"
-Jekyll::Hooks.register :site, :post_read do |o|
-  Jekyll::Assets::Env.new(o)
+Jekyll::Hooks.register(:site, :post_read) {  |o| Jekyll::Assets::Env.new(o) }
+Jekyll::Hooks.register :site, :post_write do |o|
+  o&.sprockets&.write_all
 end
