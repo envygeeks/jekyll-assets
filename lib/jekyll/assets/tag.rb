@@ -61,7 +61,6 @@ module Jekyll
 
       # --
       # @return [String]
-      # rubocop:disable Metrics/AbcSize
       # Render the tag, run the proxies, set the defaults.
       # @note Defaults are ran twice just incase the content type
       #   changes, at that point there might be something that
@@ -69,9 +68,9 @@ module Jekyll
       # --
       def render(ctx)
         env = ctx.registers[:site].sprockets
-
         args, asset = render_raw(ctx)
-        env.logger.debug args.to_h(html: false).inspect.yellow
+
+        env.logger.debug args.to_h(html: false).inspect
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
             args: args,
@@ -79,12 +78,11 @@ module Jekyll
             ctx: ctx,
           })
         end
-      # --
       rescue ExecJS::RuntimeError => e
-        env.logger.error e.message
-        env.logger.efile args[:argv1]
-        raise ExecJS::RuntimeError, \
-          "JS Error"
+        e_exjs(e, {
+          args: args,
+          ctx: ctx,
+        })
       # --
       # @note you can --trace to get this same info
       # Handle errors that Sass ships because Jekyll finds
@@ -93,9 +91,10 @@ module Jekyll
       # never get it. That's not very good.
       # --
       rescue Sass::SyntaxError => e
-        env.logger.error e.message
-        env.logger.efile env.strip_paths(e.backtrace.first)
-        raise Sass::SyntaxError, "Sass Error"
+        e_sass(e, {
+          args: args,
+          ctx: ctx,
+        })
       end
 
       # --
@@ -167,6 +166,29 @@ module Jekyll
         })
 
         out
+      end
+
+      # --
+      private
+      def e_exjs(e, ctx:, args:)
+        env = ctx.registers[:site].sprockets
+
+        env.logger.error e.message
+        env.logger.efile args[:argv1]
+        raise ExecJS::RuntimeError, \
+          "JS Error"
+      end
+
+      # --
+      private
+      def e_sass(e, ctx:, args:)
+        env = ctx.registers[:site].sprockets
+
+        env.logger.error e.message
+        env.logger.efile env.strip_paths(e.backtrace.first)
+        env.logger.error "error from file #{args[:argv1]}"
+        raise Sass::SyntaxError,
+          "Sass Error"
       end
     end
   end
