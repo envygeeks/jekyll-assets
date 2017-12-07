@@ -71,7 +71,7 @@ module Jekyll
         env = ctx.registers[:site].sprockets
 
         args, asset = render_raw(ctx)
-        env.logger.debug args&.to_h(html: false).inspect
+        env.logger.debug args.to_h(html: false).inspect.yellow
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
             args: args,
