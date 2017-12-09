@@ -19,7 +19,7 @@ gem "jekyll-assets", "~> x.x.alpha", group: :jekyll_plugins
 
 ---
 
-### Requirments
+### Requirements
 
 * `ruby`: ***2.3+***
 * `sprockets`: ***3.3+***
