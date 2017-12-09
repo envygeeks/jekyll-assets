@@ -33,6 +33,12 @@ module Jekyll
       attr_reader :jekyll
 
       # --
+      rb_delegate :old?, to: :"self.class"
+      rb_delegate :old_sprockets?, {
+        to: :"self.class",
+      }
+
+      # --
       def initialize(jekyll = nil)
         @asset_config = Config.new(jekyll.config["assets"] ||= {})
         Logger.debug "Callings hooks for env, before_init" do
@@ -119,6 +125,11 @@ module Jekyll
       end
 
       # --
+      class << self
+        alias old? old_sprockets?
+      end
+
+      # --
       def write_all
         remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
@@ -149,10 +160,13 @@ module Jekyll
       # --
       private
       def enable_compression!
+        self.js_compressor, self.css_compressor = nil, nil
+
         return unless asset_config[:compression]
         config = asset_config[:compressors][:uglifier].symbolize_keys
         self. js_compressor = Sprockets::UglifierCompressor.new(config)
-        self.css_compressor = :scss
+        Utils.activate("sassc") { self.css_compressor = :scssc } unless old?
+        self.css_compressor ||= :scss
       end
 
       # --
@@ -207,7 +221,7 @@ module Jekyll
 
       require_relative "map" unless old_sprockets?
       Hook.register :env, :after_init, priority: 3 do
-        unless self.class.old_sprockets?
+        unless old?
           Map.register_on(self)
         end
       end

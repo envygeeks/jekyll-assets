@@ -5,6 +5,16 @@
 module Jekyll
   module Assets
     module Utils
+      def self.activate(gem)
+        return unless Gem::Specification.find_all_by_name(gem)&.any? ||
+            Gem::Specification.find_by_path(gem)&.any?
+
+        require gem
+        if block_given?
+          yield
+        end
+      end
+
       def self.html_fragment(*a)
         Nokogiri::HTML.fragment(*a) do |c|
           c.options = Nokogiri::XML::ParseOptions::NONET | \
@@ -295,33 +305,16 @@ module Jekyll
       end
 
       # --
-      # rubocop:enable Metrics/AbcSize
-      # Either require the file or keep moving along.
-      # @yield a block of code if the require works out.
-      # @param [String] file the file to require.
-      # @return [nil]
-      # --
-      module_function
-      def try_require(file)
-        require file
-        if block_given?
-          yield
-        end
-      rescue LoadError
-        Logger.debug "Unable to load file `#{file}'"
-      end
-
-      # --
       # @yield a blockof code if the require works out.
       # Either require exec.js, and the file or move along.
       # @param [String] file the file to require.
       # @return [nil]
       # --
-      module_function
-      def javascript?
-        require "execjs"
-        if block_given?
-          yield
+      def self.javascript?
+        activate "execjs" do
+          if block_given?
+            yield
+          end
         end
       rescue ExecJS::RuntimeUnavailable
         nil

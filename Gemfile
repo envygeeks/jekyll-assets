@@ -38,4 +38,5 @@ group :optionals do
   gem "mini_magick", "~> 4.2", require: false
   gem "babel-transpiler", require: false
   gem "bootstrap", require: false
+  gem "sassc", require: false
 end

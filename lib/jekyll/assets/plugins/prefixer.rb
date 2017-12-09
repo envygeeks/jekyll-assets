@@ -5,7 +5,7 @@
 require "jekyll/assets"
 
 Jekyll::Assets::Utils.javascript? do
-  Jekyll::Assets::Utils.try_require "autoprefixer-rails" do
+  Jekyll::Assets::Utils.activate "autoprefixer-rails" do
     Jekyll::Assets::Hook.register :config, :before_merge do |c|
       c.deep_merge!({
         plugins: {
