@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
   s.add_runtime_dependency("sprockets", ">= 3.3", "< 4.1.beta")
   s.add_runtime_dependency("liquid-tag-parser", "~> 1.0")
-  s.add_runtime_dependency("jekyll", ">= 3.6", "< 4.0")
+  s.add_runtime_dependency("jekyll", ">= 3.5", "< 4.0")
   s.add_runtime_dependency("jekyll-sanity", "~> 1.2")
   s.add_runtime_dependency("pathutil", "~> 0.16")
   s.add_runtime_dependency("extras", "~> 0.2")
