@@ -38,13 +38,13 @@ module Jekyll
         # --
         def find_asset(*)
           super.tap do |v|
-            v.environment = self
+            v&.environment = self
           end
         end
 
         # --
-        def find_asset!(*args)
-          load(resolve!(*args).first).tap do |v|
+        def find_asset!(*a)
+          load(resolve!(*a).first).tap do |v|
             v.environment = self
           end
         end

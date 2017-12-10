@@ -55,7 +55,7 @@ module Jekyll
         },
 
         liquid: {
-          pre_render: {
+          before_render: {
             1 => [],
             2 => [],
             3 => [],
