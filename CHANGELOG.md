@@ -1,7 +1,13 @@
 ## [Unreleased]
+### Added
+
+- Added total time taken to do work as a final log.
+
 ### Changes
 
 - Allow `+` in Content-Types.
+- Moved `Utils.with_timed_logging` to `Logger.with_timed_logging`
+- Refactored `Logger` to give it far less complexity.s
 - Encapsulate and handle errors more cleanly.
 - Start colorizing the log.
 

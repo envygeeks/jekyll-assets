@@ -50,6 +50,7 @@ module Jekyll
         @assets_to_write = []
         @manifest = Manifest.new(self, in_dest_dir)
         @jekyll.sprockets = self
+        @total_time = 0.000000
         @logger = Logger
         @cache = nil
 
@@ -73,17 +74,25 @@ module Jekyll
       # --
       def find_asset(v, *a)
         msg = "Searched for, and rendered #{v} in %s"
-        Utils.with_timed_logging msg do
+        out = Logger.with_timed_logging msg do
           super(v, *a)
         end
+
+        # We keep track.
+        @total_time += out[:time]
+        out[:result]
       end
 
       # --
       def find_asset!(v, *a)
         msg = "Searched for, and rendered #{v} in %s"
-        Utils.with_timed_logging msg do
+        out = Logger.with_timed_logging msg do
           super(v, *a)
         end
+
+        # We keep track.
+        @total_time += out[:time]
+        out[:result]
       end
 
       # --
@@ -145,11 +154,8 @@ module Jekyll
       def write_all
         remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
-        Hook.trigger :env, :after_write do |h|
-          instance_eval(&h)
-        end
-
-        true
+        Hook.trigger(:env, :after_write) { |h| instance_eval(&h) }
+        Logger.info "took #{format(@total_time.to_s, '%.8f')}s"
       end
 
       # ---

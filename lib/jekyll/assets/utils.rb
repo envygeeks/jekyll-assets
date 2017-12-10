@@ -5,15 +5,6 @@
 module Jekyll
   module Assets
     module Utils
-      def self.with_timed_logging(msg)
-        s, out = Time.now, yield; Logger.debug do
-          format(msg, "#{Time.now - s}s")
-        end
-
-        out
-      end
-
-      # --
       def self.activate(gem)
         return unless Gem::Specification.find_all_by_name(gem)&.any? ||
             Gem::Specification.find_by_path(gem)&.any?
