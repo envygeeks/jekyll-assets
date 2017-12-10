@@ -193,7 +193,7 @@ module Jekyll
       def precompile!
         assets = asset_config[:precompile]
         assets.map do |v|
-          v !~ %r!\*! ? @assets_to_write |= [sv] : glob_paths(v).each do |sv|
+          v !~ %r!\*! ? @assets_to_write |= [v] : glob_paths(v).each do |sv|
             @assets_to_write |= [sv]
           end
         end
