@@ -56,11 +56,6 @@ module Helpers
           "source" => fixture_path.to_s,
         })).tap(&:process)
       end
-    rescue => e
-      STDERR.puts(e.message.each_line.first.red)
-      STDERR.puts(e.backtrace.join("\n\s\s").yellow)
-      STDERR.puts "\n\n"
-      out
     end
   end
 
