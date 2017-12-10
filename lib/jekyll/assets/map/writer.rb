@@ -154,7 +154,7 @@ module Jekyll
         private
         def write_src!
           [asset_path, map_files].flatten.compact.uniq.each do |v|
-            v = env.find_asset!(strip_base(v), pipeline: :source)
+            next unless (v = env.find_asset(strip_base(v), pipeline: :source))
             path = map_path(v.filename)
 
             write(environment.in_dest_dir(path)) do |f|
