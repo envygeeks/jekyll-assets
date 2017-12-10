@@ -110,7 +110,11 @@ module Jekyll
       # @return [nil]
       # --
       def self.trigger(*point, &block)
-        get_point(*point).map do |v|
+        hooks = get_point(*point)
+        Logger.debug "messaging hooks on #{point.last.to_s.green} through " +
+          point.first.to_s.green
+
+        hooks.map do |v|
           block.call(v)
         end
       end

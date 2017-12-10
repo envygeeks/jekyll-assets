@@ -19,15 +19,29 @@ module Jekyll
       # @return nil
       # --
       %i(warn error info debug).each do |v|
-        define_singleton_method v do |message = nil, &block|
-          message = block.call if block
-          Jekyll.logger.send(v, PREFIX, message)
+        define_singleton_method v do |m = nil, &b|
+          m = (b ? b.call : m).gsub(Pathutil.pwd + "/", "")
+          p = colorize? ? PREFIX.magenta.bold : PREFIX
+          r = m =~ %r!writing\s+!i ? :debug : v
+
+          m = m.red if v == :error && colorize?
+          m = m.yellow if v == :debug && colorize?
+          m = m.cyan if colorize?
+
+          Jekyll.logger.send(r, p, m)
         end
       end
 
       # --
       def self.efile(file)
         Jekyll.logger.error("Asset File", file)
+      end
+
+      # --
+      def self.colorize?
+        @color ||= begin
+          Jekyll.env == "development" && system("test -t 2")
+        end
       end
     end
   end

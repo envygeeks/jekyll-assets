@@ -4,7 +4,8 @@
 
 RSpec.configure do |c|
   c.before :each do
-    allow(Jekyll.logger.writer).to(receive(:logdevice))
+    allow(Jekyll::Assets::Logger).to receive(:colorize?).and_return(false)
+    allow(Jekyll.logger.writer).to receive(:logdevice)
       .and_return(StringIO.new)
   end
 end

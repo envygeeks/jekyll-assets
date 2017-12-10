@@ -41,10 +41,8 @@ module Jekyll
       # --
       def initialize(jekyll = nil)
         @asset_config = Config.new(jekyll.config["assets"] ||= {})
-        Logger.debug "Callings hooks for env, before_init" do
-          Hook.trigger :env, :before_init do |h|
-            instance_eval(&h)
-          end
+        Hook.trigger :env, :before_init do |h|
+          instance_eval(&h)
         end
 
         super()
@@ -62,16 +60,30 @@ module Jekyll
         precompile!
         copy_raw!
 
-        Logger.debug "Calling hooks for env, after_init" do
-          Hook.trigger :env, :after_init do |h|
-            instance_eval(&h)
-          end
+        Hook.trigger :env, :after_init do |h|
+          instance_eval(&h)
         end
       end
 
       # --
       def skip_gzip?
         !asset_config[:gzip]
+      end
+
+      # --
+      def find_asset(v, *a)
+        msg = "Searched for, and rendered #{v} in %s"
+        Utils.with_timed_logging msg do
+          super(v, *a)
+        end
+      end
+
+      # --
+      def find_asset!(v, *a)
+        msg = "Searched for, and rendered #{v} in %s"
+        Utils.with_timed_logging msg do
+          super(v, *a)
+        end
       end
 
       # --
@@ -133,10 +145,8 @@ module Jekyll
       def write_all
         remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
-        Logger.debug "Calling hooks for env, after_write" do
-          Hook.trigger :env, :after_write do |h|
-            instance_eval(&h)
-          end
+        Hook.trigger :env, :after_write do |h|
+          instance_eval(&h)
         end
 
         true
