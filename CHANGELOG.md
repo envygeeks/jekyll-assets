@@ -1,19 +1,23 @@
-## [Unreleased]
+## [Unreleased] - Planned as: [3.0.6]
 ### Added
 
+- Add support for SASSC compression.  This speeds us up a bit.
 - Added total time taken to do work as a final log.
+
+#### Hooks
+- Added `asset` -> `before_read`
+- Added `asset` -> `before_write`
+- Added `asset` -> `after_write`
+- Added `asset` -> `after_read`
 
 ### Changes
 
 - Allow `+` in Content-Types.
+- Refactored the way we handle `env` -> `after_write`. Now with 100% more asset.
 - Moved `Utils.with_timed_logging` to `Logger.with_timed_logging`
 - Refactored `Logger` to give it far less complexity.s
 - Encapsulate and handle errors more cleanly.
 - Start colorizing the log.
-
-### Added
-
-- Add support for SASSC compression.  This speeds us up a bit.
 
 ## [3.0.5] - 2017-12-05
 ### Fixed

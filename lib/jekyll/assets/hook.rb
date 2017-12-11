@@ -31,12 +31,6 @@ module Jekyll
             3 => [],
           },
 
-          before_write: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
           after_write: {
             1 => [],
             2 => [],
@@ -54,6 +48,30 @@ module Jekyll
 
         asset: {
           before_compile: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
+
+          before_read: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
+
+          after_read: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
+
+          before_write: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
+
+          after_write: {
             1 => [],
             2 => [],
             3 => [],

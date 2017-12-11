@@ -14,6 +14,8 @@ require_relative "drop"
 require_relative "version"
 require_relative "filters"
 require_relative "manifest"
+require_relative "writer"
+require_relative "reader"
 require_relative "config"
 require_relative "logger"
 require_relative "hook"
@@ -155,7 +157,7 @@ module Jekyll
         remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
         Hook.trigger(:env, :after_write) { |h| instance_eval(&h) }
-        Logger.info "took #{format(@total_time.to_s, '%.8f')}s"
+        Logger.info "took #{format(@total_time.to_s, '%.2f')}s"
       end
 
       # ---
