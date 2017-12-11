@@ -8,7 +8,6 @@ module Jekyll
       module Sprockets
         module Asset
           attr_accessor :environment
-          attr_accessor :source
 
           # --
           def digest_path

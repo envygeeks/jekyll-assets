@@ -1,0 +1,7 @@
+body {
+  background-color: #cf4760;
+  /* @alternate */
+  background-image: -webkit-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,0));
+  /* @alternate */
+  background-image: -moz-linear-gradient(rgba(255,255,255,.2),rgba(255,255,255,0));
+}
