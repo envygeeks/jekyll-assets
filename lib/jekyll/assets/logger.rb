@@ -50,30 +50,13 @@ module Jekyll
       def self.make_logger(type:)
         define_singleton_method type do |m = nil, &b|
           m = (b ? b.call : m).gsub(Pathutil.pwd + "/", "")
-          p = colorize? ? PREFIX.magenta.bold : PREFIX
-
           r = m =~ %r!writing\s+!i ? :debug : type
-          Jekyll.logger.send(r, p, colorize_msg(m, {
-            type: r,
-          }))
+          Jekyll.logger.send(r, PREFIX, m)
         end
       end
 
       # --
-      # @param str [String] the string to colorize.
-      # @param type [Symbol,String] the type of log method.
-      # Colorizes a log message to the proper color.
-      # --
-      def self.colorize_msg(str, type:)
-        return str unless colorize?
-        (c = COLORS[type]) ? str.send(c) \
-          : str
-      end
-
-      # --
       private_class_method :make_logger
-      private_class_method :colorize_msg
-      private_class_method :colorize?
 
       # --
       # @note this is to be removed after 3.6.
