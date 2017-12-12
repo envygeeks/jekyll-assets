@@ -66,8 +66,20 @@ module Jekyll
   end
 end
 
+# --
+Jekyll::Assets::Hook.register :config, :before_merge do |c|
+  c.deep_merge!({
+    plugins: {
+      img: {
+        searcher: false,
+      },
+    },
+  })
+end
+
+# --
 Jekyll::Hooks.register [:pages, :documents, :posts], :post_render do |d|
-  if d.output_ext == ".html"
+  if d.output_ext == ".html" && d.site.sprockets.asset_config["plugins"]["img"]["searcher"]
     Jekyll::Assets::Plugins::Searcher.new(d).run
   end
 end
