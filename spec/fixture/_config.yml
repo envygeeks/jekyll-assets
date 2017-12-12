@@ -17,5 +17,8 @@ loopable:
   - img.gif
   - img.png
 assets:
+  plugins:
+    img:
+      searcher: true
   precompile:
     - plugins/closure_comments.css

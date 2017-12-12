@@ -79,7 +79,9 @@ end
 
 # --
 Jekyll::Hooks.register [:pages, :documents, :posts], :post_render do |d|
-  if d.output_ext == ".html" && d.site.sprockets.asset_config["plugins"]["img"]["searcher"]
-    Jekyll::Assets::Plugins::Searcher.new(d).run
+  if d.site.sprockets.asset_config["plugins"]["img"]["searcher"]
+    if d.output_ext == ".html"
+      Jekyll::Assets::Plugins::Searcher.new(d).run
+    end
   end
 end
