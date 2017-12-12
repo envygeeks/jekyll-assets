@@ -75,7 +75,7 @@ module Jekyll
 
       # --
       def find_asset(v, *a)
-        msg = "Searched for, and rendered #{v} in %s"
+        msg = "Searched for, and rendered #{v} in %<time>s"
         out = Logger.with_timed_logging msg do
           super(v, *a)
         end
@@ -87,7 +87,7 @@ module Jekyll
 
       # --
       def find_asset!(v, *a)
-        msg = "Searched for, and rendered #{v} in %s"
+        msg = "Searched for, and rendered #{v} in %<time>s"
         out = Logger.with_timed_logging msg do
           super(v, *a)
         end

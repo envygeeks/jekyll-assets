@@ -3,8 +3,8 @@ Metrics/ClassLength: { Max: 240 }
 Metrics/ModuleLength: { Max: 240 }
 Bundler/OrderedGems: { Enabled: false }
 Style/IfUnlessModifier: { Enabled: false }
+Style/RescueStandardError: { Enabled: false }
 Lint/UselessAccessModifier: { Enabled: false }
-Lint/RescueWithoutErrorClass: { Enabled: false }
 Style/RegexpLiteral: { EnforcedStyle: percent_r }
 Style/BracesAroundHashParameters: { Enabled: false }
 Layout/MultilineMethodCallBraceLayout: { Enabled: false }
@@ -15,11 +15,14 @@ Layout/MultilineOperationIndentation: { EnforcedStyle: indented }
 Layout/FirstParameterIndentation: { EnforcedStyle: consistent }
 Layout/EmptyLinesAroundAccessModifier: { Enabled: false }
 Style/StringLiterals: { EnforcedStyle: double_quotes }
+Layout/EmptyLinesAroundArguments: { Enabled: false }
+Lint/MissingCopEnableDirective: { Enabled: false }
 Style/MultilineTernaryOperator: { Enabled: false }
 Layout/IndentArray: { EnforcedStyle: consistent }
 Layout/IndentHash: { EnforcedStyle: consistent }
 Gemspec/OrderedDependencies: { Enabled: false }
 Style/ParallelAssignment: { Enabled: false }
+Style/EvalWithLocation: { Enabled: false }
 Style/SelfAssignment: { Enabled: false }
 Style/Documentation: { Enabled: false }
 Style/GuardClause: { Enabled: false }

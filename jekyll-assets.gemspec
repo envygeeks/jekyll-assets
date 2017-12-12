@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.name = "jekyll-assets"
   s.license = "MIT"
 
-  s.description = s.description = <<~TXT
+  s.description = <<~TXT
     A drop-in Jekyll Plugin that provides an asset pipeline for JavaScript,
     CSS, SASS, SCSS.  Based around Sprockets (from Rails) and just as powereful
     it provides everything you need to manage assets in Jekyll.

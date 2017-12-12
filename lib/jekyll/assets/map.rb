@@ -10,7 +10,7 @@ require "pathutil"
 module Jekyll
   module Assets
     module Map
-      NAME = "%s.map"
+      NAME = "%<name>s.map"
       DIR_NAME = "source-maps"
       DIR = Pathutil.new(DIR_NAME)
       EXT = ".map"

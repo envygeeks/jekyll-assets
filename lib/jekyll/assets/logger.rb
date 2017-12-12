@@ -22,7 +22,9 @@ module Jekyll
       # --
       def self.with_timed_logging(msg, type: :debug)
         s, t, out = Time.now, nil, yield; Logger.send(type) do
-          format("\n#{msg}", "#{t = Time.now - s}s")
+          format("\n#{msg}", {
+            time: "#{t = Time.now - s}s",
+          })
         end
 
         {
