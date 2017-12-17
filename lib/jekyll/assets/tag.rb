@@ -182,8 +182,7 @@ module Jekyll
 
         env.logger.error e.message
         env.logger.efile args[:argv1]
-        raise ExecJS::RuntimeError, \
-          "JS Error"
+        raise e.class, "JS Error"
       end
 
       # --
@@ -194,8 +193,7 @@ module Jekyll
         env.logger.error e.message
         env.logger.efile env.strip_paths(e.backtrace.first)
         env.logger.error "error from file #{args[:argv1]}"
-        raise Sass::SyntaxError,
-          "Sass Error"
+        raise e.class, "Sass Error"
       end
     end
   end
