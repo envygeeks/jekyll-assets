@@ -78,6 +78,13 @@ module Jekyll
             ctx: ctx,
           })
         end
+      # --
+      rescue Sprockets::FileNotFound => e
+        e_not_found(e, {
+          args: args,
+          ctx: ctx,
+        })
+      # --
       rescue ExecJS::RuntimeError => e
         e_exjs(e, {
           args: args,
@@ -175,6 +182,14 @@ module Jekyll
           " in #{ctx.registers[:page]["relative_path"]}"
       end
       
+      # --
+      def e_not_found(e, ctx:, args:)
+        lines = e.message.each_line.to_a
+        page = ctx.registers[:page]["relative_path"]
+        lines[0] = lines[0].strip + " in `#{page}'\n"
+        raise e.class, lines.join
+      end
+
       # --
       private
       def e_exjs(e, ctx:, args:)
