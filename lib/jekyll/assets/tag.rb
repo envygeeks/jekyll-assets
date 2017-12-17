@@ -53,7 +53,7 @@ module Jekyll
 
         args = Liquid::Tag::Parser.new(@args)
         args = env.parse_liquid(args, ctx: ctx)
-        raise Sprockets::FileNotFound, "UNKNOWN" unless args.key?(:argv1)
+        raise_unfound_asset_on ctx, with: args unless args.key?(:argv1)
         asset = external(ctx, args: args) if env.external?(args)
         asset ||= internal(ctx, args: args)
         [args, asset]
@@ -168,6 +168,13 @@ module Jekyll
         out
       end
 
+      # --
+      private
+      def raise_unfound_asset_on(ctx, with:)
+        raise Sprockets::FileNotFound, "Unknown asset `#{args[:argv1]}'" \
+          " in #{ctx.registers[:page]["relative_path"]}"
+      end
+      
       # --
       private
       def e_exjs(e, ctx:, args:)
