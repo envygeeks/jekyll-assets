@@ -7,7 +7,7 @@
 
 # Jekyll Assets
 
-Jekyll Assets is a drop in [asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html) that uses [Sprockets](https://github.com/rails/sprockets) to build specifically for Jekyll. It utilizes [Sprockets](https://github.com/rails/sprockets), and [Jekyll](https://jekyllrb.com) to try and achieve a clean and extensible assets platform that supports plugins, caching, converting your assets, and even the proxy of said assets in a way that does not interfere with either [Sprockets](https://github.com/rails/sprockets), or [Jekyll](3), and your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS/CoffeeScript processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.
+Jekyll Assets is a drop in [asset pipeline](https://guides.rubyonrails.org/asset_pipeline.html) that uses [Sprockets](https://github.com/rails/sprockets) to build specifically for Jekyll. It utilizes [Sprockets](https://github.com/rails/sprockets), and [Jekyll](https://jekyllrb.com) to try and achieve a clean and extensible assets platform that supports plugins, caching, converting your assets, and even the proxy of said assets in a way that does not interfere with either [Sprockets](https://github.com/rails/sprockets), or [Jekyll](https://jekyllrb.com), and your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS/CoffeeScript processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.
 
 ## Using Jekyll Assets with Jekyll
 
