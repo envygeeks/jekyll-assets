@@ -53,7 +53,7 @@ module Jekyll
 
         args = Liquid::Tag::Parser.new(@args)
         args = env.parse_liquid(args, ctx: ctx)
-        raise_unfound_asset_on ctx, with: args unless args.key?(:argv1)
+        raise_unfound_asset_on(ctx: ctx, with: args) unless args.key?(:argv1)
         asset = external(ctx, args: args) if env.external?(args)
         asset ||= internal(ctx, args: args)
         [args, asset]
@@ -67,10 +67,9 @@ module Jekyll
       #   has to change in the new content.
       # --
       def render(ctx)
-        env = ctx.registers[:site].sprockets
-        args, asset = render_raw(ctx)
-
+        env = ctx.registers[:site].sprockets; args, asset = render_raw(ctx)
         env.logger.debug args.to_h(html: false).inspect
+
         return_or_build(ctx, args: args, asset: asset) do
           HTML.build({
             args: args,
@@ -177,16 +176,16 @@ module Jekyll
 
       # --
       private
-      def raise_unfound_asset_on(ctx, with:)
-        raise Sprockets::FileNotFound, "Unknown asset `#{args[:argv1]}'" \
-          " in #{ctx.registers[:page]["relative_path"]}"
+      def raise_unfound_asset_on(ctx:, with:)
+        raise Sprockets::FileNotFound, "Unknown asset `#{with[:argv1]}'" \
+          " in #{ctx.registers[:page]['relative_path']}"
       end
-      
+
       # --
-      def e_not_found(e, ctx:, args:)
+      def e_not_found(e, ctx:)
         lines = e.message.each_line.to_a
-        page = ctx.registers[:page]["relative_path"]
-        lines[0] = lines[0].strip + " in `#{page}'\n"
+        page = ctx.registers[:page]&.[]("relative_path")
+        lines[0] = lines[0].strip + " in `#{page || 'Untraceable'}'\n"
         raise e.class, lines.join
       end
 
