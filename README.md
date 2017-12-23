@@ -1,5 +1,5 @@
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/maintainability)
-[![Code Climate](https://img.shields.io/codeclimate/coverage/github/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/test_coverage)
+[![Code Climate](https://img.shields.io/codeclimate/c/envygeeks/jekyll-assets.svg?style=for-the-badge)](https://codeclimate.com/github/envygeeks/jekyll-assets/coverage)
 [![Travis CI](https://img.shields.io/travis/envygeeks/jekyll-assets/master.svg?style=for-the-badge)](https://travis-ci.org/envygeeks/jekyll-assets)
 [![Donate](https://img.shields.io/badge/-DONATE-yellow.svg?style=for-the-badge)](https://www.paypal.com/donate/?token=2YE-4wLE2dSgtPaQqTlQgcD2BvKv_tkHUD7GJYs4OskLI0l6XFEAKpNc5rIG6-bAeMFdom)
 ![Gem Version](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)
