@@ -263,7 +263,7 @@ body {
 
 ## List
 
-We provide all *your* assets as a hash of Liquid Drops so you can get basic info that we wish you to have access to without having to prepare the class.
+We provide all *your* assets as a hash of Liquid Drops so you can get basic info that we wish you to have access to without having to prepare the class. **Note:** The keys in the `assets` array are the names of the original files, e.g., use `*.scss` instead of `*.css`.
 
 ```liquid
 {{ assets["bundle.css"].content_type }} => "text/css"
