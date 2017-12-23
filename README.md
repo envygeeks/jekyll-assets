@@ -280,6 +280,7 @@ The current list of available accessors:
 | `filename` | The full path to the assets actual file |
 | `width` | The asset width ***(if available)*** |
 | `digest_path` | The prefixed path |
+| `integrity` | The SRI hash (currently sha256) |
 
 ### Looping
 
