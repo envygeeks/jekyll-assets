@@ -31,7 +31,7 @@ module Jekyll
         # --
         def integrity?
           config[:integrity] && !@asset.is_a?(Url) &&
-            !@args.key?(:integrity)
+            !@args.key?(:integrity) && !@args[:inline]
         end
       end
     end
