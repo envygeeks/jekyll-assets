@@ -1,16 +1,30 @@
-/cases
-/.analysis
-/.asset-cache
-/spec/fixture/_site
-/spec/fixture/vendor
-/spec/fixture/_Gemfile
-/spec/fixture/_Gemfile.lock
-/spec/fixture/.*
-/stackprof.dump
-/.jekyll-cache
-/Gemfile.lock
-/coverage
-/.bundle
-/vendor
+# --
+# OS Level
+# --
+.DS_Store
+
+# --
+# Ruby
+# --
+vendor/
+coverage/
+Gemfile.lock
+spec/fixture/site/
+spec/fixture/result/
+spec/fixture/out/
+.bundle/
 *.gem
-/cctr
+
+# --
+# CodeClimate
+# --
+cctr
+
+# --
+# Jekyll
+# --
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.asset-cache/
+site/

@@ -1,18 +1,19 @@
 #!/bin/bash
+testd_dir="script/test.d"
 [ "$DEBUG" = "true" ] && set -x
 set -e
 
+# --
+# This logic exists so that on CI's all you need do is
+#   set an environment variable to kick on linting, without
+#   having to do excessive customization of the CI.
+# --
 if [ "$LINTING" != "true" ]; then
-  if [ "$1" ]; then
-    export SPROCKETS_VERSION="~> $1"
-    bundle update >/dev/null
-    bundle clean  >/dev/null
-    bundle exec rspec
+  if [ -d "$testd_dir" ] && [ "$1" ] && [ -x "$testd_dir/$1" ]; then
+    script=$1; shift; exec "$testd_dir/$script"
   else
-    if [ -z "$SPROCKETS_VERSION" ]; then
-      for v in "3.0" "4.0.beta"; do
-        script/test "$v"
-      done
+    if [ "$1" ] && [ -x "$testd_dir/custom" ]; then
+      exec "$testd_dir/custom" "$@"
     else
       bundle exec rspec
     fi

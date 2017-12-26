@@ -18,11 +18,11 @@ When it comes to the language versions I support, if a language version becomes 
 
 I tend to test on more than one version, and more than one back version of any given language if a major update hasn't been done in a while, and continue to support them as long as they are not end-of-life. For example, if my software starts with Ruby `2.2`, and the version is currently `2.5`, and I have no plans for a major update you can add `2.5` to the list of supported Rubies, however, the next major update will drop it to `2.4`, and `2.5`.  If `2.2` becomes end-of-life, I will also drop it from the list.
 
-* ***Ruby:*** Latest + 1 Back
-* ***JRuby:*** Latest Release ***only***
-* ***Rubinius:*** We do not support Rubinius at all.
-* ***Node.js:*** Latest LTS + Latest Release + 1 Back
-* ***Go:*** Latest + 1 Back
+* **Ruby:** Latest + 1 Back
+* **JRuby:** Latest Release ***only***
+* **Rubinius:** We do not support Rubinius at all.
+* **Node.js:** Latest LTS + Latest Release + 1 Back
+* **Go:** Latest + 1 Back
 
 
 ## Bugs/Features
@@ -32,43 +32,23 @@ I tend to test on more than one version, and more than one back version of any g
 ### What to not do
 
 * Ask me to put an urgency on your issue.
-* Be disrespectful; ***I will block your comments***.
+* Be disrespectful: **I will block your comments**.
 * ":+1:" comments, I will lock issues; preventing further comments.
+  * If you wish to "👍", "👎", or otherwise, please us the emoji-voting.
 * Ask if there are "any updates"
 
-***I do accept donations for fixing issues on a case-by-case urgency basis, as well as for creating features, if you need an issue addressed quickly.  If you wish to do this you should contact [@envygeeks].  Otherwise issues are fixed based on complexity, time, and general importance. All my projects get equal love and sometimes it takes a minute to get back around.***
+**I do accept donations for fixing issues on a case-by-case urgency basis, as well as for creating features, if you need an issue addressed quickly.  If you wish to do this you should contact [@envygeeks].  Otherwise issues are fixed based on complexity, time, and importance. All my projects get equal love, and sometimes it takes a minute to get back around.**
 
 ### Policies
 #### Closing
-##### *1 Week*
-* **Status:** `needs-user-debug`
-* **Status:** `unable-to-replicate`
-* **Status:** `needs-user-info`
-
-***Issues closed because of this will probably be re-opened once an update is given, and the time reset.  Closing it does not mean we do not believe the issue exists, it means that it's filling a backlog space for something you consider unimportant.***
+* **Immediately:** `wontfix`, `stale`, `not-a-bug`
+* **Closed on Next Release:** `close-on-next-release`
+* **1 Week (7 Days)**: `pending-feedback`
 
 #### Fixing
-##### Bugfix x.x.X
-* **Status:** `security`
-* **Status:** `needs-hotfix`
-* **Status:** `major-bug`
-
-##### Minor x.X.x
-* **Status:** `next-minor`
-* **Status:** `api-change`
-* **Status:** `has-deprecation`
-* **Status:** `minor-bug`
-
-##### Major X.x.x
-* **Status:** `api-change`
-* **Status:** `lacks-deprecation`
-* **Status:** `breaking-refactor`
-* **Status:** `major-feature`
-
-##### Any X.X.X
-* **Status:** `any-version`
-* **Status:** `non-breaking-refactor`
-* **Status:** `feature`
+* **Bugfix x.x.X:** `bug`, `blocker`
+* **Minor x.X.x:** `non-blocker`, `bug`, `feature`
+* **Immediately:** `documentation`
 
 ## Pull Requests
 ### Tests
@@ -142,3 +122,4 @@ Documentation updates should follow the formatting of the given repository.  You
 * Requests for language changes if the author feels it's ambiguous.
 * Requests for formatting changes.
 * Requests for `git squash`
+

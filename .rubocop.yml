@@ -1,33 +1,195 @@
-Metrics/MethodLength: { Max: 24 }
-Metrics/ClassLength: { Max: 240 }
+# --
+# 😞
+# Even though I target a specific version,
+#   a gem might still be looser.
+# --
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+# --
+# 🤭
+# My classes, modules, and methods rarely reach this
+#   length, but sometimes they do, like Pathutil.
+# --
+Metrics/MethodLength: { Max: 024 }
 Metrics/ModuleLength: { Max: 240 }
-Bundler/OrderedGems: { Enabled: false }
-Style/IfUnlessModifier: { Enabled: false }
-Style/RescueStandardError: { Enabled: false }
-Lint/UselessAccessModifier: { Enabled: false }
-Style/RegexpLiteral: { EnforcedStyle: percent_r }
-Style/BracesAroundHashParameters: { Enabled: false }
-Layout/MultilineMethodCallBraceLayout: { Enabled: false }
-Layout/AlignParameters: { EnforcedStyle: with_fixed_indentation }
-Style/TrailingCommaInLiteral: { EnforcedStyleForMultiline: comma }
-Layout/MultilineMethodCallIndentation: { EnforcedStyle: indented }
-Layout/MultilineOperationIndentation: { EnforcedStyle: indented }
-Layout/FirstParameterIndentation: { EnforcedStyle: consistent }
-Layout/EmptyLinesAroundAccessModifier: { Enabled: false }
-Style/StringLiterals: { EnforcedStyle: double_quotes }
-Layout/EmptyLinesAroundArguments: { Enabled: false }
-Lint/MissingCopEnableDirective: { Enabled: false }
-Style/MultilineTernaryOperator: { Enabled: false }
-Layout/IndentArray: { EnforcedStyle: consistent }
-Layout/IndentHash: { EnforcedStyle: consistent }
+Metrics/ClassLength:
+  Max: 240
+# --
+# 😞
+# The default size is too small.
+#   24 strikes a balance.
+# --
+Metrics/AbcSize:
+  Max: 24
+# --
+# 😞
+# I prefer waterfall styled Gems.
+# I find that if you have that many dependends you're
+#   mostly doing it wrong anyways.
+# --
 Gemspec/OrderedDependencies: { Enabled: false }
-Style/ParallelAssignment: { Enabled: false }
-Style/EvalWithLocation: { Enabled: false }
-Style/SelfAssignment: { Enabled: false }
-Style/Documentation: { Enabled: false }
-Style/GuardClause: { Enabled: false }
-Metrics/AbcSize: { Max: 24 }
-Style/Semicolon: { AllowAsExpressionSeparator: true }
+Bundler/OrderedGems: 
+  Enabled: false
+# --
+# 😞
+# This will trip on single line methods.
+#   I like full blocks on single line methods
+#   because it makes life easier.
+# --
+Style/IfUnlessModifier:
+  Enabled: false
+# --
+# 😞
+# I prefer `private` above every method.
+#   It's more explicit.
+# --
+Lint/UselessAccessModifier:
+  Enabled: false
+# --
+# 😞
+# There are just too many missed cases.
+#   So this is disabled.
+# --
+Style/BracesAroundHashParameters:
+  Enabled: false
+# --
+# 😞
+# Because I like to use Emoji's in comments.
+#   This will trip up if you use Emoji's that are
+#   within the private space.
+# --
+Style/AsciiComments:
+  Enabled: false
+# --
+# 😞
+# It just causes to many alignment issues.
+#   It's too opinated.
+# --
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+# --
+# 🎨
+# I like my stuff to be indented 2 spaces.
+#   Not aligned at brackets.
+# --
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+# --
+# 🎨
+# Makes reorganizing hashes easier.
+#   They are non-positional.
+# --
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+# --
+# 🎨
+# I like my stuff to be indented 2 spaces.
+#   Not aligned at brackets.
+# --
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+# --
+# 🎨
+# I like my stuff to be indented 2 spaces.
+#   Not aligned at brackets.
+# --
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+# --
+# 🎨
+# I like my stuff to be indented 2 spaces.
+#   Not aligned at brackets, or aligned independently,
+#   depending on if it's first, second, or not.
+# --
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+# --
+# 🎨
+# It's better to have private above the method def,
+#   this makes it more explicit.
+# --
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: false
+# --
+# 😞
+# Sometimes has false positives.
+#   Disabled because of it.
+# --
+Layout/EmptyLinesAroundArguments:
+  Enabled: false
+# --
+# 😞
+# Sometimes I do not wish to re-enable.
+#   This isn't always useful.
+# --
+Lint/MissingCopEnableDirective:
+  Enabled: false
+# --
+# 😞
+# Because sometimes ternary makes more sense, and
+#   it might need to be split out.
+# --
+Style/MultilineTernaryOperator:
+  Enabled: false
+# --
+# 🎨
+# I like my arrays to be indented 2 spaces.
+#   Not aligned at the bracket.
+# --
+Layout/IndentArray:
+  EnforcedStyle: consistent
+# --
+# 🎨
+# I like my hashes to be indented 2 spaces.
+#   Not aligned at the bracket.
+# --
+Layout/IndentHash:
+  EnforcedStyle: consistent
+# --
+# 🎨
+# Sometimes it makes code neater.
+#   This is case-by-case.
+# --
+Style/ParallelAssignment:
+  Enabled: false
+# --
+# 😞
+# It doesn't always detect it.
+#   Unknown why.
+# --
+Style/EvalWithLocation:
+  Enabled: false
+# --
+# 😞
+# Sometimes has false positives.
+#   We still prefer [+-]=.
+# --
+Style/SelfAssignment:
+  Enabled: false
+# --
+# 😞
+# This will trip on single line methods.
+#   I like full blocks on single line methods
+#   because it makes life easier.
+# --
+Style/GuardClause:
+  Enabled: false
+# --
+# 😞
+# Because it falsley triggers on DateTime.parse
+#   When parsing an unknown time, using DateTime is
+#   the best way to parse out.
+# --
+Style/DateTime:
+  Enabled: false
+# --
+# 😞
+# Sometimes I prefer to do simple assignment as
+#   a single line, if it's readable.
+# --
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+# --
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%q': '{}'
@@ -39,6 +201,18 @@ Style/PercentLiteralDelimiters:
     '%x': '()'
     '%i': '()'
     '%I': '()'
+# --
+# Prefer %r!! over //
+# 🎨
+# --
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+# Prefer "" over ''
+# 🎨
+# --
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+# --
 AllCops:
   TargetRubyVersion: 2.3
   Exclude:
