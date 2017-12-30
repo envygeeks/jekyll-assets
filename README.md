@@ -7,9 +7,9 @@
 
 # Jekyll Assets
 
-Jekyll Assets is a drop in [asset pipeline](https://guides.rubyonrails.org/asset_pipeline.html) that uses [Sprockets](https://github.com/rails/sprockets) to build specifically for Jekyll. It utilizes [Sprockets](https://github.com/rails/sprockets), and [Jekyll](https://jekyllrb.com) to try and achieve a clean and extensible assets platform that supports plugins, caching, converting your assets, and even the proxy of said assets in a way that does not interfere with either [Sprockets](https://github.com/rails/sprockets), or [Jekyll](https://jekyllrb.com), and your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS/CoffeeScript processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.
+Jekyll Assets is a drop in [asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html) that uses [Sprockets](https://github.com/rails/sprockets) to build specifically for Jekyll. It utilizes [Sprockets](https://github.com/rails/sprockets), and [Jekyll](https://jekyllrb.com) to try and achieve a clean, and extensible assets platform that supports plugins, caching, converting your assets. It even supports proxying of said assets in a way that does not interfere with either [Sprockets](https://github.com/rails/sprockets), or [Jekyll](https://jekyllrb.com), or your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.
 
-## Using Jekyll Assets with Jekyll
+## Installing
 
 ```ruby
 gem "jekyll-assets", group: :jekyll_plugins
@@ -19,7 +19,7 @@ gem "jekyll-assets", "~> x.x.alpha", group: :jekyll_plugins
 
 ---
 
-### Requirements
+### System Requirements
 
 * `ruby`: ***2.3+***
 * `sprockets`: ***3.3+***
@@ -193,13 +193,13 @@ Jekyll Assets has the concept of responsive images, using the `picture` (when us
 
 ##### Args
 
-| Arg | Type | Description | `@pic` Only |
-| --- | ---- | ------------| ----------- |
-| `width`     | Width [Density] | Resize, set `srcset="<Src> <<Width>px/Density>"` | ✗ |
-| `min-width` | Width [Density] | Resize, set `media="(min-width: <Width>px)"` | ✔ |
-| `max-width` | Width [Density] | Resize, set `media="(max-width: <Width>px)"` | ✔ |
-| `sizes`     | Any | Your value, unaltered, unparsed. | ✗ |
-| `media`     | Any | Your value, unaltered, unparsed. | ✗ |
+| Arg         | Type            | Description                              | `@pic` Only |
+| ----------- | --------------- | ---------------------------------------- | ----------- |
+| `width`     | Width [Density] | Resize, set `srcset="<Src> <<Width>px/Density>"` | ✗           |
+| `min-width` | Width [Density] | Resize, set `media="(min-width: <Width>px)"` | ✔           |
+| `max-width` | Width [Density] | Resize, set `media="(max-width: <Width>px)"` | ✔           |
+| `sizes`     | Any             | Your value, unaltered, unparsed.         | ✗           |
+| `media`     | Any             | Your value, unaltered, unparsed.         | ✗           |
 
 *If you set `media`, w/ `max-width`, `min-width`, we will not ship `media`, we will simply resize and assume you know what you're doing.  Our parser is not complex, and does not make a whole lot of assumptions on your behalf, it's simple and only meant to make your life easier.  In the future we may make it more advanced.*
 
@@ -273,14 +273,14 @@ We provide all *your* assets as a hash of Liquid Drops so you can get basic info
 
 The current list of available accessors:
 
-| Method | Description |
-|---|---|
-| `content_type` | The RFC content type |
-| `height` | The asset height ***(if available)*** |
-| `filename` | The full path to the assets actual file |
-| `width` | The asset width ***(if available)*** |
-| `digest_path` | The prefixed path |
-| `integrity` | The SRI hash (currently sha256) |
+| Method         | Description                             |
+| -------------- | --------------------------------------- |
+| `content_type` | The RFC content type                    |
+| `height`       | The asset height ***(if available)***   |
+| `filename`     | The full path to the assets actual file |
+| `width`        | The asset width ***(if available)***    |
+| `digest_path`  | The prefixed path                       |
+| `integrity`    | The SRI hash (currently sha256)         |
 
 ### Looping
 
@@ -356,13 +356,13 @@ We have basic support for WebComponents when using Sprockets `~> 4.0.0.beta`, th
 
 ## Hooks
 
-| Point | Name | Instance | Args |
-|---|---|---|---|
-| `:env` | `:before_init` | ✔ | ✗ |
-| `:env` | `:after_init` | ✔ | ✗ |
-| `:env` | `:after_write` | ✔ | ✗ |
-| `:config` | `:before_merge` | ✗ | `Config{}` |
-| `asset` | `:before_compile` | ✗ | `Asset`, `Manifest` |
+| Point     | Name              | Instance | Args                |
+| --------- | ----------------- | -------- | ------------------- |
+| `:env`    | `:before_init`    | ✔        | ✗                   |
+| `:env`    | `:after_init`     | ✔        | ✗                   |
+| `:env`    | `:after_write`    | ✔        | ✗                   |
+| `:config` | `:before_merge`   | ✗        | `Config{}`          |
+| `asset`   | `:before_compile` | ✗        | `Asset`, `Manifest` |
 
 ### Example
 
@@ -453,18 +453,18 @@ gem "mini_magick"
 See the [MiniMagick docs](https://github.com/minimagick/minimagick#usage)
 to get an idea what `<value>` can be.
 
-| Name | Accepts Value |
-|---|---|
-| `magick:compress` | ✔ |
-| `magick:resize` | ✔ |
-| `magick:format`<sup>*</sup> | ✔ |
-| `magick:quality` | ✔ |
-| `magick:rotate` | ✔ |
-| `magick:gravity` | ✔ |
-| `magick:crop` | ✔ |
-| `magick:flip` | ✔ |
-| `@magick:double` | ✗ |
-| `@magick:half` | ✗ |
+| Name                        | Accepts Value |
+| --------------------------- | ------------- |
+| `magick:compress`           | ✔             |
+| `magick:resize`             | ✔             |
+| `magick:format`<sup>*</sup> | ✔             |
+| `magick:quality`            | ✔             |
+| `magick:rotate`             | ✔             |
+| `magick:gravity`            | ✔             |
+| `magick:crop`               | ✔             |
+| `magick:flip`               | ✔             |
+| `@magick:double`            | ✗             |
+| `@magick:half`              | ✗             |
 
 <sup>\*</sup> *`magick:format` requires an ext or a valid MIME content type like `image/jpeg` or `.jpg`.  We will `ImageMagick -format` on your behalf with that information by getting the extension.*
 
@@ -494,25 +494,25 @@ assets:
 
 #### Args
 
-| Name | Accepts Value |
-|---|---|
-| `@image_optim:preset`<sup>*</sup> | ✗ |
+| Name                              | Accepts Value |
+| --------------------------------- | ------------- |
+| `@image_optim:preset`<sup>*</sup> | ✗             |
 
 <sup>\*</sup>***Where `preset` is the name of the preset.***
 
 ### Building Your Own Plugins
 #### Globals
 
-| Name | Class |
-|---|---|
-| `@env` | `Jekyll::Assets::Env` |
-| `@args` | `Liquid::Tag::Parser{}` |
-| `@jekyll` | `Jekyll::Site` |
-| `@asset` | `Sprockets::Asset` |
+| Name      | Class                   |
+| --------- | ----------------------- |
+| `@env`    | `Jekyll::Assets::Env`   |
+| `@args`   | `Liquid::Tag::Parser{}` |
+| `@jekyll` | `Jekyll::Site`          |
+| `@asset`  | `Sprockets::Asset`      |
 
 #### HTML
 
-| Name | Class | Type |
-|---|---|---|
+| Name   | Class                      | Type            |
+| ------ | -------------------------- | --------------- |
 | `@doc` | `Nokogiri:: XML::Document` | `image/svg+xml` |
-| `@doc` | `Nokogiri::HTML::Document` | `image/*` |
+| `@doc` | `Nokogiri::HTML::Document` | `image/*`       |
