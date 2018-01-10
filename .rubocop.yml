@@ -1,3 +1,6 @@
+Style/RescueStandardError: { Enabled: false }
+Style/Documentation:
+  Enabled: false
 # --
 # 😞
 # Even though I target a specific version,
