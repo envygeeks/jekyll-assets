@@ -10,7 +10,7 @@ Gemspec/RequiredRubyVersion:
 # My classes, modules, and methods rarely reach this
 #   length, but sometimes they do, like Pathutil.
 # --
-Metrics/MethodLength: { Max: 024 }
+Metrics/MethodLength: { Max:  24 }
 Metrics/ModuleLength: { Max: 240 }
 Metrics/ClassLength:
   Max: 240
@@ -28,7 +28,7 @@ Metrics/AbcSize:
 #   mostly doing it wrong anyways.
 # --
 Gemspec/OrderedDependencies: { Enabled: false }
-Bundler/OrderedGems: 
+Bundler/OrderedGems:
   Enabled: false
 # --
 # 😞

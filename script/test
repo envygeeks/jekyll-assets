@@ -1,4 +1,8 @@
 #!/bin/bash
+# Copyright: 2017 - 2018 - MIT License
+# Author: Jordon Bedwell
+# --
+
 testd_dir="script/test.d"
 [ "$DEBUG" = "true" ] && set -x
 set -e
