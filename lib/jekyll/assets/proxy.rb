@@ -82,8 +82,8 @@ module Jekyll
       end
 
       def self.digest(args)
-        Digest::SHA256.hexdigest(args.instance_variable_get(
-          :@raw))[0, 6]
+        Digest::SHA256.hexdigest("#{args[:argv1]}#{args.instance_variable_get(
+          :@raw)}")[0, 6]
       end
 
       # --
