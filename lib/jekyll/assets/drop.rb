@@ -11,7 +11,7 @@ module Jekyll
     class Drop < Liquid::Drop
       extend Forwardable::Extended
       def initialize(path, jekyll:)
-        @path = path
+        @path = path.to_s
         @sprockets = jekyll.sprockets
         @jekyll = jekyll
         @asset = nil
