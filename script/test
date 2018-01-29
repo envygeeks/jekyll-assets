@@ -16,8 +16,7 @@ if [ "$LINTING" != "true" ]; then
   if [ -d "$testd_dir" ] && [ "$1" ] && [ -x "$testd_dir/$1" ]; then
     script=$1; shift; exec "$testd_dir/$script"
   else
-    if [ "$1" ] && [ -x "$testd_dir/custom" ]; then
-      exec "$testd_dir/custom" "$@"
+    if [ -x "$testd_dir/custom" ]; then exec "$testd_dir/custom" "$@"
     else
       bundle exec rspec
     fi

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright: 2017 - 2018 - MIT License
+# Author: Jordon Bedwell
+
+[ "$DEBUG" = "true" ] && set -x
+set -e
+
+if [ "$1" ]; then
+  export SPROCKETS_VERSION="~> $1"
+  bundle update >/dev/null
+  bundle clean  >/dev/null
+  bundle exec rspec
+else
+  if [ -z "$SPROCKETS_VERSION" ]; then
+    for v in "3.0" "4.0.beta"; do
+      script/test "$v"
+    done
+  else
+    bundle exec rspec
+  fi
+fi
