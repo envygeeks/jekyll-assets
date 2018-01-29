@@ -1,4 +1,9 @@
-## [Unreleased] - Planned as: [3.0.7]
+## [Unreleased] - Planned as: [3.0.8]
+### Changes
+
+- Nothing to note.
+
+## [3.0.7] - 2018-1-29
 ### Added
 
 - Added a link to the migration guide.
