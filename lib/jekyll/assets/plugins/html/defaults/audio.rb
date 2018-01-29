@@ -9,6 +9,7 @@ module Jekyll
     class Default
       class Audio < Default
         content_types %r!^audio/[a-zA-Z0-9\-_]+$!
+        internal!
 
         # --
         def set_src

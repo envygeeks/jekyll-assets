@@ -9,6 +9,7 @@ module Jekyll
     class Default
       class Component < Default
         content_types "text/html"
+        internal!
 
         # --
         def set_href

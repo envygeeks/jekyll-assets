@@ -9,6 +9,7 @@ module Jekyll
     class Default
       class Img < Default
         content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
+        internal!
 
         # --
         def set_src

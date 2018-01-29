@@ -24,6 +24,7 @@ module Jekyll
           })
         end
 
+        rtn = rtn.sort_by(&:internal?)
         ida = HashWithIndifferentAccess.new
         rtn.each_with_object(ida) do |v, h|
           h.deep_merge!(v.static)

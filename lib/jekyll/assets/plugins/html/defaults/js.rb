@@ -8,8 +8,9 @@ module Jekyll
   module Assets
     class Default
       class JS < Default
-        content_types "application/javascript"
         static type: "text/javascript"
+        content_types "application/javascript"
+        internal!
 
         # --
         def set_src

@@ -9,6 +9,7 @@ module Jekyll
     class Default
       class Video < Default
         content_types %r!^video/.*$!
+        internal!
 
         # --
         def set_src

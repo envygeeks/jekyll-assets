@@ -9,6 +9,7 @@ module Jekyll
     class Default
       class Favicon < Default
         content_types "image/x-icon"
+        internal!
 
         # --
         def set_rel

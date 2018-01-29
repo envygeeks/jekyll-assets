@@ -42,6 +42,20 @@ module Jekyll
       end
 
       # --
+      def self.internal!
+        if name.start_with?("Jekyll::Assets")
+          requirements[:internal] = true
+        end
+      end
+
+      # --
+      def self.internal?
+        requirements[
+          :internal
+        ]
+      end
+
+      # --
       # @note a type is a "content type"
       # Allows you to use types to determine if this class fits.
       # @param [String] type the content type.
@@ -73,7 +87,8 @@ module Jekyll
       #   can limit your surface for an extensible plugin.  For
       #   example if you only work for
       # --
-      [%i(arg_keys args), %i(content_types types)].each do |(k, v)|
+      m = [%i(content_types types), %i(arg_keys args)]
+      m.each do |(k, v)|
         instance_eval <<-RUBY
           def self.#{k}(*a)
             requirements[:#{v}].concat(a)

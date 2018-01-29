@@ -8,8 +8,9 @@ module Jekyll
   module Assets
     class Default
       class CSS < Default
-        static rel: "stylesheet", type: "text/css"
         content_types "text/css"
+        static rel: "stylesheet", type: "text/css"
+        internal!
 
         # --
         def set_href
