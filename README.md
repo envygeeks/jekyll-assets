@@ -5,6 +5,8 @@
 ![Gem Version](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)
 ![Gem DL](https://img.shields.io/gem/dt/jekyll-assets.svg?style=for-the-badge)
 
+***Looking for information on what's changed? See https://envygeeks.io/2017/11/21/jekyll-assets-3-released***
+
 # Jekyll Assets
 
 Jekyll Assets is a drop in [asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html) that uses [Sprockets](https://github.com/rails/sprockets) to build specifically for Jekyll. It utilizes [Sprockets](https://github.com/rails/sprockets), and [Jekyll](https://jekyllrb.com) to try and achieve a clean, and extensible assets platform that supports plugins, caching, converting your assets. It even supports proxying of said assets in a way that does not interfere with either [Sprockets](https://github.com/rails/sprockets), or [Jekyll](https://jekyllrb.com), or your own source.  By default you can add Jekyll Assets to your Gemfile, as a plugin, and have it act as a drop-in replacement for Jekyll's basic SASS processors, with you only having to add it to your Gemfile, and updating your `<img>`, and `<link>`.

@@ -1,6 +1,7 @@
-## [Unreleased] - Planned as: [3.0.6]
+## [Unreleased] - Planned as: [3.0.7]
 ### Added
 
+- Added a link to the migration guide.
 - Add support for SASSC compression.  This speeds us up a bit.
 - Added total time taken to do work as a final log.
 
@@ -13,13 +14,16 @@
 ### Changes
 
 - Allow `+` in Content-Types.
+- Fix hook, where assets wouldn't generate.
+- Fixed a bug with loopy Proxies, thanks @benben
 - Refactored the way we handle `env` -> `after_write`. Now with 100% more asset.
 - Moved `Utils.with_timed_logging` to `Logger.with_timed_logging`
 - Refactored `Logger` to give it far less complexity.s
 - Encapsulate and handle errors more cleanly.
+- Fixed a bug with discovering SVG images.
 - Start colorizing the log.
 
-## [3.0.5] - 2017-12-05
+## [3.0.5, 3.0.6] - 2017-12-05
 ### Fixed
 
 - Make sure we remove non-digested assets, so we can write them again.  We
