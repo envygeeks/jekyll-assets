@@ -80,7 +80,6 @@ module Jekyll
       # --
       rescue Sprockets::FileNotFound => e
         e_not_found(e, {
-          args: args,
           ctx: ctx,
         })
       # --
