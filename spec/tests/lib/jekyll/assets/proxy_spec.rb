@@ -81,18 +81,15 @@ describe Jekyll::Assets::Proxy do
     end
   end
 
-  context "with same tag but different files" do
-    let(:args2) do
+  context "W/ same tag, diff file" do
+    let :args2 do
       args2 = Liquid::Tag::Parser.new("img.png @test:2x")
       args2.args[:argv1] = "img2.png"
       args2
     end
 
     it "returns different files" do
-      out = subject.proxy(asset, {
-        args: args, ctx: Thief.ctx
-      })
-
+      out = subject.proxy(asset, args: args, ctx: Thief.ctx)
       out2 = subject.proxy(asset, {
         args: args2, ctx: Thief.ctx
       })
