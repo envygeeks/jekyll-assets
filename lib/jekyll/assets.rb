@@ -30,6 +30,6 @@ end
 #   stuff block and be done just incase something else relies
 #   on our stuff to do their stuff.  Such as reloaders.
 # --
-Jekyll::Hooks.register :site, :post_render, priority: 99 do |o|
+Jekyll::Hooks.register :site, :post_write, priority: 99 do |o|
   o&.sprockets&.write_all
 end
