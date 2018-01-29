@@ -2,6 +2,7 @@
 ### Added
 
 - Added a link to the migration guide.
+- Make sure our defaults run first, so they never override plugin defaults.
 - Add support for SASSC compression.  This speeds us up a bit.
 - Added total time taken to do work as a final log.
 
