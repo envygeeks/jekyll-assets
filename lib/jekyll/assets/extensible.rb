@@ -35,6 +35,7 @@ module Jekyll
       # --
       def self.requirements
         @requirements ||= {
+          internal: false,
           args: [], types: [
             #
           ]
