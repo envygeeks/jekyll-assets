@@ -14,7 +14,6 @@ module Jekyll
         return true
       end
 
-
       def self.activate(gem)
         return unless Gem::Specification.find_all_by_name(gem)&.any? ||
             Gem::Specification.find_by_path(gem)&.any?
