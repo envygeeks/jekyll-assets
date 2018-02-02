@@ -24,7 +24,7 @@ module Jekyll
         compressors: {
           uglifier: {
             comments: false,
-            harmony:   true,
+            harmony: Utils.new_uglifier?,
           },
         },
 

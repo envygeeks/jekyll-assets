@@ -5,6 +5,16 @@
 module Jekyll
   module Assets
     module Utils
+      def self.new_uglifier?
+        require "uglifier"
+        modern_supported_version = "4.0.0"
+        Gem::Version.new(Uglifier::VERSION) >= Gem::Version
+          .new(modern_supported_version)
+      rescue LoadError
+        return true
+      end
+
+
       def self.activate(gem)
         return unless Gem::Specification.find_all_by_name(gem)&.any? ||
             Gem::Specification.find_by_path(gem)&.any?
