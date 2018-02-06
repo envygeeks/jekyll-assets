@@ -531,3 +531,61 @@ assets:
 | ------ | -------------------------- | --------------- |
 | `@doc` | `Nokogiri:: XML::Document` | `image/svg+xml` |
 | `@doc` | `Nokogiri::HTML::Document` | `image/*`       |
+
+## Migrating from Earlier Versions
+
+### Configuration
+
+Before
+
+```yaml
+cdn: https://example.com
+```
+
+After
+
+```yaml
+cdn:
+  url: https://example.com
+```
+
+### Images/CSS/JS
+
+Before
+
+```liquid
+{% img image.jpg width:"60" class:"image" %}
+```
+
+After
+
+```liquid
+{% asset image.jpg width="60" class="image" %}
+```
+
+Before
+
+```liquid
+{% css css.css %}
+```
+
+After
+
+```liquid
+{% asset css.css %}
+```
+
+### Custom Tags
+
+
+Before
+
+```liquid
+<link rel="apple-touch-icon-precomposed" href="{% asset_path apple-touch-icon-precomposed.png %}">
+```
+
+After
+
+```liquid
+<link rel="apple-touch-icon-precomposed" href="{{ assets['apple-touch-icon-precomposed.png'].digest_path }}">
+```
