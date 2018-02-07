@@ -7,6 +7,7 @@
 
 - [ ] I tried updating to the latest version.
   - [ ] I can't, there is an issue.
+
 - [ ] I Am on Windows
 - [ ] I Am on Bash on Windows
 - [ ] I Am on Linux
@@ -14,7 +15,7 @@
 
 ## Description
 
-<!-- 
+<!--
   Replace this with a description of your issue.  Try to be as
   detailed as you can, because the lack of a detailed description
   will not help us reproduce it, and if we cannot reproduce and

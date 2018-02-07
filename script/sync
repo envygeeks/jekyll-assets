@@ -4,82 +4,70 @@
 # --
 
 [ "$DEBUG" = "true" ] && set -x
-VERBOSE=${VERBOSE:-false}
 set -e
 
 # --
-copyMsg() {
-  if [ "$VERBOSE" = "true" ]; then
-    printf "📄 $1\n"
-  fi
+trim() {
+  echo "$@" | tr -s " " | \
+    sed -e 's/^[[:space:]]*//g' | \
+    sed -e 's/[[:space:]]$//g'
 }
 
 # --
-warnMsg() {
-  if [ "$VERBOSE" = "true" ]; then
-    printf "⚠️  $1\n"
-  fi
-}
+[ -n "$1" ] && git config envygeeks.language "$1"
+[ -n "$2" ] && git config envygeeks.external "$2"
 
 # --
-doneMsg() {
-  if [ "$VERBOSE" = "true" ]; then
-    printf "💖 $1\n"
-  fi
-}
+# Determine what we are working with.
+# --
 
 skip_if_exists=(Gemfile)
-skip_if_external=(CONTRIBUTING.md CODE_OF_CONDUCT.md)
-gurl=https://github.com/envygeeks
-cdir=$PWD
+sync_language=$(git config envygeeks.language || echo "")
+skip_if_external=(CONTRIBUTING.md CODE_OF_CONDUCT.md .github/codeowners)
+skip_if_external+=(.github/issue_template.md .github/pull_request_template.md)
+external=$(git config envygeeks.external || echo "false")
+github_url=https://github.com/envygeeks/devfiles.git
+copy_to=$PWD
 
 # --
 # Copies everything, except for what's to be skipped if
 #   it happens to exist, into the current directory, so that
 #   stays in sync with the parent.
 # --
-for g in "ruby-dev" "github-dev"; do
-  dir=$(mktemp -d)
-  git clone $gurl/$g.git $dir >/dev/null 2>&1
-  warnMsg "Cloned $gurl/$g.git"
-  cd $dir
 
-  for f in $(ls -a | grep -vE '^(\.{1,2}|\.git)$'); do
+clone_dir=$(mktemp -d)
+git clone $github_url "$clone_dir"
+for d in $(trim global $sync_language); do
+  cd "$clone_dir"
+
+  [ ! -d "$d" ] && continue
+  find "$d" -not -path "$d" -type f | while read f; do
+    to=$(echo "$f" | sed -e "s/$d\///"); dir=$(dirname "$to")
+    if [ "$dir" != "$d" ] && [ "$dir" != "." ]; then
+      if [ ! -d "$copy_to/$dir" ]; then
+        bash -xc "mkdir -p '$copy_to/$dir'"
+      fi
+    fi
+
     skip=false
-
-    # --
-    # Files we do not wish to copy if they already exist.
-    #   There is no reason to overwrite, or they will
-    #   generally just conflict.
-    # --
-    for s in "${skip_if_exists[@]}"; do
-      if [ "$f" = "$s" ] && [ -f "$cdir/$f" ]; then
+    for sf in "${skip_if_exists[@]}"; do
+      if [ "$to" = "$sf" ] && [ -f "$copy_to/$sf" ]; then
         skip=true
       fi
     done
 
-    # --
-    # Files that shouldn't be copied if I'm not the lead
-    #   maintainer.  They might have their own stuff.
-    # --
-    if [ -f ".external" ]; then
-      for s in "${skip_if_external}"; do
-        if [ "$f" = "$s" ] && [ -f "$cdir/$f" ]; then
+    if [ "$skip" = "false" ] && [ "$external" = "true" ]; then
+      for sf in "${skip_if_external[@]}"; do
+        if [ "$to" = "$sf" ] && [ -f "$copy_to/$sf" ]; then
           skip=true
         fi
       done
     fi
 
-    # --
-    if [ "$skip" = "true" ]; then
-      continue
-    else
-      copyMsg "Copying $f into ."
-      cp -r $f $cdir
+    if [ "$skip" != "true" ]; then
+      bash -xc "cp '$f' '$copy_to/$to'"
     fi
   done
-
-  cd $cdir
-  doneMsg "Done!"
-  rm -rf $dir
 done
+
+rm -rf $clone_dir
