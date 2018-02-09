@@ -28,3 +28,16 @@ _site/
 .jekyll-metadata
 .asset-cache/
 site/
+
+# --
+# Rails
+# --
+/db/*.sqlite3
+/npm-error.log
+.byebug_history
+/db/*.sqlite3-journal
+/yarn-error.log
+/node_modules
+.pry_history
+/log
+/tmp

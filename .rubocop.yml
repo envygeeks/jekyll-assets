@@ -221,6 +221,7 @@ AllCops:
   Exclude:
     - examples/**/*
     - node_modules/**/*
+    - db/schema.rb
     - vendor/**/*
 Metrics/BlockLength:
   Exclude:

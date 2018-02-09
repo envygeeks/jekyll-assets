@@ -1,9 +1,15 @@
 #!/bin/bash
+# Copyright: 2017 - 2018 - MIT License
+# Source: https://github.com/envygeeks/devfiles
+# Author: Jordon Bedwell
 [ "$DEBUG" = "true" ] && set -x
 set -e
 
-# if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS" = "true" ]; then
+f=script/script.d/report
+[ "$SKIP_SCRIPTD" != "true" ] && [ -x $f ] && exec $f "$@"
+if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS" = "true" ]; then
   if [ "$1" = "before" ]; then
+    # TODO: Start tracking the SHA sum, this is crazy..
     url=https://codeclimate.com/downloads/test-reporter
     url=$url/test-reporter-latest-linux-amd64
     curl -sL $url > ./cctr
@@ -19,4 +25,4 @@ set -e
     ./cctr after-build --exit-code \
       $TRAVIS_TEST_RESULT
   fi
-# fi
+fi
