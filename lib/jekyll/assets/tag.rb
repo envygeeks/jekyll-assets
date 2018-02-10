@@ -204,7 +204,7 @@ module Jekyll
         env = ctx.registers[:site].sprockets
 
         env.logger.error e.message
-        env.logger.efile env.strip_paths(e.backtrace.first)
+        env.logger.err_file env.strip_paths(e.backtrace.first)
         env.logger.error "error from file #{args[:argv1]}"
         raise e.class, "Sass Error"
       end
