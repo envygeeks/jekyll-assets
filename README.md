@@ -444,6 +444,11 @@ html {
 }
 ```
 
+```scss
+//=require _bootstrap.css
+//=require bootstrap/_reboot.css
+```
+
 ### ImageMagick
 
 ```ruby
