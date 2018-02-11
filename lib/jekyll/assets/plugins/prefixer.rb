@@ -18,7 +18,7 @@ Jekyll::Assets::Utils.javascript? do
       })
     end
 
-    Jekyll::Assets::Hook.register :env, :after_init do
+    Jekyll::Assets::Hook.register :env, :after_init, priority: 1 do
       config = asset_config[:plugins][:css][:autoprefixer]
       AutoprefixerRails.install(self, jekyll.safe ? config : {
         # Your configuration here.

@@ -14,9 +14,10 @@
 - Made sure to only enable Uglify.js when JavaScript is available.
 
 ### Changes
-- Moved SourceMaps to the Plugin folder.
 - Improved Utils.javascript? to return a boolean.
+- Made AutoPrefixer load early, because it breaks a lot of stuff if not.
 - Improved Utils.activate to return a boolean.
+- Moved SourceMaps to the Plugin folder.
 
 ### API Changes
 - `SprocketsExportersFileExporterPatches` -> `SprocketsWriterPatches`
