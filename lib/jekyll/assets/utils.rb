@@ -23,13 +23,16 @@ module Jekyll
 
       # --
       def self.activate(gem)
-        return unless Gem::Specification.find_all_by_name(gem)&.any? ||
-            Gem::Specification.find_by_path(gem)&.any?
+        spec = Gem::Specification
+        return unless spec.find_all_by_name(gem)&.any? || \
+            spec.find_by_path(gem)&.any?
 
         require gem
         if block_given?
           yield
         end
+
+        true
       end
 
       # --
@@ -335,7 +338,7 @@ module Jekyll
           end
         end
       rescue ExecJS::RuntimeUnavailable
-        nil
+        false
       end
     end
   end
