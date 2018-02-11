@@ -65,6 +65,12 @@ module Jekyll
             3 => [],
           },
 
+          after_compression: {
+            1 => [],
+            2 => [],
+            3 => [],
+          },
+
           before_write: {
             1 => [],
             2 => [],

@@ -1,13 +1,22 @@
 ## [Unreleased] - Planned as: [3.0.8]
-### Fixed
+### Added
+- `:jekyll_assets_sassc` compressor.
+- `:jekyll_assets_uglify` compressor.
+- `:jekyll_assets_scss` compressor.
 
+### Hooks
+- Added `asset` -> `after_compression`
+  This is useful for when you wish to implement things after compressing,
+  but before writing, or any other kind of pre-write transformations that might
+  happen within Sprockets.
+
+### Fixed
 - Made sure to only enable Uglify.js when JavaScript is available.
 
 ### Changes
 - Moved SourceMaps to the Plugin folder.
 
 ### API Changes
-
 - Moved `Env.old_sprockets?`, and `Env.old?` to `Utils.old_sprockets?`
 - [Alpha Feature]: Moved SourceMaps to the Plugin folder.
 

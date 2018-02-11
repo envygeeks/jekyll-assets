@@ -358,13 +358,14 @@ We have basic support for WebComponents when using Sprockets `~> 4.0.0.beta`, th
 
 ## Hooks
 
-| Point     | Name              | Instance | Args                |
-| --------- | ----------------- | -------- | ------------------- |
-| `:env`    | `:before_init`    | ✔        | ✗                   |
-| `:env`    | `:after_init`     | ✔        | ✗                   |
-| `:env`    | `:after_write`    | ✔        | ✗                   |
-| `:config` | `:before_merge`   | ✗        | `Config{}`          |
-| `asset`   | `:before_compile` | ✗        | `Asset`, `Manifest` |
+| Point | Name | Instance | Args |
+| ---| --- | --- | --- |
+| `:env` | `:before_init` | ✔ | ✗ |
+| `:env` | `:after_init` | ✔ | ✗ |
+| `:env` | `:after_write` | ✔ | ✗ |
+| `:config` | `:before_merge` | ✗ | `Config{}` |
+| `:asset` | `:before_compile` | ✗ | `Asset`, `Manifest` |
+| `:asset` | `:after_compression` | ✗ | input{}, output{}, type=:css,:js |
 
 ### Example
 

@@ -9,6 +9,7 @@ require "sprockets"
 require "jekyll"
 
 require_all "patches/*"
+require_all "compressors/*"
 require_relative "utils"
 require_relative "drop"
 require_relative "version"
@@ -166,10 +167,10 @@ module Jekyll
         # rubocop:disable Metrics/LineLength
         return unless asset_config[:compression]
         config = asset_config[:compressors][:uglifier].symbolize_keys
-        Utils.javascript? { self.js_compressor = Sprockets::UglifierCompressor.new(config) }
-        Utils.activate("sassc") { self.css_compressor = :scssc } unless Utils.old_sprockets?
+        Utils.javascript? { self.js_compressor = Compressors::Uglify.new(config) }
+        Utils.activate("sassc") { self.css_compressor = :jekyll_assets_sassc } unless Utils.old_sprockets?
+        self.css_compressor ||= :jekyll_assets_scss
         # rubocop:enable Metrics/LineLength
-        self.css_compressor ||= :scss
       end
 
       # --
