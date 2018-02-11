@@ -9,7 +9,6 @@ require "sprockets"
 require "jekyll"
 
 require_all "patches/*"
-require_all "compressors/*"
 require_relative "utils"
 require_relative "drop"
 require_relative "version"
@@ -22,6 +21,7 @@ require_relative "logger"
 require_relative "hook"
 require_relative "tag"
 require_relative "url"
+require_all "compressors/*"
 
 module Jekyll
   module Assets
@@ -52,7 +52,6 @@ module Jekyll
         @cache = nil
 
         setup_sources!
-        enable_compression!
         ignore_caches!
         setup_drops!
         precompile!
@@ -157,20 +156,6 @@ module Jekyll
         jekyll.config["exclude"] ||= []
         jekyll.config["exclude"].push(asset_config[:caching][:path])
         jekyll.config["exclude"].uniq!
-      end
-
-      # --
-      private
-      def enable_compression!
-        self.js_compressor, self.css_compressor = nil, nil
-
-        # rubocop:disable Metrics/LineLength
-        return unless asset_config[:compression]
-        config = asset_config[:compressors][:uglifier].symbolize_keys
-        Utils.javascript? { self.js_compressor = Compressors::Uglify.new(config) }
-        Utils.activate("sassc") { self.css_compressor = :jekyll_assets_sassc } unless Utils.old_sprockets?
-        self.css_compressor ||= :jekyll_assets_scss
-        # rubocop:enable Metrics/LineLength
       end
 
       # --
