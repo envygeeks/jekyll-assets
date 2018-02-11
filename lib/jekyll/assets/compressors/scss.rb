@@ -21,11 +21,11 @@ module Jekyll
       # --
       Sprockets.register_compressor "text/css", :assets_scss, Scss
       Hook.register :env, :after_init, priority: 3 do |e|
-        unless Utils.activate("sassc")
-          e.css_compressor = nil
-          next unless e.asset_config[:compression]
-          e.css_compressor = :jekyll_assets_scss
-        end
+        next if Utils.activate("sassc") && !Utils.old_sprockets?
+
+        e.css_compressor = nil
+        next unless e.asset_config[:compression]
+        e.css_compressor = :jekyll_assets_scss
       end
     end
   end
