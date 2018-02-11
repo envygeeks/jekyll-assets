@@ -1,4 +1,8 @@
 ## [Unreleased] - Planned as: [3.0.8]
+### Fixed
+
+- Made sure to only enable Uglify.js when JavaScript is available.
+
 ### API Changes
 
 - Moved `Env.old_sprockets?`, and `Env.old?` to `Utils.old_sprockets?`
