@@ -2,43 +2,33 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "sprockets"
-
 module Jekyll
   module Assets
     module Plugins
-      module SrcMap
-        class CSS < Sprockets::SassCompressor
-          def call(input)
-            out = super(input)
-            env = input[:environment]
-            asset = env.find_asset!(input[:filename], pipeline: :source)
-            path = asset.filename.sub(env.jekyll.in_source_dir + "/", "")
-            url = SrcMap.map_path(asset: asset, env: env)
-            url = env.prefix_url(url)
+      Hook.register :asset, :after_compression do |i, o, t|
+        next unless t[:type] == :css
 
-            out.update({
-              data: <<~CSS
-                #{out[:data].strip}
-                /*# sourceMappingURL=#{url} */
-                /*# sourceURL=#{path} */
-              CSS
-            })
-          end
+        env = i[:environment]
+        asset = env.find_asset!(i[:filename], pipeline: :source)
+        path = asset.filename.sub(env.jekyll.in_source_dir + "/", "")
+        url = SrcMap.map_path(asset: asset, env: env)
+        url = env.prefix_url(url)
 
-          def self.register_on(instance)
-            content_type = "text/css"
-            instance.register_compressor content_type,
-              :source_map, CSS
-          end
+        o.update({
+          data: <<~CSS
+            #{o[:data].strip}
+            /*# sourceMappingURL=#{url} */
+            /*# sourceURL=#{path} */
+          CSS
+        })
+      end
+
+      # --
+      Hook.register :env, :after_init, priority: 1 do
+        next if asset_config[:compression]
+        if asset_config[:source_maps]
+          then asset_config[:compression] = true
         end
-
-        # --
-        # We load late in some cases.
-        # You can also register it in a Hook.
-        # Globally Register it.
-        # --
-        CSS.register_on(Sprockets)
       end
     end
   end

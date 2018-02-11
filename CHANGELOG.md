@@ -14,6 +14,7 @@
 - Made sure to only enable Uglify.js when JavaScript is available.
 
 ### Changes
+- Revamped SourceMap integrations.
 - Improved Utils.javascript? to return a boolean.
 - Made AutoPrefixer load early, because it breaks a lot of stuff if not.
 - Improved Utils.activate to return a boolean.

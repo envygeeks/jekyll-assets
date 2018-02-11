@@ -43,11 +43,6 @@ module Jekyll
           end
 
           # --
-          def self.register_on(instance)
-            instance.register_exporter("*/*", self)
-          end
-
-          # --
           # @return [HashWithIndifferentAccess]
           # @note do not modify the original map.
           # Provides a modifible SourceMap
@@ -183,11 +178,9 @@ module Jekyll
         end
 
         # --
-        # We load late in some cases.
-        # You can also register it in a Hook.
-        # Globally Register it.
-        # --
-        Writer.register_on(Sprockets)
+        Hook.register :env, :after_init, priority: 3 do
+          register_exporter("*/*", Writer)
+        end
       end
     end
   end

@@ -7,38 +7,22 @@ require "sprockets"
 module Jekyll
   module Assets
     module Plugins
-      module SrcMap
-        class JavaScript < Sprockets::UglifierCompressor
-          def call(input)
-            out = super(input)
-            env = input[:environment]
-            asset = env.find_asset!(input[:filename], pipeline: :source)
-            path = asset.filename.sub(env.jekyll.in_source_dir + "/", "")
-            url = SrcMap.map_path(asset: asset, env: env)
-            url = env.prefix_url(url)
+      Hook.register :asset, :after_compression do |i, o, t|
+        next unless t[:type] == :js
 
-            out.update({
-              data: <<~TXT
-                #{input[:data].strip}
-                //# sourceMappingURL=#{url}
-                //# sourceURL=#{path}
-              TXT
-            })
-          end
+        env = i[:environment]
+        asset = env.find_asset!(i[:filename], pipeline: :source)
+        path = asset.filename.sub(env.jekyll.in_source_dir + "/", "")
+        url = SrcMap.map_path(asset: asset, env: env)
+        url = env.prefix_url(url)
 
-          def self.register_on(instance)
-            content_type = "application/javascript"
-            instance.register_compressor(content_type,
-              :source_map, self)
-          end
-        end
-
-        # --
-        # We load late in some cases.
-        # You can also register it in a Hook.
-        # Globally Register it.
-        # --
-        JavaScript.register_on(Sprockets)
+        o.update({
+          data: <<~TXT
+            #{o[:data].strip}
+            //# sourceMappingURL=#{url}
+            //# sourceURL=#{path}
+          TXT
+        })
       end
     end
   end
