@@ -47,11 +47,9 @@ module Helpers
 
   def self.stub_jekyll_site
     @jekyll ||= begin
-      out = nil
-
       silence_stdout do
         cfg = Pathutil.new(fixture_path).join("_config.yml").read_yaml
-        out = Jekyll::Site.new(Jekyll.configuration(cfg).update({
+        Jekyll::Site.new(Jekyll.configuration(cfg).update({
           "destination" => File.join(fixture_path, "_site"),
           "source" => fixture_path.to_s,
         })).tap(&:process)
@@ -72,10 +70,7 @@ end
 
 RSpec.configure do |c|
   c.before(:suite) { Helpers.tap(&:cleanup_trash).stub_jekyll_site }
-  # c. after(:suite) do
-  #   Helpers.cleanup_trash
-  # end
-
+  c. after(:suite) { Helpers.cleanup_trash }
   c.include Helpers
   c.extend  Helpers
 end
