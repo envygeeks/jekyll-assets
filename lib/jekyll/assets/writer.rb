@@ -2,6 +2,10 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
+unless defined?(Sprockets::Exporters)
+  return
+end
+
 module SprocketsWriterPatches
   def skip?(logger)
     return true if File.exist?(target)
