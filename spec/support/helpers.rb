@@ -49,10 +49,12 @@ module Helpers
     @jekyll ||= begin
       silence_stdout do
         cfg = Pathutil.new(fixture_path).join("_config.yml").read_yaml
-        Jekyll::Site.new(Jekyll.configuration(cfg).update({
+        cfg = Jekyll.configuration(cfg).update({
           "destination" => File.join(fixture_path, "_site"),
           "source" => fixture_path.to_s,
-        })).tap(&:process)
+        })
+
+        Jekyll::Site.new(cfg).tap(&:process)
       end
     end
   end
