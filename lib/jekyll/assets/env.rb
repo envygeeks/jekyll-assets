@@ -222,13 +222,6 @@ module Jekyll
       require_all "plugins/html/*"
       require_relative "context"
 
-      require_relative "map" unless old_sprockets?
-      Hook.register :env, :after_init, priority: 3 do
-        unless old?
-          Map.register_on(self)
-        end
-      end
-
       # --
       # @see https://github.com/rails/sprockets/pull/523
       # Registers a few MimeTypes since I don't think
