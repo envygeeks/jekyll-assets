@@ -1,7 +1,9 @@
 ## [Unreleased] - Planned as: [3.0.8]
-### Changes
+### API Changes
 
-- Nothing to note.
+- Moved `Env.old_sprockets?`, and `Env.old?` to `Utils.old_sprockets?`
+  Rational: This method was used everywhere, and was better suited as a
+    utility.  This is a necessary breaking change.
 
 ## [3.0.7] - 2018-1-29
 ### Added

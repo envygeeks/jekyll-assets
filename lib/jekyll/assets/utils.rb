@@ -5,6 +5,13 @@
 module Jekyll
   module Assets
     module Utils
+      def self.old_sprockets?
+        @old_sprockets ||= begin
+          Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
+        end
+      end
+
+      # --
       def self.new_uglifier?
         require "uglifier"
         modern_supported_version = "4.0.0"
@@ -14,6 +21,7 @@ module Jekyll
         return true
       end
 
+      # --
       def self.activate(gem)
         return unless Gem::Specification.find_all_by_name(gem)&.any? ||
             Gem::Specification.find_by_path(gem)&.any?
@@ -24,6 +32,7 @@ module Jekyll
         end
       end
 
+      # --
       def self.html_fragment(*a)
         Nokogiri::HTML.fragment(*a) do |c|
           c.options = Nokogiri::XML::ParseOptions::NONET | \
@@ -46,6 +55,7 @@ module Jekyll
         end
       end
 
+      # --
       def raw_precompiles
         asset_config[:raw_precompile].each_with_object([]) do |v, a|
           if v.is_a?(Hash)
@@ -98,9 +108,8 @@ module Jekyll
       # --
       def url_asset(url, type:)
         name = File.basename(url)
-        old_ = Env.old_sprockets?
 
-        Url.new(*[old_ ? self : nil, {
+        Url.new(*[Utils.old_sprockets? ? self : nil, {
           name: name,
           filename: url,
           content_type: type,

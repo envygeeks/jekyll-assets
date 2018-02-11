@@ -39,7 +39,7 @@ module Jekyll
       # Because we need to keep some support for 3.x we register it
       #   two different ways depending on the type of Sprockets.
       # --
-      if !Env.old_sprockets?
+      if !Utils.old_sprockets?
         Liquid::TYPES.each do |k, v|
           to = Utils.strip_secondary_content_type(k)
           charset = Sprockets.mime_types[to][:charset]

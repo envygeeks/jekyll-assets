@@ -35,12 +35,6 @@ module Jekyll
       attr_reader :jekyll
 
       # --
-      rb_delegate :old?, to: :"self.class"
-      rb_delegate :old_sprockets?, {
-        to: :"self.class",
-      }
-
-      # --
       def initialize(jekyll = nil)
         @asset_config = Config.new(jekyll.config["assets"] ||= {})
         Hook.trigger :env, :before_init do |h|
@@ -141,18 +135,6 @@ module Jekyll
       end
 
       # --
-      def self.old_sprockets?
-        @old_sprockets ||= begin
-          Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
-        end
-      end
-
-      # --
-      class << self
-        alias old? old_sprockets?
-      end
-
-      # --
       def write_all
         remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
@@ -185,7 +167,7 @@ module Jekyll
         return unless asset_config[:compression]
         config = asset_config[:compressors][:uglifier].symbolize_keys
         Utils.javascript? { self.js_compressor = Sprockets::UglifierCompressor.new(config) }
-        Utils.activate("sassc") { self.css_compressor = :scssc } unless old?
+        Utils.activate("sassc") { self.css_compressor = :scssc } unless Utils.old_sprockets?
         # rubocop:enable Metrics/LineLength
         self.css_compressor ||= :scss
       end
