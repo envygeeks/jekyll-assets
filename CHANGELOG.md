@@ -15,8 +15,11 @@
 
 ### Changes
 - Moved SourceMaps to the Plugin folder.
+- Improved Utils.javascript? to return a boolean.
+- Improved Utils.activate to return a boolean.
 
 ### API Changes
+- `SprocketsExportersFileExporterPatches` -> `SprocketsWriterPatches`
 - Moved `Env.old_sprockets?`, and `Env.old?` to `Utils.old_sprockets?`
 - [Alpha Feature]: Moved SourceMaps to the Plugin folder.
 

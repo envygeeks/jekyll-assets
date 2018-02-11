@@ -2,7 +2,7 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-module SprocketsExportersFileExporterPatches
+module SprocketsWriterPatches
   def skip?(logger)
     return true if File.exist?(target)
     logger.debug "Writing asset to #{target}"
@@ -37,10 +37,5 @@ module SprocketsExportersFileExporterPatches
 end
 
 # --
-module Sprockets
-  module Exporters
-    class FileExporter
-      prepend SprocketsExportersFileExporterPatches
-    end
-  end
-end
+Sprockets::Exporters::FileExporter.send(:prepend,
+  SprocketsWriterPatches)
