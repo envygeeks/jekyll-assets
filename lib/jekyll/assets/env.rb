@@ -181,10 +181,12 @@ module Jekyll
       def enable_compression!
         self.js_compressor, self.css_compressor = nil, nil
 
+        # rubocop:disable Metrics/LineLength
         return unless asset_config[:compression]
         config = asset_config[:compressors][:uglifier].symbolize_keys
-        self. js_compressor = Sprockets::UglifierCompressor.new(config)
+        Utils.javascript? { self.js_compressor = Sprockets::UglifierCompressor.new(config) }
         Utils.activate("sassc") { self.css_compressor = :scssc } unless old?
+        # rubocop:enable Metrics/LineLength
         self.css_compressor ||= :scss
       end
 
