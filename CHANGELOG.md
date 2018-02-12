@@ -1,5 +1,6 @@
 ## [Unreleased] - Planned as: [3.0.8]
 ### Added
+- Add support for adding Clojure style `/* @alternate */`
 - `:jekyll_assets_sassc` compressor.
 - `:jekyll_assets_uglify` compressor.
 - `:jekyll_assets_scss` compressor.

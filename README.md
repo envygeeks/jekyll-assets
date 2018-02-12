@@ -403,6 +403,13 @@ end
 ```
 
 ## Default Plugins
+### Clojure Alternates
+```
+gem "crass"
+```
+
+Once crass is added, we will detect prefixes, and add `/* @alternate */` to them, with or without compression enabled, and with protections against compression stripping.
+
 ### Font Awesome
 
 ```ruby
