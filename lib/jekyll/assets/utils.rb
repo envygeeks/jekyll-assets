@@ -169,25 +169,21 @@ module Jekyll
         case true
         when obj.is_a?(Hash) || obj.is_a?(Liquid::Tag::Parser)
           obj.each_key.with_object(obj) do |k, o|
-            if o[k].is_a?(String)
-              then o[k] = parse_liquid(o[k], {
-                ctx: ctx,
-              })
-            end
+            o[k] = parse_liquid(o[k], {
+              ctx: ctx,
+            })
           end
         when obj.is_a?(Array)
           obj.map do |v|
-            if v.is_a?(String)
-              then v = parse_liquid(v, {
-                ctx: ctx,
-              })
-            end
-
-            v
+            parse_liquid(v, {
+              ctx: ctx,
+            })
           end
-        else
+        when obj.is_a?(String)
           ctx.registers[:site].liquid_renderer.file("(asset:var)")
             .parse(obj).render!(ctx)
+        else
+          obj
         end
       end
 
