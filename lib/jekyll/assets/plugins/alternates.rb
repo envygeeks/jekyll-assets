@@ -63,7 +63,7 @@ module Jekyll
       # run an extra step, because when compression is being
       # ran, we have to guard with /*! so we've to strip.
       # --
-      Hook.register :asset, :after_compression do |i, o, t|
+      Hook.register :asset, :after_compression do |_, o, t|
         next unless t == "text/css"
 
         o.update({
