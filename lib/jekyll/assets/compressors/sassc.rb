@@ -13,12 +13,9 @@ module Jekyll
       class SassC < Sprockets::SasscCompressor
         def call(input)
           out = super(input)
-          Hook.trigger(:asset, :after_compression) do |h|
-            h.call(input, out, {
-              type: :css,
-            })
+          Hook.trigger :asset, :after_compression do |h|
+            h.call(input, out, "text/css")
           end
-
           out
         end
       end

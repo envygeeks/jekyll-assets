@@ -9,10 +9,8 @@ module Jekyll
       class Uglify < Sprockets::UglifierCompressor
         def call(input)
           out = super(input)
-          Hook.trigger(:asset, :after_compression) do |h|
-            h.call(input, out, {
-              type: :js,
-            })
+          Hook.trigger :asset, :after_compression do |h|
+            h.call(input, out, "application/javascript")
           end
           out
         end

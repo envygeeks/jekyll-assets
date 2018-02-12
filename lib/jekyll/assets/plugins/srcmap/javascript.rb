@@ -8,7 +8,7 @@ module Jekyll
   module Assets
     module Plugins
       Hook.register :asset, :after_compression, priority: 3 do |i, o, t|
-        next unless t[:type] == :js
+        next unless t == "application/javascript"
 
         env = i[:environment]
         asset = env.find_asset!(i[:filename], pipeline: :source)
