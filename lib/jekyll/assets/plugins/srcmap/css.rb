@@ -5,7 +5,7 @@
 module Jekyll
   module Assets
     module Plugins
-      Hook.register :asset, :after_compression do |i, o, t|
+      Hook.register :asset, :after_compression, priority: 3 do |i, o, t|
         next unless t[:type] == :css
 
         env = i[:environment]
