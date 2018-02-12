@@ -533,16 +533,15 @@ assets:
 | `@doc` | `Nokogiri::HTML::Document` | `image/*`       |
 
 ## Migrating from Earlier Versions
-
 ### Configuration
 
-Before
+*Before*
 
 ```yaml
 cdn: https://example.com
 ```
 
-After
+*After*
 
 ```yaml
 cdn:
@@ -551,41 +550,34 @@ cdn:
 
 ### Images/CSS/JS
 
-Before
-
-```liquid
-{% img image.jpg width:"60" class:"image" %}
-```
-
-After
-
-```liquid
-{% asset image.jpg width="60" class="image" %}
-```
-
-Before
+*Before*
 
 ```liquid
 {% css css.css %}
+{% img image.jpg width:60 class:image %}
+{% js js.js %}
 ```
 
-After
+*After*
 
 ```liquid
 {% asset css.css %}
+{% asset image.jpg width=60 class=image %}
+{% asset js.js %}
 ```
 
 ### Custom Tags
 
-
-Before
+*Before*
 
 ```liquid
-<link rel="apple-touch-icon-precomposed" href="{% asset_path apple-touch-icon-precomposed.png %}">
+<link rel="apple-touch-icon-precomposed" href="{% asset_path icon.png %}">
+<link rel="apple-touch-icon-precomposed" href="{% asset_data icon.png %}">
 ```
 
-After
+*After*
 
 ```liquid
-<link rel="apple-touch-icon-precomposed" href="{{ assets['apple-touch-icon-precomposed.png'].digest_path }}">
+<link rel="apple-touch-icon-precomposed" href="{% asset icon.png @path %}">
+<link rel="apple-touch-icon-precomposed" href="{% asset icon.png @data %}">
 ```
