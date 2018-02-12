@@ -1,0 +1,9 @@
+body {
+  background: rgba(196,128,219,1);
+  background: linear-gradient(to right, rgba(196,128,219,1) 0%, rgba(153,54,186,0.34) 100%);
+  background: -webkit-linear-gradient(left, rgba(196,128,219,1) 0%, rgba(153,54,186,0.34) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(196,128,219,1)), color-stop(100%, rgba(153,54,186,0.34)));
+  background: -ms-linear-gradient(left, rgba(196,128,219,1) 0%, rgba(153,54,186,0.34) 100%);
+  background: -moz-linear-gradient(left, rgba(196,128,219,1) 0%, rgba(153,54,186,0.34) 100%);
+  background: -o-linear-gradient(left, rgba(196,128,219,1) 0%, rgba(153,54,186,0.34) 100%);
+}

@@ -39,4 +39,5 @@ group :optionals do
   gem "babel-transpiler", require: false
   gem "bootstrap", require: false
   gem "sassc", require: false
+  gem "crass", require: false
 end
