@@ -12,6 +12,21 @@ module Jekyll
       end
 
       # --
+      class Point
+        attr_accessor :block, :priority
+
+        # --
+        # A hook point only holds data for later, it
+        # really serves no other purpose for now, other
+        # than to make live easier for handling hooks
+        # and their sorting, later in stream.
+        # --
+        def initialize(priority, &block)
+          @priority, @block = priority, block
+        end
+      end
+
+      # --
       class << self
         attr_reader :points
       end
@@ -19,77 +34,26 @@ module Jekyll
       # --
       @points = {
         env: {
-          before_init: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          after_init: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          after_write: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
+          before_init: [],
+          after_init: [],
+          after_write: [],
         },
 
         config: {
-          before_merge: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
+          before_merge: [],
         },
 
         asset: {
-          before_compile: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          before_read: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          after_read: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          after_compression: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          before_write: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
-
-          after_write: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
+          before_compile: [],
+          before_read: [],
+          after_read: [],
+          after_compression: [],
+          before_write: [],
+          after_write: [],
         },
 
         liquid: {
-          before_render: {
-            1 => [],
-            2 => [],
-            3 => [],
-          },
+          before_render: [],
         },
       }
 
@@ -103,16 +67,7 @@ module Jekyll
         raise ArgumentError, "only give 2 points" if point.count > 2
 
         @points[point[0]] ||= {}
-        @points[point[0]][point[1]] ||= {
-          #
-        }
-
-        1.upto(3).each do |i|
-          @points[point[0]][point[1]][i] ||= [
-            #
-          ]
-        end
-
+        @points[point[0]][point[1]] ||= {}
         @points
       end
 
@@ -124,11 +79,8 @@ module Jekyll
       # --
       def self.get_point(*point)
         check_point(*point)
-
         @points[point[0]][point[1]]
-          .each_with_object([]) do |(_, v), a|
-            a.concat(v)
-          end
+          .sort_by(&:priority)
       end
 
       # --
@@ -145,7 +97,7 @@ module Jekyll
           "through #{point.first}"
 
         hooks.map do |v|
-          block.call(v)
+          block.call(v.block)
         end
       end
 
@@ -156,17 +108,12 @@ module Jekyll
       # @note this is what plugins should use.
       # @return [nil]
       # --
-      def self.register(*point, priority: 2, &block)
-        if priority > 3
-          raise ArgumentError,
-            "priority must be between 1 and 3"
-        end
-
+      def self.register(*point, priority: 48, &block)
         check_point(*point)
+        point_ = Point.new(priority, &block)
         out = @points[point[0]]
         out = out[point[1]]
-        out = out[priority]
-        out << block
+        out << point_
       end
 
       # --
