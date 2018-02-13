@@ -7,11 +7,11 @@
 
 - [ ] I tried updating to the latest version.
   - [ ] I can't, there is an issue.
-
 - [ ] I Am on Windows
-- [ ] I Am on Bash on Windows
+  - [ ] Ubuntu Bash on Windows
+  - [ ] Fedora Bash on Windows
 - [ ] I Am on Linux
-- [ ] I Am on OS X
+- [ ] I Am on macOS
 
 ## Description
 

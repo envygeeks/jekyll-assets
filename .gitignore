@@ -41,3 +41,8 @@ site/
 .pry_history
 /log
 /tmp
+
+# --
+# Yarn
+# --
+yarn.lock

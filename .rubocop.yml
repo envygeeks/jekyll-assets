@@ -1,3 +1,4 @@
+Naming/FileName: { Enabled: false }
 Style/RescueStandardError: { Enabled: false }
 Style/Documentation:
   Enabled: false
