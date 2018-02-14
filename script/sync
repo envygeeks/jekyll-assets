@@ -66,7 +66,7 @@ for d in $(trim global $sync_language); do
     fi
 
     if [ "$skip" != "true" ]; then
-      bash -xc "cp '$f' '$copy_to/$to'"
+      bash -xc "cp -L '$f' '$copy_to/$to'"
     fi
   done
 done

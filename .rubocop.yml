@@ -3,6 +3,13 @@ Style/RescueStandardError: { Enabled: false }
 Style/Documentation:
   Enabled: false
 # --
+# 🙃
+# Not really necessary.
+#   Seriously.
+# --
+Style/SpecialGlobalVars:
+  Enabled: false
+# --
 # 😞
 # Even though I target a specific version,
 #   a gem might still be looser.

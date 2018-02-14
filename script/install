@@ -12,3 +12,6 @@ if bundle check 1>/dev/null 2>&1; then bundle update
 fi
 
 bundle clean
+if [ -f package.json ]; then
+  yarn
+fi
