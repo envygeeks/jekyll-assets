@@ -114,6 +114,6 @@
 ### Added
 
 - Sprockets 4.x support.
-- SourceMaps for SASS, JavaScript.
+- SourceMaps for SASS, JavaScript. (*sponsored-by* @cameronmcefee)
 - HTML Builder Defaults
 - HTML Builders
