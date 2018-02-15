@@ -47,7 +47,7 @@
 - Fixed a bug with loopy Proxies, thanks @benben
 - Refactored the way we handle `env` -> `after_write`. Now with 100% more asset.
 - Moved `Utils.with_timed_logging` to `Logger.with_timed_logging`
-- Refactored `Logger` to give it far less complexity.s
+- Refactored `Logger` to give it far less complexity.
 - Encapsulate and handle errors more cleanly.
 - Fixed a bug with discovering SVG images.
 - Start colorizing the log.
