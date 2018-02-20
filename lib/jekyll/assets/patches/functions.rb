@@ -6,15 +6,13 @@ module Jekyll
   module Assets
     module Patches
       module SassFunctions
+        SprocketsString = ::Sprockets::Autoload::Sass::Script::String
+
         def asset_path(path, options = {})
           path, args = path.value.split(%r!\s+!, 2)
-          path, = URI.split(path)[5..8]
-          path = "#{path} #{args}"
-
-          # We strip the query string, and the fragment.
-          path = sprockets_context.asset_path(path, options)
-          ::Sprockets::Autoload::Sass::Script::String.new \
-            path, :string
+          path, fragment = URI.split(path).values_at(5, 8)
+          path = sprockets_context.asset_path("#{path} #{args}", options)
+          SprocketsString.new [path, fragment].compact.join("#")
         end
       end
     end
