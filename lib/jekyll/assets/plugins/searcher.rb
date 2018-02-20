@@ -78,7 +78,7 @@ Jekyll::Assets::Hook.register :config, :before_merge do |c|
 end
 
 # --
-Jekyll::Hooks.register [:pages, :documents, :posts], :post_render do |d|
+Jekyll::Hooks.register %i(pages documents posts), :post_render do |d|
   if d.site.sprockets.asset_config["plugins"]["img"]["searcher"]
     if d.output_ext == ".html"
       Jekyll::Assets::Plugins::Searcher.new(d).run
