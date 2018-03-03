@@ -23,7 +23,7 @@ module Jekyll
 
         e.css_compressor = nil
         next unless e.asset_config[:compression]
-        e.css_compressor = :jekyll_assets_scss
+        e.css_compressor = :assets_scss
       end
     end
   end
