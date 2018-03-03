@@ -36,7 +36,7 @@ module Jekyll
         def complex(doc)
           @args[:img] ||= {}
           args = @args.to_h(html: true, skip: HTML.skips)
-          @args[:img][:src] = asset.digest_path
+          @args[:img][:src] = @args[:src]
           _, sources = kv
 
           doc.picture @args[:picture] do
