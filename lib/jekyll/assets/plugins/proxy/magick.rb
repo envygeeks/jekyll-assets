@@ -27,8 +27,12 @@ module Jekyll
           img = ::MiniMagick::Image.open(@file)
           magick_format(img) if @args[:magick][:format]
           img.combine_options do |c|
-            runners.each do |m|
-              method(m).arity == 2 ? send(m, img, c) : send(m, c)
+            @args[:magick].reject { |k, _| k == :format }.each do |(k, _)|
+              m = "magick_#{k}"
+
+              if self.class.private_method_defined?(m)
+                method(m).arity == 2 ? send(m, img, c) : send(m, c)
+              end
             end
           end
 
@@ -125,6 +129,10 @@ module Jekyll
           width, height = img.width / 2, img.height / 2 if @args[:magick].key?(:half)
           cmd.resize "#{width}x#{height}" if width && height
         end
+
+        alias magick_double magick_preset_resize
+        alias magick_quarter magick_preset_resize
+        alias magick_half magick_preset_resize
       end
     end
   end
