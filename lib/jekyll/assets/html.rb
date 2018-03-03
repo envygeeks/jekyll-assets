@@ -11,12 +11,8 @@ module Jekyll
       attr_reader :doc
 
       # --
-      # rubocop:disable Style/RedundantReturn
-      # --
       def self.skips
-        return %i(
-          inline path data pic
-        )
+        %i(inline path data pic)
       end
 
       # --
@@ -31,7 +27,6 @@ module Jekyll
       # Search for plugins and runners and then run them.
       # @param [Sprockets::Asset] the current asset.
       # @note look inside of plugins for examples.
-      # rubocop:enable Style/RedundantReturn
       # @return [String] the final result.
       # @param [Env] env the env.
       # --
