@@ -145,6 +145,18 @@ describe Jekyll::Assets::Utils do
             hello: "Jekyll::Drops::SiteDrop",
           })
       end
+
+      context "with nested {}" do
+        it "parses" do
+          hash = { magick: { quality: "{{ var }}" }}
+          expect(env.parse_liquid(hash, ctx: Thief.ctx))
+            .to eq({
+              magick: {
+                quality: "val",
+              }
+            })
+        end
+      end
     end
 
     #
