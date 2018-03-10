@@ -27,7 +27,7 @@ module Jekyll
           img = ::MiniMagick::Image.open(@file)
           magick_format(img) if @args[:magick][:format]
           img.combine_options do |c|
-            @args[:magick].reject { |k, _| k == :format }.each do |(k, _)|
+            @args[:magick].keys.reject { |k| k == :format }.each do |k|
               m = "magick_#{k}"
 
               if self.class.private_method_defined?(m)

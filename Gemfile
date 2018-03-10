@@ -20,7 +20,7 @@ group :development do
   group :test do
     gem "simplecov", require: false
     gem "luna-rspec-formatters", require: false
-    gem "rubocop", require: false
+    gem "rubocop", "0.52", require: false
   end
 end
 
