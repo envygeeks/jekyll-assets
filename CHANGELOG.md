@@ -1,4 +1,5 @@
-## [Unreleased] - Planned as: [3.0.8]
+## [Unreleased] - Planned as: [3.0.9]
+## [3.0.8] - 2018-3-10
 ### Added
 - Add support for adding Clojure style `/* @alternate */`
 - `:jekyll_assets_sassc` compressor.
