@@ -16,8 +16,14 @@ module Jekyll
         end
       end
 
-      # rubocop:disable Metrics/LineLength
-      Sprockets.register_compressor "application/javascript", :assets_uglify, Uglify
+      Hook.register :env, :before_init, priority: 1 do |e|
+        uglifier_config = e.asset_config[:compressors][:uglifier].symbolize_keys
+
+        Sprockets.register_compressor "application/javascript",
+          :assets_uglify,
+          Uglify.new(uglifier_config)
+      end
+
       Hook.register :env, :after_init, priority: 3 do |e|
         e.js_compressor = nil
         next unless e.asset_config[:compression]
