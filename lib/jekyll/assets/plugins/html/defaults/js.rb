@@ -8,9 +8,14 @@ module Jekyll
   module Assets
     class Default
       class JS < Default
-        static type: "text/javascript"
         content_types "application/javascript"
         internal!
+
+        # --
+        def set_type
+          return if @args[:type] || !config[:type]
+          @args[:type] = "text/javascript"
+        end
 
         # --
         def set_src
@@ -45,6 +50,7 @@ Jekyll::Assets::Hook.register :config, :before_merge do |c|
     defaults: {
       js: {
         integrity: Jekyll.production?,
+        type: true,
       },
     },
   })
