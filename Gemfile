@@ -30,7 +30,6 @@ end
 #   provide more features for you to use.
 # --
 group :optionals do
-  gem "uglifier", require: false
   gem "autoprefixer-rails", require: false
   gem "font-awesome-sass", "~> 4.4", require: false
   gem "image_optim_pack", "~> 0.5", require: false
