@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.3.0"
   s.add_runtime_dependency("execjs", "~> 2.7")
+  s.add_runtime_dependency("uglifier", "~> 4.0")
   s.add_runtime_dependency("nokogiri", "~> 1.8")
   s.add_runtime_dependency("activesupport", "~> 5.0")
   s.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
