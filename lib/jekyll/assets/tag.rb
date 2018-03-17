@@ -183,8 +183,10 @@ module Jekyll
       # --
       def e_not_found(e, ctx:)
         lines = e.message.each_line.to_a
-        page = ctx.registers[:page]&.[]("relative_path")
-        lines[0] = lines[0].strip + " in `#{page || 'Untraceable'}'\n"
+        page   = ctx.registers[:page]&.[]("relative_path")
+        page ||= ctx.registers[:page]&.[]("path")
+
+        lines[0] = lines[0].strip + " in `#{page || 'Untraceable'}'\n\n"
         raise e.class, lines.join
       end
 
