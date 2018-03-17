@@ -13,7 +13,7 @@ module Jekyll
 
         # --
         def set_type
-          return if @args[:type] || !config[:type]
+          return if @args.key?(:type) || !config[:type]
           @args[:type] = "text/javascript"
         end
 
