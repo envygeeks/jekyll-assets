@@ -196,7 +196,7 @@ module Jekyll
         env = ctx.registers[:site].sprockets
 
         env.logger.error e.message
-        env.logger.efile args[:argv1]
+        env.logger.err_file args[:argv1]
         raise e.class, "JS Error"
       end
 
