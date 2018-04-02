@@ -71,17 +71,17 @@ module Jekyll
               }
             end
           else
-            src = glob_paths(v).first
+            glob_paths(v).each do |path|
+              next unless path
+              dst = in_dest_dir(strip_paths(path))
+              dst.parent.mkdir_p
 
-            next unless src
-            dst = in_dest_dir(strip_paths(src))
-            dst.parent.mkdir_p
-
-            a << {
-              src: src,
-              full_dst: dst,
-              dst: dst,
-            }
+              a << {
+                src: path,
+                full_dst: dst,
+                dst: dst,
+              }
+            end
           end
         end
       end
