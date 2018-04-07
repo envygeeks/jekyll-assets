@@ -36,6 +36,8 @@ site/
 /npm-error.log
 .byebug_history
 /db/*.sqlite3-journal
+/config/application.yml
+/config/master.key
 /yarn-error.log
 /node_modules
 .pry_history

@@ -1,5 +1,6 @@
-Naming/FileName: { Enabled: false }
 Style/RescueStandardError: { Enabled: false }
+Layout/SpaceInsideBlockBraces: { Enabled: false }
+Naming/FileName: { Enabled: false }
 Style/Documentation:
   Enabled: false
 # --
@@ -94,11 +95,13 @@ Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
 # --
 # 🎨
+# Disabled because it prevents multi-line blocks.
 # I like my stuff to be indented 2 spaces.
 #   Not aligned at brackets.
 # --
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+  Enabled: false
 # --
 # 🎨
 # I like my stuff to be indented 2 spaces.
@@ -234,3 +237,4 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
   - 'spec/**/*_spec.rb'
+  - 'config/**/*.rb'

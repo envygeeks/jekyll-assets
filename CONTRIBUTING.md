@@ -24,6 +24,8 @@ I tend to test on more than one version, and more than one back version of any g
 * **Node.js:** Latest LTS + Latest Release + 1 Back
 * **Go:** Latest + 1 Back
 
+***It should be noted that if I wish to have a feature of a language before I can make a major release, I may, or may not go ahead and enforce a newer version of a language in a point release (exp: 3.x) so that I can update my code and clean it up.***
+
 
 ## Bugs/Features
 
@@ -72,10 +74,12 @@ Code updates should follow the formatting of the given repository, formatting in
 ##### Good
 
 ```ruby
+# --
 # @param hello [String] your greeting
 # Allows you to send a greeting back to the user
 # @raise if the given object is not a string
 # @return [String] the greeting
+# --
 def greet(hello)
   raise ArgumentError, "needs string" unless hello.is_a?(String)
   alert hello, {
@@ -87,9 +91,11 @@ end
 ##### Bad
 
 ```ruby
+# --
 # @param hello [String] your greeting
 # Allows you to send a greeting back to the user
 # @return [String] the greeting
+# --
 def greet(hello)
   # @raise if the given object is not a string
   raise ArgumentError, "needs string" unless hello.is_a?(String)
@@ -122,4 +128,3 @@ Documentation updates should follow the formatting of the given repository.  You
 * Requests for language changes if the author feels it's ambiguous.
 * Requests for formatting changes.
 * Requests for `git squash`
-

@@ -10,8 +10,13 @@
 - [ ] I Am on Windows
   - [ ] Ubuntu Bash on Windows
   - [ ] Fedora Bash on Windows
+  - [ ] Other  Bash on Windows
 - [ ] I Am on Linux
+  - [ ] Ubuntu
+  - [ ] Fedora
 - [ ] I Am on macOS
+- [ ] I'm on Docker
+  - [ ] I understand Docker may be unsupported.
 
 ## Description
 
