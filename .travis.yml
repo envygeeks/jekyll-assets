@@ -1,5 +1,6 @@
 language: ruby
 after_success: script/report
+before_install: ["gem install bundler"]
 before_script: script/report before
 script: script/test
 sudo: false
