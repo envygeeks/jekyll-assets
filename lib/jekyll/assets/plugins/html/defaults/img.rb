@@ -12,6 +12,20 @@ module Jekyll
         internal!
 
         # --
+        def set_width
+          unless args.key?(:width) || !config[:width]
+            args[:width] = "100%"
+          end
+        end
+
+        # --
+        def set_height
+          unless args.key?(:height) || !config[:height]
+            args[:height] = "auto"
+          end
+        end
+
+        # --
         def set_src
           dpath = @asset.digest_path
           return @args[:src] = @asset.url if @asset.is_a?(Url)
@@ -43,7 +57,9 @@ Jekyll::Assets::Hook.register :config, :before_merge do |c|
   c.deep_merge!({
     defaults: {
       img: {
+        height: false,
         integrity: Jekyll.production?,
+        width: false,
       },
     },
   })
