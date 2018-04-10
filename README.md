@@ -156,17 +156,17 @@ Jekyll Assets has the concept of responsive images, using the `picture` (when us
 
 ```liquid
 {% asset img.png @pic
-    srcset:max-width="800 2x"
-    srcset:max-width="600 1.5x"
-    srcset:max-width="400 1x"
+    srcset:max-width="200 2x"
+    srcset:max-width="150 1.5x"
+    srcset:max-width="100 1x"
       %}
 ```
 
 ```html
 <picture>
-  <source srcset="1.png 2x"   media="(max-width:800px)">
-  <source srcset="2.png 1.5x" media="(max-width:600px)">
-  <source srcset="3.png 1x"   media="(max-width:400px)">
+  <source srcset="1.png 2x"   media="(max-width:200px)">
+  <source srcset="2.png 1.5x" media="(max-width:150px)">
+  <source srcset="3.png 1x"   media="(max-width:100px)">
   <img src="img.png">
 </picture>
 ```
@@ -176,32 +176,45 @@ Jekyll Assets has the concept of responsive images, using the `picture` (when us
 
 ```liquid
 {% asset img.png
-    srcset:width="400 2x"
-    srcset:width="600 1.5x"
-    srcset:width="800 1x"
+    srcset:width="200 2x"
+    srcset:width="150 1.5x"
+    srcset:width="100 1x"
+      %}
+
+{% asset img.svg
+    srcset:width="200 2x jpg"
+    srcset:width="150 1.5x jpg"
+    srcset:width="100 1x jpg"
       %}
 
 {% asset img.png
-    srcset:width=400
-    srcset:width=600
-    srcset:width=800
+    srcset:width=200
+    srcset:width=150
+    srcset:width=200
       %}
 ```
 
 ```html
-<img srcset="1.png   2x, 2.png 1.5x, 3.png   1x">
-<img srcset="1.png 400w, 2.png 600w, 3.pnx 800w">
+<img srcset="1.png 2x, 2.png 1.5x, 3.png 1x">
+<img srcset="1.jpg 2x, 2.jpg 1.5x, 3.jpg 1x">
+<img srcset="1.png 200w, 2.png 150w, 3.pnx 200w">
 ```
 
-##### Args
+##### Args for `<img srcset>`
 
-| Arg         | Type            | Description                              | `@pic` Only |
-| ----------- | --------------- | ---------------------------------------- | ----------- |
-| `width`     | Width [Density] | Resize, set `srcset="<Src> <<Width>px/Density>"` | ✗           |
-| `min-width` | Width [Density] | Resize, set `media="(min-width: <Width>px)"` | ✔           |
-| `max-width` | Width [Density] | Resize, set `media="(max-width: <Width>px)"` | ✔           |
-| `sizes`     | Any             | Your value, unaltered, unparsed.         | ✗           |
-| `media`     | Any             | Your value, unaltered, unparsed.         | ✗           |
+| Arg         | Type                  | Description                                      |
+| ----------- | --------------------- | ------------------------------------------------ |
+| `width`     | Width [Density, Type] | Resize, set `srcset="<Src> <<Width>px/Density>"` |
+
+
+##### Args for `@pic`
+
+| Arg         | Type            | Description                                  |
+| ----------- | --------------- | -------------------------------------------- |
+| `min-width` | Width [Density] | Resize, set `media="(min-width: <Width>px)"` |
+| `max-width` | Width [Density] | Resize, set `media="(max-width: <Width>px)"` |
+| `sizes`     | Any             | Your value, unaltered, unparsed.             |
+| `media`     | Any             | Your value, unaltered, unparsed.             |
 
 *If you set `media`, w/ `max-width`, `min-width`, we will not ship `media`, we will simply resize and assume you know what you're doing.  Our parser is not complex, and does not make a whole lot of assumptions on your behalf, it's simple and only meant to make your life easier.  In the future we may make it more advanced.*
 
