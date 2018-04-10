@@ -43,22 +43,13 @@ module Jekyll
 
         private
         def magick_format(img)
-          exts = @env.mime_exts.select do |k, v|
-            k == @args[:magick][:format] || v == @args[:magick][:format]
-          end
+          format = ".#{@args[:magick][:format].sub(%r!^\.!, '')}"
+          ext = @env.mime_exts.find { |k, v| k == format || v == format }
+          return unless ext
 
-          if exts.first
-            ext, type = exts.first
-            new_ = @file.sub_ext(ext)
-            raise SameType, type if type == asset.content_type
-            img.format(ext.sub(".", ""))
-            @file.cp(new_)
-            @file.rm
-            @file =
-              new_
-          end
-
-          img.write(@file)
+          ext, type = ext
+          raise SameType, type if type == asset.content_type
+          img.format(ext.sub(".", ""))
         end
 
         private
