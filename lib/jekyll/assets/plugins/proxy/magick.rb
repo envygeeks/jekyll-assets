@@ -8,14 +8,8 @@ module Jekyll
   module Assets
     module Plugins
       class MiniMagick < Proxy
+        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
         arg_keys :magick
-        content_types "image/webp"
-        content_types "image/jpeg"
-        content_types "image/svg+xml"
-        content_types "image/tiff"
-        content_types "image/bmp"
-        content_types "image/gif"
-        content_types "image/png"
 
         class SameType < StandardError
           def initialize(type)
@@ -24,19 +18,18 @@ module Jekyll
         end
 
         def process
-          img = ::MiniMagick::Image.open(@file)
+          img = ::MiniMagick::Image.new(@file)
           magick_format(img) if @args[:magick][:format]
           img.combine_options do |c|
             @args[:magick].keys.reject { |k| k == :format }.each do |k|
               m = "magick_#{k}"
 
-              if self.class.private_method_defined?(m)
+              if respond_to?(m, true)
                 method(m).arity == 2 ? send(m, img, c) : send(m, c)
               end
             end
           end
 
-          img.write(@file)
           @file
         ensure
           img&.destroy!
