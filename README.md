@@ -306,7 +306,7 @@ Using Liquid Drop `assets`, you can check whether an asset is present.
 ## Filter
 
 ```liquid
-{{ src | asset:"@magick:2x magick:quality:92" }}
+{{ src | asset:"@magick:2x magick:quality=92" }}
 ```
 
 ## Polymer WebComponents
