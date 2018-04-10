@@ -8,14 +8,8 @@ module Jekyll
   module Assets
     module Plugins
       class ImageOptim < Proxy
+        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
         arg_keys :optim
-        content_types "image/webp"
-        content_types "image/jpeg"
-        content_types "image/svg+xml"
-        content_types "image/tiff"
-        content_types "image/bmp"
-        content_types "image/gif"
-        content_types "image/png"
 
         class UnknownPresetError < RuntimeError
           def initialize(name)
