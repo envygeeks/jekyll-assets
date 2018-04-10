@@ -28,20 +28,23 @@ module Jekyll
         def complex(doc)
           img = doc.img @args.to_h(html: true, skip: HTML.skips)
           Array(args[:srcset][:width]).each do |w|
-            w, d = w.to_s.split(%r!\s+!, 2)
-            Integer(w)
+            dimensions, density, type = w.to_s.split(%r!\s+!, 3)
 
             img["srcset"] ||= ""
-            img["srcset"] += ", #{path(width: w)} #{d || "#{w}w"}"
-            img["srcset"] = img["srcset"].gsub(
-              %r!^,\s*!, "")
+            img["srcset"] += ", #{path(dimensions: dimensions, type: type)} "
+            img["srcset"] += density || "#{dimensions}w"
+            img["srcset"] = img["srcset"]
+              .gsub(%r!^,\s*!, "")
           end
         end
 
         # --
-        def path(width:)
-          args_ = "#{args[:argv1]} magick:resize=#{width} @path"
-          Tag.new("asset", args_, Liquid::ParseContext.new)
+        def path(dimensions:, type: nil)
+          args_ =  "#{args[:argv1]} @path"
+          args_ += " magick:resize=#{dimensions}"
+          args_ += " magick:format=#{type}" if type
+          pctx = Liquid::ParseContext.new
+          Tag.new("asset", args_, pctx)
             .render(ctx)
         end
 
