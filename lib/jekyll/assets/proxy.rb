@@ -29,7 +29,10 @@ module Jekyll
       # --
       def self.proxy(asset, args:, ctx:)
         proxies = Proxy.inherited.select do |o|
-          o.for?(type: asset.content_type, args: args)
+          o.for?({
+            type: asset.content_type,
+            args: args,
+          })
         end
 
         return asset if proxies.empty?
