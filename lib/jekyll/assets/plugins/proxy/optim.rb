@@ -25,17 +25,11 @@ module Jekyll
         end
 
         def process
-          optimc = @env.asset_config[:plugins][:img][:optim]
-          preset = @args[:optim].keys
-          if preset.count > 1
-            raise MultiplePredefinedPresetsSpecified
-          end
-
-          preset = preset.first
           # rubocop:disable Metrics/LineLength
-          raise UnknownPreset, preset if preset != :default && !optimc.key?(preset)
-          oc = optimc[preset] unless preset == :default
-          optim = ::ImageOptim.new(oc || {})
+          optimc = @env.asset_config[:plugins][:img][:optim]
+          preset = @args[:optim] == true ? :jekyll : @args[:optim].to_sym
+          raise UnknownPreset, preset if preset != :jekyll && !optimc.key?(preset)
+          optim = ::ImageOptim.new(optimc[preset] || {})
           optim.optimize_image!(@file)
           @file
         end
@@ -50,7 +44,11 @@ Jekyll::Assets::Hook.register :config, :before_merge do |c|
     plugins: {
       img: {
         optim: {
-          # Your config here.
+          jekyll: {
+            pngout: false,
+            advpng: false,
+            svgo: false,
+          },
         },
       },
     },

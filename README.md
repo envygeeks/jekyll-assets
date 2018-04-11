@@ -500,33 +500,29 @@ to get an idea what `<value>` can be.
 
 ```ruby
 gem "image_optim"
+gem "image_optim_bin" # Optional
 ```
 
-Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options.
+#### Configuration
 
 ```yml
 assets:
   plugins:
     img:
       optim:
-        default:
-          verbose: true
-        zero_png:
-          advpng:
-            level: 0
-          optipng:
-            level: 0
-          pngout:
-            strategy: 4
+        {}
 ```
+
+Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options, and to get a list of stuff you need to install on your system to use it, if you do not wish to use "image_optim_bin",
 
 #### Args
 
 | Name                              | Accepts Value |
 | --------------------------------- | ------------- |
-| `@image_optim:preset`<sup>*</sup> | ✗             |
+| `optim`                           | ✔             |
+| `@optim`                          | ✗             |
 
-<sup>\*</sup>***Where `preset` is the name of the preset.***
+***By default `@optim` will use the default `jekyll`, otherwise you can provide `optim=preset` and have it used that preset.  ImageOptim provides advanced, and default as their default presets, you can define your own preset via Jekyll Assets configuration listed above.***
 
 ### Building Your Own Plugins
 #### Globals
