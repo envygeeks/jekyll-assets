@@ -52,6 +52,7 @@ module Jekyll
         @cache = nil
 
         setup_sources!
+        setup_resolver!
         ignore_caches!
         setup_drops!
         precompile!
@@ -178,6 +179,21 @@ module Jekyll
         end
 
         nil
+      end
+
+      # --
+      private
+      def setup_resolver!
+        create_resolver!
+        depend_on "jekyll-env"
+      end
+
+      # --
+      private
+      def create_resolver!
+        register_dependency_resolver "jekyll-env" do
+          ENV["JEKYLL_ENV"]
+        end
       end
 
       # --
