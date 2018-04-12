@@ -12,7 +12,7 @@ module Jekyll
 
       # --
       def self.skips
-        %i(inline path data pic)
+        %i(inline path data pic) | Proxy.keys
       end
 
       # --
