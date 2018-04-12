@@ -14,13 +14,9 @@ module Jekyll
         # --
         def run
           Nokogiri::HTML::Builder.with(doc) do |d|
-            if srcset?
-              complex(d)
-            else
-              d.img(args.to_h({
-                html: true, skip: HTML.skips
-              }))
-            end
+            srcset? ? complex(d) : d.img(args.to_h({
+              html: true, skip: HTML.skips
+            }))
           end
         end
 
@@ -43,9 +39,11 @@ module Jekyll
           args_ =  "#{args[:argv1]} @path"
           args_ += " magick:resize=#{dimensions}"
           args_ += " magick:format=#{type}" if type
+          args_ += " @optim" if args.key?(:optim)
+
           pctx = Liquid::ParseContext.new
-          Tag.new("asset", args_, pctx)
-            .render(ctx)
+          tag = Tag.new("asset", args_, pctx)
+          tag.render(ctx)
         end
 
         # --
