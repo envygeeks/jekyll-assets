@@ -1,4 +1,17 @@
 ## [Unreleased] - Planned as: [3.0.9]
+### Added
+- `magick:transparency`
+- Add the ability to change formats w/ srcset.
+- Allow raw compiles to
+- Add default ImgOptim profile.
+- `magick:background`
+
+### Fixed
+- Make sure `@optim` worked, and `optim=profile` works.
+- Make ImageMagick slightly faster using `new` w/ combine_options w/ format.
+- Make sure that multiple proxy calls return the right path.
+- Make sure not to output Proxy keys into HTML.
+
 ## [3.0.8] - 2018-3-10
 ### Added
 - Add support for adding Clojure style `/* @alternate */`
