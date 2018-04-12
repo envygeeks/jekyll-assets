@@ -37,10 +37,13 @@ module Jekyll
 
         return asset if proxies.empty?
         env = ctx.registers[:site].sprockets
-        file = copy(asset, args: args, ctx: ctx)
-        cache = file.basename.sub_ext("").to_s
+        key = digest(args)
 
-        env.cache.fetch(cache) do
+        out = env.cache.fetch(key) do
+          file = copy(asset, {
+            args: args, ctx: ctx
+          })
+
           proxies.each do |o|
             obj = o.new(file, {
               args: args,
@@ -53,10 +56,10 @@ module Jekyll
             raise Deleted, o unless file.exist?
           end
 
-          true
+          file
         end
 
-        env.find_asset!(file)
+        env.find_asset!(out)
       end
 
       # --
@@ -95,12 +98,16 @@ module Jekyll
       # @param [Symbol] key the key.
       # --
       def self.args_key(key = nil)
-        unless key.nil?
-          @key =
-            key
-        end
+        key.nil? ? @key : @key = key
+      end
 
-        @key
+      # --
+      # Return a list of proxy keys.
+      # This allows you to select their values from args.
+      # @return [Array<Symbol>]
+      # --
+      def self.keys
+        inherited.map(&:arg_keys).flatten
       end
 
       # --
