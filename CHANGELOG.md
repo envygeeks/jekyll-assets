@@ -1,3 +1,10 @@
+## [Planned] - Planned as: [3.1.0]
+### Change
+
+- Remove Sprockets 3.x support.
+- Rewrite `{% asset srcset %}` so it takes raw proxy args.
+- Remove support for Ruby < 2.4
+
 ## [Unreleased] - Planned as: [3.0.9]
 ### Added
 - `magick:transparency`
