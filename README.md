@@ -491,6 +491,8 @@ to get an idea what `<value>` can be.
 | `magick:gravity`            | ✔             |
 | `magick:crop`               | ✔             |
 | `magick:flip`               | ✔             |
+| `magick:background`         | ✔             |
+| `magick:transparency`       | ✔             |
 | `@magick:double`            | ✗             |
 | `@magick:half`              | ✗             |
 

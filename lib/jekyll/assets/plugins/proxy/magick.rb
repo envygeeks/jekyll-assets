@@ -53,6 +53,20 @@ module Jekyll
         end
 
         private
+        def magick_transparency(cmd)
+          if @args[:magick][:transparency]
+            cmd.transparency @args[:magick][:transparency]
+          end
+        end
+
+        private
+        def magick_background(cmd)
+          if @args[:magick].key?(:background)
+            cmd.background @args[:magick][:background]
+          end
+        end
+
+        private
         def magick_compress(cmd)
           if @args[:magick].key?(:compress)
             cmd.compress @args[:magick][:compress]
