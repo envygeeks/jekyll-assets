@@ -46,8 +46,16 @@ Jekyll::Assets::Hook.register :config, :before_merge do |c|
         optim: {
           jekyll: {
             pngout: false,
+            allow_lossy: true,
+            jpegtran: { progressive: false },
+            jpegrecompress: { quality: 2 },
             advpng: false,
             svgo: false,
+            jpegoptim: {
+              max_quality: 60,
+              allow_lossy: true,
+              strip: :all,
+            },
           },
         },
       },
