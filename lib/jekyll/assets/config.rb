@@ -6,11 +6,22 @@ require "jekyll"
 require "active_support/hash_with_indifferent_access"
 require "active_support/core_ext/hash/indifferent_access"
 require "active_support/core_ext/hash/deep_merge"
-require_relative "hook"
+require "jekyll/assets/hook"
 
 module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
+
+      # --
+      # Register Hooks.
+      # @note (before)_merge
+      # @return [nil]
+      # --
+      %i(before).map do |v|
+        Hook.add_point :env, :"#{v}_merge"
+      end
+
+      # --
       DEVELOPMENT = {
         digest: true,
         precompile: [],
@@ -82,6 +93,7 @@ module Jekyll
         ),
       }.freeze
 
+      # --
       PRODUCTION = DEVELOPMENT.deep_merge({
         source_maps: false,
         compression: true,
