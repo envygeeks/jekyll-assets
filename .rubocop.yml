@@ -1,3 +1,4 @@
+Metrics/LineLength: { Enabled: false }
 Style/RescueStandardError: { Enabled: false }
 Layout/SpaceInsideBlockBraces: { Enabled: false }
 Naming/FileName: { Enabled: false }
