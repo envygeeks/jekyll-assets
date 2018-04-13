@@ -2,7 +2,7 @@ language: ruby
 after_success: script/report
 before_install: ["gem install bundler"]
 before_script: script/report before
-script: script/test
+script: DEBUG=true script/test
 sudo: false
 cache:
   bundler: true
