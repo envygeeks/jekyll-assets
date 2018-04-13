@@ -28,22 +28,12 @@ module Jekyll
       # @return [Sprockets::Asset]
       # --
       def self.proxy(asset, args:, ctx:)
-        proxies = Proxy.inherited.select do |o|
-          o.for?({
-            type: asset.content_type,
-            args: args,
-          })
-        end
-
-        return asset if proxies.empty?
         env = ctx.registers[:site].sprockets
+        return asset if (proxies = proxies_for(asset: asset, args: args)).empty?
         key = digest(args)
 
         out = env.cache.fetch(key) do
-          file = copy(asset, {
-            args: args, ctx: ctx
-          })
-
+          file = copy(asset, args: args, ctx: ctx)
           proxies.each do |o|
             obj = o.new(file, {
               args: args,
@@ -60,6 +50,16 @@ module Jekyll
         end
 
         env.find_asset!(out)
+      end
+
+      # --
+      def self.proxies_for(asset:, args:)
+        Proxy.inherited.select do |o|
+          o.for?({
+            type: asset.content_type,
+            args: args,
+          })
+        end
       end
 
       # --
