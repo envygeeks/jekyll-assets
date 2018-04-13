@@ -65,9 +65,10 @@ module Jekyll
       # --
       def self.add_point(*point)
         raise ArgumentError, "only give 2 points" if point.count > 2
+        Logger.debug "registering hook point - #{point.inspect}"
 
         @points[point[0]] ||= {}
-        @points[point[0]][point[1]] ||= {}
+        @points[point[0]][point[1]] ||= []
         @points
       end
 
@@ -79,8 +80,8 @@ module Jekyll
       # --
       def self.get_point(*point)
         check_point(*point)
-        @points[point[0]][point[1]]
-          .sort_by(&:priority)
+        out = @points[point[0]][point[1]]
+        out.sort_by(&:priority)
       end
 
       # --
@@ -93,12 +94,8 @@ module Jekyll
       # --
       def self.trigger(*point, &block)
         hooks = get_point(*point)
-        Logger.debug "messaging hooks on #{point.last} " \
-          "through #{point.first}"
-
-        hooks.map do |v|
-          block.call(v.block)
-        end
+        Logger.debug "messaging hook point #{point.inspect}"
+        hooks.map { |v| block.call(v.block) }
       end
 
       # --
@@ -110,6 +107,7 @@ module Jekyll
       # --
       def self.register(*point, priority: 48, &block)
         check_point(*point)
+        Logger.debug "registering hook on point #{point.inspect}"
         point_ = Point.new(priority, &block)
         out = @points[point[0]]
         out = out[point[1]]
