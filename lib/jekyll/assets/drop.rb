@@ -43,12 +43,12 @@ module Jekyll
           img = FastImage.size(asset.filename.to_s)
 
           {
-            width:  img.first,
-            height: img.last,
+            "width"  => img[0],
+            "height" => img[1],
           }
+        rescue => e
+          Logger.error e
         end
-      rescue => e
-        Logger.error e
       end
 
       private
