@@ -39,18 +39,11 @@ module Jekyll
       # Because we need to keep some support for 3.x we register it
       #   two different ways depending on the type of Sprockets.
       # --
-      if !Utils.old_sprockets?
-        Liquid::TYPES.each do |k, v|
-          to = Utils.strip_secondary_content_type(k)
-          charset = Sprockets.mime_types[to][:charset]
-          Sprockets.register_mime_type(k, extensions: v, charset: charset)
-          Sprockets.register_transformer(k, to, Liquid)
-        end
-      else
-        # Still the easiest way tbqf.  Never change.
-        Sprockets.register_engine ".liquid", Liquid, {
-          silence_deprecation: true,
-        }
+      Liquid::TYPES.each do |k, v|
+        to = Utils.strip_secondary_content_type(k)
+        charset = Sprockets.mime_types[to][:charset]
+        Sprockets.register_mime_type(k, extensions: v, charset: charset)
+        Sprockets.register_transformer(k, to, Liquid)
       end
     end
   end

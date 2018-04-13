@@ -3,7 +3,7 @@
 # Encoding: utf-8
 
 require "rspec/helper"
-describe "Jekyll::Assets::Plugins::SrcMap", sprockets: 4 do
+describe "Jekyll::Assets::Plugins::SrcMap" do
   subject do
     Jekyll::Assets::Plugins::SrcMap
   end
