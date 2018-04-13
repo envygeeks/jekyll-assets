@@ -2,31 +2,12 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
+require "jekyll/assets/hooks/point"
+require "jekyll/assets/errors/unknown_hook"
+
 module Jekyll
   module Assets
     class Hook
-      class UnknownHookError < RuntimeError
-        def initialize(point)
-          super "Unknown hook point `#{point}'"
-        end
-      end
-
-      # --
-      class Point
-        attr_accessor :block, :priority
-
-        # --
-        # A hook point only holds data for later, it
-        # really serves no other purpose for now, other
-        # than to make live easier for handling hooks
-        # and their sorting, later in stream.
-        # --
-        def initialize(priority, &block)
-          @priority, @block = priority, block
-        end
-      end
-
-      # --
       class << self
         attr_reader :points
       end
