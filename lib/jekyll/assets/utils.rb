@@ -79,7 +79,7 @@ module Jekyll
               dst.parent.mkdir_p
 
               a << {
-                src: path,
+                src: p,
                 full_dst: dst,
                 dst: dst,
               }
