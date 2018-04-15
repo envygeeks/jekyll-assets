@@ -107,7 +107,9 @@ module Jekyll
           out = Sprockets::Cache::MemoryStore.new if enbl && type == "memory"
           out = Sprockets::Cache::FileStore.new(path) if enbl && type == "file"
           out = Sprockets::Cache::NullStore.new unless enbl
-          Sprockets::Cache.new(out, Logger)
+          out = Sprockets::Cache.new(out, Logger)
+          @manifest.new_manifest? && out.clear
+          out
         end
       end
 
