@@ -107,7 +107,9 @@ module Jekyll
           out = Sprockets::Cache::MemoryStore.new if enbl && type == "memory"
           out = Sprockets::Cache::FileStore.new(path) if enbl && type == "file"
           out = Sprockets::Cache::NullStore.new unless enbl
-          Sprockets::Cache.new(out, Logger)
+          out = Sprockets::Cache.new(out, Logger)
+          clear_cache(out)
+          out
         end
       end
 
@@ -149,6 +151,16 @@ module Jekyll
         assets_to_write.each do |v|
           in_dest_dir(find_asset!(v).logical_path).rm_f
         end
+      end
+
+      # --
+      private
+      def clear_cache(cache)
+        if @manifest.new_manifest? && cache && cache.respond_to?(:clear)
+          cache.clear
+        end
+      rescue Errno::ENOENT
+        nil
       end
 
       # --
