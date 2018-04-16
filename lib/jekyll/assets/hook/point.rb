@@ -5,7 +5,7 @@
 
 module Jekyll
   module Assets
-    module Hook
+    class Hook
       class Point
         attr_accessor :priority, :block
 

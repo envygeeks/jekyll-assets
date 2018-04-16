@@ -2,8 +2,9 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "jekyll/assets/hooks/point"
+require "jekyll/assets/hook/point"
 require "jekyll/assets/errors/unknown_hook"
+require "jekyll/assets/logger"
 
 module Jekyll
   module Assets
