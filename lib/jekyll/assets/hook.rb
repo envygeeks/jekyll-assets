@@ -3,13 +3,12 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "jekyll/assets/hook/point"
-require "jekyll/assets/errors/unknown_hook"
-require "jekyll/assets/logger"
-
 module Jekyll
   module Assets
     class Hook
+      autoload :Point, "jekyll/assets/hook/point"
+
+      # --
       class << self
         attr_reader :points
       end
@@ -47,7 +46,7 @@ module Jekyll
       # @return [Hash<Hash<Array>>]
       # --
       def self.add_point(*point)
-        raise ArgumentError, "only give 2 points" if point.count > 2
+        raise ArgumentError, "only 2 points" if point.count > 2
         Logger.debug "registering hook point - #{point.inspect}"
 
         @points[point[0]] ||= {}

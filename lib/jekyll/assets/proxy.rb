@@ -4,7 +4,6 @@
 
 require "pathutil"
 require_relative "extensible"
-require_relative "hook"
 require "digest"
 
 module Jekyll

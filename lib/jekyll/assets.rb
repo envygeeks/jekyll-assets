@@ -4,7 +4,21 @@
 # Encoding: utf-8
 
 require "pathutil"
+require "jekyll/assets/version"
+require "sprockets"
 require "jekyll"
+
+# --
+module Jekyll
+  module Assets
+    autoload :Drop, "jekyll/assets/drop"
+    autoload :Utils, "jekyll/assets/utils"
+    autoload :Config, "jekyll/assets/config"
+    autoload :Errors, "jekyll/assets/errors"
+    autoload :Logger, "jekyll/assets/logger"
+    autoload :Hook, "jekyll/assets/hook"
+  end
+end
 
 # --
 # rubocop:disable Layout/BlockEndNewline

@@ -3,7 +3,6 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require_relative "../utils"
 module Jekyll
   module Assets
     module Plugins
