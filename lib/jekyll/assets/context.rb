@@ -23,6 +23,6 @@ module Jekyll
 end
 
 # --
-Jekyll::Assets::Hook.register(:env, :after_init) do
+Jekyll::Assets::Hook.register :env, :after_init do
   context_class.send(:include, Jekyll::Assets::Context)
 end

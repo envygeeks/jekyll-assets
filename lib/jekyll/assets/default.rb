@@ -2,10 +2,6 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "active_support/hash_with_indifferent_access"
-require "active_support/core_ext/hash/indifferent_access"
-require "active_support/core_ext/hash/deep_merge"
-
 module Jekyll
   module Assets
     class Default < Extensible
