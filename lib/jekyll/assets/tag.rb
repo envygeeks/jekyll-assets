@@ -210,10 +210,16 @@ module Jekyll
         env.logger.error "error from file #{args[:argv1]}" if args
         raise e.class, "Sass Error"
       end
+
+      # --
+      # Register the tag
+      # @see `jekyll/assets.rb`
+      # @return [nil]
+      # --
+      public
+      def self.register
+        Liquid::Template.register_tag "asset", self
+      end
     end
   end
 end
-
-# --
-
-Liquid::Template.register_tag "asset", Jekyll::Assets::Tag

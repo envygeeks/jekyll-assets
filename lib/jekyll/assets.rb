@@ -5,47 +5,85 @@
 
 require "pathutil"
 require "jekyll/assets/version"
+require "forwardable/extended"
+require "jekyll/sanity"
 require "sprockets"
 require "jekyll"
 
-# --
 module Jekyll
   module Assets
+    autoload :Url, "jekyll/assets/url"
     autoload :Drop, "jekyll/assets/drop"
     autoload :Utils, "jekyll/assets/utils"
     autoload :Config, "jekyll/assets/config"
+    autoload :Filters, "jekyll/assets/filters"
+    autoload :Manifest, "jekyll/assets/manifest"
+    autoload :Default, "jekyll/assets/default"
     autoload :Errors, "jekyll/assets/errors"
     autoload :Logger, "jekyll/assets/logger"
     autoload :Hook, "jekyll/assets/hook"
+    autoload :Env, "jekyll/assets/env"
+    autoload :Tag, "jekyll/assets/tag"
+
+    # --
+    # Setup Jekyll Assets
+    # @see require_patches!
+    # @see before_hook!
+    # @see after_hook!
+    # @return [nil]
+    # --
+    def self.setup!
+      require_patches!
+      %i(read write).each do |v|
+        send(:"#{v}_hook!")
+      end
+    end
+
+    # --
+    # Require all our patches
+    # @return [nil]
+    # --
+    def self.require_patches!
+      dir = Pathutil.new(__dir__).join("assets", "patches")
+      dir.children do |v|
+        unless v.directory?
+          require v
+        end
+      end
+    end
+
+    # --
+    # Initialize the environment
+    # @note this happens after Jekyll read
+    # @return [nil]
+    # --
+    def self.read_hook!
+      Jekyll::Hooks.register :site, :post_read, priority: 99 do |o|
+        unless o.sprockets
+          Env.new(o)
+        end
+      end
+    end
+
+    # --
+    # Write all the assets
+    # @note this happens after Jekyll write
+    # @return [nil]
+    # --
+    def self.write_hook!
+      Jekyll::Hooks.register :site, :post_write, priority: 99 do |o|
+        o&.sprockets&.write_all
+      end
+    end
+
+    # --
+    private_class_method :write_hook!
+    private_class_method :require_patches!
+    private_class_method :read_hook!
+
+    # --
+    setup!
+    Filters.register
+    Tag.register
   end
-end
-
-# --
-# rubocop:disable Layout/BlockEndNewline
-# rubocop:disable Layout/MultilineBlockLayout
-# rubocop:disable Style/BlockDelimiters
-# --
-def require_all(*globs)
-  path = Pathutil.new("assets").expand_path(__dir__)
-  globs.each { |v| path.glob(v).reject(&:directory?).each do |vv|
-    require vv
-  end }
-end
-
-# --
-require_relative "assets/env"
-Jekyll::Hooks.register :site, :post_read, priority: 99 do |o|
-  unless o.sprockets
-    Jekyll::Assets::Env.new(o)
-  end
-end
-
-# --
-# Post render hook.
-# We need to run really early because we want to have our
-#   stuff block and be done just incase something else relies
-#   on our stuff to do their stuff.  Such as reloaders.
-# --
-Jekyll::Hooks.register :site, :post_write, priority: 99 do |o|
-  o&.sprockets&.write_all
 end

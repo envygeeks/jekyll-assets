@@ -14,9 +14,15 @@ module Jekyll
         tag = Tag.new("asset", args, ctx)
         tag.render(@context)
       end
+
+      # --
+      # Register the filter
+      # @see `jekyll/assets.rb`
+      # @return [nil]
+      # --
+      def self.register
+        Liquid::Template.register_filter(self)
+      end
     end
   end
 end
-
-filter = Jekyll::Assets::Filters
-Liquid::Template.register_filter(filter)

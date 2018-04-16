@@ -2,19 +2,14 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "pathutil"
-require "forwardable/extended"
-require "jekyll/sanity"
-require "sprockets"
-require "jekyll"
-
-require_all "patches/*"
-require_relative "filters"
-require_relative "manifest"
 require_relative "reader"
-require_relative "tag"
-require_relative "url"
-require_all "compressors/*"
+
+dir = Pathutil.new(__dir__)
+dir.join("compressors").children do |v|
+  unless v.directory?
+    require v
+  end
+end
 
 module Jekyll
   module Assets
