@@ -1,17 +1,13 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
 
 module Jekyll
   module Assets
     module Patches
-      # --
-      # Patches Jekyll's obsolete files so that we can
-      # remove assets that we have used through the manifest.
-      # We expect the user to keep that manifest available,
-      # regardless of what's going on in their stuff.
-      # --
       module ObsoleteFiles
+
         # --
         # @param [Object] args whatever Jekyll takes.
         # Gives a list of files that should be removed, unless used.

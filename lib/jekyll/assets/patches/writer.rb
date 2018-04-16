@@ -7,12 +7,21 @@ module Jekyll
   module Assets
     module Patches
       module Writer
+
+        # --
+        # Override skip? and add some logging.
+        # @return [true, false]
+        # --
         def skip?(logger)
           return true if File.exist?(target)
           logger.debug "Writing asset to #{target}"
           false
         end
 
+        # --
+        # Adds a hook to #super
+        # @note before_hook, after_hook
+        # @return [super]
         # --
         def call
           before_hook(asset, env: environment)
@@ -24,6 +33,10 @@ module Jekyll
         end
 
         # --
+        # Runs the before hook
+        # @note hook: before_write
+        # @return [nil]
+        # --
         private
         def before_hook(asset, env:)
           Jekyll::Assets::Hook.trigger :asset, :before_write do |v|
@@ -31,6 +44,10 @@ module Jekyll
           end
         end
 
+        # --
+        # Runs the after hook
+        # @note hook: after_write
+        # @return [nil]
         # --
         private
         def after_hook(out, asset:, env:)
