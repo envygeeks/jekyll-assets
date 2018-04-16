@@ -224,9 +224,7 @@ module Jekyll
         end
       end
 
-      require_all "plugins/*"
-      require_all "plugins/html/defaults/*"
-      require_all "plugins/html/*"
+      require_relative "plugins"
       require_relative "context"
     end
   end
