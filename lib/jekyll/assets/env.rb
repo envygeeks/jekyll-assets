@@ -40,9 +40,7 @@ module Jekyll
         @cache = nil
 
         setup_sources!
-        setup_resolver!
         ignore_caches!
-        setup_drops!
         precompile!
         copy_raw!
 
@@ -183,21 +181,6 @@ module Jekyll
 
       # --
       private
-      def setup_resolver!
-        create_resolver!
-        depend_on "jekyll-env"
-      end
-
-      # --
-      private
-      def create_resolver!
-        register_dependency_resolver "jekyll-env" do
-          ENV["JEKYLL_ENV"]
-        end
-      end
-
-      # --
-      private
       def setup_sources!
         source_dir, cwd = Pathutil.new(jekyll.in_source_dir), Pathutil.cwd
         asset_config["sources"].each do |v|
@@ -209,14 +192,6 @@ module Jekyll
         end
 
         paths
-      end
-
-      # --
-      private
-      def setup_drops!
-        Jekyll::Hooks.register :site, :pre_render do |_, h|
-          h["assets"] = to_liquid_payload
-        end
       end
 
       require_relative "plugins"

@@ -90,6 +90,7 @@ module Jekyll
     # --
     setup!
     Filters.register
+    Drop.register
     Tag.register
   end
 end
