@@ -1,5 +1,7 @@
 Metrics/LineLength: { Enabled: false }
 Style/RescueStandardError: { Enabled: false }
+Layout/EmptyLinesAroundModuleBody: { Enabled: false }
+Layout/EmptyLinesAroundClassBody: { Enabled: false }
 Layout/SpaceInsideBlockBraces: { Enabled: false }
 Naming/FileName: { Enabled: false }
 Style/Documentation:

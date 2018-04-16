@@ -25,7 +25,6 @@ module Jekyll
         end
 
         def process
-          # rubocop:disable Metrics/LineLength
           optimc = @env.asset_config[:plugins][:img][:optim]
           preset = @args[:optim] == true ? :jekyll : @args[:optim].to_sym
           raise UnknownPreset, preset if preset != :jekyll && !optimc.key?(preset)

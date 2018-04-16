@@ -51,7 +51,6 @@ module Jekyll
       end
 
       # --
-      # rubocop:disable Metrics/LineLength
       # Allows us to discover the manifest path, but know
       #   if it's new.
       # --
