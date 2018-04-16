@@ -3,11 +3,7 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "pathutil"
 require_relative "../utils"
-require "jekyll/assets"
-require "jekyll"
-
 module Jekyll
   module Assets
     module Plugins

@@ -3,8 +3,6 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "jekyll/assets"
-
 module Jekyll
   module Assets
     class HTML

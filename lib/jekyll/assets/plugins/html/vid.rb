@@ -3,7 +3,6 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "jekyll/assets"
 require "nokogiri"
 
 module Jekyll

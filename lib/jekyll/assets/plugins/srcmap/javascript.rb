@@ -3,8 +3,6 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "sprockets"
-
 module Jekyll
   module Assets
     module Plugins

@@ -3,8 +3,6 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "jekyll/assets"
-
 Jekyll::Assets::Utils.javascript? do
   Jekyll::Assets::Utils.activate "autoprefixer-rails" do
     Jekyll::Assets::Hook.register :config, :before_merge do |c|

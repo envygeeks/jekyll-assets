@@ -3,9 +3,6 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
-require "sprockets"
-require "pathutil"
-
 module Jekyll
   module Assets
     module Plugins
