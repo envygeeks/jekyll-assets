@@ -3,7 +3,6 @@
 # Encoding: utf-8
 
 require "liquid/drop"
-require "forwardable/extended"
 require "fastimage"
 
 module Jekyll
