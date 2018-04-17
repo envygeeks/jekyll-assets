@@ -108,10 +108,8 @@ module Jekyll
           end
 
           next if skip
-          h.update({
-            path.to_s => Drop.new(path, {
-              jekyll: jekyll,
-            }),
+          h[path.to_s] = Drop.new(path, {
+            jekyll: jekyll,
           })
         end
       end
