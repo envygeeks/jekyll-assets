@@ -446,11 +446,15 @@ assets:
 
 ### Bootstrap
 
+***Gemfile***
 ```ruby
-gem "boostrap-sass" # 3.x
+gem "bootstrap-sass" # 3.x or:
 gem "bootstrap"     # 4.x
 ```
 
+***SCCS Inclusion***
+
+ * Using @import:
 ```scss
 @import 'bootstrap'
 html {
@@ -458,6 +462,7 @@ html {
 }
 ```
 
+ * Using =require:
 ```scss
 //=require _bootstrap.css
 //=require bootstrap/_reboot.css
