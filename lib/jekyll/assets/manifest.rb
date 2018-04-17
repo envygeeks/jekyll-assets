@@ -36,9 +36,7 @@ module Jekyll
       # @return [Array<String>]
       # --
       def self.keep_keys
-        @keep_keys ||= %w(
-          assets
-        )
+        @keep_keys ||= %w(assets)
       end
 
       # --
