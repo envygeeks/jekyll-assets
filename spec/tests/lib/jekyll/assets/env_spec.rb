@@ -26,52 +26,6 @@ describe Jekyll::Assets::Env do
 
   #
 
-  describe "#cache" do
-    before do
-      subject.instance_variable_set(:@cache, nil)
-    end
-
-    #
-
-    context "asset_config[:caching][:type]" do
-      context "w/ nil" do
-        before do
-          stub_asset_config({
-            caching: {
-              type: nil,
-            },
-          })
-        end
-
-        #
-
-        it "defaults" do
-          expect(subject.cache).to be_a(Sprockets::Cache)
-        end
-      end
-
-      #
-
-      context "w/ empty" do
-        before do
-          stub_asset_config({
-            caching: {
-              type: "",
-            },
-          })
-        end
-
-        #
-
-        it "defaults" do
-          expect(subject.cache).to be_a(Sprockets::Cache)
-        end
-      end
-    end
-  end
-
-  #
-
   describe "#to_liquid_payload" do
     it "returns Hash<String,Drop>" do
       subject.to_liquid_payload.each_value do |v|

@@ -15,6 +15,7 @@ require "jekyll"
 
 module Jekyll
   module Assets
+    autoload :Cache, "jekyll/assets/cache"
     autoload :Url, "jekyll/assets/url"
     autoload :Drop, "jekyll/assets/drop"
     autoload :Utils, "jekyll/assets/utils"
