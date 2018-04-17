@@ -30,15 +30,6 @@ module Jekyll
       end
 
       # --
-      # Works around some weird behavior in Sprockets 3.x that seemd to make
-      # it so that when you use an absolute path, it was automatically a filter
-      # and so you could never find an asset that was dynamically added.
-      # --
-      def self.simple_logical_path?(file)
-        super || File.file?(file)
-      end
-
-      # --
       # Allows you to add a manifest key for us to keep.
       # @note the format should be `key: { hashKey: hashVal }` or `key: []`
       # @note complex keys aren't supported.
