@@ -26,7 +26,7 @@ module Jekyll
         def process
           optimc = @env.asset_config[:plugins][:img][:optim]
           preset = @args[:optim] == true ? :jekyll : @args[:optim].to_sym
-          raise UnknownPreset, preset if preset != :jekyll && !optimc.key?(preset)
+          raise UnknownPresetError, preset if preset != :jekyll && !optimc.key?(preset)
           optim = ::ImageOptim.new(optimc[preset] || {})
           optim.optimize_image!(@file)
           @file
