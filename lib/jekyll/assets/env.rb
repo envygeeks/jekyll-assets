@@ -56,7 +56,6 @@ module Jekyll
         ignore_caches!
         setup_drops!
         precompile!
-        copy_raw!
 
         Hook.trigger :env, :after_init do |h|
           instance_eval(&h)
@@ -141,6 +140,7 @@ module Jekyll
       def write_all
         remove_old_assets unless asset_config[:digest]
         manifest.compile(*assets_to_write); @asset_to_write = []
+        copy_raw!
         Hook.trigger(:env, :after_write) { |h| instance_eval(&h) }
         Logger.debug "took #{format(@total_time.round(2).to_s,
           '%.2f')}s"
