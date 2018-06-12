@@ -3,13 +3,7 @@
 # Encoding: utf-8
 
 require "fastimage"
-require_relative "html"
 require "liquid/tag/parser"
-require "active_support/hash_with_indifferent_access"
-require "active_support/core_ext/hash/indifferent_access"
-require "active_support/core_ext/hash/deep_merge"
-require_relative "default"
-require_relative "proxy"
 require "nokogiri"
 
 module Jekyll
@@ -210,10 +204,16 @@ module Jekyll
         env.logger.error "error from file #{args[:argv1]}" if args
         raise e.class, "Sass Error"
       end
+
+      # --
+      # Register the tag
+      # @see `jekyll/assets.rb`
+      # @return [nil]
+      # --
+      public
+      def self.register
+        Liquid::Template.register_tag "asset", self
+      end
     end
   end
 end
-
-# --
-
-Liquid::Template.register_tag "asset", Jekyll::Assets::Tag

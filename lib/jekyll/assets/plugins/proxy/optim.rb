@@ -1,8 +1,7 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
-
-require "jekyll/assets"
 
 module Jekyll
   module Assets
@@ -25,10 +24,9 @@ module Jekyll
         end
 
         def process
-          # rubocop:disable Metrics/LineLength
           optimc = @env.asset_config[:plugins][:img][:optim]
           preset = @args[:optim] == true ? :jekyll : @args[:optim].to_sym
-          raise UnknownPreset, preset if preset != :jekyll && !optimc.key?(preset)
+          raise UnknownPresetError, preset if preset != :jekyll && !optimc.key?(preset)
           optim = ::ImageOptim.new(optimc[preset] || {})
           optim.optimize_image!(@file)
           @file

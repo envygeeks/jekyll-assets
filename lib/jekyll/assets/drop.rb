@@ -3,7 +3,6 @@
 # Encoding: utf-8
 
 require "liquid/drop"
-require "forwardable/extended"
 require "fastimage"
 
 module Jekyll
@@ -55,6 +54,19 @@ module Jekyll
       def asset
         @asset ||= begin
           @sprockets.find_asset!(@path)
+        end
+      end
+
+      # --
+      # Register the drop creator.
+      # @return [nil]
+      # --
+      public
+      def self.register
+        Jekyll::Hooks.register :site, :pre_render do |s, h|
+          if s.sprockets
+            h["assets"] = s.sprockets.to_liquid_payload
+          end
         end
       end
     end

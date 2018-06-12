@@ -1,16 +1,22 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
-
-require "jekyll"
-require "active_support/hash_with_indifferent_access"
-require "active_support/core_ext/hash/indifferent_access"
-require "active_support/core_ext/hash/deep_merge"
-require_relative "hook"
 
 module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
+
+      # --
+      # Register Hooks.
+      # @note (before)_merge
+      # @return [nil]
+      # --
+      %i(before).map do |v|
+        Hook.add_point :env, :"#{v}_merge"
+      end
+
+      # --
       DEVELOPMENT = {
         digest: true,
         precompile: [],
@@ -24,7 +30,7 @@ module Jekyll
         compressors: {
           uglifier: {
             comments: false,
-            harmony: Utils.new_uglifier?,
+            harmony: true,
           },
         },
 
@@ -82,6 +88,7 @@ module Jekyll
         ),
       }.freeze
 
+      # --
       PRODUCTION = DEVELOPMENT.deep_merge({
         source_maps: false,
         compression: true,

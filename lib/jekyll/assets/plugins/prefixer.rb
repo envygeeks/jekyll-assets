@@ -1,8 +1,7 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
-
-require "jekyll/assets"
 
 Jekyll::Assets::Utils.javascript? do
   Jekyll::Assets::Utils.activate "autoprefixer-rails" do

@@ -1,30 +1,12 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
 
 module Jekyll
   module Assets
     class Hook
-      class UnknownHookError < RuntimeError
-        def initialize(point)
-          super "Unknown hook point `#{point}'"
-        end
-      end
-
-      # --
-      class Point
-        attr_accessor :block, :priority
-
-        # --
-        # A hook point only holds data for later, it
-        # really serves no other purpose for now, other
-        # than to make live easier for handling hooks
-        # and their sorting, later in stream.
-        # --
-        def initialize(priority, &block)
-          @priority, @block = priority, block
-        end
-      end
+      autoload :Point, "jekyll/assets/hook/point"
 
       # --
       class << self
@@ -64,10 +46,11 @@ module Jekyll
       # @return [Hash<Hash<Array>>]
       # --
       def self.add_point(*point)
-        raise ArgumentError, "only give 2 points" if point.count > 2
+        raise ArgumentError, "only 2 points" if point.count > 2
+        Logger.debug "registering hook point - #{point.inspect}"
 
         @points[point[0]] ||= {}
-        @points[point[0]][point[1]] ||= {}
+        @points[point[0]][point[1]] ||= []
         @points
       end
 
@@ -79,8 +62,8 @@ module Jekyll
       # --
       def self.get_point(*point)
         check_point(*point)
-        @points[point[0]][point[1]]
-          .sort_by(&:priority)
+        out = @points[point[0]][point[1]]
+        out.sort_by(&:priority)
       end
 
       # --
@@ -93,12 +76,8 @@ module Jekyll
       # --
       def self.trigger(*point, &block)
         hooks = get_point(*point)
-        Logger.debug "messaging hooks on #{point.last} " \
-          "through #{point.first}"
-
-        hooks.map do |v|
-          block.call(v.block)
-        end
+        Logger.debug "messaging hook point #{point.inspect}"
+        hooks.map { |v| block.call(v.block) }
       end
 
       # --
@@ -110,6 +89,7 @@ module Jekyll
       # --
       def self.register(*point, priority: 48, &block)
         check_point(*point)
+        Logger.debug "registering hook on point #{point.inspect}"
         point_ = Point.new(priority, &block)
         out = @points[point[0]]
         out = out[point[1]]

@@ -2,7 +2,6 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require_relative "extensible"
 require "nokogiri"
 
 module Jekyll

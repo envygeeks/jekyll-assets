@@ -1,20 +1,12 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
-
-require_relative "../utils"
 
 module Jekyll
   module Assets
     module Patches
-      # --
-      # Patches `Sprockets::CachedEnvironment` with some of
-      # the stuff that we would like available.  Including our
-      # `Util` methods, the `#manifest`, the `#asset_config`,
-      # and even `#jekyll`, so that we can remain fast while
-      # having some of the stuff that we need access to.
-      # --
-      module CachedEnv
+      module CachedEnvironment
         include Utils
 
         # --
@@ -36,16 +28,15 @@ module Jekyll
         end
 
         # --
-        def find_asset(*)
-          super.tap do |v|
-            v&.environment = self
-          end
-        end
-
+        # @note this is used internally.
+        # Wraps around #super and adds environment.
+        # @return [Sprockets::Asset]
         # --
-        def find_asset!(*a)
-          load(resolve!(*a).first).tap do |v|
-            v.environment = self
+        %i(find_asset find_asset!).each do |v|
+          define_method v do |*a|
+            super(*a).tap do |m|
+              m&.environment = self
+            end
           end
         end
       end
@@ -56,6 +47,6 @@ end
 # --
 module Sprockets
   class CachedEnvironment
-    prepend Jekyll::Assets::Patches::CachedEnv
+    prepend Jekyll::Assets::Patches::CachedEnvironment
   end
 end

@@ -17,29 +17,12 @@ env:
       GTwDtjR+BT65M5qESGniBXTd8=\
     "
   matrix:
-    - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 4.0.beta"
-    - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 4.0.beta"
-    - JEKYLL_VERSION="~> 3.7.0" SPROCKETS_VERSION="~> 4.0.beta"
-    - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3"
-    - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3"
-    - JEKYLL_VERSION="~> 3.7.0" SPROCKETS_VERSION="~> 3.3"
+    - JEKYLL_VERSION="~> 3.7.0"
     - LINTING=true
 rvm:
   - 2.5
-  - 2.4
-  - 2.3
-  - jruby-head
-  - ruby-head
 matrix:
   fast_finish: true
-  allow_failures:
-    - rvm: jruby-head
-    - rvm: ruby-head
-  exclude:
-    - { rvm: 2.3, env: LINTING=true }
-    - { rvm: 2.4, env: LINTING=true }
-    - { rvm: jruby-head, env: LINTING=true }
-    - { rvm: ruby-head,  env: LINTING=true }
 notifications:
   email:
     recipients:

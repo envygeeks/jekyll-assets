@@ -23,20 +23,20 @@ Gem::Specification.new do |s|
     it provides everything you need to manage assets in Jekyll.
   TXT
 
-  s.required_ruby_version = ">= 2.3.0"
+  s.required_ruby_version = ">= 2.5.0"
   s.add_runtime_dependency("execjs", "~> 2.7")
   s.add_runtime_dependency("nokogiri", "~> 1.8")
   s.add_runtime_dependency("activesupport", "~> 5.0")
+  s.add_runtime_dependency("sprockets", "~> 4.0.beta7")
   s.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
-  s.add_runtime_dependency("sprockets", ">= 3.3", "< 4.1.beta")
   s.add_runtime_dependency("liquid-tag-parser", "~> 1.0")
   s.add_runtime_dependency("jekyll", ">= 3.5", "< 4.0")
   s.add_runtime_dependency("jekyll-sanity", "~> 1.2")
   s.add_runtime_dependency("pathutil", "~> 0.16")
   s.add_runtime_dependency("extras", "~> 0.2")
+  s.add_runtime_dependency("sassc", "~> 1.11")
 
   s.add_development_dependency("rspec", "~> 3.4")
-  s.add_development_dependency("sassc", "~> 1.11")
   s.add_development_dependency("uglifier", "~> 4.1")
   s.add_development_dependency("mini_racer", "~> 0.1")
   s.add_development_dependency("image_optim", "~> 0.25")

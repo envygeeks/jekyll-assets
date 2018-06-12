@@ -3,7 +3,7 @@
 # Encoding: utf-8
 
 require "rspec/helper"
-describe "Jekyll::Assets::Plugins::SrcMap::JavaScript", sprockets: 4 do
+describe "Jekyll::Assets::Plugins::SrcMap::JavaScript" do
   subject do
     env.find_asset!("bundle.js").to_s
   end

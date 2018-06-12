@@ -5,23 +5,6 @@
 module Jekyll
   module Assets
     module Utils
-      def self.old_sprockets?
-        @old_sprockets ||= begin
-          Gem::Version.new(Sprockets::VERSION) < Gem::Version.new("4.0.beta")
-        end
-      end
-
-      # --
-      def self.new_uglifier?
-        require "uglifier"
-        modern_supported_version = "4.0.0"
-        Gem::Version.new(Uglifier::VERSION) >= Gem::Version
-          .new(modern_supported_version)
-      rescue LoadError
-        return true
-      end
-
-      # --
       def self.activate(gem)
         spec = Gem::Specification
         return unless spec.find_all_by_name(gem)&.any? || \
@@ -114,7 +97,7 @@ module Jekyll
       def url_asset(url, type:)
         name = File.basename(url)
 
-        Url.new(*[Utils.old_sprockets? ? self : nil, {
+        Url.new(*[nil, {
           name: name,
           filename: url,
           content_type: type,

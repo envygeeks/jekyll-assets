@@ -1,8 +1,7 @@
 # Frozen-string-literal: true
 # Copyright: 2012 - 2018 - MIT License
+# Author: Jordon Bedwell
 # Encoding: utf-8
-
-require "jekyll/assets"
 
 module Jekyll
   module Assets
@@ -122,7 +121,6 @@ module Jekyll
 
         private
         def magick_preset_resize(img, cmd)
-          # rubocop:disable Metrics/LineLength
           width, height = img.width * 2, img.height * 2 if @args[:magick].key?(:double)
           width, height = img.width / 2, img.height / 2 if @args[:magick].key?(:half)
           cmd.resize "#{width}x#{height}" if width && height

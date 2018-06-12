@@ -2,9 +2,6 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "pathutil"
-require_relative "extensible"
-require_relative "hook"
 require "digest"
 
 module Jekyll

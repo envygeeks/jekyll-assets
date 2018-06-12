@@ -2,10 +2,6 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require_relative "context"
-require_relative "tag"
-
-# --
 module Jekyll
   module Assets
     module Context
@@ -27,6 +23,6 @@ module Jekyll
 end
 
 # --
-Jekyll::Assets::Hook.register(:env, :after_init) do
+Jekyll::Assets::Hook.register :env, :after_init do
   context_class.send(:include, Jekyll::Assets::Context)
 end

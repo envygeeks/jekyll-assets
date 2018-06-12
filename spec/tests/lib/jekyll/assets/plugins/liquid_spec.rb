@@ -4,7 +4,7 @@
 
 require "rspec/helper"
 describe "Plugins/Liquid" do
-  context "w/ .scss.liquid", sprockets: 4 do
+  context "w/ .scss.liquid" do
     let(:asset) do
       env.find_asset!("plugins/liquid/basic1.css")
     end

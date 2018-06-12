@@ -2,26 +2,14 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "pathutil"
-require "forwardable/extended"
-require "jekyll/sanity"
-require "sprockets"
-require "jekyll"
-
-require_all "patches/*"
-require_relative "utils"
-require_relative "drop"
-require_relative "version"
-require_relative "filters"
-require_relative "manifest"
-require_relative "writer"
 require_relative "reader"
-require_relative "config"
-require_relative "logger"
-require_relative "hook"
-require_relative "tag"
-require_relative "url"
-require_all "compressors/*"
+
+dir = Pathutil.new(__dir__)
+dir.join("compressors").children do |v|
+  unless v.directory?
+    require v
+  end
+end
 
 module Jekyll
   module Assets
@@ -52,9 +40,7 @@ module Jekyll
         @cache = nil
 
         setup_sources!
-        setup_resolver!
         ignore_caches!
-        setup_drops!
         precompile!
 
         Hook.trigger :env, :after_init do |h|
@@ -98,18 +84,11 @@ module Jekyll
       # @return [Sprockets::Cache]
       # --
       def cache
-        @cache ||= begin
-          type = asset_config[:caching][:type]
-          enbl = asset_config[:caching][:enabled]
-          path = in_cache_dir
-
-          out = Sprockets::Cache::MemoryStore.new if enbl && type == "memory"
-          out = Sprockets::Cache::FileStore.new(path) if enbl && type == "file"
-          out = Sprockets::Cache::NullStore.new unless enbl
-          out = Sprockets::Cache.new(out, Logger)
-          clear_cache(out)
-          out
-        end
+        @cache ||= Cache.new({
+          manifest: manifest,
+          config: asset_config,
+          dir: in_cache_dir,
+        })
       end
 
       # --
@@ -128,10 +107,8 @@ module Jekyll
           end
 
           next if skip
-          h.update({
-            path.to_s => Drop.new(path, {
-              jekyll: jekyll,
-            }),
+          h[path.to_s] = Drop.new(path, {
+            jekyll: jekyll,
           })
         end
       end
@@ -151,16 +128,6 @@ module Jekyll
         assets_to_write.each do |v|
           in_dest_dir(find_asset!(v).logical_path).rm_f
         end
-      end
-
-      # --
-      private
-      def clear_cache(cache)
-        if @manifest.new_manifest? && cache && cache.respond_to?(:clear)
-          cache.clear
-        end
-      rescue Errno::ENOENT
-        nil
       end
 
       # --
@@ -195,21 +162,6 @@ module Jekyll
 
       # --
       private
-      def setup_resolver!
-        create_resolver!
-        depend_on "jekyll-env"
-      end
-
-      # --
-      private
-      def create_resolver!
-        register_dependency_resolver "jekyll-env" do
-          ENV["JEKYLL_ENV"]
-        end
-      end
-
-      # --
-      private
       def setup_sources!
         source_dir, cwd = Pathutil.new(jekyll.in_source_dir), Pathutil.cwd
         asset_config["sources"].each do |v|
@@ -223,29 +175,8 @@ module Jekyll
         paths
       end
 
-      # --
-      private
-      def setup_drops!
-        Jekyll::Hooks.register :site, :pre_render do |_, h|
-          h["assets"] = to_liquid_payload
-        end
-      end
-
-      require_all "plugins/*"
-      require_all "plugins/html/defaults/*"
-      require_all "plugins/html/*"
+      require_relative "plugins"
       require_relative "context"
-
-      # --
-      # @see https://github.com/rails/sprockets/pull/523
-      # Registers a few MimeTypes since I don't think
-      #   Sprockets will update before we release, so we
-      #   need them to be available.
-      # --
-      Sprockets.register_mime_type "audio/mp4", extensions: %w(.m4a)
-      Sprockets.register_mime_type "audio/ogg", extensions: %w(.ogg .oga)
-      Sprockets.register_mime_type "audio/flac", extensions: %w(.flac)
-      Sprockets.register_mime_type "audio/aac", extensions: %w(.aac)
     end
   end
 end

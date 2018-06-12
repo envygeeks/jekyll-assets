@@ -5,7 +5,7 @@
 ![Gem Version](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)
 ![Gem DL](https://img.shields.io/gem/dt/jekyll-assets.svg?style=for-the-badge)
 
-***Looking for information on what's changed? See https://envygeeks.io/2017/11/21/jekyll-assets-3-released***
+***This guide is for Jekyll Assets v3.1 which is currently in development, if you are looking for the docs for v3.0.9 please see: https://github.com/envygeeks/jekyll-assets/tree/v3.0.9***
 
 # Jekyll Assets
 
@@ -24,18 +24,11 @@ gem "jekyll-assets", "~> x.x.alpha", group: :jekyll_plugins
 ### System Requirements
 
 * `ruby`: ***2.3+***
-* `sprockets`: ***3.3+***
+* `sprockets`: ***4.0.beta+***
+* `uglifier`: ***4.0***
 * `jekyll`: ***3.5+***
 
 ---
-
-If you'd like SourceMaps, or *faster* Sprockets, opt to use Sprockets `4.0`, you can use it by placing it to your Gemfile.
-
-```ruby
-gem "sprockets", "~> 4.0.beta", {
-  require: false
-}
-```
 
 ## Configuration
 
