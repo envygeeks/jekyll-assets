@@ -37,7 +37,7 @@ The configuration file is the same as Jekyll's, which is `_config.yml`. Except w
 ```yaml
 source_maps: true # false on JEKYLL_ENV=production
 destination: "/assets"
-compression: true
+compression: false # true on JEKYLL_ENV=production
 gzip: false
 defaults:
    js: { integrity: false } # true on JEKYLL_ENV=production
