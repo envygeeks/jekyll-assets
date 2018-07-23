@@ -483,6 +483,7 @@ to get an idea what `<value>` can be.
 | `magick:rotate`             | ✔             |
 | `magick:gravity`            | ✔             |
 | `magick:crop`               | ✔             |
+| `magick:extent`             | ✔             |
 | `magick:flip`               | ✔             |
 | `magick:background`         | ✔             |
 | `magick:transparency`       | ✔             |

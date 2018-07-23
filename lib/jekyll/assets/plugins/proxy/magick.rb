@@ -108,6 +108,13 @@ module Jekyll
         end
 
         private
+        def magick_extent(cmd)
+          if @args[:magick].key?(:extent)
+            cmd.extent @args[:magick][:extent]
+          end
+        end
+
+        private
         def magick_gravity(cmd)
           if @args[:magick].key?(:gravity)
             cmd.gravity @args[:magick][:gravity]
