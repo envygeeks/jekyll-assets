@@ -509,7 +509,16 @@ assets:
         {}
 ```
 
-Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options, and to get a list of stuff you need to install on your system to use it, if you do not wish to use "image_optim_bin",
+Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options, and to get a list of stuff you need to install on your system to use it, if you do not wish to use "image_optim_bin".
+
+To disable ImageOptim (i.e. for development builds), use following configuration:
+
+```yml
+assets:
+  plugins:
+    img:
+      optim: false
+```
 
 #### Args
 
