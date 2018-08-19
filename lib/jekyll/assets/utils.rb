@@ -253,9 +253,9 @@ module Jekyll
         path << dest if Jekyll.dev? || !cdn || (cdn && cfg[:cdn][:destination])
         path << user_path unless user_path.nil? || user_path == ""
 
-        path = File.join(path.flatten.compact.reject(&:empty?))
+        path = File.join(path.flatten.compact)
         return path if cdn && Jekyll.production?
-        File.join('', path)
+        File.join("", path)
       end
 
       # --
