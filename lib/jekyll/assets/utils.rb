@@ -255,7 +255,7 @@ module Jekyll
 
         path = File.join(path.flatten.compact)
         return path if cdn && Jekyll.production?
-        "/" + path
+        File.join("", path)
       end
 
       # --

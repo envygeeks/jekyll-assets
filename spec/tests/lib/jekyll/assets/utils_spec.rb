@@ -432,6 +432,22 @@ describe Jekyll::Assets::Utils do
           out = subject.prefix_url
           expect(out).to start_with("/hello")
         end
+
+        #
+
+        context "when jekyll.config[:baseurl] is set to '/'" do
+          before do
+            stub_jekyll_config({
+              baseurl: "/",
+            })
+          end
+
+          it "creates valid path" do
+            out = subject.prefix_url
+            destination = subject.asset_config[:destination]
+            expect(out).to eq(destination)
+          end
+        end
       end
 
       #
