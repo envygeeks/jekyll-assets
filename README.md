@@ -496,7 +496,7 @@ to get an idea what `<value>` can be.
 
 ```ruby
 gem "image_optim"
-gem "image_optim_bin" # Optional
+gem "image_optim_pack" # Optional
 ```
 
 #### Configuration
@@ -509,7 +509,7 @@ assets:
         {}
 ```
 
-Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options, and to get a list of stuff you need to install on your system to use it, if you do not wish to use "image_optim_bin".
+Check the [ImageOptim](https://github.com/toy/image_optim#configuration) to get idea about configuration options, and to get a list of stuff you need to install on your system to use it, if you do not wish to use "image_optim_pack".
 
 To disable ImageOptim (i.e. for development builds), use following configuration:
 
