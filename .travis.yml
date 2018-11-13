@@ -17,12 +17,15 @@ env:
       GTwDtjR+BT65M5qESGniBXTd8=\
     "
   matrix:
+    - JEKYLL_BRANCH="master"
     - JEKYLL_VERSION="~> 3.7.0"
     - LINTING=true
 rvm:
   - 2.5
 matrix:
   fast_finish: true
+  allow_failures:
+    - env: JEKYLL_BRANCH="master"
 notifications:
   email:
     recipients:

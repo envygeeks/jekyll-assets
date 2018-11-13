@@ -11,4 +11,9 @@ if ENV["JEKYLL_VERSION"]
   gem "jekyll", ENV["JEKYLL_VERSION"], {
     require: false,
   }
+elsif ENV["JEKYLL_BRANCH"]
+  gem "jekyll", {
+    git: "https://github.com/jekyll/jekyll",
+    branch: ENV["JEKYLL_BRANCH"],
+  }
 end
