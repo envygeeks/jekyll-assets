@@ -23,6 +23,7 @@ env:
     - JEKYLL_VERSION="~> 3.5.0" SPROCKETS_VERSION="~> 3.3"
     - JEKYLL_VERSION="~> 3.6.0" SPROCKETS_VERSION="~> 3.3"
     - JEKYLL_VERSION="~> 3.7.0" SPROCKETS_VERSION="~> 3.3"
+    = JEKYLL_BRANCH="master"
     - LINTING=true
 rvm:
   - 2.5
@@ -34,6 +35,7 @@ matrix:
   fast_finish: true
   allow_failures:
     - rvm: jruby-head
+    - env: JEKYLL_BRANCH="master"
     - rvm: ruby-head
   exclude:
     - { rvm: 2.3, env: LINTING=true }
