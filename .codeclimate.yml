@@ -1,23 +1,7 @@
 version: "2"
 plugins:
-  # --
-  # 😞
-  # @see https://github.com/seattlerb/ruby_parser/issues/255
-  # This can break on some Regexps.
-  #   So it's disabled.
-  # --
-  duplication:
-    enabled: false
   rubocop:
-    # --
-    # 🤨
-    # We must set the default version we want.
-    #   Sometimes CodeClimate lags.
-    # --
-    channel: rubocop-0-52
-    enabled: true
-    config:
-      file: .rubocop.yml
+    enabled: false
 ratings:
   paths:
   - "spec/tests/**.rb"

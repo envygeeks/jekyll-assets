@@ -7,8 +7,11 @@ set -e
 
 f=script/script.d/install
 [ "$SKIP_SCRIPTD" != "true" ] && [ -x $f ] && exec $f "$@"
-if bundle check 1>/dev/null 2>&1; then bundle update
-  else bundle install --path vendor/bundle
+if bundle check 1>/dev/null 2>&1; then
+  bundle update
+else
+  bundle install --path \
+    vendor/bundle
 fi
 
 bundle clean
