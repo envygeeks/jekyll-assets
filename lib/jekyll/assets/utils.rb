@@ -182,7 +182,7 @@ module Jekyll
             })
           end
         when obj.is_a?(String)
-          k = SecureRandom.hex
+          k = Digest::SHA256.hexdigest(obj)[0, 6]
           ctx.registers[:site].liquid_renderer.file("(asset:var:#{k})")
             .parse(obj).render!(ctx)
         else
