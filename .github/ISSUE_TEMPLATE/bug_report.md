@@ -1,12 +1,19 @@
+---
+name: Bug Report
+about: Report an Issue!
+---
+
 <!--
-  If this is a security related bug, please email the maintainer of this
-  repository (found via `CODEOWNERS`) and let them know in private... all
-  security issues are handled promptly and quickly, however an early
-  release could severely impact people.
+  If this is a security related bug, please email the maintainer of
+  this repository (found via `security`) and let them know in private...
+  all security issues are handled promptly, and quickly, however an
+  early release could severely impact people.
 -->
 
-- [ ] I tried updating to the latest version.
-  - [ ] I can't, there is an issue.
+- [ ] I tried updating to the latest version
+  - [ ] I can't, there is an issue
+  - [ ] This is about an < latest
+    - [ ] I understand older versions may be unsupported
 - [ ] I Am on Windows
   - [ ] Ubuntu Bash on Windows
   - [ ] Fedora Bash on Windows
@@ -14,9 +21,13 @@
 - [ ] I Am on Linux
   - [ ] Ubuntu
   - [ ] Fedora
-- [ ] I Am on macOS
+  - [ ] CentOS
+  - [ ] Redhat
+  - [ ] Debian
+- [ ] I am on macOS 10.13
+- [ ] I am on macOS 10.14
 - [ ] I'm on Docker
-  - [ ] I understand Docker may be unsupported.
+  - [ ] I understand Docker may be unsupported
 
 ## Description
 

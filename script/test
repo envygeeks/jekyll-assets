@@ -26,15 +26,11 @@ hasGem() {
 #   having to do excessive customization of the CI.
 # --
 f=script/script.d/test
-if [ "$LINTING" != "true" ]; then
-  [ "$SKIP_SCRIPTD" != "true" ] && [ -x $f ] && exec $f "$@"
-  hasGem "minitest" && [ $# -gt 0 ] && exec ruby -rminitest/autorun "$@"
-  hasGem "minitest" && exec ruby -rminitest/autorun test/**/*_{test,spec}.rb
-  hasGem "rspec" && exec bundle exec rspec "$@"
-  hasGem "rspec-rails" && exec bundle exec rspec "$@"
-  [ -x bin/rails ] && exec bin/rails test "$@"
-  [ $# -gt 0 ] && exec ruby -Itest "$@"
-  exec ruby -Itest test/**/*_test.rb
-else
-  script/lint "$@"
-fi
+[ "$SKIP_SCRIPTD" != "true" ] && [ -x $f ] && exec $f "$@"
+hasGem "minitest" && [ $# -gt 0 ] && exec ruby -rminitest/autorun "$@"
+hasGem "minitest" && exec ruby -rminitest/autorun test/**/*_{test,spec}.rb
+hasGem "rspec" && exec bundle exec rspec "$@"
+hasGem "rspec-rails" && exec bundle exec rspec "$@"
+[ -x bin/rails ] && exec bin/rails test "$@"
+[ $# -gt 0 ] && exec ruby -Itest "$@"
+exec ruby -Itest test/**/*_test.rb

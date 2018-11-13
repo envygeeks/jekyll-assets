@@ -22,7 +22,7 @@ trim() {
 # Determine what we are working with.
 # --
 
-skip_if_exists=(Gemfile)
+skip_if_exists=(Gemfile .travis.yml)
 sync_language=$(git config envygeeks.language || echo "")
 skip_if_external=(CONTRIBUTING.md CODE_OF_CONDUCT.md .github/codeowners)
 skip_if_external+=(.github/issue_template.md .github/pull_request_template.md)
