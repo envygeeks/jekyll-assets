@@ -447,8 +447,8 @@ assets:
 ### Bootstrap
 
 ```ruby
-gem "boostrap-sass" # 3.x
-gem "bootstrap"     # 4.x
+gem "bootstrap-sass" # 3.x
+gem "bootstrap"      # 4.x
 ```
 
 ```scss
