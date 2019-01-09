@@ -106,9 +106,9 @@ plugins:
 ## Tag `{% asset %}`, `<img>`
 
 ```html
-{% asset src @magick:2x alt='This is my alt' %}
-{% asset src @magick:2x alt='This is my alt' %}
-<img src="src" asset="@magick:2x" alt="This is my alt">
+{% asset src @magick:double alt='This is my alt' %}
+{% asset src @magick:double alt='This is my alt' %}
+<img src="src" asset="@magick:double" alt="This is my alt">
 <img src="src" alt="This is my alt" asset>
 ```
 
@@ -312,7 +312,7 @@ Using Liquid Drop `assets`, you can check whether an asset is present.
 ## Filter
 
 ```liquid
-{{ src | asset:"@magick:2x magick:quality=92" }}
+{{ src | asset:"@magick:double magick:quality=92" }}
 ```
 
 ## Polymer WebComponents
