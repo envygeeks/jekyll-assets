@@ -4,6 +4,30 @@
 
 require "rspec/helper"
 describe "Plugins/Liquid" do
+  context "w/ .svg.liquid" do
+    let(:asset) do
+      env.find_asset!("plugins/liquid/basic1.svg")
+    end
+
+    #
+
+    it "works" do
+      expect(asset.to_s.strip).to match(%q!<svg height="3"></svg>!)
+    end
+  end
+
+  context "w/ .liquid.svg" do
+    let(:asset) do
+      env.find_asset!("plugins/liquid/basic2.svg")
+    end
+
+    #
+
+    it "works" do
+      expect(asset.to_s.strip).to match(%q!<svg height="3"></svg>!)
+    end
+  end
+
   context "w/ .scss.liquid" do
     let(:asset) do
       env.find_asset!("plugins/liquid/basic1.css")

@@ -254,7 +254,7 @@ module Jekyll
       def strip_secondary_content_type(str)
         str = str.split("/")
         raise ArgumentError, "#{str.join('/')} is invalid." if str.size > 2
-        File.join(str[0], str[1].rpartition(%r!\+!).last)
+        File.join(str[0], str[1].split('+').tap(&:shift).join('+'))
       end
 
       # --

@@ -14,6 +14,7 @@ module Jekyll
           "text/liquid+coffeescript" => %w(.liquid.coffee .coffee.liquid),
           "text/liquid+scss" => %w(.liquid.scss .scss.liquid),
           "text/liquid+css" => %w(.liquid.css .css.liquid),
+          "image/liquid+svg+xml" => %w(.liquid.svg .svg.liquid),
         }.freeze
 
         def self.call(ctx)

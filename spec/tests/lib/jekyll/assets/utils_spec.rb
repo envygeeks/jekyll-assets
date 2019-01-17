@@ -445,4 +445,22 @@ describe Jekyll::Assets::Utils do
       end
     end
   end
+
+  #
+
+  describe "#strip_secondary_content_type" do
+    context "w/ text/liquid+css" do
+      it "works" do
+        out = described_class.strip_secondary_content_type("text/liquid+css")
+        expect(out).to(eq("text/css"))
+      end
+    end
+
+    context "w/ image/liquid+svg+xml" do
+      it "works" do
+        out = described_class.strip_secondary_content_type("image/liquid+svg+xml")
+        expect(out).to(eq("image/svg+xml"))
+      end
+    end
+  end
 end
