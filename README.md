@@ -234,11 +234,15 @@ body {
 ### `.liquid.ext`
 ### `.ext.liquid`
 
-```scss
-.bg {
-  background: url(asset_path("{{ site.background_image }}"));
-}
-```
+#### Supported file types:
+
+- .css
+- .sass
+- .scss
+- .js
+- .es6
+- .coffee
+- .svg
 
 You have full access to your entire global context from any liquid
 processing we do.  Depending on where you do it, you might or might not also have access to your local (page) context as well. You can also do whatever you like, and be as dynamic as you like, including full loops, and conditional Liquid, since we pre-process your text files. *On Sprockets 4.x you can use `.liquid.ext` and `.ext.liquid`, but because of the way Sprockets 3.x works, we have opted to only allow the default extension of `.ext.liquid` when running on "Old Sprockets" (AKA 3.x.)  If you would like Syntax + Liquid you should opt to install Sprockets 4.x so you can get the more advanced features.*
