@@ -59,7 +59,7 @@ module Jekyll
       # @return [String]
       # --
       def upstream
-        return Upstream::Nullstore unless enabled?
+        return Upstream::NullStore unless enabled?
         return Upstream::MemoryStore if type == "memory"
         Upstream::FileStore
       end
