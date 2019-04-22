@@ -35,72 +35,75 @@ gem "jekyll-assets", "~> x.x.alpha", group: :jekyll_plugins
 The configuration file is the same as Jekyll's, which is `_config.yml`. Except we use the special key called `assets` inside of that file. All values listed below are default, you need not copy these into your configuration file unless you plan to change a value. *Setting a value makes it explicit, and shared across both **production**, and **development**.*
 
 ```yaml
-source_maps: true # false on JEKYLL_ENV=production
-destination: "/assets"
-compression: false # true on JEKYLL_ENV=production
-gzip: false
-defaults:
-   js: { integrity: false } # true on JEKYLL_ENV=production
-  css: { integrity: false } # true on JEKYLL_ENV=production
-  img: { integrity: false } # true on JEKYLL_ENV=production
-caching:
-  path: ".jekyll-cache/assets"
-  type: file # Possible values: memory, file
-  enabled: true
-# --
-# Assets you wish to always have compiled.
-#   This can also be combined with raw_precompile which
-#   copies assets without running through the pipeline
-#   making them ultra fast.
-# --
-precompile: []
-raw_precompile: [
-  #
-]
-# --
-# baseurl: whether or not to append site.baseurl
-# destination: the folder you store them in on the CDN.
-# url: the CDN url (fqdn, or w/ identifier).
-# --
-cdn:
-  baseurl: false
-  destination: false
-  url: null
-# --
-# These are all default. No need to add them
-#   Only use this if you have more.
-# --
-sources:
-  - assets/css
-  - assets/fonts
-  - assets/images
-  - assets/videos
-  - assets/javascript
-  - assets/video
-  - assets/image
-  - assets/img
-  - assets/js
-  - _assets/css
-  - _assets/fonts
-  - _assets/images
-  - _assets/videos
-  - _assets/javascript
-  - _assets/video
-  - _assets/image
-  - _assets/img
-  - _assets/js
-  - css
-  - fonts
-  - images
-  - videos
-  - javascript
-  - video
-  - image
-  - img
-  - js
-plugins:
-  css: { autoprefixer: {}}
-  img: { optim: {}}
+# _config.yml
+
+assets:
+  source_maps: true # false on JEKYLL_ENV=production
+  destination: "/assets"
+  compression: false # true on JEKYLL_ENV=production
+  gzip: false
+  defaults:
+     js: { integrity: false } # true on JEKYLL_ENV=production
+    css: { integrity: false } # true on JEKYLL_ENV=production
+    img: { integrity: false } # true on JEKYLL_ENV=production
+  caching:
+    path: ".jekyll-cache/assets"
+    type: file # Possible values: memory, file
+    enabled: true
+  # --
+  # Assets you wish to always have compiled.
+  #   This can also be combined with raw_precompile which
+  #   copies assets without running through the pipeline
+  #   making them ultra fast.
+  # --
+  precompile: []
+  raw_precompile: [
+    #
+  ]
+  # --
+  # baseurl: whether or not to append site.baseurl
+  # destination: the folder you store them in on the CDN.
+  # url: the CDN url (fqdn, or w/ identifier).
+  # --
+  cdn:
+    baseurl: false
+    destination: false
+    url: null
+  # --
+  # These are all default. No need to add them
+  #   Only use this if you have more.
+  # --
+  sources:
+    - assets/css
+    - assets/fonts
+    - assets/images
+    - assets/videos
+    - assets/javascript
+    - assets/video
+    - assets/image
+    - assets/img
+    - assets/js
+    - _assets/css
+    - _assets/fonts
+    - _assets/images
+    - _assets/videos
+    - _assets/javascript
+    - _assets/video
+    - _assets/image
+    - _assets/img
+    - _assets/js
+    - css
+    - fonts
+    - images
+    - videos
+    - javascript
+    - video
+    - image
+    - img
+    - js
+  plugins:
+    css: { autoprefixer: {}}
+    img: { optim: {}}
 ```
 
 ## Tag `{% asset %}`, `<img>`
