@@ -43,7 +43,7 @@ assets:
   compression: false # true on JEKYLL_ENV=production
   gzip: false
   defaults:
-     js: { integrity: false } # true on JEKYLL_ENV=production
+    js: { integrity: false } # true on JEKYLL_ENV=production
     css: { integrity: false } # true on JEKYLL_ENV=production
     img: { integrity: false } # true on JEKYLL_ENV=production
   caching:
