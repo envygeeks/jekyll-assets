@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("jekyll-sanity", "~> 1.2")
   s.add_runtime_dependency("pathutil", "~> 0.16")
   s.add_runtime_dependency("extras", "~> 0.2")
-  s.add_runtime_dependency("sassc", "~> 1.11")
+  s.add_runtime_dependency("sassc", ">= 1.11", "< 3.0")
 
   s.add_development_dependency("rspec", "~> 3.4")
   s.add_development_dependency("uglifier", "~> 4.1")
