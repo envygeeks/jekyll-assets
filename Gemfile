@@ -5,8 +5,9 @@
 source "https://rubygems.org"
 gemspec
 
-sv = "~> 4.0.beta"
-gem "sprockets", ENV["SPROCKETS_VERSION"] || sv, require: false
+sv = "~> 4.0.beta1"
+mv = "<  4.0.beta9"
+gem "sprockets", ENV["SPROCKETS_VERSION"] || sv, ENV["SPROCKETS_MAX_VERSION"] || mv, require: false
 # rubocop:disable Bundler/DuplicatedGem
 if ENV["JEKYLL_VERSION"]
   gem "jekyll", ENV["JEKYLL_VERSION"], {
