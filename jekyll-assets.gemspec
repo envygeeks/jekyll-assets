@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("execjs", "~> 2.7")
   s.add_runtime_dependency("nokogiri", "~> 1.10")
   s.add_runtime_dependency("activesupport", "~> 5.0")
-  s.add_runtime_dependency("sprockets", "~> 4.0.beta7")
+  s.add_runtime_dependency("sprockets", "~> 4.0.beta7", "< 4.0.beta9")
   s.add_runtime_dependency("fastimage", ">= 1.8", "~> 2.0")
   s.add_runtime_dependency("liquid-tag-parser", "~> 1.0")
   s.add_runtime_dependency("jekyll", ">= 3.5", "< 5.0")
