@@ -5,7 +5,7 @@
 ![Gem Version](https://img.shields.io/gem/v/jekyll-assets.svg?style=for-the-badge)
 ![Gem DL](https://img.shields.io/gem/dt/jekyll-assets.svg?style=for-the-badge)
 
-***This guide is for Jekyll Assets v3.1 which is currently in development, if you are looking for the docs for v3.0.9 please see: https://github.com/envygeeks/jekyll-assets/tree/v3.0.9***
+***This guide is for Jekyll Assets v3.1 which is currently in development, if you are looking for the docs for v3.0 please see: https://github.com/envygeeks/jekyll-assets/tree/v3.0-current***
 
 # Jekyll Assets
 
