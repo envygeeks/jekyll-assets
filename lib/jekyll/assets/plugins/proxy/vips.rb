@@ -67,6 +67,14 @@ module Jekyll
             img = vips_resize(img)
           end
 
+          if @args[:vips].key?(:double)
+            img = vips_double(img)
+          end
+
+          if @args[:vips].key?(:half)
+            img = half(img)
+          end
+
           out_file = in_file.sub_ext(out_ext)
           buf = img.write_to_buffer out_ext, write_opts
           
@@ -180,6 +188,23 @@ module Jekyll
 
           newimg
         end
+
+        # vips:double
+        # doubles the size of the image
+        private
+        def vips_double(img)
+          newimg = img.resize(2)
+          newimg
+        end
+
+        # vips:half
+        # halves the size of the image
+        private
+        def vips_half(img)
+          newimg = img.resize(0.5)
+          newimg
+        end
+
       end
     end
   end
