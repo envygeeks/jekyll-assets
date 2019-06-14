@@ -536,6 +536,114 @@ assets:
 
 ***By default `@optim` will use the default `jekyll`, otherwise you can provide `optim=preset` and have it used that preset.  ImageOptim provides advanced, and default as their default presets, you can define your own preset via Jekyll Assets configuration listed above.***
 
+### libvips
+
+```ruby
+gem "ruby-vips"
+```
+
+The "ruby-vips" gem requires a functional install of (libvips)[https://github.com/libvips/libvips/].
+
+#### Args
+
+| Name                  | Accepts Value |
+| --------------------- | ------------- |
+| `vips:compression`    | ✔             |
+| `vips:resize`         | ✔             |
+| `vips:format`         | ✔             |
+| `vips:quality`        | ✔             |
+| `vips:crop`           | ✔             |
+| `@vips:interlace`     | ✗             |
+| `vips:strip`          | ✔             |
+| `@vips:strip`         | ✗             |
+| `@vips:lossless`      | ✗             |
+| `@vips:near_lossless` | ✗             |
+
+##### vips:compression
+
+Only has any meaning for lossless image formats such as PNG or lossless WEBP.
+
+```liquid
+{% asset image.png vips:compression=9 %}
+```
+
+##### vips:resize
+
+Accepts an argument of either 'width', 'xheight' or 'widthxheight'.
+
+All resize processes keep the original aspect ratio so width and height
+are used to specify the bounding box for the resize process.
+
+If no height is specified the image is resized to fit withing a bounding
+box of 'width' x 'width'. Similarly specifying just a height sets the
+bounding box for the resize to 'height' x 'height'. This form only exists
+for compatibility with the "magick" plugin.
+
+```liquid
+{% asset image.png vips:resize='100' %}
+```
+
+```liquid
+{% asset image.png vips:resize='100x50' %}
+```
+
+##### vips:format
+
+Convert the image to the specified format. Format support depends on the
+compile options of the libvips library.
+
+Format is specified as the file extension such as '.jpg', '.webp' or '.png'.
+
+```liquid
+{% asset image.png vips:format='.webp' %}
+```
+
+##### vips:quality
+
+Only has any meaning for lossy image formats such as JPEG or WEBP.
+
+```liquid
+{% asset image.jpg vips:quality=90 %}
+```
+
+##### vips:crop
+
+Only has any effect when combined with "vips:resize".
+
+Use the following arguments (all except "fill" are documented [here](http://libvips.github.io/libvips/API/current/libvips-conversion.html#VipsInteresting)):
+
+* fill: resize the image to the specified size while maintaining the aspect ratio
+  then fills the "empty" background with blurred version of the original image
+* none: do nothing
+* centre: crop from the centre
+* entropy: use an entropy measure
+* attention: look for features likely to draw human attention
+* low: position the crop towards the low coordinate
+* high: position the crop towards the high coordinate
+
+```liquid
+{% asset image.jpg vips:resize='100' vips:crop='fill' %}
+```
+
+##### vips:strip
+
+Removes metadata from images.
+
+This is set "true" by default, but can be disabled by passing "false".
+
+```liquid
+{% asset image.jpg vips:strip=false %}
+```
+
+##### vips:lossless and vips:near_lossless
+
+These options only have any effect when the format is WEBP. This sets either
+lossless or near lossless mode.
+
+```liquid
+{% asset image.jpg vips:format='.webp' @vips:lossless %}
+```
+
 ### Building Your Own Plugins
 #### Globals
 
