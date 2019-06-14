@@ -558,6 +558,8 @@ The "ruby-vips" gem requires a functional install of (libvips)[https://github.co
 | `@vips:strip`         | ✗             |
 | `@vips:lossless`      | ✗             |
 | `@vips:near_lossless` | ✗             |
+| `@vips:double`        | ✗             |
+| `@vips:half`          | ✗             |
 
 ##### vips:compression
 
