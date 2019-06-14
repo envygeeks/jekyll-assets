@@ -65,14 +65,10 @@ module Jekyll
 
           if @args[:vips].key?(:resize)
             img = vips_resize(img)
-          end
-
-          if @args[:vips].key?(:double)
+          elsif @args[:vips].key?(:double)
             img = vips_double(img)
-          end
-
-          if @args[:vips].key?(:half)
-            img = half(img)
+          elsif @args[:vips].key?(:half)
+            img = vips_half(img)
           end
 
           out_file = in_file.sub_ext(out_ext)
