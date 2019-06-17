@@ -52,4 +52,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rubocop", "0.52")
   s.add_development_dependency("rake", "~> 12")
   s.add_development_dependency("pry", "~> 0")
+  s.add_development_dependency("ruby-vips", "~> 2")
 end
