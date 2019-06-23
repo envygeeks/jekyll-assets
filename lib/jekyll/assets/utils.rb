@@ -245,7 +245,9 @@ module Jekyll
       def prefix_url(user_path = nil)
         dest = strip_slashes(asset_config[:destination])
         cdn = make_https(strip_slashes(asset_config[:cdn][:url]))
-        base_org = jekyll.config['baseurl_root'] || jekyll.config["baseurl"]
+        # Any Jekyll plugin overwriting 'baseurl' such as jekyll-multiple-languages-plugin
+        # should first alias the original value to 'baseurl_root'
+        base_org = jekyll.config["baseurl_root"] || jekyll.config["baseurl"]
         base = strip_slashes(base_org)
         cfg = asset_config
 
