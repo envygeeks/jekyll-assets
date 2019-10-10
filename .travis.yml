@@ -20,6 +20,10 @@ env:
     - JEKYLL_BRANCH="master"
     - JEKYLL_VERSION="~> 3.7.0"
     - LINTING=true
+addons:
+  apt:
+    packages:
+      - libvips-dev
 rvm:
   - 2.5
 matrix:
