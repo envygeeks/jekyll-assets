@@ -1,21 +1,30 @@
 language: ruby
 after_success: script/report
-before_install: ["gem install bundler"]
+before_install:
+  - gem install bundler
+  - curl https://raw.githubusercontent.com/libvips/ruby-vips/master/install-vips.sh | bash
 before_script: script/report before
 script: script/test
 sudo: false
 cache:
   bundler: true
   directories:
+    - $HOME/vips
     - vendor/bundle
     - node_modules
 env:
   global:
-    secure: "\
-      h+3g4a4eXVBiZWcnSJ39lTlhv+JmRrPJPOW7Qvs0u3ix4nZLd4DhDnsmOmu2gRze9BFhX3Ga1\
-      6clq2Kku75Ty9pgZ9/8jrN+CcPbqv3rQHdHIaaQf5eFirr5Lw0eY02etRf9G6pHEdIyMSOrXU\
-      GTwDtjR+BT65M5qESGniBXTd8=\
-    "
+    - secure: "\
+        h+3g4a4eXVBiZWcnSJ39lTlhv+JmRrPJPOW7Qvs0u3ix4nZLd4DhDnsmOmu2gRze9BFhX3G\
+        a16clq2Kku75Ty9pgZ9/8jrN+CcPbqv3rQHdHIaaQf5eFirr5Lw0eY02etRf9G6pHEdIyMS\
+        OrXUGTwDtjR+BT65M5qESGniBXTd8=\
+      "
+    - VIPS_VERSION_MAJOR: 8
+    - VIPS_VERSION_MINOR: 8
+    - VIPS_VERSION_MICRO: 3
+    - PATH: "$HOME/vips/bin:$PATH"
+    - LD_LIBRARY_PATH: "$HOME/vips/lib:$LD_LIBRARY_PATH"
+    - PKG_CONFIG_PATH: "$HOME/vips/lib/pkgconfig:$PKG_CONFIG_PATH"
   matrix:
     - JEKYLL_BRANCH="master"
     - JEKYLL_VERSION="~> 3.7.0"
@@ -23,7 +32,32 @@ env:
 addons:
   apt:
     packages:
-      - libvips-dev
+      - gettext
+      - libcfitsio-dev
+      - libexif-gtk-dev
+      - libexpat1-dev
+      - libfftw3-dev
+      - libfontconfig1-dev
+      - libfreetype6-dev
+      - libgif-dev
+      - libglib2.0-dev
+      - libgsf-1-dev
+      - libjpeg-dev
+      - liblcms2-dev
+      - libmagickcore-dev
+      - libmagickwand-dev
+      - libmatio-dev
+      - libopenexr-dev
+      - libopenslide-dev
+      - liborc-0.4-dev
+      - libpango1.0-dev
+      - libpng-dev
+      - libpoppler-glib-dev
+      - librsvg2-dev
+      - libtiff-dev
+      - libwebp-dev
+      - pkg-config
+      - zlib1g-dev
 rvm:
   - 2.5
 matrix:
