@@ -6,17 +6,12 @@
 module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
-
-      # --
-      # Register Hooks.
-      # @note (before)_merge
-      # @return [nil]
-      # --
       %i(before).map do |v|
-        Hook.add_point :env, :"#{v}_merge"
+        Hook.add_point(
+          :env, :"#{v}_merge"
+        )
       end
 
-      # --
       DEVELOPMENT = {
         digest: true,
         precompile: [],
@@ -24,6 +19,7 @@ module Jekyll
         destination: "/assets",
         compression: false,
         raw_precompile: [],
+        full_url: false,
         defaults: {},
         gzip: false,
 
@@ -88,13 +84,11 @@ module Jekyll
         ),
       }.freeze
 
-      # --
       PRODUCTION = DEVELOPMENT.deep_merge({
         source_maps: false,
         compression: true,
       }).freeze
 
-      # --
       def initialize(config)
         super(self.class.defaults)
         Hook.trigger(:config, :before_merge) { |h| h.call(self) }

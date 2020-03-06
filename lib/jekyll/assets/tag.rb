@@ -44,7 +44,6 @@ module Jekyll
       # --
       def render_raw(ctx)
         env = ctx.registers[:site].sprockets
-
         args = Liquid::Tag::Parser.new(@args)
         args = env.parse_liquid(args, ctx: ctx)
         raise_unfound_asset_on(ctx: ctx, with: args) unless args.key?(:argv1)

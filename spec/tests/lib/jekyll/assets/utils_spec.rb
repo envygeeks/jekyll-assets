@@ -258,6 +258,42 @@ describe Jekyll::Assets::Utils do
       })
     end
 
+    context ":full_url" do
+      context "when true" do
+        before do
+          stub_asset_config({
+            full_url: true,
+            cdn: {
+              url: nil
+            },
+          })
+        end
+
+        it "should prefix with the hostname" do
+          expect(subject.prefix_url).to start_with(
+            "http://127.0.0.1:4000"
+          )
+        end
+      end
+
+      context "when false" do
+        before do
+          stub_asset_config({
+            full_url: false,
+            cdn: {
+              url: nil
+            },
+          })
+        end
+
+        it "should not prefix" do
+          expect(subject.prefix_url).not_to start_with(
+            "http://"
+          )
+        end
+      end
+    end
+
     #
 
     context "production" do
@@ -275,8 +311,6 @@ describe Jekyll::Assets::Utils do
           expect(out).to start_with(cdn)
         end
       end
-
-      #
 
       context "jekyll.config[:baseurl]" do
         before do
@@ -300,7 +334,9 @@ describe Jekyll::Assets::Utils do
 
           it "uses it" do
             out = subject.prefix_url
-            expect(out).to start_with("/hello")
+            expect(out).to start_with(
+              "/hello"
+            )
           end
         end
 

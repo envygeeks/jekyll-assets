@@ -226,23 +226,65 @@ module Jekyll
       # @return [String]
       # --
       def prefix_url(user_path = nil)
-        dest = strip_slashes(asset_config[:destination])
-        cdn = make_https(strip_slashes(asset_config[:cdn][:url]))
-        # Any Jekyll plugin overwriting 'baseurl' such as jekyll-multiple-languages-plugin
-        # should first alias the original value to 'baseurl_root'
-        base_org = jekyll.config["baseurl_root"] || jekyll.config["baseurl"]
-        base = strip_slashes(base_org)
-        cfg = asset_config
+        cfg, j_cfg = asset_config, jekyll.config
+        cdn_url = make_https(strip_slashes(cfg[:cdn][:url]))
+        base_url = jekyll.config.fetch("baseurl_root", j_cfg["baseurl"])
+        destination = strip_slashes(cfg[:destination])
+        base_url = strip_slashes(base_url)
+        url = Addressable::URI.new
+
+        if cfg[:full_url]
+          url.host = j_cfg["host"]
+          url.port = j_cfg["port"]
+          url.scheme = "http"
+        end
+
+        if Jekyll.production? && cdn_url
+          c_url = Addressable::URI.parse(cdn_url)
+
+          if c_url.host
+            url.host = c_url.host
+            url.scheme = c_url.scheme
+            url.port = c_url.port
+          else
+            host, port = cdn_url.split(":", 1)
+            if port && port.to_i != 0
+              url.port = port
+              url.host = host
+            end
+          end
+        end
 
         path = []
-        path << cdn  if Jekyll.production? && cdn
-        path << base if Jekyll.dev? || !cdn || (cdn && cfg[:cdn][:baseurl])
-        path << dest if Jekyll.dev? || !cdn || (cdn && cfg[:cdn][:destination])
-        path << user_path unless user_path.nil? || user_path == ""
+        path << base_url if base_url?
+        path << destination if destination?
+        path << user_path unless user_path.nil? || user_path.empty?
+        path = path.compact
 
         path = File.join(path.flatten.compact)
-        return path if cdn && Jekyll.production?
-        "/" + path
+        path = "/" + path unless path.start_with?("/")
+        url.path = path
+        url.to_s
+      end
+
+      def destination?
+        c_url = asset_config[:cdn][:url]
+        c_cfg = asset_config[:cdn]
+        Jekyll.dev? || !c_url || (
+          Jekyll.production? && c_url && c_cfg[
+            :destination
+          ]
+        )
+      end
+
+      def base_url?
+        c_url = asset_config[:cdn][:url]
+        c_cfg = asset_config[:cdn]
+        Jekyll.dev? || !c_url || (
+          Jekyll.production? && c_url && c_cfg[
+            :baseurl
+          ]
+        )
       end
 
       # --
