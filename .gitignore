@@ -48,3 +48,8 @@ site/
 # Yarn
 # --
 yarn.lock
+
+# --
+# Editors
+# --
+/.idea

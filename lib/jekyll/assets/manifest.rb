@@ -43,7 +43,7 @@ module Jekyll
       # Allows us to discover the manifest path, but know
       #   if it's new.
       # --
-      def find_directory_manifest(dirname)
+      def find_directory_manifest(dirname, _logger)
         entries = File.directory?(dirname) ? Dir.entries(dirname) : []
         entry = (f = entries.find { |e| e =~ MANIFEST_RE }) || generate_manifest_path
         f || @new_manifest = true
