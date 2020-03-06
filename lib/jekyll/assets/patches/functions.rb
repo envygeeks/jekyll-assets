@@ -7,7 +7,7 @@ module Jekyll
   module Assets
     module Patches
       module SassFunctions
-        Str = ::Sprockets::Autoload::Sass::Script::String
+        Str = SassC::Script::Value::String
 
         # --
         # @param path [String] the path.
