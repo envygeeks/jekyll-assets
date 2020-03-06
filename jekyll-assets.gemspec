@@ -50,7 +50,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("bootstrap", "~> 4.0")
   s.add_development_dependency("ruby-vips", "~> 2")
   s.add_development_dependency("crass", "~> 1.0")
-  s.add_development_dependency("rubocop", "0.52")
+  s.add_development_dependency("rubocop", "0.80.1")
   s.add_development_dependency("rake", "~> 12")
   s.add_development_dependency("pry", "~> 0")
 end
