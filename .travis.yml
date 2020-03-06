@@ -23,7 +23,8 @@ env:
     - JEKYLL_VERSION="~> 3.7.0"
     - LINTING=true
 rvm:
-  - 2.5
+  - 2.6
+  - 2.7
 matrix:
   fast_finish: true
   allow_failures:
