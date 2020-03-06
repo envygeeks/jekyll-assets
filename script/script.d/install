@@ -1,0 +1,26 @@
+#!/bin/bash
+# Copyright: 2017 - 2020 - MIT License
+# Source: https://github.com/envygeeks/devfiles
+# Author: Jordon Bedwell
+
+export VIPS_VERSION=8.9.1
+export VIPS_URL=https://github.com/libvips/libvips/releases/download
+export SKIP_SCRIPTD=true
+
+[ "$CI" != 'true' ] && exec ../install "$@"
+sudo apt install -y glib-2.0-dev libexpat-dev librsvg2-dev libpng-dev
+sudo apt install -y libgif-dev libjpeg-dev libexif-dev liblcms2-dev liborc-dev
+sudo apt install -y wget imagemagick imagemagick-dev
+
+sudo mkdir -p /usr/local/src/vips
+sudo chown $USER /usr/local/src/vips
+cd /usr/local/src/vips || exit 1
+
+wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz
+tar xzf vips-${VIPS_VERSION}.tar.gz
+cd vips-${VIPS_VERSION} || exit 1
+
+./configure
+make --jobs=4
+sudo make install \
+  --jobs=4
