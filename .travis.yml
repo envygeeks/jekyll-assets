@@ -20,7 +20,8 @@ env:
     "
   matrix:
     - JEKYLL_BRANCH="master"
-    - JEKYLL_VERSION="~> 3.7.0"
+    - JEKYLL_VERSION="~> 3.8.0"
+    - JEKYLL_VERSION="~> 4.0.0"
     - LINTING=true
 rvm:
   - 2.6
