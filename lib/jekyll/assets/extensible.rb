@@ -75,25 +75,35 @@ module Jekyll
           }
         end
 
+        #
+        # Mark a plugin as internal
+        # @return [true]
+        # @since 3.0.0
+        #
         def internal!
           if name.start_with?("Jekyll::Assets")
             requirements[:internal] = true
           end
         end
 
+        #
+        # Is this plugin internal?
+        # @return [true, false]
+        # @since 3.0.0
+        #
         def internal?
-          requirements[
+          !!requirements[
             :internal
           ]
         end
 
-        # --
+        #
         # Determine if a class matches the reqs
         # @param [String, Symbol] type the current content type.
         # @param [Hash] args the parsed liquid args.
         # @return [true, false]
         # @since 3.0.0
-        # --
+        #
         def for?(type:, args:)
           for_type?(type) && for_args?(
             args
@@ -125,20 +135,32 @@ module Jekyll
             k.is_a?(Regexp) ? type =~ k : k.to_s == type.to_s
           end
         end
-      end
 
-      # --
-      # Creates `#arg_keys`, and `#content_types` so that you
-      #   can limit your surface for an extensible plugin.  For
-      #   example if you only work for
-      # --
-      m = [%i(content_types types), %i(arg_keys args)]
-      m.each do |(k, v)|
-        instance_eval <<-RUBY
-          def self.#{k}(*a)
-            requirements[:#{v}].concat(a)
-          end
-        RUBY
+        #
+        # Add or get content types for a plugin
+        # @note these content types are requirements
+        # @return [Array]
+        # @since 4.0.0
+        #
+        def content_types(*types)
+          return requirements[:types] if types.empty?
+          requirements[:types].concat(
+            types
+          )
+        end
+
+        #
+        # Add or get arg keys for a plugin
+        # @note these keys are key requirements
+        # @return [Array]
+        # @since 4.0.0
+        #
+        def arg_keys(*keys)
+          return requirements[:args] if keys.empty?
+          requirements[:args].concat(
+            keys
+          )
+        end
       end
     end
   end
