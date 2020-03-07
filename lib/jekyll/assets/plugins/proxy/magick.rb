@@ -7,7 +7,7 @@ module Jekyll
   module Assets
     module Plugins
       class MiniMagick < Proxy
-        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
+        content_types %r@^image/(?!x-icon$)[a-zA-Z0-9\-_+]+$@
         arg_keys :magick
 
         class SameType < StandardError

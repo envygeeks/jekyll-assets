@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version = Jekyll::Assets::VERSION
   s.homepage = "http://github.com/jekyll/jekyll-assets/"
   s.authors = ["Jordon Bedwell", "Aleksey V Zapparov", "Zachary Bush"]
-  s.email = ["jordon@envygeeks.io", "ixti@member.fsf.org", "zach@zmbush.com"]
+  s.email = %w(jordon@envygeeks.io ixti@member.fsf.org zach@zmbush.com)
   s.files = %w(Rakefile Gemfile README.md LICENSE) + Dir["lib/**/*"]
   s.summary = "Assets for Jekyll"
   s.name = "jekyll-assets"
@@ -43,13 +43,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency("image_optim_pack", "~> 0.5")
   s.add_development_dependency("font-awesome-sass", "~> 5.0")
   s.add_development_dependency("luna-rspec-formatters", "~> 3.2")
+  s.add_development_dependency("envygeeks-rubocop", "= 1.0.0")
   s.add_development_dependency("autoprefixer-rails", "~> 9.7")
   s.add_development_dependency("babel-transpiler", "~> 0.7")
   s.add_development_dependency("mini_magick", "~> 4.2")
   s.add_development_dependency("simplecov", "~> 0.16")
   s.add_development_dependency("bootstrap", "~> 4.0")
   s.add_development_dependency("ruby-vips", "~> 2")
-  s.add_development_dependency("rubocop", "0.80.1")
   s.add_development_dependency("crass", "~> 1.0")
   s.add_development_dependency("rake", "~> 13")
   s.add_development_dependency("pry", "~> 0")

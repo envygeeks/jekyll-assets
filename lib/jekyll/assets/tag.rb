@@ -97,7 +97,7 @@ module Jekyll
 
       # --
       def return_or_build(ctx, args:, asset:)
-        methods.grep(%r!^on_(?\!or_build$)!).each do |m|
+        methods.grep(%r@^on_(?!or_build$)@).each do |m|
           out = send(m, args, ctx: ctx, asset: asset)
           if out
             return out

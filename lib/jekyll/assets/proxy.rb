@@ -77,8 +77,9 @@ module Jekyll
 
         unless out.file?
           out.dirname.mkdir_p
-          Pathutil.new(asset.filename)
-            .cp(out)
+          Pathutil.new(asset.filename).cp(
+            out
+          )
         end
 
         out

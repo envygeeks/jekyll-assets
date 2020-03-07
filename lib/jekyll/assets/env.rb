@@ -126,6 +126,7 @@ module Jekyll
       # ---
       def remove_old_assets
         assets_to_write.each do |v|
+          # Fixme: Broken, and  not working right!
           in_dest_dir(find_asset!(v).logical_path).rm_f
         end
       end

@@ -7,7 +7,7 @@ module Jekyll
   module Assets
     class Default
       class Img < Default
-        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
+        content_types %r@^image/(?!x-icon$)[a-zA-Z0-9\-_+]+$@
         internal!
 
         # --

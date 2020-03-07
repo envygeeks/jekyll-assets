@@ -459,7 +459,7 @@ gem "bootstrap"      # 4.x
 ```
 
 ```scss
-@import 'bootstrap'
+@import 'bootstrap';
 html {
   // ...
 }

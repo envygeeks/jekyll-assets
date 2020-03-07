@@ -141,7 +141,7 @@ module Jekyll
         return false if args.is_a?(Sprockets::Asset)
         return args =~ %r!^(https?:)?//! if args.is_a?(String)
         return args[:external] if args.key?(:external)
-        args[:argv1] !~ %r!^(?\!(https?:)?//)!
+        args[:argv1] !~ %r@^(?!(https?:)?//)@
       end
 
       # --

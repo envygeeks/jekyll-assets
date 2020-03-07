@@ -7,7 +7,7 @@ module Jekyll
   module Assets
     module Plugins
       class Vips < Proxy
-        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
+        content_types %r@^image/(?!x-icon$)[a-zA-Z0-9\-_+]+$@
         arg_keys :vips
 
         # handles the vips process

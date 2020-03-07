@@ -9,7 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class IMG < HTML
-        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_\+]+$!
+        content_types %r@^image/(?!x-icon$)[a-zA-Z0-9\-_+]+$@
 
         # --
         def run

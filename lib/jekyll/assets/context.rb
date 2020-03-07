@@ -8,8 +8,8 @@ module Jekyll
       # --
       # Allows you to get an asset by it's path.
       # @note this SASS helper fully supports proxy arguments.
-      # @param [Hash] opts this is unused but necessary.
-      # @param [String] path the path.
+      # @param _ [Hash] this is unused but necessary.
+      # @param path [String] the path.
       # @return [String] the path.
       # --
       def asset_path(path, _ = {})

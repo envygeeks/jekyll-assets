@@ -9,7 +9,7 @@ module Jekyll
   module Assets
     class HTML
       class Pic < HTML
-        content_types %r!^image/(?\!x-icon$)[a-zA-Z0-9\-_]+$!
+        content_types %r@^image/(?!x-icon$)[a-zA-Z0-9\-_]+$@
 
         # --
         # @todo this should be reworked so we don't need to use
