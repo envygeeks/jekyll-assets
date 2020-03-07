@@ -26,25 +26,29 @@ module Jekyll
 
         # --
         def set_src
-          dpath = @asset.digest_path
-          return @args[:src] = @asset.url if @asset.is_a?(Url)
-          return @args[:src] = @env.prefix_url(dpath) unless @args[:inline]
-          @args[:src] = @asset.data_uri
+          d_path = asset.digest_path
+          return args[:src] = asset.url if asset.is_a?(Url)
+          return args[:src] = env.prefix_url(d_path) unless args[:inline]
+          args[:src] = asset.data_uri
         end
 
         # --
         def set_integrity
           return unless integrity?
-          @args[:integrity] = @asset.integrity
-          unless @args.key?(:crossorigin)
-            @args[:crossorigin] = "anonymous"
+          args[:integrity] = asset.integrity
+          unless args.key?(:crossorigin)
+            args.update(
+              crossorigin: 'anonymous'
+            )
           end
         end
 
         # --
         def integrity?
-          config[:integrity] && !@asset.is_a?(Url) &&
-            !@args.key?(:integrity)
+          config[:integrity] && !asset.is_a?(Url) &&
+            !args.key?(
+              :integrity
+            )
         end
       end
     end

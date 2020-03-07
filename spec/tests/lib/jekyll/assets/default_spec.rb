@@ -20,7 +20,7 @@ module Jekyll
         content_types :test
 
         def run
-          @args.update({
+          args.update({
             hello: :world,
           })
         end

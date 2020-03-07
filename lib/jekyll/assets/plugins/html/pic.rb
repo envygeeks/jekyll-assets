@@ -34,26 +34,30 @@ module Jekyll
 
         # --
         def complex(doc)
-          @args[:img] ||= {}
-          args = @args.to_h(html: true, skip: HTML.skips)
-          @args[:img][:src] = @args[:src]
+          args[:img] ||= {}
+          h_args = args.to_h(html: true, skip: HTML.skips)
+          args[:img][:src] = args[:src]
           _, sources = kv
 
-          doc.picture @args[:picture] do
+          doc.picture args[:picture] do
             Array(sources).each do |w|
               w, d = w.to_s.split(%r!\s+!, 2)
-              Integer(w)
+              Integer(w) # FIXME: Dubious
 
               source({
                 width: w,
-                args: args.dup,
+                args: h_args.dup,
                 src: path(width: w),
                 density: d,
                 doc: doc,
               })
             end
 
-            doc.img(@args[:img])
+            doc.img(
+              args[
+                :img
+              ]
+            )
           end
         end
 

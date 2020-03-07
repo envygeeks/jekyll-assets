@@ -651,10 +651,10 @@ lossless or near lossless mode.
 
 | Name      | Class                   |
 | --------- | ----------------------- |
-| `@env`    | `Jekyll::Assets::Env`   |
-| `@args`   | `Liquid::Tag::Parser{}` |
-| `@jekyll` | `Jekyll::Site`          |
-| `@asset`  | `Sprockets::Asset`      |
+| `env`    | `Jekyll::Assets::Env`   |
+| `args`   | `Liquid::Tag::Parser{}` |
+| `jekyll` | `Jekyll::Site`          |
+| `asset`  | `Sprockets::Asset`      |
 
 #### HTML
 

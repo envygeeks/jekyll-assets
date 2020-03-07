@@ -29,9 +29,9 @@ module Jekyll
 
           img = ::Vips::Image.new_from_file in_file
 
-          if @args[:vips].key?(:format)
-            format = ".#{@args[:vips][:format].sub(%r!^\.!, '')}"
-            ext = @env.mime_exts.find { |k, v| k == format || v == format }
+          if args[:vips].key?(:format)
+            format = ".#{args[:vips][:format].sub(%r!^\.!, '')}"
+            ext = env.mime_exts.find { |k, v| k == format || v == format }
             out_ext, type = ext
           else
             out_ext = in_ext
@@ -44,36 +44,36 @@ module Jekyll
             write_opts[:interlace] = true
             write_opts[:optimize_coding] = true
           when ".webp"
-            write_opts[:lossless] = @args[:vips].key?(:lossless)
-            write_opts[:near_lossless] = @args[:vips].key?(:near_lossless)
+            write_opts[:lossless] = args[:vips].key?(:lossless)
+            write_opts[:near_lossless] = args[:vips].key?(:near_lossless)
           when ".png"
-            if @args[:vips].key?(:compression)
-              write_opts[:compression] = @args[:vips][:compression]
+            if args[:vips].key?(:compression)
+              write_opts[:compression] = args[:vips][:compression]
             end
-            write_opts[:interlace] = @args[:vips].key?(:interlace)
+            write_opts[:interlace] = args[:vips].key?(:interlace)
           end
 
-          if @args[:vips].key?(:quality)
+          if args[:vips].key?(:quality)
             write_opts = vips_quality(write_opts)
           end
 
-          if @args[:vips].key?(:strip)
+          if args[:vips].key?(:strip)
             write_opts[:strip] = vips_strip(write_opts)
           else
             write_opts[:strip] = true
           end
 
-          if @args[:vips].key?(:resize)
+          if args[:vips].key?(:resize)
             img = vips_resize(img)
-          elsif @args[:vips].key?(:double)
+          elsif args[:vips].key?(:double)
             img = vips_double(img)
-          elsif @args[:vips].key?(:half)
+          elsif args[:vips].key?(:half)
             img = vips_half(img)
           end
 
           out_file = in_file.sub_ext(out_ext)
           buf = img.write_to_buffer out_ext, write_opts
-          
+
           @file.binwrite(buf)
 
           if @file != out_file
@@ -88,7 +88,7 @@ module Jekyll
         # only makes sense for losseless image formats
         private
         def vips_compression(opts)
-          opts[:compression] = @args[:vips][:compression].to_i
+          opts[:compression] = args[:vips][:compression].to_i
           opts
         end
 
@@ -97,7 +97,7 @@ module Jekyll
         # only makes sense for lossy image formats
         private
         def vips_quality(opts)
-          opts[:Q] = @args[:vips][:quality].to_i
+          opts[:Q] = args[:vips][:quality].to_i
           opts
         end
 
@@ -105,7 +105,7 @@ module Jekyll
         # strips metadata from an image
         private
         def vips_strip(opts)
-          opts[:strip] = @args[:vips][:strip]
+          opts[:strip] = args[:vips][:strip]
           opts
         end
 
@@ -118,11 +118,11 @@ module Jekyll
         private
         def vips_resize(img)
           resize_opts = {}
-          if @args[:vips][:resize].is_a? Integer
-            width = @args[:vips][:resize]
+          if args[:vips][:resize].is_a? Integer
+            width = args[:vips][:resize]
           else
-            if @args[:vips][:resize].include? "x"
-              width, height = @args[:vips][:resize].split("x")
+            if args[:vips][:resize].include? "x"
+              width, height = args[:vips][:resize].split("x")
               if width == "" or width == nil
                 width = 0
               else
@@ -138,14 +138,14 @@ module Jekyll
                 end
               end
             else
-              width = @args[:vips][:resize].to_i
+              width = args[:vips][:resize].to_i
             end
-            if @args[:vips].key?(:crop)
-              if @args[:vips][:crop] == "fill"
+            if args[:vips].key?(:crop)
+              if args[:vips][:crop] == "fill"
                 do_fill = true
               else
                 do_fill = false
-                resize_opts[:crop] = @args[:vips][:crop]
+                resize_opts[:crop] = args[:vips][:crop]
               end
             end
           end
@@ -200,7 +200,6 @@ module Jekyll
           newimg = img.resize(0.5)
           newimg
         end
-
       end
     end
   end

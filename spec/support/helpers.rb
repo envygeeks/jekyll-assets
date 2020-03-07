@@ -11,7 +11,9 @@ module Helpers
   rb_delegate :stub_env, to: :Helpers
 
   def fragment(html)
-    Nokogiri::HTML.fragment(html)
+    Nokogiri::HTML.fragment(
+      html
+    )
   end
 
   def self.silence_stdout
@@ -50,23 +52,30 @@ module Helpers
       silence_stdout do
         cfg = Pathutil.new(fixture_path).join("_config.yml").read_yaml
         cfg = Jekyll.configuration(cfg).update({
-          "destination" => File.join(fixture_path, "_site"),
           "source" => fixture_path.to_s,
+          "destination" => File.join(
+            fixture_path, "_site"
+          )
         })
 
-        Jekyll::Site.new(cfg).tap(&:process)
+        Jekyll::Site.new(cfg).tap(
+          &:process
+        )
       end
     end
   end
 
   def self.stub_env
-    @env ||= begin
-      Jekyll::Assets::Env.new(stub_jekyll_site)
-    end
+    return @env if defined?(@env)
+    @env = Jekyll::Assets::Env.new(
+      stub_jekyll_site
+    )
   end
 
   def self.fixture_path
-    File.expand_path("../fixture", __dir__)
+    File.expand_path(
+      "../fixture", __dir__
+    )
   end
 end
 

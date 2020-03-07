@@ -85,8 +85,9 @@ module Jekyll
 
       # --
       def config
-        @config ||= @env.asset_config[:defaults][self.class
-          .name.split("::").last.downcase]
+        @config ||= env.asset_config[:defaults][
+          self.class.name.split("::").last.downcase
+        ]
       end
     end
   end

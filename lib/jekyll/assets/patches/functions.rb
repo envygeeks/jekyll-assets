@@ -3,6 +3,8 @@
 # Author: Jordon Bedwell
 # Encoding: utf-8
 
+require 'sassc'
+
 module Jekyll
   module Assets
     module Patches
@@ -11,16 +13,16 @@ module Jekyll
 
         # --
         # @param path [String] the path.
-        # @param opts [Hash<String,String>] options.
+        # @param options [Hash<String,String>] options.
         # Extracts the asset path, and proxy arguments.
+        # @return [SassC::Script::Value::String]
         # @example asset.jpg @path
-        # @return [String]
         # --
         def asset_path(path, options = {})
           path, args = path.value.split(%r!\s+!, 2)
-          path, fragment = URI.split(path).values_at(5, 8)
+          path, frag = URI.split(path).values_at(5, 8)
           path = sprockets_context.asset_path("#{path} #{args}", options)
-          Str.new [path, fragment].compact.join("#")
+          Str.new([path, frag].compact.join("#"))
         end
       end
     end

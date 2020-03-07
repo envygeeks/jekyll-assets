@@ -18,9 +18,9 @@ module Jekyll
 
         def process
           img = ::MiniMagick::Image.new(@file)
-          magick_format(img) if @args[:magick][:format]
+          magick_format(img) if args[:magick][:format]
           img.combine_options do |c|
-            @args[:magick].keys.reject { |k| k == :format }.each do |k|
+            args[:magick].keys.reject { |k| k == :format }.each do |k|
               m = "magick_#{k}"
 
               if respond_to?(m, true)
@@ -42,8 +42,8 @@ module Jekyll
 
         private
         def magick_format(img)
-          format = ".#{@args[:magick][:format].sub(%r!^\.!, '')}"
-          ext = @env.mime_exts.find { |k, v| k == format || v == format }
+          format = ".#{args[:magick][:format].sub(%r!^\.!, '')}"
+          ext = env.mime_exts.find { |k, v| k == format || v == format }
           return unless ext
 
           ext, type = ext
@@ -53,71 +53,73 @@ module Jekyll
 
         private
         def magick_transparency(cmd)
-          if @args[:magick][:transparency]
-            cmd.transparency @args[:magick][:transparency]
+          if args[:magick][:transparency]
+            cmd.transparency args[:magick][:transparency]
           end
         end
 
         private
         def magick_background(cmd)
-          if @args[:magick].key?(:background)
-            cmd.background @args[:magick][:background]
+          if args[:magick].key?(:background)
+            cmd.background args[:magick][
+              :background
+            ]
           end
         end
 
         private
         def magick_compress(cmd)
-          if @args[:magick].key?(:compress)
-            cmd.compress @args[:magick][:compress]
+          if args[:magick].key?(:compress)
+            cmd.compress args[:magick][:compress]
           end
         end
 
         private
         def magick_quality(cmd)
-          if @args[:magick].key?(:quality)
-            cmd.quality @args[:magick][:quality]
+          if args[:magick].key?(:quality)
+            cmd.quality args[:magick][:quality]
           end
         end
 
         private
         def magick_resize(cmd)
-          if @args[:magick].key?(:resize)
-            cmd.resize @args[:magick][:resize]
+          if args[:magick].key?(:resize)
+            cmd.resize args[:magick][:resize]
           end
         end
 
         private
         def magick_rotate(cmd)
-          if @args[:magick].key?(:rotate)
-            cmd.rotate @args[:magick][:rotate]
+          if args[:magick].key?(:rotate)
+            cmd.rotate args[:magick][:rotate]
           end
         end
 
         private
         def magick_flip(cmd)
-          if @args[:magick].key?(:flip)
-            cmd.flip @args[:magick][:flip]
+          if args[:magick].key?(:flip)
+            cmd.flip args[:magick][:flip]
           end
         end
 
         private
         def magick_crop(cmd)
-          if @args[:magick].key?(:crop)
-            cmd.crop @args[:magick][:crop]
+          if args[:magick].key?(:crop)
+            cmd.crop args[:magick][:crop]
           end
         end
 
         private
         def magick_extent(cmd)
-          if @args[:magick].key?(:extent)
-            cmd.extent @args[:magick][:extent]
+          if args[:magick].key?(:extent)
+            cmd.extent args[:magick][:extent]
           end
         end
 
         private
         def magick_gravity(cmd)
-          if @args[:magick].key?(:gravity)
-            cmd.gravity @args[:magick][:gravity]
+          if args[:magick].key?(:gravity)
+            cmd.gravity args[:magick][:gravity]
           end
         end
 
@@ -128,8 +130,8 @@ module Jekyll
 
         private
         def magick_preset_resize(img, cmd)
-          width, height = img.width * 2, img.height * 2 if @args[:magick].key?(:double)
-          width, height = img.width / 2, img.height / 2 if @args[:magick].key?(:half)
+          width, height = img.width * 2, img.height * 2 if args[:magick].key?(:double)
+          width, height = img.width / 2, img.height / 2 if args[:magick].key?(:half)
           cmd.resize "#{width}x#{height}" if width && height
         end
 
