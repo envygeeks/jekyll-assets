@@ -14,48 +14,92 @@ module Jekyll
         # --
         def run
           Nokogiri::HTML::Builder.with(doc) do |d|
-            srcset? ? complex(d) : d.img(args.to_h({
+            next complex_manual(d) if srcset_manual?
+            next complex(d) if srcset_auto?
+            d.img(args.to_h({
               html: true, skip: HTML.skips
             }))
           end
         end
 
-        # --
-        def complex(doc)
-          img = doc.img @args.to_h(html: true, skip: HTML.skips)
-          Array(args[:srcset][:width]).each do |w|
-            dimensions, density, type = w.to_s.split(%r!\s+!, 3)
+        def complex_manual(doc)
+          args[:srcset][:'1x'] = true
+          img = doc.img args.to_h(skip: HTML.skips, html: true)
+          args[:srcset].keys.grep(/^\d+x$/).sort.each do |key|
+            path = Pathutil.new(args[:argv1])
+            unless key == :'1x'
+              path = path.sub_ext(
+                atx_ext(
+                  key, path
+                )
+              )
+            end
 
             img["srcset"] ||= ""
-            img["srcset"] += ", #{path(dimensions: dimensions, type: type)} "
+            img["srcset"] += ", #{path_manual(path)} #{key}"
+            img["srcset"] = img["srcset"]
+              .gsub(%r!^,\s*!, "")
+          end
+        end
+
+        def atx_ext(key, path)
+          format('@%<size>s%<ext>s', {
+            size: key, ext: path.extname
+          })
+        end
+
+        def path_manual(path)
+          t_args = "#{path} @path"
+          t_args += " @optim" if args.key?(:optim)
+          tag = Tag.new("asset", t_args, p_ctx)
+          tag.render(ctx)
+        end
+
+        def complex(doc)
+          img = doc.img args.to_h(html: true, skip: HTML.skips)
+          Array(args[:srcset][:width]).each do |w|
+            dimensions, density, type = w.to_s.split(%r!\s+!, 3)
+            path = path_auto(dimensions: dimensions, type: type)
+
+            img["srcset"] ||= ""
+            img["srcset"] += ", #{path} "
             img["srcset"] += density || "#{dimensions}w"
             img["srcset"] = img["srcset"]
               .gsub(%r!^,\s*!, "")
           end
         end
 
-        # --
-        def path(dimensions:, type: nil)
-          args_ =  "#{args[:argv1]} @path"
-          args_ += " magick:resize=#{dimensions}"
-          args_ += " magick:format=#{type}" if type
-          args_ += " @optim" if args.key?(:optim)
-
-          pctx = Liquid::ParseContext.new
-          tag = Tag.new("asset", args_, pctx)
+        def path_auto(dimensions:, type: nil)
+          t_args =  "#{args[:argv1]} @path"
+          t_args += " magick:resize=#{dimensions}"
+          t_args += " magick:format=#{type}" if type
+          t_args += " @optim" if args.key?(:optim)
+          tag = Tag.new("asset", t_args, p_ctx)
           tag.render(ctx)
         end
 
-        # --
-        def srcset?
-          args.key?(:srcset) && args[:srcset]
-            .key?(:width)
+        def p_ctx
+          Liquid::ParseContext.new
         end
 
-        # --
+        def srcset_auto?
+          return false if @asset.content_type == 'image/svg+xml'
+          args.key?(:srcset) && args[:srcset].key?(
+            :width
+          )
+        end
+
+        def srcset_manual?
+          return false if @asset.content_type == 'image/svg+xml'
+          args.key?(:srcset) && args[:srcset].keys.grep(
+            /^\d+x$/
+          )
+        end
+
+        #
         # @example {% asset src srcset="" %}
         # @example {% asset src %}
-        # --
+        #
         def self.for?(type:, args:)
           return false unless super
           return false if args.key?(:pic)
