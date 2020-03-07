@@ -88,7 +88,7 @@ module Jekyll
       # need to ship debug info to the user, or they'll
       # never get it. That's not very good.
       # --
-      rescue Sass::SyntaxError => e
+      rescue SassC::SyntaxError => e
         e_sass(e, {
           args: args,
           ctx: ctx,
