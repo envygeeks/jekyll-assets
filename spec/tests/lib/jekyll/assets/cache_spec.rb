@@ -2,7 +2,7 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "rspec/helper"
+require 'rspec/helper'
 describe Jekyll::Assets::Cache do
   def args(**kwd)
     {
@@ -18,16 +18,15 @@ describe Jekyll::Assets::Cache do
   it { respond_to(:clear) }
   it { respond_to(:get) }
 
-  describe "#initialize" do
-    context "with an invalid dir" do
+  describe '#initialize' do
+    context 'with an invalid dir' do
       subject do
-        # FIXME: Broken
-        described_class.new(args({
-          dir: "bad",
+        described_class.new(**args({
+          dir: 'bad'
         }))
       end
 
-      it "raises" do
+      it 'must raise' do
         err = described_class::RelativeCacheDir
         expect { subject }.to raise_error(
           err
@@ -35,7 +34,7 @@ describe Jekyll::Assets::Cache do
       end
     end
 
-    context "with a dirty manifest" do
+    context 'with a new manifest' do
       subject do
         described_class.new(
           args
@@ -49,7 +48,7 @@ describe Jekyll::Assets::Cache do
         )
       end
 
-      it "clear" do
+      it 'must clear' do
         klass = described_class::Upstream
         expect_any_instance_of(klass).to receive(
           :clear
@@ -57,7 +56,9 @@ describe Jekyll::Assets::Cache do
       end
 
       after do
-        subject
+        subject.send(
+          :instance
+        )
       end
     end
   end
