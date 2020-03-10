@@ -41,15 +41,29 @@ module Jekyll
         super
       end
 
-      # --
+      #
+      # parse, or return the args
+      # @note you can pass in parsed args
+      # @return [Liquid::Tag::Parser]
+      #
+      def parse_args(args)
+        return args if args.is_a?(Liquid::Tag::Parser) || args.is_a?(Hash)
+        Liquid::Tag::Parser.new(
+          @args
+        )
+      end
+
       def render_raw(ctx)
+        args = parse_args(@args)
         env = ctx.registers[:site].sprockets
-        args = Liquid::Tag::Parser.new(@args)
         args = env.parse_liquid(args, ctx: ctx)
         raise_unfound_asset_on(ctx: ctx, with: args) unless args.key?(:argv1)
         asset = external(ctx, args: args) if env.external?(args)
         asset ||= internal(ctx, args: args)
-        [args, asset]
+
+        [
+          args, asset
+        ]
       end
 
       #

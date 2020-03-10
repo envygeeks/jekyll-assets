@@ -145,6 +145,11 @@ id, is as easy as doing `id="val"` inside of your tag arguments.
         >
 ```
 
+_When doing responsive images, Jekyll Assets will take your scales, min
+width and scale all your images down until it reaches the min width, or
+your last scale. If you give an image with 200x200 and you specify 200x200
+as your min max width, you will  only end up with a 1x srcset scale._
+
 ## Liquid
 
 We support liquid arguments for tag values (but not tag keys), and we also

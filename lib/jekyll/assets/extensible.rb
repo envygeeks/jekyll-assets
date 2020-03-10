@@ -29,7 +29,7 @@ module Jekyll
       #
       def env
         site = @ctx.registers[:site]
-        site.sprockets if site
+        site&.sprockets
       end
 
       #
@@ -39,7 +39,7 @@ module Jekyll
       #
       def jekyll
         return unless env
-        env.jekyll
+        env&.jekyll
       end
 
       class << self
