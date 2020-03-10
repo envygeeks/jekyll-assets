@@ -3,3 +3,5 @@ inherit_gem:
     - rules.yml
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
