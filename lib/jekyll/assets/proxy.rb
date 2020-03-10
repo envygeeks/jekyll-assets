@@ -2,7 +2,7 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require "digest"
+require 'digest'
 
 module Jekyll
   module Assets
@@ -12,7 +12,7 @@ module Jekyll
       class Deleted < StandardError
         def initialize(obj)
           super "#{obj} violated a contract and " \
-            "deleted your proxy file"
+            'deleted your proxy file'
         end
       end
 
@@ -35,7 +35,7 @@ module Jekyll
             obj = o.new(file, {
               args: args,
               asset: asset,
-              ctx: ctx,
+              ctx: ctx
             })
 
             o = obj.process
@@ -70,7 +70,7 @@ module Jekyll
       def self.copy(asset, ctx:, args:)
         env = ctx.registers[:site].sprockets
 
-        path = env.in_cache_dir("proxied")
+        path = env.in_cache_dir('proxied')
         extname = File.extname(args[:argv1])
         out = Pathutil.new(path).join(digest(args))
           .sub_ext(extname)
@@ -118,5 +118,9 @@ module Jekyll
 end
 
 Jekyll::Assets::Hook.register :env, :after_init do
-  append_path(in_cache_dir("proxied"))
+  append_path(
+    in_cache_dir(
+      'proxied'
+    )
+  )
 end
