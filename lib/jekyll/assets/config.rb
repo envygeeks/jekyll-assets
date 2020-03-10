@@ -6,115 +6,106 @@
 module Jekyll
   module Assets
     class Config < HashWithIndifferentAccess
-      %i(before).map do |v|
-        Hook.add_point(
-          :env, :"#{v}_merge"
+      Hook.add_point :env, :before_merge
+      DIRECTORIES = %i(
+        css fonts images
+        videos audios components
+        javascript video audio
+        image img js
+      ).freeze
+
+      #
+      # The source directories
+      # @note _assets, assets, and base
+      # @return [Array<String>]
+      #
+      def self.sources
+        return @sources if defined?(@sources)
+
+        sources_a = []
+        sources_b = []
+        sources_c = []
+
+        DIRECTORIES.map do |name|
+          sources_a.push(format('assets/%<name>s', name: name))
+          sources_b.push(name.to_s)
+          sources_c.push(
+            format(
+              '_assets/%<name>s', {
+                name: name
+              }
+            )
+          )
+        end
+
+        @sources = \
+          sources_a |
+          sources_b |
+          sources_c
+      end
+
+      def self.development
+        return @development if defined?(@development)
+        @development = {
+          digest: true,
+          precompile: [],
+          source_maps: true,
+          destination: '/assets',
+          compression: false,
+          raw_precompile: [],
+          sources: sources,
+          full_url: false,
+          defaults: {},
+          gzip: false,
+
+          compressors: {
+            uglifier: {
+              comments: false,
+              harmony: true,
+            },
+          },
+
+          caching: {
+            path: '.jekyll-cache/assets',
+            enabled: true,
+            type: 'file',
+          },
+
+          cdn: {
+            baseurl: false,
+            destination: false,
+            url: nil,
+          }
+        }
+      end
+
+      def self.production
+        return @production if defined?(@production)
+        @production = @development.merge(
+          source_maps: false,
+          compression: true
         )
       end
 
-      DEVELOPMENT = {
-        digest: true,
-        precompile: [],
-        source_maps: true,
-        destination: "/assets",
-        compression: false,
-        raw_precompile: [],
-        full_url: false,
-        defaults: {},
-        gzip: false,
-
-        compressors: {
-          uglifier: {
-            comments: false,
-            harmony: true,
-          },
-        },
-
-        caching: {
-          path: ".jekyll-cache/assets",
-          enabled: true,
-          type: "file",
-        },
-
-        cdn: {
-          baseurl: false,
-          destination: false,
-          url: nil,
-        },
-
-        sources: %w(
-          assets/css
-          assets/fonts
-          assets/images
-          assets/videos
-          assets/audios
-          assets/components
-          assets/javascript
-          assets/video
-          assets/audio
-          assets/image
-          assets/img
-          assets/js
-
-          _assets/css
-          _assets/fonts
-          _assets/images
-          _assets/videos
-          _assets/audios
-          _assets/components
-          _assets/javascript
-          _assets/video
-          _assets/audio
-          _assets/image
-          _assets/img
-          _assets/js
-
-          css
-          fonts
-          images
-          videos
-          audios
-          components
-          javascript
-          audio
-          video
-          image
-          img
-          js
-        ),
-      }.freeze
-
-      PRODUCTION = DEVELOPMENT.deep_merge({
-        source_maps: false,
-        compression: true,
-      }).freeze
+      def self.defaults
+        return development if Jekyll.dev?
+        production
+      end
 
       def initialize(config)
         super(self.class.defaults)
-        Hook.trigger(:config, :before_merge) { |h| h.call(self) }
+        Hook.trigger(:config, :before_merge) do |h|
+          h.call(
+            self
+          )
+        end
+
         deep_merge!(config)
-        merge_sources!
-      end
-
-      # --
-      # @return [HashWithIndifferentAccess]
-      # @note this is useful if you are in safe mode.
-      # The original defaults we have set.
-      # --
-      def self.defaults
-        Jekyll.dev? ? DEVELOPMENT : PRODUCTION
-      end
-
-      # --
-      # Merge our sources with their sources.
-      # @note we don't really allow users to remove our sources.
-      # @return [nil]
-      # --
-      private
-      def merge_sources!
-        ours = self.class.defaults[:sources]
-        theirs = [self[:sources] || []].flatten.compact
-        self[:sources] = theirs | ours
+        self[:sources] = \
+          Array(self[:sources]) |
+          self.class.defaults[
+            :sources
+          ]
       end
     end
   end
