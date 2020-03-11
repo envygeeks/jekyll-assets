@@ -81,7 +81,7 @@ module Jekyll
 
       def self.production
         return @production if defined?(@production)
-        @production = @development.merge(
+        @production = development.merge(
           source_maps: false,
           compression: true
         )
