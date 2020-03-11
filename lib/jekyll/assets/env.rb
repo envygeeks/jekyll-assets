@@ -40,6 +40,7 @@ module Jekyll
         @cache = nil
 
         setup_sources!
+        setup_digesting!
         ignore_caches!
         precompile!
 
@@ -160,6 +161,17 @@ module Jekyll
         end
 
         nil
+      end
+
+      def setup_digesting!
+        self.digest_class = \
+          case asset_config[:digest_algorithm]
+          when :sha256 then  Digest::SHA256
+          when :sha384 then  Digest::SHA384
+          when :sha512 then  Digest::SHA512
+          else
+            raise 'Unknown digest_algorithm given'
+          end
       end
 
       # --

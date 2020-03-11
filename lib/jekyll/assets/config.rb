@@ -51,6 +51,7 @@ module Jekyll
           precompile: [],
           source_maps: true,
           destination: '/assets',
+          digest_algorithm: :sha512,
           compression: false,
           raw_precompile: [],
           sources: sources,
