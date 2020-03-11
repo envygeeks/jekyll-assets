@@ -2,14 +2,14 @@
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
-require_relative "reader"
+require_relative 'reader'
 
 dir = Pathutil.new(__dir__)
-dir.join("compressors").children do |v|
-  unless v.directory?
-    require v
-  end
-end
+dir.join('compressors').children.map(
+  &method(
+    :require
+  )
+)
 
 module Jekyll
   module Assets
@@ -24,8 +24,8 @@ module Jekyll
       attr_reader :jekyll
 
       # --
-      def initialize(jekyll = nil)
-        @asset_config = Config.new(jekyll.config["assets"] ||= {})
+      def initialize(jekyll)
+        @asset_config = Config.new(jekyll.config['assets'] ||= {})
         Hook.trigger :env, :before_init do |h|
           instance_eval(&h)
         end
@@ -54,10 +54,10 @@ module Jekyll
       end
 
       # --
-      def find_asset(v, *a)
-        msg = "Searched for, and rendered #{v} in %<time>s"
+      def find_asset(asset, *args)
+        msg = "Searched for, and rendered #{asset} in %<time>s"
         out = Logger.with_timed_logging msg do
-          super(v, *a)
+          super(asset, *args)
         end
 
         # We keep track.
@@ -66,10 +66,10 @@ module Jekyll
       end
 
       # --
-      def find_asset!(v, *a)
-        msg = "Searched for, and rendered #{v} in %<time>s"
+      def find_asset!(asset, *args)
+        msg = "Searched for, and rendered #{asset} in %<time>s"
         out = Logger.with_timed_logging msg do
-          super(v, *a)
+          super(asset, *args)
         end
 
         # We keep track.
@@ -81,13 +81,13 @@ module Jekyll
       # @note this is configurable with :caching -> :type
       # Create a cache, or a null cache (if no caching) for caching.
       # @note this is configurable with :caching -> :enabled
-      # @return [Sprockets::Cache]
+      # @return [Jekyll::Assets::Cache]
       # --
       def cache
         @cache ||= Cache.new({
           manifest: manifest,
           config: asset_config,
-          dir: in_cache_dir,
+          dir: in_cache_dir
         })
       end
 
@@ -97,10 +97,10 @@ module Jekyll
       # @return [Hash]
       # --
       def to_liquid_payload
-        each_file.each_with_object({}) do |k, h|
+        each_file&.each_with_object({}) do |k, h|
           skip, path = false, Pathutil.new(strip_paths(k))
           path.descend do |p|
-            skip = p.start_with?("_")
+            skip = p.start_with?('_')
             if skip
               break
             end
@@ -108,7 +108,7 @@ module Jekyll
 
           next if skip
           h[path.to_s] = Drop.new(path, {
-            jekyll: jekyll,
+            jekyll: jekyll
           })
         end
       end
@@ -125,18 +125,19 @@ module Jekyll
 
       # ---
       def remove_old_assets
-        assets_to_write.each do |v|
-          # Fixme: Broken, and  not working right!
-          in_dest_dir(find_asset!(v).logical_path).rm_f
+        assets_to_write.each do |path|
+          asset = find_asset!(path)
+          lpath = asset.logical_path
+          in_dest_dir(lpath).rm_f
         end
       end
 
       # --
       private
       def ignore_caches!
-        jekyll.config["exclude"] ||= []
-        jekyll.config["exclude"].push(asset_config[:caching][:path])
-        jekyll.config["exclude"].uniq!
+        jekyll.config['exclude'] ||= []
+        jekyll.config['exclude'].push(asset_config[:caching][:path])
+        jekyll.config['exclude'].uniq!
       end
 
       # --
@@ -165,7 +166,7 @@ module Jekyll
       private
       def setup_sources!
         source_dir, cwd = Pathutil.new(jekyll.in_source_dir), Pathutil.cwd
-        asset_config["sources"].each do |v|
+        asset_config['sources'].each do |v|
           path = source_dir.join(v).expand_path
           next unless path.in_path?(cwd)
           unless paths.include?(path)
@@ -176,8 +177,8 @@ module Jekyll
         paths
       end
 
-      require_relative "plugins"
-      require_relative "context"
+      require_relative 'plugins'
+      require_relative 'context'
     end
   end
 end
