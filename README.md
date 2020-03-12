@@ -129,12 +129,15 @@ id, is as easy as doing `id="val"` inside of your tag arguments.
 
 | Option | Tag Option | Type | Description |
 |---|---|---|---|
-| responsive.automatic | @responsive:automatic | Boolean | Upscale & Downscale images |
-| responsive.automatic_min_width | @responsive:min_width | Integer | Stop scaling before this width |
-| responsive.automatic_scales | responsive:scales | String | The scales to use |
-| responsive.discovery_scales | responsive:scales | String | The scales to look for |
-| responsive.automatic_upscale | @responsive:upscale | Upscale, the source instead of downscale |
-| responsive.discovery | @responsive:discovery | Responsive if an img matching source w/ @<scale>x exists |
+| automatic | @automatic | Boolean | Upscale & Downscale images |
+| automatic_min_width | @min_width | Integer | Stop scaling before this width |
+| automatic_scales | scales | String | The scales to use |
+| discovery_scales | scales | String | The scales to look for |
+| automatic_upscale | @upscale | Boolean | Upscale, the source instead of downscale |
+| discovery | @discovery | Boolean | Responsive if an img matching source w/ @<scale>x exists |
+
+***Each option is in the responsive namespace regardless
+of whether it's inside of the tag, or configuration.***
 
 #### Example
 
