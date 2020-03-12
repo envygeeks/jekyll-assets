@@ -125,6 +125,17 @@ id, is as easy as doing `id="val"` inside of your tag arguments.
 
 ## Responsive Images
 ### `<img>` usage
+#### Configuration
+
+| Option | Tag Option | Type | Description |
+|---|---|---|---|
+| responsive.automatic | @responsive:automatic | Boolean | Upscale & Downscale images |
+| responsive.automatic_min_width | @responsive:min_width | Integer | Stop scaling before this width |
+| responsive.automatic_scales | responsive:scales | String | The scales to use |
+| responsive.discovery_scales | responsive:scales | String | The scales to look for |
+| responsive.automatic_upscale | @responsive:upscale | Upscale, the source instead of downscale |
+| responsive.discovery | @responsive:discovery | Responsive if an img matching source w/ @<scale>x exists |
+
 #### Example
 
 ```liquid
@@ -145,10 +156,26 @@ id, is as easy as doing `id="val"` inside of your tag arguments.
         >
 ```
 
-_When doing responsive images, Jekyll Assets will take your scales, min
-width and scale all your images down until it reaches the min width, or
-your last scale. If you give an image with 200x200 and you specify 200x200
-as your min max width, you will  only end up with a 1x srcset scale._
+#### Discovery
+
+When using discovery based responsive images, we will only do responsive
+images if we can find assets that match your scales based on the source
+file.  For example if you do `{% asset img.png responsive:discovery
+responsive:scales=1x responsive:scales=1.5x responsive:scales=2x %}` then
+we will expect `img.png@1.5x` and `img.png@2x` to exist.  For any image
+that doesn't exist it will be skipped, and that scale will not be included!
+
+#### Automatic
+
+Automatic responsive images/scaling can either upscale, or downscale.  This
+is useful if you have a ton of images for blog posts, and you always want to
+provide a single most high quality version and then have us downscale those,
+or if you have an image and wish us to upscale it! The `argv1` of `{% asset
+img.png %}` is where the source is derived from.  Given you give `2x`, `1.5x`
+and `1x` if you choose to downscale, the source will be assumed to be 2x,
+and we will downscale to 1.5x and half.  If you chose to upscale, the source
+will be assumed to be 1x, and we will multiply the width by `1.5` and `2`
+
 
 ## Liquid
 

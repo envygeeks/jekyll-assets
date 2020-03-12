@@ -192,12 +192,14 @@ module Jekyll
       # --
       # Lands your path inside of the cache directory.
       # @note configurable with `caching: { path: "dir_name"` }
-      # @return [String]
+      # @return [Pathutil]
       # --
       def in_cache_dir(*paths)
         path = Pathutil.pwd.join(strip_slashes(asset_config[:caching][:path]))
         Pathutil.new(paths.reduce(path.to_s) do |b, p|
-          Jekyll.sanitized_path(b, p)
+          Jekyll.sanitized_path(
+            b, p
+          )
         end)
       end
 
@@ -205,15 +207,16 @@ module Jekyll
       # @note this is configurable with `:destination`
       # Lands your path inside of the destination directory.
       # @param [Array<String>] paths the paths.
-      # @return [String]
+      # @return [Pathutil]
       # --
       def in_dest_dir(*paths)
         destination = strip_slashes(asset_config[:destination])
 
         paths.unshift(destination)
         paths = paths.flatten.compact
-        Pathutil.new(jekyll
-          .in_dest_dir(*paths))
+        Pathutil.new(jekyll.in_dest_dir(
+          *paths
+        ))
       end
 
       # --

@@ -14,86 +14,45 @@ module Jekyll
 
         def run
           Nokogiri::HTML::Builder.with(doc) do |html|
-            next responsive(html) if responsive?
+            next automatic(html) if responsive? && automatic?
+            next discovery(html) if responsive? && discovery?
             html.img(args.to_h({
               html: true, skip: HTML.skips
             }))
           end
         end
 
-        #
-        # create a responsive image
-        # @param html [Nokogiri::HTML::Fragment] the document
-        # @return [void]
-        #
-        def responsive(html)
-          width = sizeof(asset)[:w]
-          img = html.img(args.to_h(html: true, skip: HTML.skips))
-          img[:srcset] ||= ''
+        def discovery(html)
+          srcset(html, scales.each_with_object({}) do |scale, obj|
+            asset = env.find_asset(scaled_name(scale))
+            next unless asset
 
-          paths = scales.zip(scales.reverse).map do |(scale, divide)|
-            existing = env.find_asset(scaled_name(scale))
-            unless existing
-              expected_width = width / divide
-              if expected_width < min_width
-                next
+            obj.update({
+              scale => begin
+                args = self.args.dup
+                args.update(path: true, argv1: asset.filename, src: nil)
+                tag = Tag.new('asset', args, parse_ctx)
+                tag.render(
+                  ctx
+                )
               end
-            end
-
-            args = self.args.dup
-            args[:argv1] = existing.filename if existing
-            args[:path] = true
-
-            unless existing
-              args[:magick] = {
-                resize: format('%<width>dx', {
-                  width: width / divide
-                })
-              }
-            end
-
-            tag = Tag.new('asset', args, p_ctx)
-            tag.render(
-              ctx
-            )
-          end
-
-          paths, o_scales = correct_scales(paths, scales)
-          to_srcset(paths,
-            scales: o_scales,
-            img: img
-          )
-        end
-
-        def to_srcset(paths, scales:, img:)
-          scales = scales.zip(paths).map do |(scale, path)|
-            format('%<path>s %<scale>sx', {
-              scale: scale, path: path
             })
-          end
+          end)
+        end
 
-          # Add them to the image
-          img[:srcset] = scales.join(
-            ', '
+        def path
+          Pathutil.new(
+            asset.filename
           )
         end
 
-        def correct_scales(paths, scales)
-          o_scales, paths = scales, paths.compact
-          if paths.size < scales.size
-            o_scales = scales.reverse[
-              0...paths.size
-            ].reverse
-          end
-
-          [
-            paths,
-            o_scales
-          ]
-        end
-
+        #
+        # add @<n>x to the file
+        # @param scale [Integer] the scale
+        # @return [Pathutil]
+        #
         def scaled_name(scale)
-          path = Pathutil.new(asset.filename)
+          return path if scale == 1
           path.sub_ext(format('@%<scale>sx%<ext>s', {
             scale: scale,
             ext: path.send(
@@ -102,44 +61,181 @@ module Jekyll
           }))
         end
 
+        # Generate automatic sizes
+        # @note the asset is considered the max width
+        # @note this poses a potential problem right now
+        #   in that if your min is smaller than your potential
+        #   1x you might never get a 1x at all.
+        # @return [nil]
         #
-        # the max width
-        # @note this can be set on the tag
-        #   or it can be set on the config
+        def automatic(html)
+          srcset(html, widths.each_with_object({}) do |(scale, width), obj|
+            obj.update({
+              scale => begin
+                args = self.args.dup
+                args.update({
+                  path: true,
+                  magick: {
+                    resize: format('%<width>dx', {
+                      width: width
+                    })
+                  }
+                })
+
+                tag = Tag.new('asset', args, parse_ctx)
+                tag.render(
+                  ctx
+                )
+              end
+            })
+          end)
+        end
+
+        def srcset(html, scales)
+          img = html.img
+
+          img[:src] = scales[1]
+          img[:srcset] = scales.map do |scale, src|
+            format('%<src>s %<scale>sx', {
+              scale: scale,
+              src: src
+            })
+          end.join(', ')
+
+          img
+        end
+
+        def widths
+          return upscaled_widths if upscale?
+
+          scales, out = self.scales, {}
+          self.scales.reverse.map do |div|
+            width = width_of / div
+            if above_min?(width)
+              out.update({
+                scales.shift => width.to_i
+              })
+            end
+          end
+
+          if out.empty?
+            then out.update({
+              1 => width_of
+            })
+          end
+
+          out
+        end
+
+        def upscaled_widths
+          args.dig(:responsive, :upscale) || env.asset_config.dig(
+            :responsive, :automatic_upscale
+          )
+        end
+
+        def upscale?
+          args.dig(:responsive, :upscale) || env.asset_config.dig(
+            :responsive, :automatic_upscale
+          )
+        end
+
+        #
+        # All of the defined scales
+        # @note you can either define them in the tag
+        #   or you can define tem in the config, not both
+        # @return [Array]
+        #
+        def scales
+          raw_scales.map do |scale|
+            scale =~ %r!\.! \
+              ? scale.to_s.to_f
+              : scale.to_s.to_i
+          end.sort
+        end
+
+        def raw_scales
+          Array(
+            args.dig(:responsive, :automatic_scales) ||
+            env.asset_config.dig(
+              :responsive, :scales
+            )
+          )
+        end
+
+        #
+        # Get the current width of the asset
+        # @return [Integer]
+        #
+        def width_of(asset = self.asset)
+          img = FastImage.size(asset.filename)
+          img.fetch(
+            0
+          )
+        end
+
+        #
+        # The minimum acceptable width as defined in the
+        #   tag, or inside of the configuration
         # @return [Integer]
         #
         def min_width
-          args.dig(:srcset, :'min-width') ||
-          args.dig(:srcset, :'min_width') ||
-          env.asset_config.dig(
-            :responsive, :min_width
-          )
-        end
-
-        #
-        # the min width
-        # @note this can vbe set on the tag
-        #   or it can be set on the config
-        # @return [Integer]
-        #
-        def max_width
-          args.dig(:srcset, :'max-width') ||
-          args.dig(:srcset, :'max_width') ||
-          env.asset_config.dig(
-            :responsive, :min_width
-          )
-        end
-
-        def scales
-          scales = args.dig(:srcset)&.keys&.grep(%r!^\d+x$!)
-          scales = env.asset_config[:responsive][:scales] if !scales || scales.empty?
-          scales.sort.reverse.map do |scale|
-            Integer(
-              scale.to_s.gsub(
-                %r!^@|x$!, ''
-              )
+          args.dig(:responsive, :min_width) ||
+            env.asset_config.dig(
+              :responsive, :automatic_min_width
             )
-          end
+        end
+
+        #
+        # above min makes sure that an asset is
+        #   above the minimum size, so we can skip
+        #   or just stop building, or not build
+        # @param asset [Sprockets::Asset, Integer]
+        # @return [true, false]
+        #
+        def above_min?(asset = self.asset)
+          return asset > min_width if asset.is_a?(Numeric)
+          min_width < width_of(
+            asset
+          )
+        end
+
+        #
+        # should we be doing automatic conversion?
+        # @note you must also be *above* the min width or 0
+        # @note min width does not apply to tags
+        # @return [true, false]
+        #
+        def automatic?
+          args.dig(:responsive, :automatic) || (
+            above_min? && env.asset_config.dig(
+              :responsive, :automatic
+            )
+          )
+        end
+
+        #
+        # should we be doing discovery?
+        # @return [true, false]
+        #
+        def discovery?
+          args.dig(:responsive, :discovery) ||
+          env.asset_config.dig(
+            :responsive, :discovery
+          )
+        end
+
+        #
+        # @see responsive_tag?
+        # responsive is true if you are having a
+        #   responsive tag, or you have set up the config
+        #   to use automatic sizing, or discovery
+        # @return [true, false]
+        #
+        def responsive?
+          return false if asset.is_a?(Url)
+          automatic? || discovery? && false != args[
+            :responsive
+          ]
         end
 
         #
@@ -147,71 +243,8 @@ module Jekyll
         # @note this can be a new instance always
         # @return Liquid::ParseContext
         #
-        def p_ctx
+        def parse_ctx
           Liquid::ParseContext.new
-        end
-
-        #
-        # Get the size of an asset
-        # @return [Hash]
-        #
-        def sizeof(asset = self.asset)
-          f_name = asset.respond_to?(:filename) ? asset.filename : asset
-          img = FastImage.size(f_name.to_s)
-
-          {
-            w: img[0],
-            h: img[
-              1
-            ]
-          }
-        end
-
-        #
-        # Are we responsive?
-        # @note you can be responsive if you set
-        #   responsive automatic to true, and set a width,
-        #   or you use srcset on the tag, and you set
-        #   width or @{n} so we can work with that
-        # @return [true, false]
-        #
-        def responsive?
-          return false if env.external?(asset)
-          return false if asset.content_type == 'image/svg+xml'
-          env.asset_config[:responsive][:automatic] ||
-            userdef_width? ||
-            userdef_scale?
-        end
-
-        #
-        # Are we a srcset:width?
-        # @return [true, false]
-        # @example {% asset
-        #   example.png
-        #   srcset:width=100
-        #   srcset:width:200
-        # %}
-        def userdef_width?
-          return false if @asset.content_type == 'image/svg+xml'
-          args.key?(:srcset) && args[:srcset].key?(
-            :width
-          )
-        end
-
-        #
-        # Are we scaling based on the user?
-        # @return [true, false]
-        # @example {%
-        #   example.png
-        #   srcset:1x
-        #   srcset:2x
-        # %}
-        #
-        def userdef_scale?
-          return false if @asset.content_type == 'image/svg+xml'
-          args.key?(:srcset) && args[:srcset].keys.grep(
-            /^\d+x$/
-          )
         end
 
         #
@@ -228,20 +261,19 @@ module Jekyll
         end
       end
     end
-  end
-end
 
-Jekyll::Assets::Hook.register :config, :before_merge do |cfg|
-  cfg.deep_merge!({
-    responsive: {
-      max_width: 5000,
-      automatic: true,
-      min_width: 0,
-      scales: %i(
-        1x
-        2x
-        3x
-      )
-    }
-  })
+    Hook.register :config, :before_merge do |cfg|
+      cfg.deep_merge!({
+        responsive: {
+          automatic: false,
+          automatic_min_width: 128,
+          automatic_scales: %i(1x 1.5x 2x),
+          discovery_scales: %i(1x 1.5x 2x),
+          automatic_upscale: false,
+          discovery: false,
+          optim: false
+        }
+      })
+    end
+  end
 end
