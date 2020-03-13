@@ -155,9 +155,9 @@ module Jekyll
 
         def raw_scales
           Array(
-            args.dig(:responsive, :automatic_scales) ||
+            args.dig(:responsive, :scales) ||
             env.asset_config.dig(
-              :responsive, :scales
+              :responsive, :automatic_scales
             )
           )
         end
@@ -233,9 +233,10 @@ module Jekyll
         #
         def responsive?
           return false if asset.is_a?(Url)
-          automatic? || discovery? && false != args[
-            :responsive
-          ]
+          automatic? || discovery? &&
+            false != args[
+              :responsive
+            ]
         end
 
         #

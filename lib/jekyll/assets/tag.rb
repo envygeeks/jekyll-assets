@@ -1,4 +1,5 @@
 # Frozen-string-literal: true
+# rubocop:disable Style/AccessModifierDeclarations
 # Copyright: 2012 - 2018 - MIT License
 # Encoding: utf-8
 
@@ -13,27 +14,30 @@ module Jekyll
         public :new
       end
 
-      # --
       class MixedArg < StandardError
         def initialize(arg, mixed)
           super "cannot use #{arg} w/ #{mixed}"
         end
       end
 
-      # --
       class InvalidExternal < StandardError
         def initialize(arg)
           super "cannot use `#{arg}' with external url's"
         end
       end
 
-      # --
       attr_reader :name
       attr_reader :tokens
       attr_reader :args
       attr_reader :tag
 
-      # --
+      #
+      # initialize a new instance
+      # @param tag [String,Symbol] the current tag ('asset')
+      # @param args [Hash, String, Liquid::Tag::Parser] the arguments
+      # @param tokens [Liquid::ParseContext] the tokens
+      # @return [void]
+      #
       def initialize(tag, args, tokens)
         @tag = tag.to_sym
         @tokens = tokens
@@ -191,9 +195,7 @@ module Jekyll
       private
       def e_not_found(e, ctx:)
         lines = e.message.each_line.to_a
-        page   = ctx.registers[:page]&.[]('relative_path')
-        page ||= ctx.registers[:page]&.[]('path')
-
+        page = ctx.registers[:page]&.[]('relative_path') || ctx.registers[:page]&.[]('path')
         lines[0] = lines[0].strip + " in `#{page || 'Untraceable'}'\n\n"
         raise e.class, lines.join
       end
