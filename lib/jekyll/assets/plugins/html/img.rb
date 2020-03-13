@@ -237,6 +237,7 @@ module Jekyll
         # @return [true, false]
         #
         def responsive?
+          return false if asset.type == 'image/webp'
           return false if asset.is_a?(Url)
           automatic? || discovery? &&
             false != args[
@@ -258,12 +259,6 @@ module Jekyll
         # @example {% asset src %}
         #
         def self.for?(type:, args:)
-          if args[:argv1].end_with?('.webp')
-            require 'pry'
-            Pry.output = STDOUT
-            binding.pry
-          end
-
           return false unless super
           return false if args.key?(:pic)
           return false if args.key?(:inline) &&
