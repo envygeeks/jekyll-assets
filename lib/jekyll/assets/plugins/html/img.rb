@@ -16,9 +16,9 @@ module Jekyll
           Nokogiri::HTML::Builder.with(doc) do |html|
             next automatic(html) if responsive? && automatic?
             next discovery(html) if responsive? && discovery?
-            html.img(args.to_h({
-              html: true, skip: HTML.skips
-            }))
+            build_img(
+              html
+            )
           end
         end
 
@@ -92,8 +92,7 @@ module Jekyll
         end
 
         def srcset(html, scales)
-          img = html.img
-
+          img = build_img(html)
           img[:src] = scales[1]
           img[:srcset] = scales.map do |scale, src|
             format('%<src>s %<scale>sx', {
@@ -125,6 +124,12 @@ module Jekyll
           end
 
           out
+        end
+
+        def build_img(html)
+          html.img(args.to_h({
+            html: true, skip: HTML.skips
+          }))
         end
 
         def upscaled_widths
@@ -253,6 +258,12 @@ module Jekyll
         # @example {% asset src %}
         #
         def self.for?(type:, args:)
+          if args[:argv1].end_with?('.webp')
+            require 'pry'
+            Pry.output = STDOUT
+            binding.pry
+          end
+
           return false unless super
           return false if args.key?(:pic)
           return false if args.key?(:inline) &&
