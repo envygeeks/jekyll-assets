@@ -237,8 +237,8 @@ module Jekyll
         # @return [true, false]
         #
         def responsive?
-          return false if asset.type == 'image/webp'
           return false if asset.is_a?(Url)
+          return false if asset.content_type == 'image/webp'
           automatic? || discovery? &&
             false != args[
               :responsive
