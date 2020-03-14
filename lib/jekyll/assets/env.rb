@@ -1,5 +1,5 @@
 # Frozen-string-literal: true
-# Copyright: 2012 - 2018 - MIT License
+# Copyright: 2012 - 2020 - ISC License
 # Encoding: utf-8
 
 require_relative 'reader'
