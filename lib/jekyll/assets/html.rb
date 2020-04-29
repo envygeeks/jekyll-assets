@@ -31,20 +31,20 @@ module Jekyll
       # --
       def self.build(args:, asset:, ctx:)
         rtn = inherited.select do |o|
-          o.for?({
+          o.for?(
             type: asset.content_type,
-            args: args,
-          })
+            args: args
+          )
         end
 
         doc = make_doc(rtn, asset: asset)
         rtn.each do |o|
-          o = o.new({
+          o = o.new(
             doc: doc,
             asset: asset,
             args: args,
             ctx: ctx,
-          })
+          )
 
           o.run
         end

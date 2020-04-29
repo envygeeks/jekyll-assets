@@ -54,6 +54,9 @@ module Jekyll
               }
             end
           else
+            require 'pry'
+            Pry.output = STDOUT
+            binding.pry
             glob_paths(v).each do |p|
               next unless p
 
@@ -154,9 +157,9 @@ module Jekyll
         case true
         when obj.is_a?(Hash) || obj.is_a?(Liquid::Tag::Parser)
           obj.each_key.with_object(obj) do |k, o|
-            o[k] = parse_liquid(o[k], {
+            o[k] = parse_liquid(o[k],
               ctx: ctx,
-            })
+            )
           end
         when obj.is_a?(Array)
           obj.map do |v|

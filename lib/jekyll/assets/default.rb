@@ -13,10 +13,10 @@ module Jekyll
       # --
       def self.get(type:, args:)
         rtn = Default.inherited.select do |o|
-          o.for?({
+          o.for?(
             type: type,
             args: args,
-          })
+          )
         end
 
         ida = HashWithIndifferentAccess.new
@@ -40,11 +40,11 @@ module Jekyll
         end
 
         rtn.each do |o|
-          o.new({
+          o.new(
             args: args,
             asset: asset,
             ctx: ctx,
-          }).run
+          ).run
         end
       end
 

@@ -85,11 +85,11 @@ module Jekyll
       # @return [Jekyll::Assets::Cache]
       # --
       def cache
-        @cache ||= Cache.new({
+        @cache ||= Cache.new(
           manifest: manifest,
           config: asset_config,
           dir: in_cache_dir
-        })
+        )
       end
 
       # --
@@ -108,9 +108,9 @@ module Jekyll
           end
 
           next if skip
-          h[path.to_s] = Drop.new(path, {
+          h[path.to_s] = Drop.new(path,
             jekyll: jekyll
-          })
+          )
         end
       end
 

@@ -85,11 +85,11 @@ module Jekyll
 
         env.logger.debug args.to_h(html: false).inspect
         return_or_build(ctx, args: args, asset: asset) do
-          HTML.build({
+          HTML.build(
             args: args,
             asset: asset,
             ctx: ctx,
-          })
+          )
         end
       #
       rescue Sprockets::FileNotFound => e
@@ -179,9 +179,9 @@ module Jekyll
         out = Proxy.proxy(original, args: args, ctx: ctx)
         env.assets_to_write |= [out.logical_path]
 
-        Default.set(args, {
+        Default.set(args,
           ctx: ctx, asset: out
-        })
+        )
 
         out
       end

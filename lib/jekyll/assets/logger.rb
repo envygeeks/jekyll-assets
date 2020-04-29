@@ -65,9 +65,9 @@ module Jekyll
       # @return nil
       # --
       %i(warn error info debug).each do |v|
-        make_logger({
+        make_logger(
           type: v,
-        })
+        )
       end
     end
   end
