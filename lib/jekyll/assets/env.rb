@@ -117,8 +117,10 @@ module Jekyll
       # --
       def write_all
         remove_old_assets unless asset_config[:digest]
-        manifest.compile(*assets_to_write); @asset_to_write = []
+        manifest.compile(*assets_to_write)
+        @asset_to_write = []
         copy_raw!
+
         Hook.trigger(:env, :after_write) { |h| instance_eval(&h) }
         Logger.debug "took #{format(@total_time.round(2).to_s,
           '%.2f')}s"
@@ -143,7 +145,7 @@ module Jekyll
 
       # --
       def copy_raw!
-        raw_precompiles.each do |v|
+        raw_precompiles.map do |v|
           v[:full_destination].parent.mkdir_p
           unless v[:source].directory?
             v[:source].cp(

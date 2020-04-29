@@ -26,7 +26,7 @@ module Jekyll
 
         def raw_compiles
           site.sprockets.raw_precompiles.map do |v|
-            v[:full_destination]
+            [v[:full_destination], v[:full_destination].dirname]
           end
         end
       end
