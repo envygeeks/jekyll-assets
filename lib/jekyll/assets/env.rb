@@ -143,10 +143,18 @@ module Jekyll
 
       # --
       def copy_raw!
+        require 'pry'
+        Pry.output = STDOUT
+        binding.pry
         raw_precompiles.each do |v|
-          v[:dst].mkdir_p if v[:dst].extname.empty?
-          v[:dst].parent.mkdir_p unless v[:dst].extname.empty?
-          v[:src].cp(v[:dst])
+          v[:full_destination].parent.mkdir_p
+          unless v[:source].directory?
+            v[:source].cp(
+              v.fetch(
+                :full_destination
+              )
+            )
+          end
         end
       end
 

@@ -43,35 +43,32 @@ module Jekyll
 
       # --
       def raw_precompiles
-        asset_config[:raw_precompile].each_with_object([]) do |v, a|
-          if v.is_a?(Hash)
-            dst, src = in_dest_dir.join(v[:dst]).tap(&:mkdir_p), v[:src]
-            glob_paths(src).each do |sv|
-              a << {
-                src: sv,
-                full_dst: dst.join(sv.basename),
-                dst: dst,
-              }
-            end
-          else
-            require 'pry'
-            Pry.output = STDOUT
-            binding.pry
-            glob_paths(v).each do |p|
-              next unless p
+        asset_config[:raw_precompile].each_with_object([]) do |h, a|
+          h = { source: h } unless h.is_a?(Hash)
+          r = Regexp.new(h[:strip]) if h.key?(:strip)
+          s = h.fetch(:source) { h.fetch(:src) }
 
-              dst = strip_paths(p)
-              dst = in_dest_dir(dst)
-              dst.parent.mkdir_p
-
-              a << {
-                src: p,
-                full_dst: dst,
-                dst: dst,
-              }
-            end
+          root_glob(s).each do |p|
+            d = r.nil? ? p : p.gsub(r, '')
+            a.push({
+              destination: d.relative,
+              full_destination: in_dest_dir(d),
+              source: p
+            })
           end
         end
+      end
+
+      def root_paths
+        paths.map(
+          &File.method(
+            :dirname
+          )
+        ).uniq
+      end
+
+      def all_paths
+        paths | root_paths
       end
 
       # --
@@ -81,15 +78,24 @@ module Jekyll
         end
       end
 
+      def root_glob(glob)
+        Pathutil.new(root).glob(glob).map do |path|
+          path.relative_path_from(
+            root
+          )
+        end
+      end
+
       # --
-      def glob_paths(glob)
+      def glob_paths(glob, all: false)
         out = []
 
-        paths.each do |sv|
-          sv = Pathutil.new(sv)
-
-          if sv.directory?
-            out.concat(sv.glob(glob).to_a)
+        (all ? all_paths : paths).each do |p|
+          p = Pathutil.new(p)
+          if p.directory?
+            out.concat(
+              p.glob(glob).to_a
+            )
           end
         end
 
@@ -100,17 +106,21 @@ module Jekyll
       def url_asset(url, type:)
         name = File.basename(url)
 
-        Url.new(*[nil, {
-          name: name,
-          filename: url,
-          content_type: type,
-          load_path: File.dirname(url),
-          id: Digest::SHA256.hexdigest(url),
-          logical_path: name,
-          metadata: {},
-          source: "",
-          uri: url,
-        }].compact)
+        Url.new(
+          *[
+            nil, {
+              name: name,
+              filename: url,
+              content_type: type,
+              load_path: File.dirname(url),
+              id: Digest::SHA256.hexdigest(url),
+              logical_path: name,
+              metadata: {},
+              source: "",
+              uri: url,
+            }
+          ].compact
+        )
       end
 
       # --
