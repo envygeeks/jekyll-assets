@@ -7,7 +7,7 @@ module Jekyll
   module Assets
     module Plugins
       Hook.register :asset, :after_compression, priority: 3 do |i, o, t|
-        next unless t == "text/css"
+        next o unless t == "text/css"
 
         env = i[:environment]
         asset = env.find_asset!(i[:filename], pipeline: :source)
@@ -15,13 +15,11 @@ module Jekyll
         url = SrcMap.map_path(asset: asset, env: env)
         url = env.prefix_url(url)
 
-        o.update({
-          data: <<~CSS
-            #{o[:data].strip}
-            /*# sourceMappingURL=#{url} */
-            /*# sourceURL=#{path} */
-          CSS
-        })
+        <<~CSS
+          #{o.strip}
+          /*# sourceMappingURL=#{url} */
+          /*# sourceURL=#{path} */
+        CSS
       end
 
       # --

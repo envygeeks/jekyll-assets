@@ -7,21 +7,21 @@ if Jekyll::Assets::Utils.activate("crass")
   module Jekyll
     module Assets
       module Plugins
-        NODER = %r!/\*\! @alternate \*/!
-        RTEST = %r!#{Regexp.union(%w(-ms- -webkit- -moz- -o-).freeze)}!
-        NODE1 = { node: :whitespace, pos: 28, raw: " " }.freeze
+        NODER = %r!/\*\! @alternate \*/!.freeze
+        RTEST = %r!#{Regexp.union(%w(-ms- -webkit- -moz- -o-).freeze)}!.freeze
+        NODE1 = { node: :whitespace, pos: 28, raw: ' ' }.freeze
         NODE2 = {
-          raw: "/*! @alternate */",
+          raw: '/*! @alternate */',
           pos: 0, # It's ignored. @see Crass::Parser.stringify
-          value: "! @alternate ",
-          node: :comment,
+          value: '! @alternate ',
+          node: :comment
         }.freeze
 
         NODE3 = {
-          raw: "/* @alternate */",
-          pos: 0, # It's ignored. @see Crass::Parser.stringify
-          value: "@alternate ",
+          value: '@alternate ',
+          raw: '/* @alternate */',
           node: :comment,
+          pos: 0
         }.freeze
 
         class Alternates
@@ -61,12 +61,10 @@ if Jekyll::Assets::Utils.activate("crass")
         # ran, we have to guard with /*! so we've to strip.
         # --
         Hook.register :asset, :after_compression do |_, o, t|
-          next unless t == "text/css"
-
-          o.update({
-            # Remember we guard against compression.
-            data: o[:data].gsub(NODER, " #{NODE3[:raw]} "),
-          })
+          next o unless t == "text/css"
+          o.gsub(NODER,
+            " #{NODE3[:raw]} "
+          )
         end
 
         # --

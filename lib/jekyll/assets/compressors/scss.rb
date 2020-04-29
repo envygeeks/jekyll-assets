@@ -10,16 +10,22 @@ module Jekyll
         def call(input)
           out = super(input)
           Hook.trigger :asset, :after_compression do |h|
-            h.call(input, out, "text/css")
+            !out.is_a?(Hash) \
+              ? out = h.call(input, out, 'text/css')
+              : out[:data] = h.call(
+                input, out[:data],
+                'text/css'
+              )
           end
+
           out
         end
       end
 
       # --
-      Sprockets.register_compressor "text/css", :assets_scss, Scss
+      Sprockets.register_compressor 'text/css', :assets_scss, Scss
       Hook.register :env, :after_init, priority: 3 do |e|
-        next if Utils.activate("sassc")
+        next if Utils.activate('sassc')
 
         e.css_compressor = nil
         next unless e.asset_config[:compression]
