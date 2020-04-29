@@ -67,8 +67,8 @@ module Jekyll
       #
       def upstream
         return Upstream::NullStore unless enabled?
-        return Upstream::MemoryStore if type == 'memory'
-        Upstream::FileStore
+        return Upstream::MemoryStore.new(2048) if type == 'memory'
+        Upstream::FileStore.new(@dir)
       end
 
       #
