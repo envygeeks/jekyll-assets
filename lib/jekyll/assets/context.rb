@@ -24,5 +24,7 @@ end
 
 # --
 Jekyll::Assets::Hook.register :env, :after_init do
-  context_class.send(:include, Jekyll::Assets::Context)
+  context_class.send(:include,
+    Jekyll::Assets::Context
+  )
 end
