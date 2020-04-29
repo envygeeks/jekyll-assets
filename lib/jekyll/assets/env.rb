@@ -143,9 +143,6 @@ module Jekyll
 
       # --
       def copy_raw!
-        require 'pry'
-        Pry.output = STDOUT
-        binding.pry
         raw_precompiles.each do |v|
           v[:full_destination].parent.mkdir_p
           unless v[:source].directory?
