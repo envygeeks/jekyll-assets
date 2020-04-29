@@ -93,13 +93,18 @@ module Jekyll
 
         def srcset(html, scales)
           img = build_img(html)
-          img[:src] = scales[1]
-          img[:srcset] = scales.map do |scale, src|
-            format('%<src>s %<scale>sx', {
-              scale: scale,
-              src: src
-            })
-          end.join(', ')
+          scales = scales.sort.to_h
+          img[:src] = scales.first[1]
+
+          if scales.size >= 2
+            img[:srcset] = scales.map do |scale, src|
+              next if scale == scales.first[0]
+              format('%<src>s %<scale>sx', {
+                scale: scale,
+                src: src
+              })
+            end.compact.join(', ')
+          end
 
           img
         end
@@ -162,7 +167,7 @@ module Jekyll
           Array(
             args.dig(:responsive, :scales) ||
             env.asset_config.dig(
-              :responsive, :automatic_scales
+              :responsive, :scales
             )
           )
         end
@@ -239,6 +244,7 @@ module Jekyll
         def responsive?
           return false if asset.is_a?(Url)
           return false if asset.content_type == 'image/webp'
+          return false if asset.content_type == 'image/svg+xml'
           automatic? || discovery? &&
             false != args[
               :responsive
