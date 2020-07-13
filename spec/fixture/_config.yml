@@ -1,3 +1,5 @@
+plugins:
+  - jekyll-assets
 img: img.png
 defaults:
 - scope:

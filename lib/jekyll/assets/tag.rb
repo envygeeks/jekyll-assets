@@ -120,11 +120,30 @@ module Jekyll
         methods.grep(%r@^on_(?!or_build$)@).each do |m|
           out = send(m, args, ctx: ctx, asset: asset)
           if out
+            regenerate(asset,
+              ctx: ctx
+            )
+
             return out
           end
         end
 
+        regenerate(asset,
+          ctx: ctx
+        )
+
         yield
+      end
+
+      def regenerate(asset, ctx:)
+        r = ctx.registers[:site].regenerator
+        r.add(asset.filename)
+
+        Array(asset.metadata[:dependencies]).each do |d|
+          next unless d.start_with?('file-digest:')
+          p = URI.parse(d).path
+          r.add(p)
+        end
       end
 
       #
