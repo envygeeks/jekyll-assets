@@ -427,59 +427,6 @@ describe Jekyll::Assets::Utils do
         end
       end
     end
-
-    #
-
-    context "development" do
-      context "w/ asset_config[:cdn][:url]" do
-        let :cdn do
-          "https://my.cdn"
-        end
-
-        before do
-          stub_asset_config({
-            cdn: {
-              url: cdn,
-            },
-          })
-        end
-
-        #
-
-        it "doesn't use it" do
-          out = subject.prefix_url
-          destination = subject.asset_config[:destination]
-          expect(out).to eq(destination)
-        end
-      end
-
-      #
-
-      context "w/ jekyll.config[:baseurl]" do
-        before do
-          stub_jekyll_config({
-            baseurl: "hello",
-          })
-        end
-
-        #
-
-        it "uses it" do
-          out = subject.prefix_url
-          expect(out).to start_with("/hello")
-        end
-      end
-
-      #
-
-      context "w/ asset_config[:destination]" do
-        it "uses it" do
-          out = subject.prefix_url
-          destination = subject.asset_config[:destination]
-          expect(out).to eq(destination)
-        end
-      end
-    end
   end
 
   #

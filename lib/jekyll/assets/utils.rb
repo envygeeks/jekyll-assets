@@ -255,7 +255,7 @@ module Jekyll
           url.scheme = "http"
         end
 
-        if Jekyll.production? && cdn_url
+        if cdn_url
           c_url = Addressable::URI.parse(cdn_url)
 
           if c_url.host
