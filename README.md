@@ -277,8 +277,8 @@ names of the original files, e.g., use `*.scss` instead of `*.css`.
 
 ```liquid
 {{ assets["bundle.css"].content_type }} => "text/css"
-{{ assets["images.jpg"].width  }} => 62
-{{ assets["images.jpg"].height }} => 62
+{{ assets["images.jpg"].dimensionns.width  }} => 62
+{{ assets["images.jpg"].dimensionns.height }} => 62
 ```
 
 The current list of available accessors:
