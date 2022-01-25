@@ -497,7 +497,7 @@ gem "ruby-vips"
 ```
 
 The "ruby-vips" gem requires a functional install
-of (libvips)[https://github.com/libvips/libvips/].
+of [libvips](https://github.com/libvips/libvips/).
 
 #### Args
 
