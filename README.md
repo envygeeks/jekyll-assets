@@ -261,12 +261,12 @@ body {
 }
 ```
 
-*Note: we do not validate your arguments, so if you send a conflicting
-*argument that results in invalid CSS, you are responsible for that, in
-*that if you ship us `srcset` we might or might not throw, depending on how
-*the threads are ran. So it might ship HTML if you do it wrong, and it will
-*break your CSS, this is by design so that if possible, in the future, we can
-*allow more flexibility, or so that plugins can change based on arguments.*
+> Note: we do not validate your arguments, so if you send a conflicting
+> argument that results in invalid CSS, you are responsible for that, in
+> that if you ship us `srcset` we might or might not throw, depending on how
+> the threads are ran. So it might ship HTML if you do it wrong, and it will
+> break your CSS, this is by design so that if possible, in the future, we can
+> allow more flexibility, or so that plugins can change based on arguments.*
 
 ## Listing Assets in Liquid
 
@@ -497,7 +497,7 @@ gem "ruby-vips"
 ```
 
 The "ruby-vips" gem requires a functional install
-of (libvips)[https://github.com/libvips/libvips/].
+of [libvips](https://github.com/libvips/libvips/).
 
 #### Args
 
@@ -518,13 +518,13 @@ of (libvips)[https://github.com/libvips/libvips/].
 
 ##### vips:resize
 
-Accepts an argument of either 'width', 'x<height>' or '<width>x<height>'.
+Accepts an argument of either `<width>x`, `x<height>` or `<width>x<height>`.
 All resize processes keep the original aspect ratio so width and
 height are used to specify the bounding box for the resize process.
 
-If no height is specified the image is resized to fit withing a
-bounding box of 'width' x 'width'. Similarly specifying just a
-height sets the bounding box for the resize to 'height' x 'height'.
+If no height is specified the image is resized to fit within a
+bounding box of 'width x width'. Similarly specifying just a
+height sets the bounding box for the resize to 'height x height'.
 This form only exists for compatibility with the "magick" plugin.
 
 ```liquid
@@ -537,7 +537,7 @@ This form only exists for compatibility with the "magick" plugin.
 
 Convert the image to the specified format. Format support
 depends on the compile options of the libvips library. Format is
-specified as the file extension such as '.jpg', '.webp' or '.png'.
+specified as the file extension such as `.jpg`, `.webp` or `.png`.
 
 ```liquid
 {% asset image.png vips:format='.webp' %}
@@ -545,7 +545,7 @@ specified as the file extension such as '.jpg', '.webp' or '.png'.
 
 ##### vips:crop
 
-Only has any effect when combined with "vips:resize". Use
+Only has any effect when combined with `vips:resize`. Use
 the following arguments (all except "fill" are documented
 [here](http://libvips.github.io/libvips/API/current/libvips-conversion.html#VipsInteresting)):
 
@@ -565,8 +565,8 @@ the following arguments (all except "fill" are documented
 
 ##### vips:strip
 
-Removes metadata from images. This is set "true" by
-default, but can be disabled by passing "false".
+Removes metadata from images. This is set `true` by
+default, but can be disabled by passing `false`.
 
 ```liquid
 {% asset image.jpg vips:strip=false %}
