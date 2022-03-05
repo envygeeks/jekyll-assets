@@ -50,8 +50,12 @@ assets:
   compression: false
   gzip: false
   defaults:
-    integrity:
-      {css,img,js}: false
+    img:
+      integrity: true
+    css:
+      integrity: true
+    js:
+      integrity: true
   caching:
     enabled: true
     path: ".jekyll-cache/assets"
