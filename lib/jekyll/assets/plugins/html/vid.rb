@@ -14,9 +14,9 @@ module Jekyll
         # --
         def run
           Nokogiri::HTML::Builder.with(doc) do |d|
-            d.video("No support for video.", args.to_h({
+            d.video("No support for video.", args.to_h(
               html: true, skip: HTML.skips
-            }))
+            ))
           end
         end
       end

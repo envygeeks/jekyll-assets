@@ -23,10 +23,7 @@ module Jekyll
         # --
         def self.map_path(env:, asset:)
           [
-            path({
-              asset: asset,
-              env: env,
-            }),
+            path(asset: asset, env: env),
             EXT,
           ].join
         end
