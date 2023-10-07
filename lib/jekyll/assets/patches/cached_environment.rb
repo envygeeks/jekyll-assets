@@ -33,8 +33,8 @@ module Jekyll
         # @return [Sprockets::Asset]
         # --
         %i(find_asset find_asset!).each do |v|
-          define_method v do |*a|
-            super(*a).tap do |m|
+          define_method v do |*a, **b|
+            super(*a, **b).tap do |m|
               m&.environment = self
             end
           end
