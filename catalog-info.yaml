@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: jekyll-assets
   annotations:
-    jira/project-key: MKTG
+    jira/project-key: WEB
 spec:
   type: service
   lifecycle: production
